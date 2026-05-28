@@ -1,0 +1,175 @@
+@import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =====================================================
+   디자인 토큰 — BJJ_Design_System.md v1.0
+   컨셉: Premium Dark Gamification
+   배경: 딥 블랙 / 카드: 진회색 / 액센트: 퍼플
+   ===================================================== */
+
+:root,
+:root[data-theme="dark"] {
+  /* Fonts */
+  --font-sans: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont,
+               "Apple SD Gothic Neo", "Noto Sans KR", "Roboto", sans-serif;
+  --font-mono: "JetBrains Mono", "Menlo", monospace;
+
+  /* ── 배경 레이어 ─────────────────────────────
+     Layer 0: 앱 배경 (딥 블랙)
+     Layer 1: 카드/섹션 박스 (진회색) ← 레퍼런스 핵심
+     Layer 2: 카드 내 중첩
+     Layer 3: 호버/인터랙션
+  ──────────────────────────────────────────── */
+  --bg-base:     #0A0A0F;
+  --bg-elevated: #1A1A24;
+  --bg-overlay:  #22222E;
+  --bg-hover:    #2A2A38;
+
+  /* Text */
+  --text-primary:   #F5F7FA;
+  --text-secondary: #B4BCC8;
+  --text-tertiary:  #6B7280;
+  --text-disabled:  #3A3A4A;
+  --text-inverse:   #0A0A0F;
+
+  /* Border — 최소화 (No Border Philosophy) */
+  --border-subtle:  rgba(255, 255, 255, 0.05);
+  --border-default: rgba(255, 255, 255, 0.08);
+  --border-strong:  rgba(255, 255, 255, 0.12);
+  --border-focus:   #7B61FF;
+
+  /* ── 브랜드: 퍼플 ────────────────────────── */
+  --brand-primary: #7B61FF;
+  --brand-hover:   #6B4FEF;
+  --brand-pressed: #5B3FDF;
+  --brand-subtle:  rgba(123, 97, 255, 0.15);
+  --brand-glow:    rgba(123, 97, 255, 0.3);
+
+  /* Semantic */
+  --success: #34D399;
+  --warning: #FBBF24;
+  --danger:  #F87171;
+  --info:    #60A5FA;
+
+  /* ── BJJ Belt ───────────────────────────── */
+  --belt-white:  #E8E8E8;
+  --belt-blue:   #2E80F0;
+  --belt-purple: #7B61FF;
+  --belt-brown:  #8C5A2E;
+  --belt-black:  #1A1A24;
+
+  /* Tier */
+  --tier-s: #FF4D6D;
+  --tier-a: #FF8C42;
+  --tier-b: #FFC93C;
+  --tier-c: #38B2AC;
+  --tier-d: #6B7280;
+
+  /* Technique Type */
+  --type-sweep:   #2E80F0;
+  --type-submit:  #FF4D6D;
+  --type-pass:    #FF8C42;
+  --type-escape:  #A78BFA;
+  --type-trans:   #FFC93C;
+  --type-control: #34D399;
+
+  /* Status */
+  --status-locked: #3A3A4A;
+  --status-aware:  #60A5FA;
+  --status-drill:  #FBBF24;
+  --status-spar:   #FF8C42;
+  --status-prof:   #34D399;
+  --status-master: #7B61FF;
+
+  /* ── BJJ Stream ────────────────────────── */
+  --stream-guard:    #2E80F0;  /* 가드포지션 */
+  --stream-top:      #FF8C42;  /* 탑포지션   */
+  --stream-escape:   #A78BFA;  /* 이스케이프 */
+  --stream-standing: #FBBF24;  /* 스탠딩     */
+
+  /* Radius */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  /* Shadow — 유색 없음, 블랙 그림자만 */
+  --shadow-card:  0 2px 12px rgba(0, 0, 0, 0.5);
+  --shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.6);
+  --shadow-modal: 0 -8px 40px rgba(0, 0, 0, 0.75);
+  --glow-active:  0 0 0 2px rgba(123, 97, 255, 0.4), 0 0 16px rgba(123, 97, 255, 0.25);
+
+  /* Motion */
+  --motion-fast:   120ms;
+  --motion-base:   200ms;
+  --motion-slow:   320ms;
+  --motion-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --motion-ease:   cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* =====================================================
+   Base
+   ===================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "ss02";
+  letter-spacing: -0.01em;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* Focus visible */
+:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Skeleton shimmer animation ─────────────────────────────────── */
+@keyframes skeleton-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-overlay) 25%,
+    var(--bg-hover)   50%,
+    var(--bg-overlay) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
+  border-radius: 0.5rem;
+}

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Head (upper right) -->
+  <circle cx="76" cy="20" r="11" fill="#A78BFA"/>
+  <!-- Body: diagonal band sweeping lower-left -->
+  <rect x="14" y="29" width="56" height="15" rx="7.5" transform="rotate(-22 42 36)" fill="#A78BFA"/>
+  <!-- Front arm reaching forward-left -->
+  <rect x="2" y="43" width="40" height="13" rx="6.5" transform="rotate(8 22 49)" fill="#A78BFA"/>
+  <!-- Back arm bent up-right -->
+  <rect x="64" y="20" width="24" height="12" rx="6" transform="rotate(-48 76 26)" fill="#A78BFA"/>
+  <!-- Front leg lower-left -->
+  <rect x="5" y="55" width="33" height="13" rx="6.5" transform="rotate(-20 21 61)" fill="#A78BFA"/>
+  <!-- Back leg lower-right, bent at knee -->
+  <rect x="35" y="53" width="33" height="13" rx="6.5" transform="rotate(28 51 59)" fill="#A78BFA"/>
+</svg>
