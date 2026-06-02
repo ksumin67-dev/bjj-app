@@ -26,10 +26,14 @@ function SubmitButton() {
       type="submit"
       disabled={pending}
       className={cn(
-        "w-full py-3 rounded-xl font-bold text-[14px] transition-all duration-base",
-        "bg-brand-primary text-text-inverse hover:bg-brand-hover active:scale-[0.97]",
+        "w-full py-3 rounded-xl font-bold text-[14px] text-white transition-all duration-base",
+        "hover:brightness-110 active:scale-[0.97]",
         "disabled:opacity-50 disabled:cursor-not-allowed",
       )}
+      style={{
+        background: "linear-gradient(135deg, #7B61FF 0%, #B44FD4 100%)",
+        boxShadow: "0 4px 16px rgba(123,97,255,0.30)",
+      }}
     >
       {pending ? "저장 중..." : "시퀀스 저장"}
     </button>

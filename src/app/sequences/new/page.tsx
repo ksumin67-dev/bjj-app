@@ -30,8 +30,8 @@ export default async function NewSequencePage() {
         </Link>
 
         <header>
-          <h1 className="text-2xl font-black tracking-tight">새 시퀀스</h1>
-          <p className="text-text-tertiary mt-1 text-sm">
+          <h1 className="text-2xl font-black tracking-tight text-white">새 시퀀스</h1>
+          <p className="mt-1 text-sm" style={{ color: "#B4BCC8" }}>
             기술 조합과 분기 흐름을 정리해보세요.
           </p>
         </header>

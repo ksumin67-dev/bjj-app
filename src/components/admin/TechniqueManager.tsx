@@ -442,6 +442,7 @@ export function TechniqueManager({ techniques: initial, positions, customTechniq
             ytSearchGeneral: form.ytSearchGeneral || null,
             ytSearchKo: form.ytSearchKo || null,
             curatedInstructor: form.curatedInstructor || null,
+            difficulty: null,
             isMainSkill: false,
           };
           setTechniques((prev) => [newTech, ...prev]);

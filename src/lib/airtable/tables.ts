@@ -48,6 +48,8 @@ export const FIELDS = {
     YT_SEARCH_GENERAL: "fldgwgXc1hSStBvaV",
     YT_SEARCH_KO: "fldf7houHb8enFKn0",
     CURATED_INSTRUCTOR: "fldcecwUym64ZAI8Q",
+    // 난이도 (singleSelect: 기본/정착/트렌드) — 2026-06-02 추가
+    DIFFICULTY: "fldULAlz9QEEgAgsO",
     // TODO: Airtable Techniques 테이블에 "isMainSkill" 체크박스 필드 추가 후 ID 입력
     IS_MAIN_SKILL: "",
   },

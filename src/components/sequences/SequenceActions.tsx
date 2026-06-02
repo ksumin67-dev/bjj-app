@@ -50,7 +50,11 @@ export function SequenceActions({
         type="button"
         onClick={handleSuccess}
         disabled={incPending}
-        className="w-full py-3 rounded-xl bg-brand-primary text-text-inverse font-bold text-[14px] hover:bg-brand-hover active:scale-[0.97] transition-all duration-fast inline-flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full py-3 rounded-xl text-white font-bold text-[14px] hover:brightness-110 active:scale-[0.97] transition-all duration-fast inline-flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+        style={{
+          background: "linear-gradient(135deg, #7B61FF 0%, #B44FD4 100%)",
+          boxShadow: "0 4px 16px rgba(123,97,255,0.30)",
+        }}
       >
         <Trophy size={18} strokeWidth={2.5} />
         {incPending ? "기록 중…" : "오늘 성공 +1"}

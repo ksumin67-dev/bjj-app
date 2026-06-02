@@ -7,6 +7,7 @@ import type {
   TechniqueType,
   Stream,
   GiNogi,
+  Difficulty,
 } from "@/types/domain";
 
 const F = FIELDS.TECHNIQUE;
@@ -60,6 +61,7 @@ function toTechnique(record: {
     ytSearchKo: (f[F.YT_SEARCH_KO] as string) ?? null,
     isMainSkill: F.IS_MAIN_SKILL ? Boolean(f[F.IS_MAIN_SKILL]) : false,
     curatedInstructor: (f[F.CURATED_INSTRUCTOR] as string) ?? null,
+    difficulty: ((f[F.DIFFICULTY] as string) ?? null) as Difficulty | null,
   };
 }
 
@@ -139,6 +141,7 @@ export type TechniqueInput = {
   ytSearchGeneral?: string;
   ytSearchKo?: string;
   curatedInstructor?: string;
+  difficulty?: string;
   videoUrl?: string;
   notes?: string;
 };
@@ -163,6 +166,7 @@ function toFields(input: TechniqueInput): Record<string, unknown> {
   if (input.ytSearchGeneral !== undefined) f[F.YT_SEARCH_GENERAL] = input.ytSearchGeneral || null;
   if (input.ytSearchKo !== undefined)      f[F.YT_SEARCH_KO]      = input.ytSearchKo || null;
   if (input.curatedInstructor !== undefined) f[F.CURATED_INSTRUCTOR] = input.curatedInstructor || null;
+  if (input.difficulty !== undefined)      f[F.DIFFICULTY]        = input.difficulty || null;
   if (input.videoUrl !== undefined)        f[F.VIDEO_URL]         = input.videoUrl || null;
   if (input.notes !== undefined)           f[F.NOTES]             = input.notes || null;
   return f;
@@ -197,6 +201,7 @@ export async function updateTechnique(
   if (input.ytSearchGeneral !== undefined) f[F.YT_SEARCH_GENERAL] = input.ytSearchGeneral || null;
   if (input.ytSearchKo !== undefined)      f[F.YT_SEARCH_KO]      = input.ytSearchKo || null;
   if (input.curatedInstructor !== undefined) f[F.CURATED_INSTRUCTOR] = input.curatedInstructor || null;
+  if (input.difficulty !== undefined)      f[F.DIFFICULTY]        = input.difficulty || null;
   if (input.videoUrl !== undefined)        f[F.VIDEO_URL]         = input.videoUrl || null;
   if (input.notes !== undefined)           f[F.NOTES]             = input.notes || null;
   await airtable(TABLES.TECHNIQUES).update([
