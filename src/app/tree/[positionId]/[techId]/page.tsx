@@ -17,6 +17,7 @@ import { getAllTrainingSessions } from "@/lib/airtable/trainingSessions";
 import { buildTrainingCountMap, trainingCountLabel } from "@/types/domain";
 import { TypeChip } from "@/components/tree/TypeChip";
 import { StatusIcon } from "@/components/tree/StatusIcon";
+import { PageWrapper } from "@/components/layout/PageWrapper";
 
 export const dynamic = "force-dynamic";
 
@@ -91,7 +92,8 @@ export default async function TechniqueDetailPage({
     technique.bodyType;
 
   return (
-    <div className="space-y-6 pb-20">
+    <PageWrapper>
+      <div className="space-y-6 pb-20">
       {/* 네비게이션 */}
       <div className="flex items-center gap-2 text-sm">
         <Link
@@ -200,6 +202,7 @@ export default async function TechniqueDetailPage({
           </p>
         </section>
       )}
-    </div>
+      </div>
+    </PageWrapper>
   );
 }
