@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Plus, ListOrdered, Layers, Trophy, Flame } from "lucide-react";
-import { getAllSequences } from "@/lib/airtable/sequences";
+import { getAllSequences } from "@/lib/supabase/sequences";
 import { getAllPositions } from "@/lib/airtable/positions";
 import { getAllTechniques } from "@/lib/airtable/techniques";
 import { SequenceCard } from "@/components/sequences/SequenceCard";

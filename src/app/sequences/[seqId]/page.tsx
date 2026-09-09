@@ -5,7 +5,7 @@ import {
   ChevronLeft, Trophy, Clock, GitBranch, ArrowRight,
   Shield, Swords, Zap, Users, type LucideIcon,
 } from "lucide-react";
-import { getSequenceById } from "@/lib/airtable/sequences";
+import { getSequenceById } from "@/lib/supabase/sequences";
 import { getAllPositions } from "@/lib/airtable/positions";
 import { getAllTechniques } from "@/lib/airtable/techniques";
 import { SequenceActions } from "@/components/sequences/SequenceActions";

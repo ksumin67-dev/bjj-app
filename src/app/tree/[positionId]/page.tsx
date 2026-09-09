@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import { getPositionByPositionId } from "@/lib/airtable/positions";
 import { getTechniquesByParentId } from "@/lib/airtable/techniques";
-import { getAllTrainingSessions } from "@/lib/airtable/trainingSessions";
-import { getUserProfile } from "@/lib/airtable/userProfile";
+import { getAllTrainingSessions } from "@/lib/supabase/trainingSessions";
+import { getUserProfile } from "@/lib/supabase/userProfile";
 import { buildTrainingCountMap, computePositionLevel, beltIndex } from "@/types/domain";
 import type { Stream } from "@/types/domain";
 import PositionDetailClient from "@/components/tree/PositionDetailClient";

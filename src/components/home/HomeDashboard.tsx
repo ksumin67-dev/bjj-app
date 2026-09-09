@@ -1,6 +1,6 @@
 import type { Technique, TrainingSession, Stream } from "@/types/domain";
 import { getBjjStyle, calculateStreak } from "@/types/domain";
-import type { UserProfile } from "@/lib/airtable/userProfile";
+import type { UserProfile } from "@/lib/supabase/userProfile";
 import { BeltDisplay, BELT_CONFIG } from "@/components/ui/BeltDisplay";
 import Link from "next/link";
 import { Swords, Shield, Zap, Users, type LucideIcon } from "lucide-react";

@@ -1,7 +1,9 @@
 # BJJ 스킬트리 앱 — Airtable 테이블 명세서
 
-> 최종 업데이트: 2026-05-20  
+> 최종 업데이트: 2026-05-20 (2026-07-31에 필드/현황만 부분 갱신, 나머지는 5/20 시점 스냅샷)  
 > 앱 재개발/수정 시 이 문서를 기준으로 사용할 것
+>
+> ⚠️ **2026-06-02 이후 스킬트리 드릴다운 UI + 난이도 체계 도입으로 스키마가 한 번 더 바뀜.** 아래 필드 스키마에 `난이도` 필드를 추가 반영했지만, 그 외 세부 내용(포지션별 기술 수 등)은 여전히 5/20 스냅샷임. **정확한 최신 상태가 필요하면 Airtable MCP로 라이브 스키마를 직접 조회할 것.**
 
 ---
 
@@ -31,6 +33,7 @@
 | 7 | 영상 URL | Video URL | `fld6Em3JjMN8gkecD` | url | YouTube 등 영상 링크 |
 | 8 | 메모 | Memo | `fld2AoIhb37j393Pm` | multilineText | 자유 메모 |
 | 9 | 부모 ID | Parent ID | `fldNxsRbjDpWQKVpY` | singleLineText | 예: `"CG"`, `"BF"` |
+| 9.5 | 난이도 | Difficulty | `fldULAlz9QEEgAgsO` | singleSelect | **6/2 신규 추가.** 기본=토대 / 정착=확장 / 트렌드=현대 메타·고급 |
 | 10 | 스트림 | Stream | `fld9UUVZhYi5YCe7j` | singleSelect | 아래 허용값 참조 |
 | 11 | 그립 | Grip | `fldMTJ8ry8Qu8pVjT` | singleLineText | 그립 설명 |
 | 12 | 체형 추천 | Body Type | `fldvyL4ODSJfk955k` | singleLineText | 체형별 추천 여부 |
@@ -230,7 +233,7 @@ fldcecwUym64ZAI8Q  — 추천 강사
 
 ---
 
-## 10. 전체 기술 현황 (2026-05-20 기준)
+## 10. 전체 기술 현황 (2026-05-20 기준 — 참고용, 7/31 실측 292개로 증가함)
 
 | 스트림 | 포지션 | 기술 수 |
 |--------|--------|---------|

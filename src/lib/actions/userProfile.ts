@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { updateUserProfile } from "@/lib/airtable/userProfile";
+import { updateUserProfile } from "@/lib/supabase/userProfile";
 import type { BeltLevel } from "@/types/domain";
 
 export async function updateProfileAction(

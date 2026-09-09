@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { updateProfileAction } from "@/lib/actions/userProfile";
 import { useToast } from "@/contexts/ToastContext";
-import type { UserProfile } from "@/lib/airtable/userProfile";
+import type { UserProfile } from "@/lib/supabase/userProfile";
 import type { BeltLevel, Stream, Technique, TrainingSession } from "@/types/domain";
 import { calculateStreak, getBjjStyle, getStreakBonus } from "@/types/domain";
 import { BeltDisplay, BELT_CONFIG } from "@/components/ui/BeltDisplay";

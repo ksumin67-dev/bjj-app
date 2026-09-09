@@ -1,6 +1,6 @@
 import { getAllTechniques } from "@/lib/airtable/techniques";
-import { getAllSequences } from "@/lib/airtable/sequences";
-import { getAllTrainingSessions } from "@/lib/airtable/trainingSessions";
+import { getAllSequences } from "@/lib/supabase/sequences";
+import { getAllTrainingSessions } from "@/lib/supabase/trainingSessions";
 import { CalendarHome } from "@/components/calendar/CalendarHome";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 

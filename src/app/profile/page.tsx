@@ -1,6 +1,6 @@
 import { getAllTechniques } from "@/lib/airtable/techniques";
-import { getAllTrainingSessions } from "@/lib/airtable/trainingSessions";
-import { getUserProfile } from "@/lib/airtable/userProfile";
+import { getAllTrainingSessions } from "@/lib/supabase/trainingSessions";
+import { getUserProfile } from "@/lib/supabase/userProfile";
 import { buildTrainingCountMap } from "@/types/domain";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 import { ProfileEditor } from "@/components/profile/ProfileEditor";

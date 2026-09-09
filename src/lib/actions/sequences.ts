@@ -7,7 +7,7 @@ import {
   incrementSuccessCount,
   deleteSequence,
   type CreateSequenceInput,
-} from "@/lib/airtable/sequences";
+} from "@/lib/supabase/sequences";
 
 export type CreateSequenceFormState = {
   ok: boolean;

@@ -53,12 +53,13 @@ src/
 
 ## 빌드 단계
 
-- [x] **Phase 0**: 디자인 스펙 (`../BJJ_App_Design_Spec.md` 참조)
-- [x] **Phase 1**: 프로젝트 스캐폴딩 (현재)
-- [ ] **Phase 2**: 스킬트리 화면 (포지션→기술 목록)
-- [ ] **Phase 3**: 시퀀스 화면
-- [ ] **Phase 4**: 수련 기록 입력 폼
-- [ ] **Phase 5**: Vercel 배포
+- [x] **Phase 0**: 디자인 스펙 (`DESIGN_SYSTEM.md` 참조)
+- [x] **Phase 1**: 프로젝트 스캐폴딩
+- [x] **Phase 2**: 스킬트리 화면 (드릴다운 UI + 난이도 체계, 2026-06-02 완료)
+- [x] **Phase 3**: 시퀀스 화면
+- [x] **Phase 4**: 수련 기록 입력 폼 (캘린더 홈)
+- [x] **Phase 5**: Vercel 배포 (`bjj-app-brown.vercel.app`, GitHub main 연동 자동배포)
+- [ ] **Phase 6**: 앱스토어 출시 — 진행 중, `docs/BJJ_App_Store_Launch_Roadmap.md` 참조
 
 ## 명령어
 

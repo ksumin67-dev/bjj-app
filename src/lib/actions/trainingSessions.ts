@@ -7,8 +7,8 @@ import {
   deleteTrainingSession,
   getAllTrainingSessions,
   type CreateTrainingSessionInput,
-} from "@/lib/airtable/trainingSessions";
-import { createSequence } from "@/lib/airtable/sequences";
+} from "@/lib/supabase/trainingSessions";
+import { createSequence } from "@/lib/supabase/sequences";
 import { recordCustomTechniqueUsage } from "@/lib/airtable/customTechniques";
 import { getAllTechniques } from "@/lib/airtable/techniques";
 import { calculateNewStreak, getStreakBonus, getBeltRank } from "@/types/domain";

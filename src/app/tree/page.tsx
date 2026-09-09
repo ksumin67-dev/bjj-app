@@ -1,5 +1,5 @@
 import { getAllTechniques } from "@/lib/airtable/techniques";
-import { getAllTrainingSessions } from "@/lib/airtable/trainingSessions";
+import { getAllTrainingSessions } from "@/lib/supabase/trainingSessions";
 import {
   buildTrainingCountMap,
   getBeltRank,

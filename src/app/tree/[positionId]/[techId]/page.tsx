@@ -10,10 +10,12 @@ import {
   Target,
   AlertTriangle,
   ShieldX,
+  Lock,
 } from "lucide-react";
 import { getPositionByPositionId } from "@/lib/airtable/positions";
 import { getTechniqueByTechId } from "@/lib/airtable/techniques";
-import { getAllTrainingSessions } from "@/lib/airtable/trainingSessions";
+import { getAllTrainingSessions } from "@/lib/supabase/trainingSessions";
+import { getUserProfile } from "@/lib/supabase/userProfile";
 import { buildTrainingCountMap, trainingCountLabel } from "@/types/domain";
 import { TypeChip } from "@/components/tree/TypeChip";
 import { StatusIcon } from "@/components/tree/StatusIcon";
@@ -70,10 +72,11 @@ export default async function TechniqueDetailPage({
   const positionId = params.positionId.toUpperCase();
   const techId = params.techId.toUpperCase();
 
-  const [position, technique, sessions] = await Promise.all([
+  const [position, technique, sessions, profile] = await Promise.all([
     getPositionByPositionId(positionId),
     getTechniqueByTechId(techId),
     getAllTrainingSessions(),
+    getUserProfile(),
   ]);
 
   if (!technique) notFound();
@@ -164,18 +167,36 @@ export default async function TechniqueDetailPage({
         </section>
       )}
 
-      {/* 심화 정보 */}
+      {/* 심화 정보 — 프리미엄 전용 */}
       {hasDetails && (
         <section className="space-y-3">
           <h2 className="text-sm font-semibold text-text-secondary">
             심화 정보
           </h2>
-          <DetailSection icon={<Hand size={14} />} label="그립" content={technique.grip} />
-          <DetailSection icon={<PersonStanding size={14} />} label="체형 추천" content={technique.bodyType} />
-          <DetailSection icon={<Lightbulb size={14} />} label="핵심 포인트" content={technique.keyPoint} />
-          <DetailSection icon={<Target size={14} />} label="실전 팁" content={technique.practicalTip} />
-          <DetailSection icon={<AlertTriangle size={14} />} label="흔한 실수" content={technique.commonMistake} />
-          <DetailSection icon={<ShieldX size={14} />} label="카운터" content={technique.counter} />
+          {profile.isPremium ? (
+            <>
+              <DetailSection icon={<Hand size={14} />} label="그립" content={technique.grip} />
+              <DetailSection icon={<PersonStanding size={14} />} label="체형 추천" content={technique.bodyType} />
+              <DetailSection icon={<Lightbulb size={14} />} label="핵심 포인트" content={technique.keyPoint} />
+              <DetailSection icon={<Target size={14} />} label="실전 팁" content={technique.practicalTip} />
+              <DetailSection icon={<AlertTriangle size={14} />} label="흔한 실수" content={technique.commonMistake} />
+              <DetailSection icon={<ShieldX size={14} />} label="카운터" content={technique.counter} />
+            </>
+          ) : (
+            <Link
+              href="/upgrade"
+              className="block rounded-2xl border border-border-subtle bg-bg-elevated p-5 text-center hover:bg-bg-hover transition-colors"
+            >
+              <Lock size={20} className="text-brand-primary mx-auto mb-2" />
+              <p className="text-sm font-semibold text-text-primary">
+                프리미엄 전용 콘텐츠
+              </p>
+              <p className="text-xs text-text-tertiary mt-1">
+                그립·핵심포인트·실전팁·흔한실수·카운터 등 상세 코칭 정보를 보려면
+                프리미엄으로 업그레이드하세요
+              </p>
+            </Link>
+          )}
         </section>
       )}
 
