@@ -24,16 +24,26 @@ export function TrainingReminderToggle() {
   const [enabled, setEnabled] = useState(false);
   const [loading, setLoading] = useState(true);
   const [pending, setPending] = useState(false);
+  const [debug, setDebug] = useState("초기화 중...");
   const toast = useToast();
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const native = isNativePlatform();
-      setSupported(native);
-      if (native) {
-        const on = await isTrainingReminderEnabled();
-        if (!cancelled) setEnabled(on);
+      try {
+        const hasCapWindow =
+          typeof window !== "undefined" && "Capacitor" in window;
+        const native = isNativePlatform();
+        setDebug(
+          `window.Capacitor 존재: ${hasCapWindow} / isNativePlatform(): ${native}`,
+        );
+        setSupported(native);
+        if (native) {
+          const on = await isTrainingReminderEnabled();
+          if (!cancelled) setEnabled(on);
+        }
+      } catch (e) {
+        setDebug(`에러 발생: ${e instanceof Error ? e.message : String(e)}`);
       }
       if (!cancelled) setLoading(false);
     })();
@@ -42,7 +52,19 @@ export function TrainingReminderToggle() {
     };
   }, []);
 
-  if (!supported || loading) return null;
+  // 임시 디버그 카드 — 원인 파악 후 제거 예정
+  if (!supported || loading) {
+    return (
+      <section
+        className="rounded-2xl p-4"
+        style={{ ...CARD, marginBottom: "20px" }}
+      >
+        <p className="text-[11px]" style={{ color: "#6B7280" }}>
+          [디버그] 수련 리마인더 진단: {debug}
+        </p>
+      </section>
+    );
+  }
 
   async function handleToggle() {
     setPending(true);
