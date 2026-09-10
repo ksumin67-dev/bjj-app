@@ -15,6 +15,16 @@ const config: CapacitorConfig = {
   server: {
     url: "https://bjj-app-brown.vercel.app",
     cleartext: false,
+    // 구글 로그인 등 앱 도메인 밖으로 나가는 이동이 여기 없으면
+    // Capacitor가 외부 시스템 브라우저(Custom Tab)로 열어버려서
+    // 로그인 이후 화면이 네이티브 브릿지가 없는 "그냥 브라우저 탭"이 되어버림.
+    // (window.Capacitor는 존재하지만 isNativePlatform()이 false로 나오는 원인)
+    allowNavigation: [
+      "smgunmjpddcfgohmuawb.supabase.co",
+      "accounts.google.com",
+      "*.google.com",
+      "*.googleusercontent.com",
+    ],
   },
   android: {
     allowMixedContent: false,
