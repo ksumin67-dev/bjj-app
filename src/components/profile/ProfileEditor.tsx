@@ -8,6 +8,7 @@ import type { UserProfile } from "@/lib/supabase/userProfile";
 import type { BeltLevel, Stream, Technique, TrainingSession } from "@/types/domain";
 import { calculateStreak, getBjjStyle, getStreakBonus } from "@/types/domain";
 import { BeltDisplay, BELT_CONFIG } from "@/components/ui/BeltDisplay";
+import { TrainingReminderToggle } from "@/components/profile/TrainingReminderToggle";
 import {
   Loader2, Pencil, Check, Flame, Trophy, CalendarCheck,
   Swords, Shield, Zap, Users, ChevronRight, type LucideIcon,
@@ -331,7 +332,12 @@ export function ProfileEditor({
       </section>
 
       {/* ════════════════════════════════════════════════════════════════
-          5. 편집 영역 (수정 모드에서만 노출)
+          5. 알림 설정 (네이티브 앱에서만 노출)
+          ════════════════════════════════════════════════════════════════ */}
+      <TrainingReminderToggle />
+
+      {/* ════════════════════════════════════════════════════════════════
+          6. 편집 영역 (수정 모드에서만 노출)
           ════════════════════════════════════════════════════════════════ */}
       {editing && (
         <>

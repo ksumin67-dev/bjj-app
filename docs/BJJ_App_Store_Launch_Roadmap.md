@@ -43,11 +43,18 @@
 - [ ] **웹 결제(Stripe)** 먼저 붙이기 → 스토어 심사 기다릴 필요 없이 여기서 바로 첫 매출 가능
 - [ ] 모바일 앱 결제는 애플/구글 정책상 **인앱결제(IAP) 강제** (디지털 구독 성격이면 Stripe 직접결제 불가) → RevenueCat 같은 IAP 관리 서비스 고려
 
-### Phase 3 — 네이티브 패키징
+### Phase 3 — 네이티브 패키징 (2026-09-10 시작, Android 진행 중)
 
-- [ ] **Android**: PWA → TWA(Trusted Web Activity) 변환, Google의 Bubblewrap 툴 사용 (무료, 빠름)
-- [ ] **iOS**: Capacitor로 네이티브 셸 씌우기 (Xcode 필요 — Mac 필수, Apple Developer Program 가입 $99/년)
-- [ ] 앱 아이콘/스플래시 스토어 규격 재작업 (기존 192/512 PWA 아이콘 → 스토어별 요구 사이즈 세트로 확장)
+- [x] Capacitor 설치 (`@capacitor/core`, `@capacitor/cli`, `@capacitor/android`, `@capacitor/local-notifications`, `@capacitor/splash-screen`, `@capacitor/status-bar`)
+- [x] `capacitor.config.ts` 작성 — `server.url`을 라이브 URL(`https://bjj-app-brown.vercel.app`)로 설정해 원격 로드 (Next.js 코드 변경 없음)
+- [x] `npx cap add android`로 `android/` 네이티브 프로젝트 생성 완료
+- [x] Android Studio(Quail 3, Gradle JVM 21)에서 Gradle sync 성공, Pixel 8 / API 35 에뮬레이터 생성
+- [x] **에뮬레이터에서 앱 최초 실행 성공** — 웹뷰 안에서 라이브 사이트가 정상 로드됨
+- [x] **에뮬레이터 안에서 구글 로그인까지 정상 작동 확인** (네이티브 셸 안에서 OAuth 완주됨)
+- [x] 앱 아이콘/스플래시 재작업: 기존 512px PWA 아이콘의 "스킬트리" 한글 텍스트가 폰트 미스매치로 깨져있던 버그(□□□□) 발견 → "BJJ" 링 로고 단독 디자인으로 재제작(`assets/icon.png`, `icon-foreground.png`, `icon-background.png`, `splash.png`), `@capacitor/assets generate --android`로 전체 해상도(mdpi~xxxhdpi) 자동 생성 완료
+- [ ] **iOS**: Capacitor는 코드베이스에 이미 iOS 대응 준비되어 있음(`@capacitor/ios`만 추가하면 됨) — 그러나 Apple Developer Program 가입 전까지는 실기기/TestFlight 테스트 불가, Phase 4와 함께 진행 예정
+- [ ] 로컬 알림(수련 리마인더) 기능 구현 — `@capacitor/local-notifications` 패키지는 설치돼 있으나 실제 알림 스케줄링 로직은 아직 미구현
+- [ ] 실기기(에뮬레이터 아닌 본인 폰)에서 최종 테스트
 
 ### Phase 4 — 스토어 심사 준비물
 
@@ -161,15 +168,29 @@ Airtable/코드 작업 재개할 때 아래 함정들 여전히 유효함:
 8. **한글 경로에서 Edit/Write 도구가 가끔 blocked** — 발생 시 `mcp__workspace__bash`의 `cat > file << 'EOF'` 직접 쓰기로 우회
 9. **`server-only` 가드 파일에 `publicEnv`를 같이 두면 클라이언트 화면이 통째로 빈 화면(검은 배경만)이 됨** ⚠️ (2026-07-31 발견) — `env.ts`에 서버 전용 값(`serverEnv`, window 체크로 throw)과 공개 값(`publicEnv`, NEXT_PUBLIC_*)을 같은 파일에 두면, "use client" 컴포넌트가 `publicEnv`만 쓰려고 import해도 그 파일의 다른 top-level 코드(`serverEnv` throw 가드)까지 브라우저에서 같이 실행되어 즉시 크래시함. **대응**: 공개 환경변수는 항상 별도 파일(`publicEnv.ts`)로 분리, 서버 전용 파일엔 `import "server-only"` 명시
 10. **sandbox(`mcp__workspace__bash`)는 `supabase.co`도 직접 호출 불가** (Airtable과 동일) — DB 조회/쿼리/마이그레이션은 반드시 Supabase MCP(`mcp__<uuid>__execute_sql` 등) 사용. `pnpm install`/`pnpm dev`는 실제로는 마운트된 폴더라 sandbox에서 실행해도 사용자 실제 파일에 반영되지만, 네이티브 바이너리(SWC 등) 아키텍처 이슈 우려로 `pnpm install`은 사용자가 직접 로컬에서 실행하도록 안내하는 게 안전함
+11. **pnpm이 `sharp` 같은 네이티브 모듈의 postinstall 빌드 스크립트를 기본적으로 차단함** (pnpm 9+ 보안 기본값) — `@capacitor/assets`가 내부적으로 `sharp`를 쓰는데, 그냥 `pnpm install`만 하면 "Cannot find module .../sharp-darwin-arm64v8.node" 에러 발생. **대응**: `package.json`에 `"pnpm": { "onlyBuiltDependencies": ["sharp"] }` 추가해서 사전 승인 (또는 사용자가 직접 `pnpm approve-builds` 실행)
+12. **sandbox(`mcp__workspace__bash`)는 `registry.npmjs.org`도 직접 호출 불가**(403) — 새 npm 패키지를 실제로 설치/실행해야 하는 작업(`npx @capacitor/assets generate` 등)은 package.json에 의존성만 추가해두고 사용자가 로컬 터미널에서 `pnpm install` 등을 실행하도록 안내. 이미지 생성(PNG 아이콘 등) 자체는 sandbox의 Python/PIL/ImageMagick로 직접 가능 — 마운트된 폴더라 결과물이 바로 사용자 실제 파일에 반영됨
+
+## 8. 라이브 배포 트러블슈팅 (2026-09-09)
+
+Phase 1~2 코드가 실제로는 한 달 가까이 커밋만 되고 push가 안 되어 있었던 걸 발견 → push 및 배포 과정에서 아래 문제들을 순서대로 발견/해결함. 다음에 또 이런 증상이 보이면 아래부터 의심할 것.
+
+1. **Vercel 프로덕션 env var 누락**: `NEXT_PUBLIC_SUPABASE_URL`/`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`를 Vercel에 "Config" 타입으로 추가 안 해서 빌드 자체가 실패(ZodError). → 추가 후 해결.
+2. **`middleware.ts` 위치 오류(핵심 버그)**: `src/app` 구조를 쓰는 프로젝트인데 `middleware.ts`를 프로젝트 루트에 둬서 Next.js가 아예 인식을 못 함(빌드 로그에 미들웨어 언급 전무, edge-middleware 런타임 로그 0건) → **로그인 게이트가 처음부터 한 번도 작동한 적이 없었음**(비로그인 상태로 모든 페이지 접근 가능했던 상태). `src/middleware.ts`로 이동해서 해결. **교훈: src 디렉토리 구조를 쓰면 middleware.ts도 반드시 src/ 안에 있어야 함.**
+3. **Supabase 무료 티어 자동 일시정지 재발**: 이미 알던 이슈지만 또 걸림(`DNS_PROBE_FINISHED_NXDOMAIN`까지 뜸 — pause가 길어지면 도메인 자체가 안 뜨는 수준까지 감). `restore_project`로 복구.
+4. **Supabase Auth "Site URL"이 여전히 `http://localhost:3000`으로 설정**: 초기 개발 때(7/31) localhost 기준으로 등록해둔 게 프로덕션 배포 후에도 그대로 남아있어서, 구글 로그인은 성공하는데 최종 리다이렉트가 로컬로 튕겨서 "로그인이 안 되는" 것처럼 보였음. Supabase 대시보드 → Authentication → URL Configuration에서 Site URL을 `https://bjj-app-brown.vercel.app`로, Redirect URLs에 `https://bjj-app-brown.vercel.app/auth/callback` 추가해서 해결. **로그(`auth_logs`, Supabase MCP `query_logs`)로 `/authorize`→`/callback`→`/token`→`/user` 흐름 끝까지 200/302로 완주하는 것까지 확인 완료.**
+
+→ 위 4가지 전부 해결 후 **실제 라이브 사이트에서 구글 로그인 → 세션 유지 → 기존 데이터(벨트/수련기록) 정상 노출까지 최종 확인 완료 (2026-09-09).**
 
 ---
 
 ## 다음 세션 시작점
 
-Phase 1 완료, 다음은 **Phase 2 — RevenueCat 결제 세팅** (원래 일정 W4, 8/22~28 예정이었으나 앞당겨서 바로 진행 가능).
+Phase 1(인증) + Phase 2(구독 게이팅/RevenueCat Android) + 라이브 배포 검증까지 전부 완료. 다음은 **Phase 3 — 네이티브 패키징(Capacitor)**.
 
 새 대화에서 이어갈 때 참고할 것:
-- Supabase 프로젝트: `smgunmjpddcfgohmuawb` (ap-northeast-2) — MCP 연결되어 있으면 바로 쿼리 가능
-- 로그인 테스트 계정: `ksumin67@gmail.com`
+- Supabase 프로젝트: `smgunmjpddcfgohmuawb` (ap-northeast-2) — MCP 연결되어 있으면 바로 쿼리 가능. **무료 티어라 트래픽 없으면 또 자동 일시정지될 수 있음** — 안 되면 `restore_project`부터 시도.
+- 로그인 테스트 계정: `ksumin67@gmail.com` (구글 소셜 로그인 정상 작동 확인됨, 2026-09-09)
+- 라이브 URL: `https://bjj-app-brown.vercel.app` — Vercel MCP 연결되어 있으면 배포 상태/로그 바로 확인 가능
 - 콘텐츠(Techniques)는 Airtable(`appkUqBmwhAK9F8AX`)에, 유저 데이터는 Supabase에 있는 하이브리드 구조 유지 중
-- Phase 2 시작 시 필요: RevenueCat 계정 생성(아쿠아 님), 구독 플랜/가격 결정(아쿠아 님+상의), 기능 게이팅 로직 설계(Claude)
+- Phase 3 시작 시 필요: Capacitor 설치, iOS/Android 프로젝트 생성, `server.url`을 라이브 URL로 설정, 앱 아이콘/스플래시, 로컬 알림(수련 리마인더) — 위 "5. 네이티브 패키징 방식" 섹션 참고
