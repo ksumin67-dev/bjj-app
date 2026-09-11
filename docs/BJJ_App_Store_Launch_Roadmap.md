@@ -52,8 +52,8 @@
 - [x] **에뮬레이터에서 앱 최초 실행 성공** — 웹뷰 안에서 라이브 사이트가 정상 로드됨
 - [x] **에뮬레이터 안에서 구글 로그인까지 정상 작동 확인** (네이티브 셸 안에서 OAuth 완주됨)
 - [x] 앱 아이콘/스플래시 재작업: 기존 512px PWA 아이콘의 "스킬트리" 한글 텍스트가 폰트 미스매치로 깨져있던 버그(□□□□) 발견 → "BJJ" 링 로고 단독 디자인으로 재제작(`assets/icon.png`, `icon-foreground.png`, `icon-background.png`, `splash.png`), `@capacitor/assets generate --android`로 전체 해상도(mdpi~xxxhdpi) 자동 생성 완료
+- [x] 로컬 알림(수련 리마인더) 기능 구현 — `src/lib/notifications/trainingReminder.ts` + `TrainingReminderToggle` 컴포넌트, 매일 저녁 8시 반복 알림. 프로필 화면에 노출, 네이티브 앱에서만 표시
 - [ ] **iOS**: Capacitor는 코드베이스에 이미 iOS 대응 준비되어 있음(`@capacitor/ios`만 추가하면 됨) — 그러나 Apple Developer Program 가입 전까지는 실기기/TestFlight 테스트 불가, Phase 4와 함께 진행 예정
-- [ ] 로컬 알림(수련 리마인더) 기능 구현 — `@capacitor/local-notifications` 패키지는 설치돼 있으나 실제 알림 스케줄링 로직은 아직 미구현
 - [ ] 실기기(에뮬레이터 아닌 본인 폰)에서 최종 테스트
 
 ### Phase 4 — 스토어 심사 준비물
@@ -182,15 +182,23 @@ Phase 1~2 코드가 실제로는 한 달 가까이 커밋만 되고 push가 안 
 
 → 위 4가지 전부 해결 후 **실제 라이브 사이트에서 구글 로그인 → 세션 유지 → 기존 데이터(벨트/수련기록) 정상 노출까지 최종 확인 완료 (2026-09-09).**
 
+## 9. Capacitor 네이티브 앱 트러블슈팅 (2026-09-10~12)
+
+5. **구글 로그인이 앱이 아닌 시스템 브라우저(Custom Tab)로 튕겨나감**: `capacitor.config.ts`에 `server.allowNavigation`을 설정 안 하면, 앱 도메인(`bjj-app-brown.vercel.app`) 밖으로 나가는 네비게이션(구글/Supabase OAuth 도메인)은 Capacitor가 기본적으로 외부 브라우저로 열어버림. 겉보기엔 로그인이 잘 되는 것처럼 보이지만, 로그인 후 화면은 네이티브 브릿지가 없는 "그냥 브라우저 탭"이라 `Capacitor.isNativePlatform()`이 계속 `false`로 나옴(네이티브 전용 기능이 전부 안 먹힘). **`window.Capacitor`가 존재하는 것과 `isNativePlatform()`이 `true`인 것은 다른 얘기** — `@capacitor/core`는 일반 브라우저에서도 항상 `window.Capacitor` 폴백 객체를 만들어두기 때문에 존재 여부만으로는 네이티브 판별이 안 됨. `allowNavigation`에 `smgunmjpddcfgohmuawb.supabase.co`, `accounts.google.com`, `*.google.com`, `*.googleusercontent.com`을 추가해서 OAuth 전체 흐름이 앱 WebView 안에서 끝나도록 해결.
+6. **프로필 화면만 카드 섹션이 중복으로 그려짐(레이아웃 깨짐)**: 크롬 브라우저에서는 완전히 정상, Capacitor 네이티브 WebView에서만 재현됨 → 코드 버그가 아니라 안드로이드 WebView 자체의 GPU 레이어 합성(ghost paint) 버그로 판명. 에뮬레이터의 AVD "Graphics acceleration"(Hardware/Software) 설정은 무관했음 — 이건 에뮬레이터가 자기 화면을 호스트에 그리는 방식일 뿐, 앱 내부 WebView 렌더링 엔진과는 별개. 진짜 해결책은 `android/app/src/main/AndroidManifest.xml`의 `<application>`에 `android:hardwareAccelerated="false"` 추가 — 이건 Android 뷰 시스템(WebView 포함)의 GPU 가속 자체를 끄는 설정. **교훈: 네이티브 렌더링 이상 증상이 에뮬레이터/실기기 설정 문제인지 앱 코드 문제인지 헷갈릴 때는, 같은 URL을 일반 브라우저(Chrome)로 직접 열어서 비교하면 범위가 바로 좁혀짐.**
+
+→ 두 버그 모두 해결 후 에뮬레이터에서 구글 로그인 + 프로필 화면(수련 리마인더 토글 포함) 정상 노출 최종 확인 완료 (2026-09-12).
+
 ---
 
 ## 다음 세션 시작점
 
-Phase 1(인증) + Phase 2(구독 게이팅/RevenueCat Android) + 라이브 배포 검증까지 전부 완료. 다음은 **Phase 3 — 네이티브 패키징(Capacitor)**.
+Phase 1(인증) + Phase 2(구독 게이팅/RevenueCat Android) + 라이브 배포 검증 + Phase 3 Android 핵심 흐름(로그인, 수련 리마인더, 렌더링 버그 2건) 전부 완료. 다음은 **실기기(본인 폰) 테스트 → iOS 트랙 시작**.
 
 새 대화에서 이어갈 때 참고할 것:
 - Supabase 프로젝트: `smgunmjpddcfgohmuawb` (ap-northeast-2) — MCP 연결되어 있으면 바로 쿼리 가능. **무료 티어라 트래픽 없으면 또 자동 일시정지될 수 있음** — 안 되면 `restore_project`부터 시도.
 - 로그인 테스트 계정: `ksumin67@gmail.com` (구글 소셜 로그인 정상 작동 확인됨, 2026-09-09)
 - 라이브 URL: `https://bjj-app-brown.vercel.app` — Vercel MCP 연결되어 있으면 배포 상태/로그 바로 확인 가능
 - 콘텐츠(Techniques)는 Airtable(`appkUqBmwhAK9F8AX`)에, 유저 데이터는 Supabase에 있는 하이브리드 구조 유지 중
-- Phase 3 시작 시 필요: Capacitor 설치, iOS/Android 프로젝트 생성, `server.url`을 라이브 URL로 설정, 앱 아이콘/스플래시, 로컬 알림(수련 리마인더) — 위 "5. 네이티브 패키징 방식" 섹션 참고
+- Capacitor 관련 네이티브 이슈 겪으면 위 "9. Capacitor 네이티브 앱 트러블슈팅" 섹션부터 확인
+- Android 에뮬레이터 핵심 흐름(로그인/리마인더/렌더링)까지 검증 끝났으니 다음은 실기기 테스트 → iOS(`@capacitor/ios`는 이미 설치됨, `npx cap add ios` + Xcode 설치부터 시작)
