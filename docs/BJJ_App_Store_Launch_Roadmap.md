@@ -43,7 +43,9 @@
 - [ ] **웹 결제(Stripe)** 먼저 붙이기 → 스토어 심사 기다릴 필요 없이 여기서 바로 첫 매출 가능
 - [ ] 모바일 앱 결제는 애플/구글 정책상 **인앱결제(IAP) 강제** (디지털 구독 성격이면 Stripe 직접결제 불가) → RevenueCat 같은 IAP 관리 서비스 고려
 
-### Phase 3 — 네이티브 패키징 (2026-09-10 시작, Android 진행 중)
+### Phase 3 — 네이티브 패키징 (2026-09-10 시작, Android 우선 트랙)
+
+**2026-09-12 결정: Android 먼저 출시, iOS는 Android 출시 이후 별도 트랙(Phase 6)으로 분리.** iOS 출시가 지금 당장 급하지 않다고 판단 — Apple Developer Program 가입, iOS 네이티브 프로젝트, RevenueCat iOS 등록 전부 Phase 6으로 이관. 아래 Phase 3~5는 전부 Android 기준.
 
 - [x] Capacitor 설치 (`@capacitor/core`, `@capacitor/cli`, `@capacitor/android`, `@capacitor/local-notifications`, `@capacitor/splash-screen`, `@capacitor/status-bar`)
 - [x] `capacitor.config.ts` 작성 — `server.url`을 라이브 URL(`https://bjj-app-brown.vercel.app`)로 설정해 원격 로드 (Next.js 코드 변경 없음)
@@ -53,12 +55,11 @@
 - [x] **에뮬레이터 안에서 구글 로그인까지 정상 작동 확인** (네이티브 셸 안에서 OAuth 완주됨)
 - [x] 앱 아이콘/스플래시 재작업: 기존 512px PWA 아이콘의 "스킬트리" 한글 텍스트가 폰트 미스매치로 깨져있던 버그(□□□□) 발견 → "BJJ" 링 로고 단독 디자인으로 재제작(`assets/icon.png`, `icon-foreground.png`, `icon-background.png`, `splash.png`), `@capacitor/assets generate --android`로 전체 해상도(mdpi~xxxhdpi) 자동 생성 완료
 - [x] 로컬 알림(수련 리마인더) 기능 구현 — `src/lib/notifications/trainingReminder.ts` + `TrainingReminderToggle` 컴포넌트, 매일 저녁 8시 반복 알림. 프로필 화면에 노출, 네이티브 앱에서만 표시
-- [ ] **iOS**: Capacitor는 코드베이스에 이미 iOS 대응 준비되어 있음(`@capacitor/ios`만 추가하면 됨) — 그러나 Apple Developer Program 가입 전까지는 실기기/TestFlight 테스트 불가, Phase 4와 함께 진행 예정
-- [ ] 실기기(에뮬레이터 아닌 본인 폰)에서 최종 테스트
+- [ ] 실기기(에뮬레이터 아닌 본인 폰, Android)에서 최종 테스트
 
 ### Phase 3.5 — 출시 전 최종 다듬기 (2026-09-12 추가 결정)
 
-**왜 여기 위치하나**: 스토어 스크린샷·설명(Phase 4)은 최종 UI 기준으로 만들어야 다시 안 찍음. 반대로 네이티브 셸(Capacitor 브릿지·플러그인·OAuth)이 실제로 도는지 확인하는 Phase 3의 본 목적은 디자인과 무관하니, **Phase 3의 기술 검증(실기기+iOS)까지 먼저 끝내고** 그 위에서 디자인/콘텐츠를 갈아엎는 순서가 안전함. 리뉴얼은 웹(Next.js) 레이어 작업이라 네이티브 재설정 없이 반영되고, 끝난 뒤 네이티브 양쪽(Android/iOS)에서 회귀 스모크 테스트만 한 번 더 하면 됨.
+**왜 여기 위치하나**: 스토어 스크린샷·설명(Phase 4)은 최종 UI 기준으로 만들어야 다시 안 찍음. 반대로 네이티브 셸(Capacitor 브릿지·플러그인·OAuth)이 실제로 도는지 확인하는 Phase 3의 본 목적은 디자인과 무관하니, **Phase 3의 Android 기술 검증(실기기)까지 먼저 끝내고** 그 위에서 디자인/콘텐츠를 갈아엎는 순서가 안전함. 리뉴얼은 웹(Next.js) 레이어 작업이라 네이티브 재설정 없이 반영되고, 끝난 뒤 Android에서 회귀 스모크 테스트만 한 번 더 하면 됨(iOS는 Phase 6에서 별도로 다시 확인).
 
 ⚠️ **일정 영향**: "전체 리디자인"은 범위상 1주 이상 소요 예상. 기존 10월 초중 출시 목표가 뒤로 밀릴 가능성이 높음 — 아래 실행 일정에 반영함.
 
@@ -66,25 +67,36 @@
 - [ ] 전 화면 UI 재작업 (홈/캘린더/스킬트리/시퀀스/프로필)
 - [ ] 주짓수 기술 DB(Airtable) 내용 정비 — 기술 설명/분류/신규 기술 검토
 - [ ] 그동안 발견된 기능 버그/UX 이슈 수정 (구체 목록은 착수 시 별도 정리)
-- [ ] 리뉴얼 완료 후 Android + iOS 네이티브 셸 회귀 테스트 (로그인/리마인더/렌더링 재확인)
+- [ ] 리뉴얼 완료 후 Android 네이티브 셸 회귀 테스트 (로그인/리마인더/렌더링 재확인)
 
-### Phase 4 — 스토어 심사 준비물
+### Phase 4 — 스토어 심사 준비물 (Android)
 
 - [ ] 개인정보처리방침 페이지 (필수, 결제+계정 있으면 100% 요구됨)
 - [ ] 스토어 스크린샷 세트, 앱 설명, 카테고리(스포츠/건강) — **리뉴얼된 최종 디자인 기준으로 제작**
-- [ ] Google Play 개발자 계정 ($25 1회) / Apple Developer Program ($99/년)
-- [ ] 심사 제출 → 통상 Android 수 시간~1일, iOS 1~3일 (리젝 시 반복)
+- [ ] Google Play 개발자 계정 ($25 1회)
+- [ ] 심사 제출 (통상 수 시간~1일, 리젝 시 반복)
 
-### Phase 5 — 출시 후
+### Phase 5 — Android 출시 후
 
 - [ ] 버그 트래킹, 실사용자 피드백 반영
 - [ ] 스토어 최적화(ASO), 초기 유저 확보 채널 (BJJ 커뮤니티, 인스타/유튜브 등 본인 관심사와 연결)
+
+### Phase 6 — iOS 트랙 (Android 출시 후 시작, 2026-09-12 신규 분리)
+
+Android 출시가 안정되면 시작. 급하지 않다고 판단해 별도 트랙으로 분리했고, 고정된 주차 일정은 아직 없음 — Android 출시 후 착수 시점에 다시 계획.
+
+- [ ] Apple Developer Program 가입 ($99/년)
+- [ ] Xcode 설치, `npx cap add ios`로 iOS 네이티브 프로젝트 생성
+- [ ] RevenueCat iOS 앱 등록 (App Store Connect P8 키/Key ID/Issuer ID 필요 — Phase 2 시도 당시 이 단계에서 막혔던 부분)
+- [ ] 실기기(본인 아이폰)/TestFlight 테스트 — Android에서 검증된 allowNavigation, hardwareAccelerated 관련 네이티브 이슈가 iOS에도 있는지 별도 확인 필요(WKWebView는 Android WebView와 렌더링 엔진이 다름)
+- [ ] App Store 심사 준비물 (스크린샷, 설명, 개인정보처리방침 — Android용 재사용 가능)
+- [ ] 심사 제출 (통상 1~3일, 리젝 시 반복)
 
 ---
 
 ## 3. 결정: 앱 우선 트랙 (2026-07-31)
 
-웹(Stripe)을 먼저 열지 않고 **앱스토어 출시를 바로 목표로 진행**하기로 결정. iOS 심사/IAP 세팅 오버헤드가 있어 3개월 목표(10월 말)는 빠듯하지만, 아래 일정대로면 9월 말 제출 → 10월 초중 출시가 현실적 목표.
+웹(Stripe)을 먼저 열지 않고 **앱스토어 출시를 바로 목표로 진행**하기로 결정. (2026-09-12 갱신: iOS 심사/IAP 세팅 오버헤드를 아예 뒤로 미루기 위해 **Android 우선 출시 → iOS는 이후 별도 트랙**으로 확정. Android 목표는 10월 말, iOS는 Android 출시 후 별도 일정.)
 
 ## 4. 배포 현황 확인됨 (2026-07-31, Vercel 스크린샷 기준)
 
@@ -112,7 +124,7 @@
 - **App name**: `BJJ 스킬트리`, **Bundle ID / Package name**: `com.aqua.bjjapp` (iOS/Android 공통, 확정)
 - **iOS(App Store) 앱 등록은 막힘** ⚠️ — "In-app purchase key configuration"에서 App Store Connect의 P8 키/Key ID/Issuer ID를 **필수**로 요구함. 이건 애플 개발자 프로그램($99/년) 가입 후 App Store Connect에서만 발급 가능 → **Phase 4(애플 개발자 계정 가입)까지 iOS 앱 등록 자체가 불가능**. 실제로 저장 시도 시 "This field is required" / "This field needs to be a valid UUID" 검증 에러로 막힘.
 - **Android(Google Play) 앱 등록은 성공** ✅ — 서비스 계정 credentials 없이도 저장됨. App ID `appfde35561e2`, Bundle ID `com.aqua.bjjapp`, Public API Key 발급 완료.
-- **결론**: iOS는 Phase 4(애플 개발자 계정 가입)까지 보류, **Android부터 먼저 SDK 연동 진행**. iOS 앱 등록 마무리도 Phase 4로 이관.
+- **결론**: iOS는 애플 개발자 계정 가입까지 보류, **Android부터 먼저 SDK 연동 진행**. iOS 앱 등록 마무리는 (2026-09-12 결정에 따라) **Phase 6 — iOS 트랙**으로 이관.
 
 ## 6.2 구독 규칙 확정 (2026-08-01)
 
@@ -124,7 +136,7 @@
 - **페이월 노출 시점**: 가입 직후 바로 X. 앱을 한 번 써본 뒤(스킬트리 진입 등) 심화 콘텐츠 마주칠 때 자연스럽게 노출
 - **코드 반영 완료 (2026-08-01)**: `profiles.subscription_status` 컬럼 추가(마이그레이션 `add_subscription_status_to_profiles`), `src/lib/supabase/userProfile.ts`에 `isPremium` 계산 필드 추가, 기술 상세 페이지(`/tree/[positionId]/[techId]`) 심화 정보 섹션 게이팅 완료, `/upgrade` 안내 스텁 페이지 생성 완료. 본인 계정(`ksumin67@gmail.com`)은 `subscription_status='active'`로 수동 설정해서 계속 전체 열람 가능. `tsc --noEmit` 통과 확인.
 - **Phase 2 완료 (2026-09-09)** ✅ — Entitlement 식별자는 `premium`이 아니라 **`bjj_pro`로 최종 확정** (2026-09-01에 이미 만들어져 있던 걸 발견, 표준으로 채택. 코드의 `isPremium` 개념과는 별개 — Supabase `subscription_status` 컬럼은 계속 내부 플래그로 사용, RevenueCat 웹훅 연동 시 `bjj_pro` entitlement 여부를 이 컬럼에 반영할 예정). `bjj_pro`에 **Monthly/Yearly** 상품 연결(Test Store, 테스트용 USD $9.99/$79.99 — 실제 원화 가격/7일 무료체험은 **Phase 4에서 Play Console 실상품 만들 때 설정** 예정). `Lifetime` 상품은 detach해서 2종 구조로 정리.
-- **RevenueCat 앱/키**: Android 앱 등록 완료 (Bundle ID `com.aqua.bjjapp`, Public API Key는 `.env.local`의 `NEXT_PUBLIC_REVENUECAT_ANDROID_API_KEY`). iOS 앱 등록은 Phase 4(애플 개발자 계정)까지 보류.
+- **RevenueCat 앱/키**: Android 앱 등록 완료 (Bundle ID `com.aqua.bjjapp`, Public API Key는 `.env.local`의 `NEXT_PUBLIC_REVENUECAT_ANDROID_API_KEY`). iOS 앱 등록은 **Phase 6 — iOS 트랙**(Android 출시 이후, 애플 개발자 계정 가입 후)으로 이관.
 - **다음: Phase 3 — 네이티브 패키징(Capacitor)** 시작
 
 ## 6. 결제 — RevenueCat 우선
@@ -141,14 +153,15 @@
 | W2 | 8/8~8/14 | Phase 1 | `src/lib/actions/userProfile.ts`, `trainingSessions.ts`, `progress.ts` Supabase 연동 리팩터링 |
 | W3 | 8/15~8/21 | Phase 1 | 로그인 게이트(미들웨어), 기존 본인 데이터 첫 계정으로 마이그레이션, 라이브 검증 |
 | W4 | 8/22~8/28 | Phase 2 | RevenueCat 계정/앱 등록, 구독 플랜·가격 설계, 구독 상태로 기능 게이팅 로직 |
-| W5 | 8/29~9/4 | Phase 3 | Capacitor 설치, iOS/Android 프로젝트 생성, remote URL 연결, 앱 아이콘/스플래시, 로컬 알림(수련 리마인더) 추가 |
-| W6 | 9/12~9/18 | Phase 3 마무리 | Android 실기기 테스트, iOS 프로젝트 생성(`npx cap add ios`)+Xcode 설치+실기기 테스트 |
-| W7~W8 | 9/19~10/2 | **Phase 3.5 (신규)** | 디자인 시스템/전 화면 전체 리뉴얼, 기술 DB(Airtable) 정비, 기능 버그 수정, 리뉴얼 후 네이티브 회귀 테스트 |
-| W9 | 10/3~10/9 | Phase 4 | Apple Developer Program 가입($99/년), Google Play 개발자 계정($25), 개인정보처리방침 페이지, 스크린샷/설명문구(최종 디자인 기준) |
-| W10 | 10/10~10/16 | 테스트 | TestFlight 내부 테스트, Google Play 내부 테스트 트랙, 버그 수정 |
-| W11 | 10/17~10/23 | Phase 5 | 스토어 심사 제출 (Android 먼저 — 심사 빠름, iOS 동시) |
+| W5 | 8/29~9/4 | Phase 3 | Capacitor 설치, Android 프로젝트 생성, remote URL 연결, 앱 아이콘/스플래시, 로컬 알림(수련 리마인더) 추가 |
+| W6 | 9/12~9/18 | Phase 3 마무리 | Android 실기기 테스트 |
+| W7~W8 | 9/19~10/2 | **Phase 3.5 (신규)** | 디자인 시스템/전 화면 전체 리뉴얼, 기술 DB(Airtable) 정비, 기능 버그 수정, 리뉴얼 후 Android 회귀 테스트 |
+| W9 | 10/3~10/9 | Phase 4 | Google Play 개발자 계정($25), 개인정보처리방침 페이지, 스크린샷/설명문구(최종 디자인 기준) |
+| W10 | 10/10~10/16 | 테스트 | Google Play 내부 테스트 트랙, 버그 수정 |
+| W11 | 10/17~10/23 | Phase 5 | Android 스토어 심사 제출 |
 | 버퍼 | 10/24~10/30 | 버퍼 | 리젝 대응/재제출 버퍼 |
-| 목표 | 10월 말~11월 초 | 출시 | 스토어 출시 + 첫 유료 전환 (Phase 3.5 추가로 기존 10월 초중 목표 대비 약 2~3주 밀림) |
+| 목표 | 10월 말 | **Android 출시** | 첫 유료 전환 목표 |
+| 이후 | 미정 | Phase 6 | **iOS 트랙** — Android 출시 안정화 후 착수 (Apple Developer Program 가입부터 시작, 별도 일정 수립) |
 
 **당장 이번 주(W1) 투두**:
 - [x] Supabase 프로젝트 생성 (2026-07-31, 프로젝트 URL/publishable key 전달받음)
@@ -207,9 +220,11 @@ Phase 1~2 코드가 실제로는 한 달 가까이 커밋만 되고 push가 안 
 
 ## 다음 세션 시작점
 
-Phase 1(인증) + Phase 2(구독 게이팅/RevenueCat Android) + 라이브 배포 검증 + Phase 3 Android 핵심 흐름(로그인, 수련 리마인더, 렌더링 버그 2건) 전부 완료. 다음은 **실기기(본인 폰) 테스트 → iOS 트랙 시작**.
+Phase 1(인증) + Phase 2(구독 게이팅/RevenueCat Android) + 라이브 배포 검증 + Phase 3 Android 핵심 흐름(로그인, 수련 리마인더, 렌더링 버그 2건) 전부 완료. 다음은 **Android 실기기 테스트**.
 
-**2026-09-12 추가된 계획**: Phase 3(네이티브 기술 검증, 실기기+iOS)가 끝나면 곧바로 스토어 심사 준비(Phase 4)로 가지 않고, 그 사이에 **Phase 3.5 — 디자인 전체 리뉴얼 + 주짓수 기술 DB 정비 + 기능 수정**을 새로 끼워넣기로 함(사용자 요청). 이유: 스토어 스크린샷/설명은 최종 디자인 기준으로 한 번만 만들고 싶어함. 범위는 "전체 리디자인"으로 확정(부분 다듬기 아님) → 일정상 기존 10월 초중 출시 목표가 2~3주 밀릴 것으로 예상하고 실행 일정 표에 반영해둠. 자세한 체크리스트는 "Phase 3.5" 섹션 참고.
+**2026-09-12 추가된 계획 ①**: Phase 3(Android 기술 검증, 실기기)가 끝나면 곧바로 스토어 심사 준비(Phase 4)로 가지 않고, 그 사이에 **Phase 3.5 — 디자인 전체 리뉴얼 + 주짓수 기술 DB 정비 + 기능 수정**을 새로 끼워넣기로 함(사용자 요청). 이유: 스토어 스크린샷/설명은 최종 디자인 기준으로 한 번만 만들고 싶어함. 범위는 "전체 리디자인"으로 확정(부분 다듬기 아님) → 일정상 기존 10월 초중 출시 목표가 2~3주 밀릴 것으로 예상하고 실행 일정 표에 반영해둠.
+
+**2026-09-12 추가된 계획 ②**: iOS는 지금 당장 급하지 않다는 판단 하에 **Android 우선 출시, iOS는 Android 출시 이후 별도 트랙(Phase 6)으로 완전히 분리**하기로 함(사용자 요청). Apple Developer Program 가입, iOS 네이티브 프로젝트 생성, RevenueCat iOS 등록 전부 Phase 6으로 이관. Android 목표 출시일은 10월 말로 유지(iOS를 빼면서 오히려 일정이 단순해짐), iOS는 Android 출시 안정화 후 별도로 계획. 자세한 체크리스트는 "Phase 3.5", "Phase 6" 섹션 참고.
 
 새 대화에서 이어갈 때 참고할 것:
 - Supabase 프로젝트: `smgunmjpddcfgohmuawb` (ap-northeast-2) — MCP 연결되어 있으면 바로 쿼리 가능. **무료 티어라 트래픽 없으면 또 자동 일시정지될 수 있음** — 안 되면 `restore_project`부터 시도.
@@ -217,4 +232,4 @@ Phase 1(인증) + Phase 2(구독 게이팅/RevenueCat Android) + 라이브 배�
 - 라이브 URL: `https://bjj-app-brown.vercel.app` — Vercel MCP 연결되어 있으면 배포 상태/로그 바로 확인 가능
 - 콘텐츠(Techniques)는 Airtable(`appkUqBmwhAK9F8AX`)에, 유저 데이터는 Supabase에 있는 하이브리드 구조 유지 중
 - Capacitor 관련 네이티브 이슈 겪으면 위 "9. Capacitor 네이티브 앱 트러블슈팅" 섹션부터 확인
-- Android 에뮬레이터 핵심 흐름(로그인/리마인더/렌더링)까지 검증 끝났으니 다음은 실기기 테스트 → iOS(`@capacitor/ios`는 이미 설치됨, `npx cap add ios` + Xcode 설치부터 시작)
+- Android 에뮬레이터 핵심 흐름(로그인/리마인더/렌더링)까지 검증 끝났으니 다음은 Android 실기기 테스트 → Phase 3.5(디자인 리뉴얼) → Phase 4(Android 스토어 준비) → Android 출시. **iOS는 Android 출시 후 Phase 6에서 별도 진행**(`@capacitor/ios`는 이미 설치돼 있어서 언제든 `npx cap add ios`로 시작 가능)
