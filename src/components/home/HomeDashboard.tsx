@@ -14,6 +14,12 @@ const STREAMS: Stream[] = ["가드포지션", "탑포지션", "이스케이프",
 
 const DAY_EN = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
+/** 홈 화면 히어로 카드 컷코너 — 스킬트리 AthleteHeroCard와 동일한 시각 언어(2026-09-14 확장). */
+const HERO_CLIP_TR_BL =
+  "polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px))";
+const HERO_CLIP_TL =
+  "polygon(22px 0, 100% 0, 100% 100%, 0 100%, 0 22px)";
+
 /** 레퍼런스 파스텔 캡슐 컬러 */
 const CAPSULE: Record<Stream, { bg: string; text: string; bar: string; label: string; emoji: string; IconCmp: LucideIcon }> = {
   가드포지션: { bg: "#1A3050", text: "#7EC8FF", bar: "#2E80F0", label: "가드",   emoji: "🛡", IconCmp: Shield },
@@ -297,15 +303,27 @@ export function HomeDashboard({
             3. 오늘의 수련 카드  (레퍼런스: Today's Workout 카드)
             ────────────────────────────────────────────────────────────── */}
         {!hasTodaySession ? (
-          /* 미수련 → CTA 카드 */
+          /* 미수련 → CTA 카드 — 히어로카드 스타일(컷코너+네온글로우) */
+          <div
+            style={{
+              clipPath: HERO_CLIP_TR_BL,
+              background: "linear-gradient(135deg, #7B61FF 0%, #B44FD4 100%)",
+              padding: "1.5px",
+              marginBottom: "20px",
+              filter: "drop-shadow(0 0 18px rgba(123,97,255,0.4))",
+            }}
+          >
           <section
-            className="rounded-2xl p-4 overflow-hidden relative"
-            style={{ backgroundColor: "#1A1A24", border: "1px solid rgba(255,255,255,0.1)", marginBottom: "20px" }}
+            className="p-4 overflow-hidden relative"
+            style={{
+              clipPath: HERO_CLIP_TR_BL,
+              background: "linear-gradient(160deg, rgba(123,97,255,0.22) 0%, #1A1A24 55%)",
+            }}
           >
             {/* 배경 워터마크 아이콘 */}
             <div
               className="absolute -right-4 -bottom-4 pointer-events-none select-none"
-              style={{ opacity: 0.06 }}
+              style={{ opacity: 0.08 }}
             >
               <Dumbbell size={120} color="#FFFFFF" />
             </div>
@@ -378,20 +396,33 @@ export function HomeDashboard({
                 className="flex items-center justify-center w-full py-3 rounded-xl font-bold text-white text-[14px] hover:brightness-110 active:scale-[0.97] transition-all duration-fast"
                 style={{
                   background: "linear-gradient(135deg, #7B61FF 0%, #B44FD4 100%)",
-                  boxShadow: "0 4px 16px rgba(123,97,255,0.35)",
+                  boxShadow: "0 0 16px rgba(180,79,212,0.5)",
                 }}
               >
                 수련 기록하기
               </Link>
             </div>
           </section>
+          </div>
         ) : (
-          /* 수련 완료 → 완료 카드 */
-          <section
-            className="rounded-2xl p-4 overflow-hidden relative"
-            style={{ backgroundColor: "#1A1A24", border: "1px solid rgba(255,255,255,0.1)", marginBottom: "20px" }}
+          /* 수련 완료 → 완료 카드 — 그린 톤 히어로카드 */
+          <div
+            style={{
+              clipPath: HERO_CLIP_TR_BL,
+              background: "linear-gradient(135deg, #34D399 0%, #0F6E56 100%)",
+              padding: "1.5px",
+              marginBottom: "20px",
+              filter: "drop-shadow(0 0 18px rgba(52,211,153,0.35))",
+            }}
           >
-            <div className="absolute -right-4 -bottom-4 pointer-events-none select-none" style={{ opacity: 0.06 }}>
+          <section
+            className="p-4 overflow-hidden relative"
+            style={{
+              clipPath: HERO_CLIP_TR_BL,
+              background: "linear-gradient(160deg, rgba(52,211,153,0.18) 0%, #1A1A24 55%)",
+            }}
+          >
+            <div className="absolute -right-4 -bottom-4 pointer-events-none select-none" style={{ opacity: 0.08 }}>
               <Dumbbell size={120} color="#34D399" />
             </div>
             <div className="relative z-10">
@@ -418,12 +449,29 @@ export function HomeDashboard({
               </div>
             </div>
           </section>
+          </div>
         )}
 
-        {/* ── 벨트 레벨 카드 ─────────────────────────────────────────── */}
+        {/* ── 벨트 레벨 카드 — 히어로카드 스타일(컷코너+벨트색 글로우, 큰 XP 숫자) ── */}
         <Link href="/profile">
-          <section className="rounded-2xl p-4 active:scale-[0.98] transition-transform duration-fast" style={{ backgroundColor: "#1A1A24", border: "1px solid rgba(255,255,255,0.1)", marginBottom: "20px" }}>
-            {/* 상단: 벨트명 + XP */}
+          <div
+            style={{
+              clipPath: HERO_CLIP_TL,
+              background: `linear-gradient(135deg, ${beltCfg.bodyGrad[0]}, ${beltCfg.bodyGrad[1]})`,
+              padding: "1.5px",
+              marginBottom: "20px",
+              filter: `drop-shadow(0 0 16px ${beltCfg.bodyGrad[1]}66)`,
+            }}
+            className="active:scale-[0.98] transition-transform duration-fast"
+          >
+          <section
+            className="p-4"
+            style={{
+              clipPath: HERO_CLIP_TL,
+              background: `linear-gradient(150deg, ${beltCfg.bodyGrad[0]}26 0%, #1A1A24 60%)`,
+            }}
+          >
+            {/* 상단: 벨트명 + 큰 글로우 XP 숫자 */}
             <div className="flex items-center justify-between mb-3">
               <div>
                 <p className="text-[10px] uppercase tracking-widest font-semibold mb-0.5"
@@ -433,8 +481,10 @@ export function HomeDashboard({
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-xl font-black tabular-nums tracking-tight"
-                   style={{ color: beltCfg.textColor }}>
+                <p
+                  className="text-[32px] font-black tabular-nums tracking-tight leading-none"
+                  style={{ color: beltCfg.textColor, textShadow: `0 0 14px ${beltCfg.bodyGrad[1]}99` }}
+                >
                   {totalXp.toLocaleString()}
                 </p>
                 <p className="text-[10px]" style={{ color: "#3A3A4A" }}>Total XP</p>
@@ -458,6 +508,7 @@ export function HomeDashboard({
                   style={{
                     width: `${monthProgress}%`,
                     background: `linear-gradient(90deg, ${beltCfg.bodyGrad[0]}, ${beltCfg.bodyGrad[1]})`,
+                    boxShadow: `0 0 8px ${beltCfg.bodyGrad[1]}`,
                     transition: "width 0.6s cubic-bezier(0.34,1.56,0.64,1)",
                   }}
                 />
@@ -470,6 +521,7 @@ export function HomeDashboard({
               </div>
             </div>
           </section>
+          </div>
         </Link>
 
         {/* ── 스트림 강도 ─────────────────────────────────────────────── */}
@@ -518,8 +570,10 @@ export function HomeDashboard({
                             width: `${Math.max(barPct, minPct)}%`,
                             height: "100%",
                             borderRadius: "999px",
-                            backgroundColor: isTop ? cap.bar : cnt > 0 ? cap.bar + "70" : "rgba(255,255,255,0.04)",
-                            boxShadow: isTop ? `0 0 12px ${cap.bar}50` : "none",
+                            background: isTop
+                              ? `linear-gradient(90deg, ${cap.bar}, ${cap.text})`
+                              : cnt > 0 ? cap.bar + "70" : "rgba(255,255,255,0.04)",
+                            boxShadow: isTop ? `0 0 14px ${cap.bar}90` : "none",
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "flex-end",
