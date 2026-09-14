@@ -12,8 +12,8 @@ import {
   ShieldX,
   Lock,
 } from "lucide-react";
-import { getPositionByPositionId } from "@/lib/airtable/positions";
 import { getTechniqueByTechId } from "@/lib/airtable/techniques";
+import { getAthleteByRecordId } from "@/lib/airtable/athletes";
 import { getAllTrainingSessions } from "@/lib/supabase/trainingSessions";
 import { getUserProfile } from "@/lib/supabase/userProfile";
 import { buildTrainingCountMap, trainingCountLabel } from "@/types/domain";
@@ -69,17 +69,22 @@ export default async function TechniqueDetailPage({
 }: {
   params: Params;
 }) {
-  const positionId = params.positionId.toUpperCase();
   const techId = params.techId.toUpperCase();
 
-  const [position, technique, sessions, profile] = await Promise.all([
-    getPositionByPositionId(positionId),
+  const [technique, sessions, profile] = await Promise.all([
     getTechniqueByTechId(techId),
     getAllTrainingSessions(),
     getUserProfile(),
   ]);
 
   if (!technique) notFound();
+
+  // 포지션 드릴다운(레벨링) 페이지는 선수 중심 개편으로 제거됨(2026-09-14) —
+  // 뒤로가기는 이 기술을 대표 기술로 둔 선수 상세로, 없으면 선수 목록으로.
+  const primaryAthleteId = technique.athleteRecordIds[0] ?? null;
+  const primaryAthlete = primaryAthleteId ? await getAthleteByRecordId(primaryAthleteId) : null;
+  const backHref = primaryAthlete ? `/tree/athlete/${primaryAthlete.recordId}` : "/tree";
+  const backLabel = primaryAthlete ? primaryAthlete.nameKo : "선수 목록";
 
   const countMap = buildTrainingCountMap(sessions);
   const trainingCount = countMap[technique.recordId] ?? 0;
@@ -100,11 +105,11 @@ export default async function TechniqueDetailPage({
       {/* 네비게이션 */}
       <div className="flex items-center gap-2 text-sm">
         <Link
-          href={`/tree/${positionId}`}
+          href={backHref}
           className="inline-flex items-center gap-1 text-text-secondary hover:text-text-primary"
         >
           <ChevronLeft size={16} />
-          {position?.nameKo ?? positionId}
+          {backLabel}
         </Link>
       </div>
 

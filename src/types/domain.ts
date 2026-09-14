@@ -289,106 +289,12 @@ export function getBjjStyle(streamTotals: Record<string, number>, totalSessions:
   return styleMap[top[0]] ?? { label: "올라운더", emoji: "🥋", desc: "나만의 스타일 형성 중", dominant: null };
 }
 
-// ── 난이도 메타 ──────────────────────────────────────────────────────────────
-
-export const DIFFICULTY_ORDER: Difficulty[] = ["기본", "정착", "트렌드"];
-
-export const DIFFICULTY_META: Record<
-  Difficulty,
-  { label: string; emoji: string; color: string; bg: string; desc: string }
-> = {
-  기본:   { label: "기본",   emoji: "🟢", color: "#34D399", bg: "rgba(52,211,153,0.12)", desc: "처음 익혀야 할 토대 기술" },
-  정착:   { label: "정착",   emoji: "🔵", color: "#60A5FA", bg: "rgba(96,165,250,0.12)", desc: "현대 주짓수의 표준 기술" },
-  트렌드: { label: "트렌드", emoji: "🟣", color: "#A78BFA", bg: "rgba(167,139,250,0.12)", desc: "최신 메타·고레벨 트렌드 기술" },
-};
-
-// ── 포지션 도달형 레벨 (스킬트리 게임화) ─────────────────────────────────────
-//
-// 규칙: 해당 난이도 기술의 70%를 "3회 이상(드릴 중+)" 수련하면
-//       다음 Lv 도달 → 다음 난이도 공개(추천).
-//   Lv.1 기본 단계 → (기본 70% 클리어) → Lv.2 정착 공개
-//                  → (정착 70% 클리어) → Lv.3 트렌드 공개
-//                  → (트렌드 70% 클리어) → 마스터
-
-export const DRILL_THRESHOLD = 3; // "3회+" = 드릴 중 이상
-export const LEVEL_RATIO = 0.7;   // 난이도의 70% 드릴 시 레벨업
-
-// 난이도 → 공개에 필요한 레벨 (소프트 잠금 힌트용)
-export const DIFFICULTY_UNLOCK_LEVEL: Record<Difficulty, number> = {
-  기본: 1,
-  정착: 2,
-  트렌드: 3,
-};
-
-type DiffStat = { total: number; drilled: number; met: boolean; needed: number };
-
-export type PositionLevel = {
-  level: number;                 // 1..4 (4 = 마스터)
-  label: string;                 // "Lv.1" … "Lv.3" / "마스터"
-  unlocked: Difficulty[];        // 추천(공개)된 난이도
-  targetDifficulty: Difficulty | null; // 지금 클리어해야 할 난이도
-  unlockNextLevel: number | null;      // target 클리어 시 도달 레벨
-  remaining: number;             // target에서 70% 채우기까지 남은 기술 수
-  recommendedRecordId: string | null;  // "다음 추천" 기술
-};
-
-type LvTech = { recordId: string; difficulty: Difficulty | null; id?: string };
-
-/** 포지션 자식 기술 + 수련 횟수맵 → 도달형 레벨 계산 */
-export function computePositionLevel(
-  techs: LvTech[],
-  countMap: Record<string, number>,
-): PositionLevel {
-  const stat = (d: Difficulty): DiffStat => {
-    const list = techs.filter((t) => t.difficulty === d);
-    const total = list.length;
-    const drilled = list.filter((t) => (countMap[t.recordId] ?? 0) >= DRILL_THRESHOLD).length;
-    const need = Math.ceil(LEVEL_RATIO * total);
-    return { total, drilled, met: total === 0 ? true : drilled >= need, needed: Math.max(0, need - drilled) };
-  };
-
-  const base = stat("기본");
-  const est  = stat("정착");
-  const trd  = stat("트렌드");
-
-  let level = 1;
-  if (base.met) level = 2;
-  if (level >= 2 && est.met) level = 3;
-  if (level >= 3 && trd.met) level = 4;
-
-  const unlocked: Difficulty[] = ["기본"];
-  if (level >= 2) unlocked.push("정착");
-  if (level >= 3) unlocked.push("트렌드");
-
-  // 클리어해야 할 가장 낮은 난이도 (실제 기술이 있는 것만)
-  let targetDifficulty: Difficulty | null = null;
-  for (const [d, s] of [["기본", base], ["정착", est], ["트렌드", trd]] as const) {
-    if (s.total > 0 && !s.met) { targetDifficulty = d; break; }
-  }
-
-  // "다음 추천": target 난이도에서 가장 덜 수련한 기술
-  let recommendedRecordId: string | null = null;
-  if (targetDifficulty) {
-    const pool = techs.filter((t) => t.difficulty === targetDifficulty);
-    pool.sort((a, b) =>
-      (countMap[a.recordId] ?? 0) - (countMap[b.recordId] ?? 0) ||
-      (a.id ?? "").localeCompare(b.id ?? "", undefined, { numeric: true }),
-    );
-    recommendedRecordId = pool[0]?.recordId ?? null;
-  }
-
-  const targetStat = targetDifficulty === "기본" ? base : targetDifficulty === "정착" ? est : targetDifficulty === "트렌드" ? trd : null;
-
-  return {
-    level,
-    label: level >= 4 ? "마스터" : `Lv.${level}`,
-    unlocked,
-    targetDifficulty,
-    unlockNextLevel: targetDifficulty ? DIFFICULTY_UNLOCK_LEVEL[targetDifficulty] + 1 : null,
-    remaining: targetStat ? targetStat.needed : 0,
-    recommendedRecordId,
-  };
-}
+// ── 난이도 ────────────────────────────────────────────────────────────────
+// 2026-09-14: 포지션 드릴다운 레벨링(Lv.1~4, 70% 클리어 규칙)과 선수 상세의
+// 난이도별 그룹핑을 선수 중심 스킬트리 개편에 맞춰 제거함. `Difficulty` 타입과
+// Technique.difficulty 필드/Airtable 데이터는 그대로 남겨둠(추후 다른 용도로
+// 재사용 가능성 대비) — 다만 UI에서 노출하거나 레벨을 계산하는 코드는 없음.
+// 이전 로직은 git 히스토리(commit 이전) 참고.
 
 /** 벨트 등급 인덱스 (White=0 … Black=4) */
 export function beltIndex(belt: BeltLevel): number {

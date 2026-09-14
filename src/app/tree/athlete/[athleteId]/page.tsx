@@ -3,9 +3,10 @@ import { notFound } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { getAthleteByRecordId } from "@/lib/airtable/athletes";
 import { getAllTechniques } from "@/lib/airtable/techniques";
-import { DIFFICULTY_META, DIFFICULTY_ORDER, STYLE_TAG_META, STYLE_TAG_FALLBACK } from "@/types/domain";
+import { STYLE_TAG_META, STYLE_TAG_FALLBACK } from "@/types/domain";
 import type { StyleTag } from "@/types/domain";
 import { AthleteAvatar } from "@/components/tree/AthleteAvatar";
+import { TypeChip } from "@/components/tree/TypeChip";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 
 export const revalidate = 60;
@@ -27,10 +28,11 @@ export default async function AthleteDetailPage({ params }: { params: Params }) 
   const primaryTag = (athlete.styleTags[0] as StyleTag) ?? null;
   const accent = primaryTag ? (STYLE_TAG_META[primaryTag] ?? STYLE_TAG_FALLBACK).color : STYLE_TAG_FALLBACK.color;
 
-  const byDifficulty = DIFFICULTY_ORDER.map((d) => ({
-    difficulty: d,
-    items: techniques.filter((t) => t.difficulty === d),
-  })).filter((g) => g.items.length > 0);
+  // 대표 기술은 이미 선수별로 큐레이션된 목록이라 난이도(기본/정착/트렌드)로 또
+  // 나눌 필요가 없어 2026-09-14 제거 — ID 순으로 정렬한 단일 목록만 표시.
+  const sortedTechniques = [...techniques].sort((a, b) =>
+    a.id.localeCompare(b.id, undefined, { numeric: true }),
+  );
 
   return (
     <PageWrapper>
@@ -97,40 +99,31 @@ export default async function AthleteDetailPage({ params }: { params: Params }) 
         )}
       </div>
 
-      {/* 대표 기술 목록 (난이도별) */}
-      {byDifficulty.length === 0 ? (
+      {/* 대표 기술 목록 */}
+      <div className="flex items-center gap-1.5 mb-2">
+        <span className="text-[11px] font-bold text-text-secondary">대표 기술</span>
+        <span className="text-[10px] text-text-tertiary">· {sortedTechniques.length}개</span>
+      </div>
+      {sortedTechniques.length === 0 ? (
         <p className="text-text-tertiary text-sm text-center py-10">
           아직 이 선수의 대표 기술이 등록되지 않았습니다.
         </p>
       ) : (
-        <div className="space-y-5">
-          {byDifficulty.map(({ difficulty, items }) => {
-            const meta = DIFFICULTY_META[difficulty];
-            return (
-              <div key={difficulty}>
-                <div className="flex items-center gap-1.5 mb-2">
-                  <span>{meta.emoji}</span>
-                  <span className="text-[11px] font-bold text-text-secondary">{meta.label}</span>
-                  <span className="text-[10px] text-text-tertiary">· {items.length}개</span>
-                </div>
-                <div className="space-y-2">
-                  {items.map((t) => (
-                    <Link
-                      key={t.recordId}
-                      href={`/tree/${t.parentId ?? ""}/${t.id}`}
-                      className="flex items-center gap-3 rounded-xl border border-border-subtle bg-bg-elevated p-3 hover:bg-bg-hover transition-colors"
-                    >
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[13px] font-bold text-text-primary truncate">{t.nameKo}</p>
-                        <p className="text-[10px] text-text-tertiary font-mono">{t.id}</p>
-                      </div>
-                      <ChevronRight size={15} className="text-text-disabled shrink-0" />
-                    </Link>
-                  ))}
-                </div>
+        <div className="space-y-2">
+          {sortedTechniques.map((t) => (
+            <Link
+              key={t.recordId}
+              href={`/tree/${t.parentId ?? ""}/${t.id}`}
+              className="flex items-center gap-3 rounded-xl border border-border-subtle bg-bg-elevated p-3 hover:bg-bg-hover transition-colors"
+            >
+              <TypeChip type={t.type} className="shrink-0" />
+              <div className="flex-1 min-w-0">
+                <p className="text-[13px] font-bold text-text-primary truncate">{t.nameKo}</p>
+                <p className="text-[10px] text-text-tertiary font-mono">{t.id}</p>
               </div>
-            );
-          })}
+              <ChevronRight size={15} className="text-text-disabled shrink-0" />
+            </Link>
+          ))}
         </div>
       )}
     </PageWrapper>
