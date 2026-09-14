@@ -14,11 +14,15 @@ const STREAMS: Stream[] = ["가드포지션", "탑포지션", "이스케이프",
 
 const DAY_EN = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-/** 홈 화면 히어로 카드 컷코너 — 스킬트리 AthleteHeroCard와 동일한 시각 언어(2026-09-14 확장). */
+/**
+ * 홈 화면 히어로 카드 컷코너 — 스킬트리 AthleteHeroCard와 동일한 시각 언어.
+ * 시안(Concept A)과 동일하게 카드 크기에 비례하는 %기반 대각선 컷 사용
+ * (고정 px는 넓은 풀블리드 카드에서 컷이 거의 안 보이는 문제가 있어 2026-09-14 수정).
+ */
 const HERO_CLIP_TR_BL =
-  "polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px))";
+  "polygon(0 0, 85% 0, 100% 16%, 100% 100%, 15% 100%, 0 84%)";
 const HERO_CLIP_TL =
-  "polygon(22px 0, 100% 0, 100% 100%, 0 100%, 0 22px)";
+  "polygon(15% 0, 100% 0, 100% 100%, 0 100%, 0 15%)";
 
 /** 레퍼런스 파스텔 캡슐 컬러 */
 const CAPSULE: Record<Stream, { bg: string; text: string; bar: string; label: string; emoji: string; IconCmp: LucideIcon }> = {
@@ -471,23 +475,28 @@ export function HomeDashboard({
               background: `linear-gradient(150deg, ${beltCfg.bodyGrad[0]}26 0%, #1A1A24 60%)`,
             }}
           >
-            {/* 상단: 벨트명 + 큰 글로우 XP 숫자 */}
-            <div className="flex items-center justify-between mb-3">
+            {/* 상단: 히어로 스탯(총 XP)이 좌측 지배적 요소, 벨트명은 보조 정보로 우측 */}
+            <div className="flex items-start justify-between mb-3">
               <div>
-                <p className="text-[10px] uppercase tracking-widest font-semibold mb-0.5"
-                   style={{ color: "#6B7280" }}>Current Belt</p>
-                <p className="text-lg font-black" style={{ color: beltCfg.textColor }}>
-                  {profile.belt}
-                </p>
-              </div>
-              <div className="text-right">
                 <p
-                  className="text-[32px] font-black tabular-nums tracking-tight leading-none"
-                  style={{ color: beltCfg.textColor, textShadow: `0 0 14px ${beltCfg.bodyGrad[1]}99` }}
+                  className="font-black tabular-nums tracking-tight leading-none"
+                  style={{
+                    fontSize: 44,
+                    color: beltCfg.textColor,
+                    textShadow: `0 0 20px ${beltCfg.bodyGrad[1]}, 0 0 42px ${beltCfg.bodyGrad[1]}80`,
+                  }}
                 >
                   {totalXp.toLocaleString()}
                 </p>
-                <p className="text-[10px]" style={{ color: "#3A3A4A" }}>Total XP</p>
+                <p className="text-[10px] uppercase tracking-widest font-bold mt-0.5"
+                   style={{ color: beltCfg.bodyGrad[1] }}>Total XP</p>
+              </div>
+              <div className="text-right shrink-0">
+                <p className="text-[10px] uppercase tracking-widest font-semibold mb-0.5"
+                   style={{ color: "#6B7280" }}>Current Belt</p>
+                <p className="text-base font-black" style={{ color: beltCfg.textColor }}>
+                  {profile.belt}
+                </p>
               </div>
             </div>
 
