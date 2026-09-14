@@ -13,22 +13,25 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { AthleteAvatar } from "./AthleteAvatar";
 import { AthleteHeroCard } from "./AthleteHeroCard";
-import { STYLE_TAG_META, STYLE_TAG_ORDER } from "@/types/domain";
+import { STYLE_TAG_META, STYLE_TAG_ORDER, STYLE_TAG_FALLBACK } from "@/types/domain";
 import type { Athlete, StyleTag } from "@/types/domain";
 
-const DEFAULT_ACCENT = "#7B61FF";
-const DEFAULT_GLOW = "rgba(123,97,255,0.5)";
+const DEFAULT_ACCENT = STYLE_TAG_FALLBACK.color;
+const DEFAULT_GLOW = STYLE_TAG_FALLBACK.glow;
 
+function tagMeta(t: StyleTag) {
+  return STYLE_TAG_META[t] ?? STYLE_TAG_FALLBACK;
+}
 function primaryTag(a: Athlete): StyleTag | null {
   return (a.styleTags[0] as StyleTag) ?? null;
 }
 function accentFor(a: Athlete): string {
   const t = primaryTag(a);
-  return t ? STYLE_TAG_META[t].color : DEFAULT_ACCENT;
+  return t ? tagMeta(t).color : DEFAULT_ACCENT;
 }
 function glowFor(a: Athlete): string {
   const t = primaryTag(a);
-  return t ? STYLE_TAG_META[t].glow : DEFAULT_GLOW;
+  return t ? tagMeta(t).glow : DEFAULT_GLOW;
 }
 
 export default function AthleteEntryScreen({ athletes }: { athletes: Athlete[] }) {
@@ -97,7 +100,7 @@ export default function AthleteEntryScreen({ athletes }: { athletes: Athlete[] }
                 "px-3 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap transition-colors duration-base",
                 isActive ? "text-white" : "bg-bg-elevated text-text-tertiary hover:bg-bg-hover",
               )}
-              style={isActive ? { backgroundColor: STYLE_TAG_META[tag].color } : {}}
+              style={isActive ? { backgroundColor: tagMeta(tag).color } : {}}
             >
               {tag} {count}
             </button>

@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { getAthleteByRecordId } from "@/lib/airtable/athletes";
 import { getAllTechniques } from "@/lib/airtable/techniques";
-import { DIFFICULTY_META, DIFFICULTY_ORDER, STYLE_TAG_META } from "@/types/domain";
+import { DIFFICULTY_META, DIFFICULTY_ORDER, STYLE_TAG_META, STYLE_TAG_FALLBACK } from "@/types/domain";
 import type { StyleTag } from "@/types/domain";
 import { AthleteAvatar } from "@/components/tree/AthleteAvatar";
 import { PageWrapper } from "@/components/layout/PageWrapper";
@@ -25,7 +25,7 @@ export default async function AthleteDetailPage({ params }: { params: Params }) 
   const techniques = allTechniques.filter((t) => t.athleteRecordIds.includes(athlete.recordId));
 
   const primaryTag = (athlete.styleTags[0] as StyleTag) ?? null;
-  const accent = primaryTag ? STYLE_TAG_META[primaryTag].color : "#7B61FF";
+  const accent = primaryTag ? (STYLE_TAG_META[primaryTag] ?? STYLE_TAG_FALLBACK).color : STYLE_TAG_FALLBACK.color;
 
   const byDifficulty = DIFFICULTY_ORDER.map((d) => ({
     difficulty: d,
@@ -66,18 +66,18 @@ export default async function AthleteDetailPage({ params }: { params: Params }) 
 
         {athlete.styleTags.length > 0 && (
           <div className="flex gap-1.5 mt-3 flex-wrap">
-            {athlete.styleTags.map((tag) => (
-              <span
-                key={tag}
-                className="text-[10px] font-bold px-2.5 py-1 rounded-full"
-                style={{
-                  backgroundColor: STYLE_TAG_META[tag as StyleTag]?.color + "22",
-                  color: STYLE_TAG_META[tag as StyleTag]?.color,
-                }}
-              >
-                {tag}
-              </span>
-            ))}
+            {athlete.styleTags.map((tag) => {
+              const meta = STYLE_TAG_META[tag as StyleTag] ?? STYLE_TAG_FALLBACK;
+              return (
+                <span
+                  key={tag}
+                  className="text-[10px] font-bold px-2.5 py-1 rounded-full"
+                  style={{ backgroundColor: meta.color + "22", color: meta.color }}
+                >
+                  {tag}
+                </span>
+              );
+            })}
           </div>
         )}
 

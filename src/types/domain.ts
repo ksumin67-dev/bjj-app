@@ -71,7 +71,7 @@ export type StyleTag =
   | "패싱"
   | "기본기"
   | "하이브리드"
-  | "50-50"
+  | "50/50"
   | "백시스템";
 
 export interface Athlete {
@@ -96,7 +96,7 @@ export const STYLE_TAG_ORDER: StyleTag[] = [
   "패싱",
   "기본기",
   "하이브리드",
-  "50-50",
+  "50/50",
   "백시스템",
 ];
 
@@ -106,9 +106,12 @@ export const STYLE_TAG_META: Record<StyleTag, { color: string; glow: string }> =
   패싱:       { color: "#FF8C42", glow: "rgba(255,140,66,0.5)" },
   기본기:     { color: "#34D399", glow: "rgba(52,211,153,0.5)" },
   하이브리드: { color: "#7B61FF", glow: "rgba(123,97,255,0.5)" },
-  "50-50":    { color: "#FBBF24", glow: "rgba(251,191,36,0.5)" },
+  "50/50":    { color: "#FBBF24", glow: "rgba(251,191,36,0.5)" },
   백시스템:   { color: "#A78BFA", glow: "rgba(167,139,250,0.5)" },
 };
+
+/** 알 수 없는/누락된 스타일 태그에 대한 안전한 기본값 (Airtable 값이 코드와 어긋나도 빌드가 죽지 않도록) */
+export const STYLE_TAG_FALLBACK = { color: "#7B61FF", glow: "rgba(123,97,255,0.5)" };
 
 export interface Sequence {
   recordId: string;
