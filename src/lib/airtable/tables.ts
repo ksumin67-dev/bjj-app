@@ -11,6 +11,8 @@ export const TABLES = {
   USER_PROGRESS: "tbl2azkdmIwl1Ev0x",
   TRAINING_SESSIONS: "tblSVjgBfwjVMTyVt",
   CUSTOM_TECHNIQUES: "tbldQmFu4FWfQF0JA",
+  // 선수 중심 스킬트리 (2026-09-14 추가)
+  ATHLETES: "tblrmxUhAMYrDIt8B",
   CUSTOM_TECHNIQUE: {
     NAME:       "fldJlPx7qWvbdG3UW",
     USE_COUNT:  "fldzUqdxBpNvhcreY",
@@ -52,6 +54,20 @@ export const FIELDS = {
     DIFFICULTY: "fldULAlz9QEEgAgsO",
     // TODO: Airtable Techniques 테이블에 "isMainSkill" 체크박스 필드 추가 후 ID 입력
     IS_MAIN_SKILL: "",
+    // 대표 선수 (multipleRecordLinks → Athletes) — 2026-09-14 추가
+    ATHLETES: "fldP508XV1bYHgHew",
+  },
+  ATHLETE: {
+    NAME_KO: "fldojEsJye0dXsdGq",
+    NAME_EN: "fldsWeIF0cyOuT826",
+    BELT_ACADEMY: "fldkMchVqc4EraAsp",
+    ACTIVE_ERA: "fldqVILHvZWfmDmpu",
+    STYLE_TAGS: "fldKaYn9UtMMrG0EI",
+    SIGNATURE_SYSTEM: "fldUuOxly0f7ypNRc",
+    ACHIEVEMENTS: "fldqvWB3BoJH0MEMa",
+    INCLUDE_IN_LAUNCH: "fldUSFHSzWKn6qXJb",
+    HERO_STAT: "fld6aSNO4lsTx0Qvy",
+    HERO_LABEL: "fldxtJcfnDrWhdrOi",
   },
   SEQUENCE: {
     SEQ_NAME: "fldA2Pd7RXCZqlljb",

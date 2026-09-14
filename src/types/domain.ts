@@ -59,7 +59,56 @@ export interface Technique {
   curatedInstructor: string | null;
   difficulty: Difficulty | null;
   isMainSkill: boolean;
+  /** 이 기술의 대표 선수(Athletes 테이블 recordId 배열). 2026-09 선수 중심 스킬트리 신규 필드. */
+  athleteRecordIds: string[];
 }
+
+// ── 선수 중심 스킬트리 (2026-09-14 추가) ─────────────────────────────────────
+
+export type StyleTag =
+  | "레그락"
+  | "가드"
+  | "패싱"
+  | "기본기"
+  | "하이브리드"
+  | "50-50"
+  | "백시스템";
+
+export interface Athlete {
+  recordId: string;
+  nameKo: string;
+  nameEn: string;
+  beltAcademy: string;
+  activeEra: string;
+  styleTags: StyleTag[];
+  signatureSystem: string;
+  achievements: string;
+  includeInLaunch: boolean;
+  /** 카드 좌상단 히어로 숫자 — 임의 스탯이 아니라 대표 성과에서 뽑은 실제 커리어 수치 (예: "7", "50/50") */
+  heroStat: string;
+  /** 히어로 숫자 아래 붙는 짧은 설명 (예: "ADCC 우승") */
+  heroLabel: string;
+}
+
+export const STYLE_TAG_ORDER: StyleTag[] = [
+  "레그락",
+  "가드",
+  "패싱",
+  "기본기",
+  "하이브리드",
+  "50-50",
+  "백시스템",
+];
+
+export const STYLE_TAG_META: Record<StyleTag, { color: string; glow: string }> = {
+  레그락:     { color: "#E2574A", glow: "rgba(226,87,74,0.5)" },
+  가드:       { color: "#2E80F0", glow: "rgba(46,128,240,0.5)" },
+  패싱:       { color: "#FF8C42", glow: "rgba(255,140,66,0.5)" },
+  기본기:     { color: "#34D399", glow: "rgba(52,211,153,0.5)" },
+  하이브리드: { color: "#7B61FF", glow: "rgba(123,97,255,0.5)" },
+  "50-50":    { color: "#FBBF24", glow: "rgba(251,191,36,0.5)" },
+  백시스템:   { color: "#A78BFA", glow: "rgba(167,139,250,0.5)" },
+};
 
 export interface Sequence {
   recordId: string;

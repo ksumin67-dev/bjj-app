@@ -62,6 +62,7 @@ function toTechnique(record: {
     isMainSkill: F.IS_MAIN_SKILL ? Boolean(f[F.IS_MAIN_SKILL]) : false,
     curatedInstructor: (f[F.CURATED_INSTRUCTOR] as string) ?? null,
     difficulty: ((f[F.DIFFICULTY] as string) ?? null) as Difficulty | null,
+    athleteRecordIds: F.ATHLETES ? ((f[F.ATHLETES] as string[] | undefined) ?? []) : [],
   };
 }
 

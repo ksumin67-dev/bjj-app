@@ -444,6 +444,7 @@ export function TechniqueManager({ techniques: initial, positions, customTechniq
             curatedInstructor: form.curatedInstructor || null,
             difficulty: null,
             isMainSkill: false,
+            athleteRecordIds: [],
           };
           setTechniques((prev) => [newTech, ...prev]);
           showToast("추가 완료 ✓", true);
