@@ -18,6 +18,9 @@ export default async function NewSequencePage() {
   const positionsById: Record<string, Technique> = {};
   for (const p of positions) positionsById[p.recordId] = p;
 
+  // 포지션(부모) 레코드는 시퀀스 단계로 직접 선택하지 않음 — 구체적 자식 기술만 선택 대상
+  const stepTechniques = techniques.filter((t) => t.id.includes("-"));
+
   return (
     <PageWrapper>
       <div className="space-y-6 max-w-2xl">
@@ -38,7 +41,7 @@ export default async function NewSequencePage() {
 
         <SequenceForm
           positions={positions}
-          techniques={techniques}
+          techniques={stepTechniques}
           positionsById={positionsById}
         />
       </div>

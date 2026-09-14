@@ -325,18 +325,9 @@ function TechPicker({
       groups[key].list.push(t);
     }
 
-    if (q) {
-      for (const t of techniques) {
-        if (t.parentId !== null) continue;
-        const nameMatch =
-          t.nameKo.toLowerCase().includes(q) || t.nameEn.toLowerCase().includes(q) ||
-          t.id.toLowerCase().includes(q) ||
-          t.nameKo.replace(/\s+/g, "").toLowerCase().includes(qNoSpace) ||
-          t.nameEn.replace(/\s+/g, "").toLowerCase().includes(qNoSpace);
-        if (nameMatch && !groups[t.id]) {
-          groups[t.id] = { label: t.nameKo, shortId: t.id, parent: t, list: [] };
-        }
-      }
+    // 포지션(부모) 레코드는 직접 태그 대상이 아니므로, 자식이 하나도 없는 그룹은 노출하지 않음
+    for (const key of Object.keys(groups)) {
+      if (groups[key].list.length === 0) delete groups[key];
     }
     return groups;
   }, [techniques, query, techniqueByShortId]);
@@ -464,37 +455,7 @@ function TechPicker({
                   <div className="flex items-center gap-1.5 mb-1 px-1">
                     <span className="text-[11px] font-medium text-text-secondary">{group.label}</span>
                     <span className="text-[9px] font-mono text-text-tertiary opacity-50">{group.shortId}</span>
-                    {group.parent && (
-                      <button type="button"
-                        onClick={() => { onToggleTech(group.parent!.recordId); if (query) setQuery(""); }}
-                        className={cn(
-                          "ml-auto flex items-center gap-1 h-5 px-2 rounded-full text-[9px] font-medium transition-all border",
-                          selectedTech.includes(group.parent.recordId)
-                            ? "bg-brand-subtle text-brand-primary border-brand-primary/40"
-                            : "bg-bg-overlay text-text-tertiary border-border-subtle hover:border-brand-primary/40 hover:text-brand-primary",
-                        )}
-                        title={`${group.parent.nameKo} 포지션 자체를 태그`}>
-                        {selectedTech.includes(group.parent.recordId)
-                          ? <><Check size={9} /> 포지션 선택됨</>
-                          : <>+ 포지션 태그</>}
-                      </button>
-                    )}
                   </div>
-                  {group.parent && group.list.length === 0 && (
-                    <button type="button"
-                      onClick={() => { onToggleTech(group.parent!.recordId); if (query) setQuery(""); }}
-                      className={cn(
-                        "w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left text-sm transition-colors border",
-                        selectedTech.includes(group.parent.recordId)
-                          ? "bg-brand-subtle text-brand-primary border-brand-primary/30"
-                          : "hover:bg-bg-hover text-text-secondary border-border-subtle",
-                      )}>
-                      <span className="font-mono text-[10px] opacity-70 w-10 shrink-0">{group.parent.id}</span>
-                      <span className="flex-1">{group.parent.nameKo}</span>
-                      <span className="text-[9px] text-text-tertiary border border-border-subtle rounded px-1">포지션</span>
-                      {selectedTech.includes(group.parent.recordId) && <Check size={12} className="shrink-0 text-brand-primary" />}
-                    </button>
-                  )}
                   <div className="space-y-0.5">
                     {group.list.map((t) => {
                       const checked = selectedTech.includes(t.recordId);
