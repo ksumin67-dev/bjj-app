@@ -13,6 +13,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { AthleteAvatar } from "./AthleteAvatar";
 import { AthleteHeroCard } from "./AthleteHeroCard";
+import { getAthletePhoto } from "@/lib/athletePhotos";
 import { STYLE_TAG_META, STYLE_TAG_ORDER, STYLE_TAG_FALLBACK } from "@/types/domain";
 import type { Athlete, StyleTag } from "@/types/domain";
 
@@ -123,7 +124,12 @@ export default function AthleteEntryScreen({ athletes }: { athletes: Athlete[] }
             href={`/tree/athlete/${a.recordId}`}
             className="group flex items-center gap-3 rounded-2xl border border-border-subtle bg-bg-elevated p-3.5 transition-all duration-base ease-out-soft hover:bg-bg-hover hover:border-border-default active:scale-[0.985]"
           >
-            <AthleteAvatar color={accentFor(a)} size={34} />
+            <AthleteAvatar
+              color={accentFor(a)}
+              size={34}
+              photoUrl={getAthletePhoto(a.recordId)}
+              alt={a.nameKo}
+            />
             <div className="flex-1 min-w-0">
               <h3 className="text-[13.5px] font-bold truncate text-text-primary">{a.nameKo}</h3>
               <p className="text-[10px] text-text-tertiary truncate">{a.beltAcademy}</p>

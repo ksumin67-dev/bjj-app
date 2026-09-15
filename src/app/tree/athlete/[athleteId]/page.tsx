@@ -7,6 +7,7 @@ import { getMyTechniqueGoalIdSet } from "@/lib/supabase/techniqueGoals";
 import { STYLE_TAG_META, STYLE_TAG_FALLBACK } from "@/types/domain";
 import type { StyleTag } from "@/types/domain";
 import { AthleteAvatar } from "@/components/tree/AthleteAvatar";
+import { getAthletePhoto } from "@/lib/athletePhotos";
 import { AthleteTechniqueRow } from "@/components/tree/AthleteTechniqueRow";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 
@@ -56,7 +57,12 @@ export default async function AthleteDetailPage({ params }: { params: Params }) 
         style={{ background: `linear-gradient(150deg, ${accent}22 0%, #1A1A24 60%)` }}
       >
         <div className="flex items-center gap-4">
-          <AthleteAvatar color={accent} size={56} />
+          <AthleteAvatar
+            color={accent}
+            size={56}
+            photoUrl={getAthletePhoto(athlete.recordId)}
+            alt={athlete.nameKo}
+          />
           <div className="min-w-0">
             <h1 className="text-xl font-black text-text-primary truncate">{athlete.nameKo}</h1>
             <p className="text-xs text-text-tertiary truncate">

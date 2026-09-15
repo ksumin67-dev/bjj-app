@@ -1,4 +1,5 @@
 import { AthleteAvatar } from "./AthleteAvatar";
+import { getAthletePhoto } from "@/lib/athletePhotos";
 import type { Athlete } from "@/types/domain";
 
 /**
@@ -57,7 +58,12 @@ export function AthleteHeroCard({
           {athlete.heroLabel}
         </div>
         <div className="absolute left-0 right-0 flex justify-center" style={{ bottom: 32 }}>
-          <AthleteAvatar color={accent} size={64} />
+          <AthleteAvatar
+            color={accent}
+            size={64}
+            photoUrl={getAthletePhoto(athlete.recordId)}
+            alt={athlete.nameKo}
+          />
         </div>
         <div
           className="absolute font-extrabold text-text-primary truncate"
