@@ -2,7 +2,7 @@
 
 import { useFormState, useFormStatus } from "react-dom";
 import { useState, useMemo, useEffect, useRef, useCallback } from "react";
-import { Search, X, ChevronDown, Check, Plus, Lightbulb, BookOpen, Pen, Link2, ChevronUp, Sparkles } from "lucide-react";
+import { Search, X, ChevronDown, Check, Plus, Lightbulb, BookOpen, Pen, Link2, ChevronUp, Sparkles, Heart } from "lucide-react";
 import {
   createTrainingSessionAction,
   updateTrainingSessionAction,
@@ -275,13 +275,14 @@ function SubmitButton({ disabled, label }: { disabled: boolean; label: string })
 // ── TechPicker ────────────────────────────────────────────────────────────────
 
 function TechPicker({
-  techniques, techniqueByShortId, selectedTech, customTechs,
+  techniques, techniqueByShortId, selectedTech, customTechs, goalTechRecordIds = [],
   onToggleTech, onAddCustom, onRemoveCustom,
 }: {
   techniques: Technique[];
   techniqueByShortId: Record<string, Technique>;
   selectedTech: string[];
   customTechs: { name: string; stream: Stream }[];
+  goalTechRecordIds?: string[];
   onToggleTech: (id: string) => void;
   onAddCustom: (name: string, stream: Stream) => void;
   onRemoveCustom: (name: string) => void;
@@ -331,6 +332,13 @@ function TechPicker({
     }
     return groups;
   }, [techniques, query, techniqueByShortId]);
+
+  const goalTechniques = useMemo(
+    () => goalTechRecordIds
+      .map((id) => techniques.find((t) => t.recordId === id))
+      .filter((t): t is Technique => Boolean(t)),
+    [goalTechRecordIds, techniques],
+  );
 
   const totalResults = Object.values(groupedTechniques).reduce((acc, g) => acc + g.list.length, 0);
   const q = query.trim();
@@ -397,6 +405,36 @@ function TechPicker({
 
       {open && (
         <div className="mt-2 rounded-lg border border-border-default bg-bg-elevated p-3 max-h-72 overflow-y-auto">
+          {goalTechniques.length > 0 && (
+            <div className="mb-3">
+              <div className="flex items-center gap-1.5 mb-1.5 px-1">
+                <Heart size={11} fill="#F87171" color="#F87171" />
+                <span className="text-[10px] font-semibold" style={{ color: "#F87171" }}>내 목표 기술</span>
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {goalTechniques.map((t) => {
+                  const checked = selectedTech.includes(t.recordId);
+                  return (
+                    <button
+                      key={t.recordId}
+                      type="button"
+                      onClick={() => onToggleTech(t.recordId)}
+                      className={cn(
+                        "inline-flex items-center gap-1 h-8 px-2.5 rounded-full text-[12px] font-medium transition-colors duration-fast border",
+                        checked
+                          ? "bg-brand-subtle text-brand-primary border-brand-primary/40"
+                          : "bg-bg-base text-text-secondary border-border-subtle hover:bg-bg-hover",
+                      )}
+                    >
+                      <span className="font-mono text-[10px] opacity-70">{t.id}</span>
+                      <span>{t.nameKo}</span>
+                      {checked && <Check size={11} className="shrink-0" />}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
           <div className="relative mb-3">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-tertiary pointer-events-none" />
             <input
@@ -489,12 +527,14 @@ export function SessionFormModal({
   initialDate,
   techniques,
   techniqueByShortId,
+  goalTechRecordIds = [],
   initialSession,
   onClose,
 }: {
   initialDate: string;
   techniques: Technique[];
   techniqueByShortId: Record<string, Technique>;
+  goalTechRecordIds?: string[];
   initialSession?: TrainingSession;  // 수정 모드일 때 기존 세션 데이터
   onClose: () => void;
 }) {
@@ -746,6 +786,7 @@ export function SessionFormModal({
                 techniqueByShortId={techniqueByShortId}
                 selectedTech={selectedTech}
                 customTechs={customTechs}
+                goalTechRecordIds={goalTechRecordIds}
                 onToggleTech={toggleTech}
                 onAddCustom={addCustom}
                 onRemoveCustom={removeCustom}

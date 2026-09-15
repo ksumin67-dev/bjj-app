@@ -109,3 +109,29 @@ create policy "본인 시퀀스만 삭제" on public.sequences
 alter table public.training_sessions
   drop constraint if exists training_sessions_sequence_ids_fkey;
 -- (uuid[] 배열은 네이티브 FK 불가 — 애플리케이션 레벨에서 무결성 관리)
+
+-- ============================================
+-- 4. technique_goals — 학습 목표(찜한 기술)
+-- 선수 상세 페이지에서 "이 기술 배우고 싶다"고 찜한 것을 저장.
+-- technique_record_id / athlete_record_id는 Airtable recordId 문자열 그대로 저장
+-- (2026-09-15 추가, 선수 시그니처 기술 학습 목표 기능)
+-- ============================================
+create table if not exists public.technique_goals (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  technique_record_id text not null,
+  athlete_record_id text,
+  created_at timestamptz not null default now(),
+  unique (user_id, technique_record_id)
+);
+
+alter table public.technique_goals enable row level security;
+
+create policy "본인 목표만 조회" on public.technique_goals
+  for select using (auth.uid() = user_id);
+
+create policy "본인 목표만 생성" on public.technique_goals
+  for insert with check (auth.uid() = user_id);
+
+create policy "본인 목표만 삭제" on public.technique_goals
+  for delete using (auth.uid() = user_id);

@@ -55,10 +55,12 @@ export function CalendarHome({
   techniques,
   sequences,
   sessions,
+  goalTechRecordIds = [],
 }: {
   techniques: Technique[];
   sequences: Sequence[];
   sessions: TrainingSession[];
+  goalTechRecordIds?: string[];
 }) {
   const today = useMemo(() => new Date(), []);
   const [viewMode, setViewMode] = useState<"calendar" | "list">("calendar");
@@ -495,6 +497,7 @@ export function CalendarHome({
           initialDate={formInitialDate}
           techniques={techniques}
           techniqueByShortId={techniqueByShortId}
+          goalTechRecordIds={goalTechRecordIds}
           initialSession={editingSession ?? undefined}
           onClose={closeForm}
         />

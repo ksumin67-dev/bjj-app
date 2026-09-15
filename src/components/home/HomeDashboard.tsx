@@ -1,10 +1,10 @@
-import type { Technique, TrainingSession, Stream } from "@/types/domain";
+import type { Technique, TrainingSession, Stream, Athlete } from "@/types/domain";
 import { getBjjStyle, calculateStreak } from "@/types/domain";
 import type { UserProfile } from "@/lib/supabase/userProfile";
 import { BeltDisplay, BELT_CONFIG } from "@/components/ui/BeltDisplay";
 import Link from "next/link";
 import { Swords, Shield, Zap, Users, type LucideIcon } from "lucide-react";
-import { AlertTriangle, ArrowRight, Bell, Dumbbell } from "lucide-react";
+import { AlertTriangle, ArrowRight, Bell, Dumbbell, Heart } from "lucide-react";
 
 // ── 상수 ───────────────────────────────────────────────────────────────────
 
@@ -107,13 +107,17 @@ function analyzeWeakness(
 export function HomeDashboard({
   sessions,
   techniques,
+  athletes,
   trainingCountMap,
   profile,
+  goalTechniqueIds,
 }: {
   sessions: TrainingSession[];
   techniques: Technique[];
+  athletes: Athlete[];
   trainingCountMap: Record<string, number>;
   profile: UserProfile;
+  goalTechniqueIds: string[];
 }) {
   const today = new Date();
   const todayKey = ymd(today);
@@ -164,6 +168,17 @@ export function HomeDashboard({
   const maxStreamTotal = Math.max(...Object.values(streamTotals), 1);
   const bjjStyle       = getBjjStyle(streamTotals, sessions.length);
   const weakness       = analyzeWeakness(streamTotals, techniques, trainingCountMap);
+
+  // ── 학습 목표(찜한 기술) — 선수 상세에서 하트로 찜한 시그니처 기술
+  const athleteNameMap = new Map(athletes.map((a) => [a.recordId, a.nameKo]));
+  const goalIdSet = new Set(goalTechniqueIds);
+  const goalTechniques = techniques
+    .filter((t) => goalIdSet.has(t.recordId))
+    .map((t) => ({
+      technique: t,
+      athleteName: t.athleteRecordIds[0] ? athleteNameMap.get(t.athleteRecordIds[0]) ?? null : null,
+      trained: (trainingCountMap[t.recordId] ?? 0) > 0,
+    }));
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   //  렌더
@@ -579,6 +594,51 @@ export function HomeDashboard({
           })()}
 
         </section>
+
+        {/* ── 내가 배우고 싶은 기술(학습 목표) ─────────────────────────── */}
+        {goalTechniques.length > 0 && (
+          <section
+            className="rounded-2xl p-4"
+            style={{ backgroundColor: "#1A1A24", border: "1px solid rgba(255,255,255,0.1)", marginBottom: "20px" }}
+          >
+            <div className="flex items-center gap-2 mb-3">
+              <Heart size={13} fill="#F87171" color="#F87171" />
+              <p className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: "#6B7280" }}>
+                내가 배우고 싶은 기술
+              </p>
+              <span className="text-[10px] tabular-nums font-semibold ml-auto" style={{ color: "#3A3A4A" }}>
+                {goalTechniques.length}개
+              </span>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+              {goalTechniques.map(({ technique: t, athleteName, trained }) => (
+                <Link
+                  key={t.recordId}
+                  href={`/tree/${t.parentId ?? ""}/${t.id}`}
+                  className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 active:scale-[0.98] transition-transform duration-fast"
+                  style={{ backgroundColor: "#22222E" }}
+                >
+                  <div className="flex-1 min-w-0">
+                    <span className="text-sm font-semibold text-white truncate block">{t.nameKo}</span>
+                    {athleteName && (
+                      <span className="text-[10px] truncate block" style={{ color: "#6B7280" }}>{athleteName}</span>
+                    )}
+                  </div>
+                  <span
+                    className="text-[10px] px-2 py-0.5 rounded-full font-semibold shrink-0"
+                    style={{
+                      backgroundColor: trained ? "rgba(52,211,153,0.15)" : "rgba(255,255,255,0.06)",
+                      color: trained ? "#34D399" : "#6B7280",
+                    }}
+                  >
+                    {trained ? "수련중" : "미수련"}
+                  </span>
+                  <ArrowRight size={12} style={{ color: "#F87171" }} className="shrink-0" />
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* ── 약점 스트림 카드 ───────────────────────────────────────── */}
         {weakness && (() => {

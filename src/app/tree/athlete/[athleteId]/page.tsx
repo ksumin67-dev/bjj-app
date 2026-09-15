@@ -1,15 +1,18 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import { getAthleteByRecordId } from "@/lib/airtable/athletes";
 import { getAllTechniques } from "@/lib/airtable/techniques";
+import { getMyTechniqueGoalIdSet } from "@/lib/supabase/techniqueGoals";
 import { STYLE_TAG_META, STYLE_TAG_FALLBACK } from "@/types/domain";
 import type { StyleTag } from "@/types/domain";
 import { AthleteAvatar } from "@/components/tree/AthleteAvatar";
-import { TypeChip } from "@/components/tree/TypeChip";
+import { AthleteTechniqueRow } from "@/components/tree/AthleteTechniqueRow";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 
-export const revalidate = 60;
+// technique_goals는 로그인 유저별 데이터(쿠키 기반)라 정적 재검증(revalidate)과 맞지 않아
+// force-dynamic으로 전환 (2026-09-15, calendar/profile 페이지와 동일 패턴).
+export const dynamic = "force-dynamic";
 
 type Params = { athleteId: string };
 
@@ -22,8 +25,12 @@ export default async function AthleteDetailPage({ params }: { params: Params }) 
   const athlete = await getAthleteByRecordId(params.athleteId);
   if (!athlete) notFound();
 
-  const allTechniques = await getAllTechniques();
+  const [allTechniques, goalIdSet] = await Promise.all([
+    getAllTechniques(),
+    getMyTechniqueGoalIdSet(),
+  ]);
   const techniques = allTechniques.filter((t) => t.athleteRecordIds.includes(athlete.recordId));
+  const goalCount = techniques.filter((t) => goalIdSet.has(t.recordId)).length;
 
   const primaryTag = (athlete.styleTags[0] as StyleTag) ?? null;
   const accent = primaryTag ? (STYLE_TAG_META[primaryTag] ?? STYLE_TAG_FALLBACK).color : STYLE_TAG_FALLBACK.color;
@@ -103,6 +110,11 @@ export default async function AthleteDetailPage({ params }: { params: Params }) 
       <div className="flex items-center gap-1.5 mb-2">
         <span className="text-[11px] font-bold text-text-secondary">대표 기술</span>
         <span className="text-[10px] text-text-tertiary">· {sortedTechniques.length}개</span>
+        {goalCount > 0 && (
+          <span className="text-[10px] font-semibold ml-auto" style={{ color: "#F87171" }}>
+            ♥ {goalCount}개 목표 등록
+          </span>
+        )}
       </div>
       {sortedTechniques.length === 0 ? (
         <p className="text-text-tertiary text-sm text-center py-10">
@@ -111,18 +123,12 @@ export default async function AthleteDetailPage({ params }: { params: Params }) 
       ) : (
         <div className="space-y-2">
           {sortedTechniques.map((t) => (
-            <Link
+            <AthleteTechniqueRow
               key={t.recordId}
-              href={`/tree/${t.parentId ?? ""}/${t.id}`}
-              className="flex items-center gap-3 rounded-xl border border-border-subtle bg-bg-elevated p-3 hover:bg-bg-hover transition-colors"
-            >
-              <TypeChip type={t.type} className="shrink-0" />
-              <div className="flex-1 min-w-0">
-                <p className="text-[13px] font-bold text-text-primary truncate">{t.nameKo}</p>
-                <p className="text-[10px] text-text-tertiary font-mono">{t.id}</p>
-              </div>
-              <ChevronRight size={15} className="text-text-disabled shrink-0" />
-            </Link>
+              technique={t}
+              athleteRecordId={athlete.recordId}
+              initialIsGoal={goalIdSet.has(t.recordId)}
+            />
           ))}
         </div>
       )}
