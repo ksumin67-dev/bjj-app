@@ -316,19 +316,24 @@ function TechPicker({
         })
       : techniques;
 
+    // 포지션(부모) 레코드(parentId=null)는 자기 자신의 shortId로 그룹핑해서
+    // 그 포지션의 자식 기술들과 같은 그룹에 묶는다 — "클로즈드 가드" 자체를
+    // "포지션 전체"로 골라 태그할 수 있게 함(2026-09-15, 이전엔 "기타"에
+    // 묻혀서 사실상 찾을 수 없었음).
     const groups: Record<string, { label: string; shortId: string; parent: Technique | null; list: Technique[] }> = {};
     for (const t of filtered) {
-      const key = t.parentId ?? "기타";
+      const isPositionSelf = t.parentId === null;
+      const key = t.parentId ?? t.id;
       if (!groups[key]) {
-        const parent = t.parentId ? (techniqueByShortId[t.parentId] ?? null) : null;
-        groups[key] = { label: parent?.nameKo ?? "기타", shortId: parent?.id ?? "기타", parent, list: [] };
+        const parent = isPositionSelf ? t : (techniqueByShortId[key] ?? null);
+        groups[key] = { label: parent?.nameKo ?? t.nameKo, shortId: parent?.id ?? t.id, parent, list: [] };
       }
       groups[key].list.push(t);
     }
 
-    // 포지션(부모) 레코드는 직접 태그 대상이 아니므로, 자식이 하나도 없는 그룹은 노출하지 않음
-    for (const key of Object.keys(groups)) {
-      if (groups[key].list.length === 0) delete groups[key];
+    // 각 그룹 안에서 포지션 자체(전체 수련) 항목이 항상 맨 위에 오도록 정렬
+    for (const group of Object.values(groups)) {
+      group.list.sort((a, b) => Number(a.parentId !== null) - Number(b.parentId !== null));
     }
     return groups;
   }, [techniques, query, techniqueByShortId]);
@@ -497,15 +502,22 @@ function TechPicker({
                   <div className="space-y-0.5">
                     {group.list.map((t) => {
                       const checked = selectedTech.includes(t.recordId);
+                      const isPositionSelf = t.parentId === null;
                       return (
                         <button key={t.recordId} type="button"
                           onClick={() => { onToggleTech(t.recordId); if (query) setQuery(""); }}
                           className={cn(
                             "w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-left text-sm transition-colors duration-fast",
+                            isPositionSelf && !checked && "border border-dashed border-border-subtle",
                             checked ? "bg-brand-subtle text-brand-primary" : "hover:bg-bg-hover text-text-secondary",
                           )}>
                           <span className="font-mono text-[10px] opacity-70 w-10 shrink-0">{t.id}</span>
-                          <span className="flex-1 truncate">{t.nameKo}</span>
+                          <span className="flex-1 truncate">
+                            {t.nameKo}
+                            {isPositionSelf && (
+                              <span className="ml-1.5 text-[9px] font-semibold opacity-70">(포지션 전체)</span>
+                            )}
+                          </span>
                           {checked && <Check size={12} className="shrink-0" />}
                         </button>
                       );
