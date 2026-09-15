@@ -10,7 +10,7 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { Stream, Difficulty } from "@/types/domain";
+import type { Stream } from "@/types/domain";
 
 const STREAM_META: Record<Stream, { color: string; label: string; emoji: string }> = {
   가드포지션: { color: "#2E80F0", label: "가드", emoji: "🛡️" },
@@ -36,10 +36,6 @@ export type PosSummary = {
   nameEn: string;
   childCount: number;
   trainedCount: number;
-  expertCount: number;
-  diff: Record<Difficulty, number>;
-  level: number;
-  levelLabel: string;
 };
 
 export type StreamGroup = { stream: Stream; positions: PosSummary[] };
@@ -48,11 +44,10 @@ function PositionCard({ pos, color }: { pos: PosSummary; color: string }) {
   const pct = pos.childCount === 0 ? 0 : Math.round((pos.trainedCount / pos.childCount) * 100);
   const emoji = POSITION_EMOJI[pos.id] ?? "🥋";
   const isZero = pos.trainedCount === 0;
-  const lvText = isZero ? "미시작" : pos.levelLabel;
 
   return (
     <Link
-      href={`/tree/${pos.id}`}
+      href={`/tree/position/${pos.id}`}
       className="group flex items-center gap-3 rounded-2xl border border-border-subtle bg-bg-elevated p-3.5 transition-all duration-base ease-out-soft hover:bg-bg-hover hover:border-border-default active:scale-[0.985]"
     >
       <div
@@ -71,7 +66,7 @@ function PositionCard({ pos, color }: { pos: PosSummary; color: string }) {
             )}
             style={isZero ? { backgroundColor: "#22222E" } : { backgroundColor: color + "2A", color }}
           >
-            {lvText}
+            {isZero ? "미시작" : `${pct}%`}
           </span>
         </div>
         <div className="mt-1.5 h-[5px] rounded-full bg-bg-overlay overflow-hidden">

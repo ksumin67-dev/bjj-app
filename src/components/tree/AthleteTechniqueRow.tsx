@@ -8,9 +8,10 @@ import { TypeChip } from "@/components/tree/TypeChip";
 import { toggleTechniqueGoalAction } from "@/lib/actions/techniqueGoals";
 
 /**
- * 선수 상세 페이지의 기술 한 줄 — 클릭하면 기술 상세로 이동, 우측 하트 버튼으로
- * "학습 목표(찜)"에 추가/제거. 낙관적 업데이트 + 실패 시 롤백.
- * (2026-09-15 추가, 선수 시그니처 기술 학습 목표 기능)
+ * 선수/포지션 상세 페이지의 기술 한 줄 — 클릭하면 기술 상세로 이동, 우측
+ * 하트 버튼으로 "학습 목표(찜)"에 추가/제거. 낙관적 업데이트 + 실패 시 롤백.
+ * (2026-09-15 추가, 선수 시그니처 기술 학습 목표 기능. 이후 포지션 상세
+ * 페이지에서도 재사용하면서 athleteRecordId를 null 허용으로 확장.)
  */
 export function AthleteTechniqueRow({
   technique,
@@ -18,7 +19,7 @@ export function AthleteTechniqueRow({
   initialIsGoal,
 }: {
   technique: Technique;
-  athleteRecordId: string;
+  athleteRecordId: string | null;
   initialIsGoal: boolean;
 }) {
   const [isGoal, setIsGoal] = useState(initialIsGoal);
@@ -39,14 +40,25 @@ export function AthleteTechniqueRow({
     });
   }
 
+  // 포지션 자체(parentId=null)를 태깅할 땐 [positionId] 세그먼트가 비어
+  // "/tree//CG" 같은 빈 경로가 되는 걸 피하려고 자기 id를 그대로 씀 —
+  // 어차피 기술 상세 페이지는 techId만으로 조회하고 positionId는 안 씀.
+  const posSegment = technique.parentId ?? technique.id;
+  const isPositionSelf = technique.parentId === null;
+
   return (
     <Link
-      href={`/tree/${technique.parentId ?? ""}/${technique.id}`}
+      href={`/tree/${posSegment}/${technique.id}`}
       className="flex items-center gap-3 rounded-xl border border-border-subtle bg-bg-elevated p-3 hover:bg-bg-hover transition-colors"
     >
       <TypeChip type={technique.type} className="shrink-0" />
       <div className="flex-1 min-w-0">
-        <p className="text-[13px] font-bold text-text-primary truncate">{technique.nameKo}</p>
+        <p className="text-[13px] font-bold text-text-primary truncate">
+          {technique.nameKo}
+          {isPositionSelf && (
+            <span className="ml-1.5 text-[10px] font-semibold text-text-tertiary">(포지션 전체)</span>
+          )}
+        </p>
         <p className="text-[10px] text-text-tertiary font-mono">{technique.id}</p>
       </div>
       <button

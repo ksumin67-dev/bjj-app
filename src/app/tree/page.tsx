@@ -2,10 +2,26 @@ import { getAllTechniques } from "@/lib/airtable/techniques";
 import { getAllAthletes } from "@/lib/airtable/athletes";
 import { getAllTrainingSessions } from "@/lib/supabase/trainingSessions";
 import { buildTrainingCountMap, getBeltRank, getBjjStyle } from "@/types/domain";
-import AthleteEntryScreen from "@/components/tree/AthleteEntryScreen";
+import type { Stream } from "@/types/domain";
+import TreeTabs from "@/components/tree/TreeTabs";
+import type { StreamGroup } from "@/components/tree/SkillTreeBrowser";
 
 export const metadata = { title: "스킬트리" };
 export const revalidate = 30;
+
+const STREAM_ORDER: Stream[] = ["가드포지션", "탑포지션", "이스케이프", "스탠딩"];
+
+// 스트림 내 포지션 표시 순서(큐레이션) — 예전 드릴다운 버전에서 그대로 이관
+const POSITION_PRIORITY = [
+  "CG", "HG", "BF", "DLR", "RDLR", "SP", "LS", "RG", "XG", "SLX", "FF", "SG", "KG",
+  "GP", "GB", "GBCG", "GBSP", "GBLS", "GBDLR", "GBBF", "SC", "MT", "KNB", "KB", "NS", "BC",
+  "ME", "SCE", "BD", "KNBE", "NSE",
+  "TD",
+];
+const prio = (id: string) => {
+  const i = POSITION_PRIORITY.indexOf(id);
+  return i === -1 ? 999 : i;
+};
 
 export default async function TreePage() {
   const [techniques, sessions, athletes] = await Promise.all([
@@ -34,6 +50,23 @@ export default async function TreePage() {
     if (t.stream) streamCounts[t.stream] = (streamCounts[t.stream] ?? 0) + (countMap[t.recordId] ?? 0);
   }
   const bjjStyle = getBjjStyle(streamCounts, sessions.length);
+
+  // ── 포지션 탭 데이터: 포지션(부모, parentId=null)별 요약 ──────────────
+  // 예전 레벨링 시스템(Lv.1~4)은 부활시키지 않고 단순 수련 비율만 계산.
+  const positions = techniques.filter((t) => t.parentId === null);
+  const summarize = (posCode: string) => {
+    const children = techniques.filter((t) => t.parentId === posCode);
+    const trainedCount = children.filter((c) => (countMap[c.recordId] ?? 0) > 0).length;
+    return { childCount: children.length, trainedCount };
+  };
+  const groups: StreamGroup[] = STREAM_ORDER.map((stream) => {
+    const list = positions
+      .filter((p) => p.stream === stream)
+      .map((p) => ({ id: p.id, nameKo: p.nameKo, nameEn: p.nameEn, ...summarize(p.id) }))
+      .filter((p) => p.childCount > 0)
+      .sort((a, b) => prio(a.id) - prio(b.id) || a.id.localeCompare(b.id));
+    return { stream, positions: list };
+  }).filter((g) => g.positions.length > 0);
 
   return (
     <div className="flex flex-col" style={{ height: "100dvh" }}>
@@ -67,9 +100,9 @@ export default async function TreePage() {
         </div>
       </header>
 
-      {/* ── 선수 진입 화면 ─────────────────────────────────── */}
+      {/* ── 선수/포지션 이원화 탭 ─────────────────────────────── */}
       <div className="flex-1 min-h-0 pb-16 lg:pb-0">
-        <AthleteEntryScreen athletes={athletes} />
+        <TreeTabs athletes={athletes} groups={groups} />
       </div>
     </div>
   );
