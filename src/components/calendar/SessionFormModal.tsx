@@ -299,43 +299,71 @@ function TechPicker({
     const q = query.trim().toLowerCase();
     const qNoSpace = q.replace(/\s+/g, "");
 
-    const filtered = q
-      ? techniques.filter((t) => {
-          const parent = t.parentId ? techniqueByShortId[t.parentId] : null;
-          const parentNameKo = (parent?.nameKo ?? "").toLowerCase();
-          const parentNameEn = (parent?.nameEn ?? "").toLowerCase();
-          const parentId     = (parent?.id ?? "").toLowerCase();
-          return (
-            t.nameKo.toLowerCase().includes(q) ||
-            t.nameEn.toLowerCase().includes(q) ||
-            t.id.toLowerCase().includes(q) ||
-            parentNameKo.includes(q) || parentNameEn.includes(q) || parentId.includes(q) ||
-            parentNameEn.replace(/\s+/g, "").includes(qNoSpace) ||
-            parentNameKo.replace(/\s+/g, "").includes(qNoSpace)
-          );
-        })
-      : techniques;
+    /**
+     * 검색어 연관성 스코어링 — 이전엔 필터링만 하고 정렬을 안 해서 매칭된
+     * 기술들이 원본 데이터 순서(사실상 무작위)로 나열됐음. "클로즈드"를 쳤을
+     * 때 이름이 정확히 그걸로 시작하는 "클로즈드 가드"가 맨 아래 나오는 등
+     * 불편함 발생 → 매칭 방식별 우선순위를 점수화해서 정렬(2026-09-15).
+     * 점수가 높을수록 연관성 높음: 자기 이름/ID 일치 > 시작 일치 > 포함 >
+     * 포지션(부모)명으로만 매칭된 하위 기술.
+     */
+    function matchScore(t: Technique): number {
+      if (!q) return 0;
+      const nameKo = t.nameKo.toLowerCase();
+      const nameEn = t.nameEn.toLowerCase();
+      const id = t.id.toLowerCase();
+      const nameKoNoSpace = nameKo.replace(/\s+/g, "");
+      const parent = t.parentId ? techniqueByShortId[t.parentId] : null;
+      const parentNameKo = (parent?.nameKo ?? "").toLowerCase();
+      const parentNameEn = (parent?.nameEn ?? "").toLowerCase();
+      const parentId = (parent?.id ?? "").toLowerCase();
+
+      if (nameKo === q || nameEn === q || id === q) return 100;
+      if (nameKo.startsWith(q) || nameEn.startsWith(q) || nameKoNoSpace.startsWith(qNoSpace)) return 90;
+      if (id.startsWith(q)) return 80;
+      if (nameKo.includes(q) || nameEn.includes(q) || nameKoNoSpace.includes(qNoSpace)) return 60;
+      if (id.includes(q)) return 55;
+      if (parentNameKo === q || parentNameEn === q) return 50;
+      if (parentNameKo.startsWith(q) || parentNameEn.startsWith(q)) return 45;
+      if (
+        parentNameKo.includes(q) || parentNameEn.includes(q) || parentId.includes(q) ||
+        parentNameEn.replace(/\s+/g, "").includes(qNoSpace) ||
+        parentNameKo.replace(/\s+/g, "").includes(qNoSpace)
+      ) return 20;
+      return 0;
+    }
+
+    const filtered = q ? techniques.filter((t) => matchScore(t) > 0) : techniques;
 
     // 포지션(부모) 레코드(parentId=null)는 자기 자신의 shortId로 그룹핑해서
     // 그 포지션의 자식 기술들과 같은 그룹에 묶는다 — "클로즈드 가드" 자체를
     // "포지션 전체"로 골라 태그할 수 있게 함(2026-09-15, 이전엔 "기타"에
     // 묻혀서 사실상 찾을 수 없었음).
-    const groups: Record<string, { label: string; shortId: string; parent: Technique | null; list: Technique[] }> = {};
+    const groups: Record<string, { label: string; shortId: string; parent: Technique | null; list: Technique[]; bestScore: number }> = {};
     for (const t of filtered) {
       const isPositionSelf = t.parentId === null;
       const key = t.parentId ?? t.id;
       if (!groups[key]) {
         const parent = isPositionSelf ? t : (techniqueByShortId[key] ?? null);
-        groups[key] = { label: parent?.nameKo ?? t.nameKo, shortId: parent?.id ?? t.id, parent, list: [] };
+        groups[key] = { label: parent?.nameKo ?? t.nameKo, shortId: parent?.id ?? t.id, parent, list: [], bestScore: 0 };
       }
       groups[key].list.push(t);
+      groups[key].bestScore = Math.max(groups[key].bestScore, matchScore(t));
     }
 
-    // 각 그룹 안에서 포지션 자체(전체 수련) 항목이 항상 맨 위에 오도록 정렬
+    // 그룹 내부: 연관성 점수 높은 순(동점이면 포지션 전체 항목 우선)
     for (const group of Object.values(groups)) {
-      group.list.sort((a, b) => Number(a.parentId !== null) - Number(b.parentId !== null));
+      group.list.sort((a, b) => {
+        const scoreDiff = matchScore(b) - matchScore(a);
+        if (scoreDiff !== 0) return scoreDiff;
+        return Number(a.parentId !== null) - Number(b.parentId !== null);
+      });
     }
-    return groups;
+
+    // 그룹 간: 그룹 내 최고 연관성 점수 높은 순 (검색어 없으면 원본 순서 유지)
+    const groupList = Object.entries(groups).map(([key, g]) => ({ key, ...g }));
+    if (q) groupList.sort((a, b) => b.bestScore - a.bestScore);
+    return groupList;
   }, [techniques, query, techniqueByShortId]);
 
   const goalTechniques = useMemo(
@@ -345,7 +373,7 @@ function TechPicker({
     [goalTechRecordIds, techniques],
   );
 
-  const totalResults = Object.values(groupedTechniques).reduce((acc, g) => acc + g.list.length, 0);
+  const totalResults = groupedTechniques.reduce((acc, g) => acc + g.list.length, 0);
   const q = query.trim();
   const exactMatch = q ? techniques.some((t) =>
     t.nameKo.toLowerCase() === q.toLowerCase() || t.nameEn.toLowerCase() === q.toLowerCase()
@@ -364,7 +392,7 @@ function TechPicker({
     if (e.key === "Enter") {
       e.preventDefault();
       if (totalResults === 1) {
-        const only = Object.values(groupedTechniques).flatMap((g) => g.list)[0];
+        const only = groupedTechniques.flatMap((g) => g.list)[0];
         onToggleTech(only.recordId);
         setQuery("");
       } else if (canAddCustom) {
@@ -493,8 +521,8 @@ function TechPicker({
             <p className="text-xs text-text-tertiary py-4 text-center">검색 결과 없음</p>
           ) : (
             <div className="space-y-3">
-              {Object.entries(groupedTechniques).map(([key, group]) => (
-                <div key={key}>
+              {groupedTechniques.map((group) => (
+                <div key={group.key}>
                   <div className="flex items-center gap-1.5 mb-1 px-1">
                     <span className="text-[11px] font-medium text-text-secondary">{group.label}</span>
                     <span className="text-[9px] font-mono text-text-tertiary opacity-50">{group.shortId}</span>
