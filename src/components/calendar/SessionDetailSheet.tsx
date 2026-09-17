@@ -43,7 +43,7 @@ export function SessionDetailSheet({
   const isEmpty = sessions.length === 0;
 
   function handleDelete(sessionId: string) {
-    if (!confirm("이 수련 기록을 삭제할까요?\n(스킬트리 카운트는 자동 차감되지 않음)")) return;
+    if (!confirm("이 수련 기록을 삭제할까요?\n(기술도감 카운트는 자동 차감되지 않음)")) return;
     startTransition(async () => {
       try {
         await deleteTrainingSessionAction(sessionId);

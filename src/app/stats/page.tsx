@@ -17,7 +17,7 @@ export default function StatsPage() {
             <h2 className="text-sm font-semibold text-text-secondary">준비 중</h2>
           </div>
           <p className="text-sm text-text-tertiary">
-            스킬트리로 진척도를 쌓은 다음 단계에서 추가될 예정이에요.
+            기술도감으로 진척도를 쌓은 다음 단계에서 추가될 예정이에요.
           </p>
         </section>
       </div>

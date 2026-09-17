@@ -6,7 +6,7 @@ import type { Stream } from "@/types/domain";
 import TreeTabs from "@/components/tree/TreeTabs";
 import type { StreamGroup } from "@/components/tree/SkillTreeBrowser";
 
-export const metadata = { title: "스킬트리" };
+export const metadata = { title: "기술도감" };
 export const revalidate = 30;
 
 const STREAM_ORDER: Stream[] = ["가드포지션", "탑포지션", "이스케이프", "스탠딩"];
@@ -75,7 +75,7 @@ export default async function TreePage() {
         <div className="flex items-end justify-between">
           <div>
             <h1 className="text-2xl font-black tracking-tight text-text-primary">
-              스킬트리 <span className="text-brand-primary">🌳</span>
+              기술도감 <span className="text-brand-primary">📖</span>
             </h1>
             <p className="text-xs text-text-tertiary mt-0.5">
               {total}개 기술 · {trained}개 수련 중

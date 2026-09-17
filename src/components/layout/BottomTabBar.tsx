@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Calendar, Network, ListOrdered, UserCircle, type LucideIcon } from "lucide-react";
+import { Home, Calendar, BookOpen, ListOrdered, UserCircle, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type Tab = { href: string; label: string; icon: LucideIcon };
@@ -10,7 +10,7 @@ type Tab = { href: string; label: string; icon: LucideIcon };
 const TABS: Tab[] = [
   { href: "/",          label: "홈",       icon: Home },
   { href: "/calendar",  label: "캘린더",   icon: Calendar },
-  { href: "/tree",      label: "스킬트리", icon: Network },
+  { href: "/tree",      label: "기술도감", icon: BookOpen },
   { href: "/sequences", label: "시퀀스",   icon: ListOrdered },
   { href: "/profile",   label: "프로필",   icon: UserCircle },
 ];

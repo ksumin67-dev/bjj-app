@@ -782,7 +782,7 @@ export function SessionFormModal({
                 {state.streak >= 30 ? "전설의 수련러 👑" : state.streak >= 7 ? "🔥 강철 의지!" : `${state.streak}일 연속 수련 중`}
               </p>
             )}
-            <p className="text-xs text-text-tertiary">스킬트리와 시퀀스에 자동 반영됐어요</p>
+            <p className="text-xs text-text-tertiary">기술도감과 시퀀스에 자동 반영됐어요</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="p-5 space-y-5">
