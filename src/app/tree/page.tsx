@@ -13,7 +13,7 @@ const STREAM_ORDER: Stream[] = ["가드포지션", "탑포지션", "이스케이
 
 // 스트림 내 포지션 표시 순서(큐레이션) — 예전 드릴다운 버전에서 그대로 이관
 const POSITION_PRIORITY = [
-  "CG", "HG", "BF", "DLR", "RDLR", "SP", "LS", "RG", "XG", "SLX", "FF", "SG", "KG",
+  "CG", "HG", "BF", "ZG", "DLR", "RDLR", "SP", "LS", "RG", "XG", "SLX", "FF", "SG", "KG",
   "GP", "GB", "GBCG", "GBSP", "GBLS", "GBDLR", "GBBF", "SC", "MT", "KNB", "KB", "NS", "BC",
   "ME", "SCE", "BD", "KNBE", "NSE",
   "TD",
