@@ -1,14 +1,17 @@
 import { getAllTechniques } from "@/lib/airtable/techniques";
 import { getAllAthletes } from "@/lib/airtable/athletes";
 import { getAllTrainingSessions } from "@/lib/supabase/trainingSessions";
-import { buildTrainingCountMap, getBeltRank } from "@/types/domain";
+import { getUserProfile } from "@/lib/supabase/userProfile";
+import { buildTrainingCountMap } from "@/types/domain";
 import type { Stream } from "@/types/domain";
 import TreeTabs from "@/components/tree/TreeTabs";
-import { BeltProgressBar } from "@/components/tree/BeltProgressBar";
+import { ProgressHeader } from "@/components/tree/ProgressHeader";
 import type { StreamGroup } from "@/components/tree/SkillTreeBrowser";
 
 export const metadata = { title: "기술도감" };
-export const revalidate = 30;
+// 벨트/스트라이프는 유저별 프로필(쿠키 기반) 데이터라 정적 재검증과 안 맞음
+// → force-dynamic (calendar/profile/athlete 상세 페이지와 동일 패턴, 2026-09-19).
+export const dynamic = "force-dynamic";
 
 const STREAM_ORDER: Stream[] = ["가드포지션", "탑포지션", "이스케이프", "스탠딩"];
 
@@ -25,15 +28,17 @@ const prio = (id: string) => {
 };
 
 export default async function TreePage() {
-  const [techniques, sessions, athletes] = await Promise.all([
+  const [techniques, sessions, athletes, profile] = await Promise.all([
     getAllTechniques(),
     getAllTrainingSessions(),
     getAllAthletes(),
+    getUserProfile(),
   ]);
 
   const countMap = buildTrainingCountMap(sessions);
 
-  // 총 XP
+  // 총 XP — 이건 "학습 레벨"(게이미피케이션) 산정용이지 벨트가 아님.
+  // 벨트는 profile.belt/stripe(프로필에서 직접 설정한 실제 값)를 그대로 씀.
   const techMap = new Map(techniques.map((t) => [t.recordId, t]));
   let totalXP = 0;
   for (const session of sessions) {
@@ -41,7 +46,6 @@ export default async function TreePage() {
     totalXP += session.sequenceRecordIds.length * 200;
   }
 
-  const beltRank = getBeltRank(totalXP);
   const trained = Object.values(countMap).filter((c) => c > 0).length;
   const total = techniques.length;
 
@@ -73,7 +77,7 @@ export default async function TreePage() {
           </p>
         </div>
 
-        <BeltProgressBar belt={beltRank.belt} totalXp={totalXP} />
+        <ProgressHeader belt={profile.belt} stripe={profile.stripe} totalXp={totalXP} />
       </header>
 
       {/* ── 선수/포지션 이원화 탭 ─────────────────────────────── */}

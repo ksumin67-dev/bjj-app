@@ -169,23 +169,7 @@ export function trainingCountLabel(count: number): string {
   return "익숙";
 }
 
-/**
- * 누적 XP → 띠 레벨
- */
-export type BeltRank = { belt: BeltLevel; label: string; minXp: number; maxXp: number };
-export const BELT_RANKS: BeltRank[] = [
-  { belt: "White Belt",  label: "White Belt",  minXp: 0,      maxXp: 999   },
-  { belt: "Blue Belt",   label: "Blue Belt",   minXp: 1000,   maxXp: 4999  },
-  { belt: "Purple Belt", label: "Purple Belt", minXp: 5000,   maxXp: 14999 },
-  { belt: "Brown Belt",  label: "Brown Belt",  minXp: 15000,  maxXp: 29999 },
-  { belt: "Black Belt",  label: "Black Belt",  minXp: 30000,  maxXp: Infinity },
-];
-
-export function getBeltRank(totalXp: number): BeltRank {
-  return BELT_RANKS.findLast((r) => totalXp >= r.minXp) ?? BELT_RANKS[0];
-}
-
-/** 벨트 한글 표기 (2026-09-18, 기술도감 홈 리디자인에서 처음 사용) */
+/** 벨트 한글 표기 — 프로필에서 직접 설정하는 실제 벨트용 (2026-09-18) */
 export const BELT_LABEL_KO: Record<BeltLevel, string> = {
   "White Belt": "화이트 벨트",
   "Blue Belt": "블루 벨트",
@@ -195,36 +179,58 @@ export const BELT_LABEL_KO: Record<BeltLevel, string> = {
 };
 
 /**
- * 벨트 내 4단 스트라이프 진행률 (2026-09-18 리디자인 — 기술도감 홈 화면의
- * 시그니처 비주얼용). 실제 BJJ처럼 한 벨트를 4개 스트라이프 구간으로 나눠
- * 지금 몇 번째 스트라이프를 채우는 중인지, 다음 스트라이프까지 몇 XP
- * 남았는지 계산한다. 블랙벨트(상한 없음)는 스트라이프 개념이 없어
- * isMaxRank로 별도 처리.
+ * 학습 레벨 (2026-09-19 리네이밍) — 누적 XP 기반 앱 내 게이미피케이션 트랙.
+ *
+ * 이전엔 이 XP 누적치를 "벨트"(White/Blue/Purple...)로 표시했는데, 실제
+ * IBJJF 벨트는 인스트럭터가 승급시켜주는 것이라 사용자가 프로필에 직접
+ * 설정한 진짜 벨트(BeltLevel, BELT_LABEL_KO 참고)와 정면으로 충돌했음
+ * (예: 실제 퍼플벨트인 사용자가 앱 켜면 XP 0이라 화이트벨트로 뜨는 문제).
+ * → 벨트는 프로필 값만 쓰고, 이 트랙은 "레벨"이라는 완전히 다른 이름으로
+ * 분리해 게이미피케이션 재미는 유지하되 정체성 혼동은 없앰.
  */
-export type BeltStripeProgress = {
-  beltLabel: string;
+export type LearningLevel = "Lv.1" | "Lv.2" | "Lv.3" | "Lv.4" | "Lv.5";
+export type LevelRank = { level: LearningLevel; minXp: number; maxXp: number };
+export const LEVEL_RANKS: LevelRank[] = [
+  { level: "Lv.1", minXp: 0,     maxXp: 999   },
+  { level: "Lv.2", minXp: 1000,  maxXp: 4999  },
+  { level: "Lv.3", minXp: 5000,  maxXp: 14999 },
+  { level: "Lv.4", minXp: 15000, maxXp: 29999 },
+  { level: "Lv.5", minXp: 30000, maxXp: Infinity },
+];
+
+export function getLevelRank(totalXp: number): LevelRank {
+  return LEVEL_RANKS.findLast((r) => totalXp >= r.minXp) ?? LEVEL_RANKS[0];
+}
+
+/**
+ * 레벨 내 4단 진행률 — 기술도감 홈 화면의 "학습 레벨" 바 렌더링용.
+ * 한 레벨의 XP 구간을 4등분해서 지금 몇 번째 단계를 채우는 중인지,
+ * 다음 단계까지 몇 XP 남았는지 계산한다. Lv.5(상한 없음)는 isMaxLevel로 처리.
+ */
+export type LevelProgress = {
+  levelLabel: LearningLevel;
   /** 4개 구간 각각의 채움 비율 (0~1) — 진행바 렌더링용 */
   segmentFractions: [number, number, number, number];
-  /** 지금 채우고 있는 스트라이프 번호 (1~4) */
-  currentStripe: number;
-  /** 다음 스트라이프(또는 다음 벨트)까지 남은 XP */
+  /** 지금 채우고 있는 단계 (1~4) */
+  currentStage: number;
+  /** 다음 단계(또는 다음 레벨)까지 남은 XP */
   xpToNext: number;
-  /** 다음 스트라이프까지인지 다음 벨트까지인지 */
+  /** 다음 단계까지인지 다음 레벨까지인지 */
   nextLabel: string;
-  isMaxRank: boolean;
+  isMaxLevel: boolean;
 };
 
-export function getBeltStripeProgress(totalXp: number): BeltStripeProgress {
-  const rank = getBeltRank(totalXp);
+export function getLevelProgress(totalXp: number): LevelProgress {
+  const rank = getLevelRank(totalXp);
 
   if (!Number.isFinite(rank.maxXp)) {
     return {
-      beltLabel: rank.label,
+      levelLabel: rank.level,
       segmentFractions: [1, 1, 1, 1],
-      currentStripe: 4,
+      currentStage: 4,
       xpToNext: 0,
-      nextLabel: "최고 등급",
-      isMaxRank: true,
+      nextLabel: "최고 레벨",
+      isMaxLevel: true,
     };
   }
 
@@ -235,20 +241,19 @@ export function getBeltStripeProgress(totalXp: number): BeltStripeProgress {
   ) as [number, number, number, number];
 
   const segIndexInProgress = Math.min(3, Math.floor(fraction * 4));
-  const currentStripe = segIndexInProgress + 1;
+  const currentStage = segIndexInProgress + 1;
   const segmentSize = rangeSize / 4;
   const nextBoundary = rank.minXp + (segIndexInProgress + 1) * segmentSize;
   const xpToNext = Math.max(0, Math.round(nextBoundary - totalXp));
-  const nextLabel =
-    currentStripe < 4 ? `${currentStripe + 1}번째 스트라이프까지` : "다음 벨트까지";
+  const nextLabel = currentStage < 4 ? "다음 단계까지" : "다음 레벨까지";
 
   return {
-    beltLabel: rank.label,
+    levelLabel: rank.level,
     segmentFractions,
-    currentStripe,
+    currentStage,
     xpToNext,
     nextLabel,
-    isMaxRank: false,
+    isMaxLevel: false,
   };
 }
 
@@ -368,8 +373,8 @@ export function getBjjStyle(streamTotals: Record<string, number>, totalSessions:
 // Technique.difficulty 필드/Airtable 데이터는 그대로 남겨둠(추후 다른 용도로
 // 재사용 가능성 대비) — 다만 UI에서 노출하거나 레벨을 계산하는 코드는 없음.
 // 이전 로직은 git 히스토리(commit 이전) 참고.
-
-/** 벨트 등급 인덱스 (White=0 … Black=4) */
-export function beltIndex(belt: BeltLevel): number {
-  return BELT_RANKS.findIndex((r) => r.belt === belt);
-}
+//
+// (2026-09-19) 예전엔 여기 실제 벨트(BeltLevel) 등급 인덱스를 매기는
+// beltIndex()가 있었는데, XP 기반 BELT_RANKS를 참조하고 있어 학습 레벨/실제
+// 벨트 이원화 과정에서 제거함. 어디서도 import되지 않아 사용처 없음을 확인.
+// 실제 벨트의 순서가 필요하면 ProfileEditor.tsx의 BELTS 배열 참고.

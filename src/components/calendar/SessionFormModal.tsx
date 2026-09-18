@@ -11,8 +11,8 @@ import {
 import type { Technique, Stream, TrainingSession } from "@/types/domain";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { BeltUpCelebration } from "@/components/gamification/BeltUpCelebration";
-import type { BeltLevel } from "@/types/domain";
+import { LevelUpCelebration } from "@/components/gamification/BeltUpCelebration";
+import type { LearningLevel } from "@/types/domain";
 import { useToast } from "@/contexts/ToastContext";
 
 // ── 수정 모드: 저장된 notes 문자열을 기술별 메모 + 전체 메모로 파싱 ─────────────
@@ -610,7 +610,7 @@ export function SessionFormModal({
   const sessionNoteRef = useRef<HTMLTextAreaElement>(null);
 
   const closedRef = useRef(false);
-  const [celebBelt, setCelebBelt] = useState<BeltLevel | null>(null);
+  const [celebLevel, setCelebLevel] = useState<LearningLevel | null>(null);
 
   useEffect(() => {
     if (!createSeq) return;
@@ -624,13 +624,13 @@ export function SessionFormModal({
   useEffect(() => {
     if (state.ok && state.sessionId && !closedRef.current) {
       closedRef.current = true;
-      if (state.beltUp) {
-        setCelebBelt(state.beltUp as BeltLevel);
-        // XP toast separately — belt celebration takes center stage
+      if (state.levelUp) {
+        setCelebLevel(state.levelUp as LearningLevel);
+        // XP toast separately — level celebration takes center stage
         if (state.xpEarned && state.xpEarned > 0) {
           toast.show("xp", "수련 기록 저장 완료!", state.xpEarned);
         }
-        // close modal after belt celebration dismisses
+        // close modal after level celebration dismisses
       } else if (state.xpEarned && state.xpEarned > 0) {
         toast.show("xp", isEditMode ? "수련 기록 수정 완료!" : "수련 기록 저장 완료!", state.xpEarned);
         const t = setTimeout(() => onClose(), 800);
@@ -1025,11 +1025,11 @@ export function SessionFormModal({
         )}
       </motion.div>
       <AnimatePresence>
-        {celebBelt && (
-          <BeltUpCelebration
-            belt={celebBelt}
+        {celebLevel && (
+          <LevelUpCelebration
+            level={celebLevel}
             onDismiss={() => {
-              setCelebBelt(null);
+              setCelebLevel(null);
               onClose();
             }}
           />

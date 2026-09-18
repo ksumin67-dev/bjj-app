@@ -1,33 +1,39 @@
 "use client";
 
 import { useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Trophy } from "lucide-react";
-import type { BeltLevel } from "@/types/domain";
+import type { LearningLevel } from "@/types/domain";
 
-const BELT_STYLE: Record<BeltLevel, { color: string; bg: string; glow: string; emoji: string }> = {
-  "White Belt":  { color: "#E2E8F0", bg: "rgba(226,232,240,0.12)", glow: "rgba(226,232,240,0.3)",  emoji: "🥋" },
-  "Blue Belt":   { color: "#3B82F6", bg: "rgba(59,130,246,0.15)",  glow: "rgba(59,130,246,0.45)", emoji: "💙" },
-  "Purple Belt": { color: "#A855F7", bg: "rgba(168,85,247,0.15)",  glow: "rgba(168,85,247,0.45)", emoji: "💜" },
-  "Brown Belt":  { color: "#92400E", bg: "rgba(180,100,30,0.15)",  glow: "rgba(180,100,30,0.45)", emoji: "🤎" },
-  "Black Belt":  { color: "#F8FAFC", bg: "rgba(248,250,252,0.10)", glow: "rgba(248,250,252,0.5)",  emoji: "🖤" },
+/**
+ * 학습 레벨(XP 게이미피케이션) 업 축하 연출.
+ *
+ * (2026-09-19 리네이밍) 예전엔 이 화면이 "띠 승급!"이라며 White/Blue/Purple
+ * 같은 실제 벨트 이름을 띄웠는데, 이건 순수 XP 누적치라 사용자가 프로필에
+ * 설정한 진짜 벨트와 무관/충돌했음. 이제는 "학습 레벨"이라는 이름과
+ * 앰버 톤 하나로 통일해서 실제 벨트 승급과 절대 헷갈리지 않게 함.
+ */
+const LEVEL_STYLE = {
+  color: "#D9772E",
+  bg: "rgba(217,119,46,0.15)",
+  glow: "rgba(217,119,46,0.45)",
 };
 
-const BELT_MESSAGES: Record<BeltLevel, string> = {
-  "White Belt":  "여정의 시작!",
-  "Blue Belt":   "기초가 탄탄해졌어요!",
-  "Purple Belt": "진정한 실력자가 됐습니다!",
-  "Brown Belt":  "블랙벨트까지 한 걸음!",
-  "Black Belt":  "최고의 경지에 올랐습니다!",
+const LEVEL_MESSAGES: Record<LearningLevel, string> = {
+  "Lv.1": "여정의 시작!",
+  "Lv.2": "꾸준함이 쌓이고 있어요!",
+  "Lv.3": "확실히 익숙해졌습니다!",
+  "Lv.4": "숙련도가 눈에 띄네요!",
+  "Lv.5": "최고 레벨 달성!",
 };
 
 interface Props {
-  belt: BeltLevel;
+  level: LearningLevel;
   onDismiss: () => void;
 }
 
-export function BeltUpCelebration({ belt, onDismiss }: Props) {
-  const s = BELT_STYLE[belt];
+export function LevelUpCelebration({ level, onDismiss }: Props) {
+  const s = LEVEL_STYLE;
 
   useEffect(() => {
     const t = setTimeout(onDismiss, 6000);
@@ -100,13 +106,13 @@ export function BeltUpCelebration({ belt, onDismiss }: Props) {
           transition={{ delay: 0.35, duration: 0.4 }}
         >
           <p className="text-sm font-semibold tracking-[0.2em] uppercase mb-1" style={{ color: s.color }}>
-            띠 승급!
+            레벨 업!
           </p>
           <h2 className="text-3xl font-black text-white tracking-tight">
-            {belt} {s.emoji}
+            {level} 🔥
           </h2>
           <p className="text-base text-text-secondary mt-1">
-            {BELT_MESSAGES[belt]}
+            {LEVEL_MESSAGES[level]}
           </p>
         </motion.div>
 

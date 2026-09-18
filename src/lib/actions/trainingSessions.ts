@@ -11,7 +11,7 @@ import {
 import { createSequence } from "@/lib/supabase/sequences";
 import { recordCustomTechniqueUsage } from "@/lib/airtable/customTechniques";
 import { getAllTechniques } from "@/lib/airtable/techniques";
-import { calculateNewStreak, getStreakBonus, getBeltRank } from "@/types/domain";
+import { calculateNewStreak, getStreakBonus, getLevelRank } from "@/types/domain";
 import type { Stream } from "@/types/domain";
 
 export type CreateSessionFormState = {
@@ -21,7 +21,8 @@ export type CreateSessionFormState = {
   xpEarned?: number;
   streak?: number;
   streakBonus?: number;
-  beltUp?: string | null;
+  /** 학습 레벨(XP 게이미피케이션) 승급 — 실제 벨트와는 무관 (2026-09-19) */
+  levelUp?: string | null;
 };
 
 // ── 공통 helpers ────────────────────────────────────────────────────────────
@@ -140,9 +141,9 @@ export async function createTrainingSessionAction(
 
   const xpEarned  = baseXp + streakBonus;
   const existingXp = existingSessions.reduce((sum, s) => sum + (s.xpEarned ?? 0), 0);
-  const previousBelt = getBeltRank(existingXp).belt;
-  const newBelt      = getBeltRank(existingXp + xpEarned).belt;
-  const beltUp       = previousBelt !== newBelt ? newBelt : null;
+  const previousLevel = getLevelRank(existingXp).level;
+  const newLevel       = getLevelRank(existingXp + xpEarned).level;
+  const levelUp        = previousLevel !== newLevel ? newLevel : null;
 
   const input: CreateTrainingSessionInput = {
     date,
@@ -170,7 +171,7 @@ export async function createTrainingSessionAction(
   }
 
   revalidatePath("/", "layout");
-  return { ok: true, sessionId, xpEarned, streak, streakBonus, beltUp };
+  return { ok: true, sessionId, xpEarned, streak, streakBonus, levelUp };
 }
 
 // ── updateTrainingSessionAction ──────────────────────────────────────────────
