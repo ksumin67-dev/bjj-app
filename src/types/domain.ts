@@ -185,6 +185,73 @@ export function getBeltRank(totalXp: number): BeltRank {
   return BELT_RANKS.findLast((r) => totalXp >= r.minXp) ?? BELT_RANKS[0];
 }
 
+/** 벨트 한글 표기 (2026-09-18, 기술도감 홈 리디자인에서 처음 사용) */
+export const BELT_LABEL_KO: Record<BeltLevel, string> = {
+  "White Belt": "화이트 벨트",
+  "Blue Belt": "블루 벨트",
+  "Purple Belt": "퍼플 벨트",
+  "Brown Belt": "브라운 벨트",
+  "Black Belt": "블랙 벨트",
+};
+
+/**
+ * 벨트 내 4단 스트라이프 진행률 (2026-09-18 리디자인 — 기술도감 홈 화면의
+ * 시그니처 비주얼용). 실제 BJJ처럼 한 벨트를 4개 스트라이프 구간으로 나눠
+ * 지금 몇 번째 스트라이프를 채우는 중인지, 다음 스트라이프까지 몇 XP
+ * 남았는지 계산한다. 블랙벨트(상한 없음)는 스트라이프 개념이 없어
+ * isMaxRank로 별도 처리.
+ */
+export type BeltStripeProgress = {
+  beltLabel: string;
+  /** 4개 구간 각각의 채움 비율 (0~1) — 진행바 렌더링용 */
+  segmentFractions: [number, number, number, number];
+  /** 지금 채우고 있는 스트라이프 번호 (1~4) */
+  currentStripe: number;
+  /** 다음 스트라이프(또는 다음 벨트)까지 남은 XP */
+  xpToNext: number;
+  /** 다음 스트라이프까지인지 다음 벨트까지인지 */
+  nextLabel: string;
+  isMaxRank: boolean;
+};
+
+export function getBeltStripeProgress(totalXp: number): BeltStripeProgress {
+  const rank = getBeltRank(totalXp);
+
+  if (!Number.isFinite(rank.maxXp)) {
+    return {
+      beltLabel: rank.label,
+      segmentFractions: [1, 1, 1, 1],
+      currentStripe: 4,
+      xpToNext: 0,
+      nextLabel: "최고 등급",
+      isMaxRank: true,
+    };
+  }
+
+  const rangeSize = rank.maxXp - rank.minXp + 1;
+  const fraction = Math.min(1, Math.max(0, (totalXp - rank.minXp) / rangeSize));
+  const segmentFractions = [0, 1, 2, 3].map((i) =>
+    Math.min(1, Math.max(0, fraction * 4 - i)),
+  ) as [number, number, number, number];
+
+  const segIndexInProgress = Math.min(3, Math.floor(fraction * 4));
+  const currentStripe = segIndexInProgress + 1;
+  const segmentSize = rangeSize / 4;
+  const nextBoundary = rank.minXp + (segIndexInProgress + 1) * segmentSize;
+  const xpToNext = Math.max(0, Math.round(nextBoundary - totalXp));
+  const nextLabel =
+    currentStripe < 4 ? `${currentStripe + 1}번째 스트라이프까지` : "다음 벨트까지";
+
+  return {
+    beltLabel: rank.label,
+    segmentFractions,
+    currentStripe,
+    xpToNext,
+    nextLabel,
+    isMaxRank: false,
+  };
+}
+
 // ── 스트릭(연속 수련일) ──────────────────────────────────────────────────────
 
 /**

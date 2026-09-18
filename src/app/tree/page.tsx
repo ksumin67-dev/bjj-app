@@ -4,6 +4,7 @@ import { getAllTrainingSessions } from "@/lib/supabase/trainingSessions";
 import { buildTrainingCountMap, getBeltRank, getBjjStyle } from "@/types/domain";
 import type { Stream } from "@/types/domain";
 import TreeTabs from "@/components/tree/TreeTabs";
+import { BeltProgressBar } from "@/components/tree/BeltProgressBar";
 import type { StreamGroup } from "@/components/tree/SkillTreeBrowser";
 
 export const metadata = { title: "기술도감" };
@@ -71,32 +72,21 @@ export default async function TreePage() {
   return (
     <div className="flex flex-col" style={{ height: "100dvh" }}>
       {/* ── 헤더 ─────────────────────────────────────────────── */}
-      <header className="px-4 pt-5 pb-3 shrink-0 space-y-3">
-        <div className="flex items-end justify-between">
-          <div>
-            <h1 className="text-2xl font-black tracking-tight text-text-primary">
-              기술도감 <span className="text-brand-primary">📖</span>
-            </h1>
-            <p className="text-xs text-text-tertiary mt-0.5">
-              {total}개 기술 · {trained}개 수련 중
-            </p>
-          </div>
-          <div className="text-right">
-            <div className="text-xs text-text-tertiary">{beltRank.label}</div>
-            <span className="text-lg font-black text-brand-primary tabular-nums">{totalXP.toLocaleString()}</span>
-            <span className="text-xs text-text-tertiary ml-1">XP</span>
-          </div>
+      <header className="px-4 pt-5 pb-4 shrink-0 space-y-4">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-text-primary">기술도감</h1>
+          <p className="text-xs text-text-tertiary mt-0.5">
+            {total}개 기술 · {trained}개 수련 중
+          </p>
         </div>
 
-        {/* BJJ 스타일 카드 */}
-        <div className="rounded-2xl px-4 py-3 flex items-center gap-4 bg-bg-elevated border border-border-subtle">
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2">
-              <span className="text-xl">{bjjStyle.emoji}</span>
-              <span className="text-sm font-black text-text-primary">{bjjStyle.label}</span>
-            </div>
-            <p className="text-[11px] text-text-tertiary mt-0.5 truncate">{bjjStyle.desc}</p>
-          </div>
+        <BeltProgressBar belt={beltRank.belt} totalXp={totalXP} />
+
+        {/* BJJ 스타일 — 카드 박스 없이 한 줄 캡션으로 (2026-09-18 리디자인) */}
+        <div className="flex items-center gap-1.5 pt-3 border-t border-border-subtle">
+          <span className="text-sm">{bjjStyle.emoji}</span>
+          <span className="text-[11px] font-semibold text-text-secondary">{bjjStyle.label}</span>
+          <span className="text-[11px] text-text-tertiary truncate">· {bjjStyle.desc}</span>
         </div>
       </header>
 

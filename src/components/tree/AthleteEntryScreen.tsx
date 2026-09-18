@@ -4,21 +4,22 @@
  * AthleteEntryScreen — 선수 중심 스킬트리 진입 화면.
  * SkillTreeBrowser(스트림 세그먼트 → 포지션 카드)를 완전 교체 (2026-09-14 결정).
  *
- * 구성: 이달의 추천 배너(미니 히어로카드) → 스타일 태그 탭 → 선수 리스트.
- * 리스트 행의 오른쪽 칩은 임의 스탯이 아니라 선수의 실제 커리어 성과(heroStat/heroLabel).
+ * 2026-09-18 리디자인: "이달의 추천" 히어로카드 캐러셀(박스 중첩)을 제거하고
+ * 이 화면의 히어로 모먼트는 page.tsx의 벨트 진행바 하나로 집중시킴.
+ * 대신 최신 등록 선수 2명만 가볍게 보여주는 "최근 추가"로 축소.
+ * 리스트도 박스 카드 → 헤어라인 구분선 플랫 리스트로 전환, 스탯 숫자는
+ * 선수별 색이 아니라 브랜드 액센트 하나로 통일(데이터=액센트 색 원칙).
  */
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { AthleteAvatar } from "./AthleteAvatar";
-import { AthleteHeroCard } from "./AthleteHeroCard";
 import { getAthletePhoto } from "@/lib/athletePhotos";
 import { STYLE_TAG_META, STYLE_TAG_ORDER, STYLE_TAG_FALLBACK } from "@/types/domain";
 import type { Athlete, StyleTag } from "@/types/domain";
 
 const DEFAULT_ACCENT = STYLE_TAG_FALLBACK.color;
-const DEFAULT_GLOW = STYLE_TAG_FALLBACK.glow;
 
 function tagMeta(t: StyleTag) {
   return STYLE_TAG_META[t] ?? STYLE_TAG_FALLBACK;
@@ -29,10 +30,6 @@ function primaryTag(a: Athlete): StyleTag | null {
 function accentFor(a: Athlete): string {
   const t = primaryTag(a);
   return t ? tagMeta(t).color : DEFAULT_ACCENT;
-}
-function glowFor(a: Athlete): string {
-  const t = primaryTag(a);
-  return t ? tagMeta(t).glow : DEFAULT_GLOW;
 }
 
 export default function AthleteEntryScreen({ athletes }: { athletes: Athlete[] }) {
@@ -48,10 +45,10 @@ export default function AthleteEntryScreen({ athletes }: { athletes: Athlete[] }
 
   // 최신 등록순 정렬 (2026-09-18) — heroStat은 선수마다 단위가 다른 필드
   // (우승 횟수/나이/포지션명 혼재)라 크기순 비교가 무의미함이 확인되어 교체.
-  const featured = useMemo(() => {
+  const recentlyAdded = useMemo(() => {
     return [...athletes]
       .sort((a, b) => (b.createdTime || "").localeCompare(a.createdTime || ""))
-      .slice(0, 4);
+      .slice(0, 2);
   }, [athletes]);
 
   if (athletes.length === 0) {
@@ -66,29 +63,43 @@ export default function AthleteEntryScreen({ athletes }: { athletes: Athlete[] }
 
   return (
     <div className="flex flex-col h-full">
-      {/* 이달의 추천 — 미니 히어로카드 가로 스크롤 */}
-      <div className="px-4 pt-1 pb-3 shrink-0">
-        <span className="text-[10px] uppercase tracking-widest font-semibold text-text-tertiary">
-          이달의 추천
-        </span>
-        <div className="flex gap-2.5 mt-2 overflow-x-auto pb-1">
-          {featured.map((a) => (
-            <Link key={a.recordId} href={`/tree/athlete/${a.recordId}`}>
-              <AthleteHeroCard athlete={a} accent={accentFor(a)} glow={glowFor(a)} />
-            </Link>
-          ))}
+      {/* 최근 추가 — 박스 없이 아바타+텍스트 인라인 페어 2개만 (2026-09-18) */}
+      {recentlyAdded.length > 0 && (
+        <div className="px-4 pt-1 pb-3 shrink-0">
+          <span className="text-[10px] tracking-[0.5px] font-semibold text-text-tertiary">
+            최근 추가
+          </span>
+          <div className="flex gap-5 mt-2.5">
+            {recentlyAdded.map((a) => (
+              <Link key={a.recordId} href={`/tree/athlete/${a.recordId}`} className="flex items-center gap-2 min-w-0">
+                <AthleteAvatar
+                  color={accentFor(a)}
+                  size={30}
+                  photoUrl={getAthletePhoto(a.recordId)}
+                  alt={a.nameKo}
+                />
+                <div className="min-w-0">
+                  <p className="text-[12px] font-bold text-text-primary truncate">{a.nameKo}</p>
+                  <p className="text-[9.5px] text-text-tertiary truncate">{a.heroLabel}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* 스타일 태그 탭 */}
-      <div className="px-3 pb-2 shrink-0 flex gap-1.5 overflow-x-auto">
+      <div className="mx-4 h-px bg-border-subtle shrink-0" />
+
+      {/* 스타일 태그 탭 — 플랫 아웃라인 (2026-09-18, 채워진 필 대신 테두리만) */}
+      <div className="px-3 pt-3 pb-2 shrink-0 flex gap-1.5 overflow-x-auto">
         <button
           onClick={() => setActive("전체")}
           className={cn(
-            "px-3 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap transition-colors duration-base",
-            active === "전체" ? "text-white" : "bg-bg-elevated text-text-tertiary hover:bg-bg-hover",
+            "px-3 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap border transition-colors duration-base",
+            active === "전체"
+              ? "text-text-inverse bg-brand-primary border-brand-primary"
+              : "text-text-tertiary border-border-subtle hover:border-border-default",
           )}
-          style={active === "전체" ? { backgroundColor: DEFAULT_ACCENT } : {}}
         >
           전체 {athletes.length}
         </button>
@@ -100,10 +111,10 @@ export default function AthleteEntryScreen({ athletes }: { athletes: Athlete[] }
               key={tag}
               onClick={() => setActive(tag)}
               className={cn(
-                "px-3 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap transition-colors duration-base",
-                isActive ? "text-white" : "bg-bg-elevated text-text-tertiary hover:bg-bg-hover",
+                "px-3 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap border transition-colors duration-base",
+                isActive ? "text-white" : "text-text-tertiary border-border-subtle hover:border-border-default",
               )}
-              style={isActive ? { backgroundColor: tagMeta(tag).color } : {}}
+              style={isActive ? { backgroundColor: tagMeta(tag).color, borderColor: tagMeta(tag).color } : {}}
             >
               {tag} {count}
             </button>
@@ -112,35 +123,35 @@ export default function AthleteEntryScreen({ athletes }: { athletes: Athlete[] }
       </div>
 
       {/* 섹션 라벨 */}
-      <div className="px-4 pb-2 shrink-0">
-        <span className="text-[10px] uppercase tracking-[1.5px] font-bold text-text-tertiary">
+      <div className="px-4 pb-1 shrink-0">
+        <span className="text-[10px] tracking-[0.5px] font-semibold text-text-tertiary">
           {active === "전체" ? "전체 선수" : active} · {filtered.length}명
         </span>
       </div>
 
-      {/* 선수 리스트 */}
-      <div className="flex-1 min-h-0 overflow-y-auto px-3 pb-4 space-y-2.5">
+      {/* 선수 리스트 — 박스 카드 대신 헤어라인 구분선 플랫 리스트 (2026-09-18) */}
+      <div className="flex-1 min-h-0 overflow-y-auto px-4 pb-4">
         {filtered.map((a) => (
           <Link
             key={a.recordId}
             href={`/tree/athlete/${a.recordId}`}
-            className="group flex items-center gap-3 rounded-2xl border border-border-subtle bg-bg-elevated p-3.5 transition-all duration-base ease-out-soft hover:bg-bg-hover hover:border-border-default active:scale-[0.985]"
+            className="flex items-center gap-3 py-3 border-b border-border-subtle last:border-b-0 active:opacity-70 transition-opacity duration-fast"
           >
             <AthleteAvatar
               color={accentFor(a)}
-              size={34}
+              size={36}
               photoUrl={getAthletePhoto(a.recordId)}
               alt={a.nameKo}
             />
             <div className="flex-1 min-w-0">
               <h3 className="text-[13.5px] font-bold truncate text-text-primary">{a.nameKo}</h3>
-              <p className="text-[10px] text-text-tertiary truncate">{a.beltAcademy}</p>
+              <p className="text-[10.5px] text-text-tertiary truncate mt-0.5">{a.beltAcademy}</p>
             </div>
             <div className="flex flex-col items-end shrink-0 pl-1">
-              <span className="text-[12px] font-black tabular-nums" style={{ color: accentFor(a) }}>
+              <span className="text-[17px] font-bold tabular-nums text-brand-primary">
                 {a.heroStat}
               </span>
-              <span className="text-[8px] text-text-tertiary whitespace-nowrap">{a.heroLabel}</span>
+              <span className="text-[8.5px] text-text-tertiary whitespace-nowrap">{a.heroLabel}</span>
             </div>
           </Link>
         ))}

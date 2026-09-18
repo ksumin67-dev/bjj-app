@@ -39,14 +39,16 @@
   --border-subtle:  rgba(255, 255, 255, 0.05);
   --border-default: rgba(255, 255, 255, 0.08);
   --border-strong:  rgba(255, 255, 255, 0.12);
-  --border-focus:   #7B61FF;
+  --border-focus:   #D9772E;
 
-  /* ── 브랜드: 퍼플 ────────────────────────── */
-  --brand-primary: #7B61FF;
-  --brand-hover:   #6B4FEF;
-  --brand-pressed: #5B3FDF;
-  --brand-subtle:  rgba(123, 97, 255, 0.15);
-  --brand-glow:    rgba(123, 97, 255, 0.3);
+  /* ── 브랜드: 앰버 (2026-09-18 리디자인 — 퍼플→앰버, "AI스러운 다크 SaaS"
+     느낌을 벗고 미니멀 프리미엄 피트니스 앱 톤으로 전환. 토큰만 바꾸면
+     brand-primary를 참조하는 모든 화면에 자동 반영됨) ────────────────── */
+  --brand-primary: #D9772E;
+  --brand-hover:   #C6691F;
+  --brand-pressed: #B35E1C;
+  --brand-subtle:  rgba(217, 119, 46, 0.15);
+  --brand-glow:    rgba(217, 119, 46, 0.3);
 
   /* Semantic */
   --success: #34D399;
@@ -101,7 +103,7 @@
   --shadow-card:  0 2px 12px rgba(0, 0, 0, 0.5);
   --shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.6);
   --shadow-modal: 0 -8px 40px rgba(0, 0, 0, 0.75);
-  --glow-active:  0 0 0 2px rgba(123, 97, 255, 0.4), 0 0 16px rgba(123, 97, 255, 0.25);
+  --glow-active:  0 0 0 2px rgba(217, 119, 46, 0.4), 0 0 16px rgba(217, 119, 46, 0.25);
 
   /* Motion */
   --motion-fast:   120ms;
