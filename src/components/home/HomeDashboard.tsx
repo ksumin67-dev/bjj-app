@@ -3,7 +3,7 @@ import { getBjjStyle, calculateStreak } from "@/types/domain";
 import type { UserProfile } from "@/lib/supabase/userProfile";
 import Link from "next/link";
 import { Swords, Shield, Zap, Users, type LucideIcon } from "lucide-react";
-import { ArrowRight, Bell, Dumbbell, Flame, Calendar, Check, Heart } from "lucide-react";
+import { ArrowRight, Bell, Dumbbell, Flame, Check, Heart } from "lucide-react";
 
 // ── 상수 ───────────────────────────────────────────────────────────────────
 
@@ -316,9 +316,10 @@ export function HomeDashboard({
         {!hasTodaySession ? (
           /* 미수련 → CTA 섹션 */
           <section style={{ marginBottom: "20px" }}>
-            <p className="text-[10px] tracking-[0.5px] font-semibold mb-2" style={{ color: "#8A8A94" }}>
-              오늘의 수련
-            </p>
+            <div className="flex items-center gap-1.5 mb-3">
+              <Flame size={16} color="#D9772E" />
+              <h2 className="text-[14.5px] font-bold text-white">오늘의 수련</h2>
+            </div>
 
             <div className="flex items-center gap-3 mb-3">
               <div
@@ -328,29 +329,26 @@ export function HomeDashboard({
                 <TodayStyleIcon size={20} color="#D9772E" />
               </div>
               <div className="min-w-0">
-                <h2 className="text-[15px] font-bold text-white leading-snug">
+                <p className="text-sm font-bold text-white leading-snug">
                   {bjjStyle.label}
-                </h2>
-                <p className="text-xs mt-0.5 truncate" style={{ color: "#8A8A94" }}>
+                </p>
+                <p className="text-xs font-normal mt-0.5 truncate" style={{ color: "#8A8A94" }}>
                   {bjjStyle.desc}
                 </p>
               </div>
             </div>
 
-            {/* 수치 행 */}
-            <div className="flex items-center gap-3.5 mb-3 text-xs" style={{ color: "#8A8A94" }}>
+            {/* 수치 행 — 숫자만 볼드+브랜드색, 나머지는 레귤러 */}
+            <div className="flex items-center gap-3.5 mb-3 text-xs font-normal" style={{ color: "#8A8A94" }}>
               <span className="inline-flex items-center gap-1">
-                <Flame size={13} color="#D9772E" />
-                이번 주 <span className="font-semibold text-white">{weekXp.toLocaleString()} XP</span>
+                이번 주 <span className="font-bold" style={{ color: "#D9772E" }}>{weekXp.toLocaleString()} XP</span>
               </span>
               <span className="inline-flex items-center gap-1">
-                <Calendar size={13} />
-                <span className="font-semibold text-white">{weekDayCount}일</span> 수련
+                <span className="font-bold text-white">{weekDayCount}일</span> 수련
               </span>
               {streak >= 2 && (
                 <span className="inline-flex items-center gap-1">
-                  <Flame size={13} color="#D9772E" />
-                  <span className="font-semibold" style={{ color: "#D9772E" }}>{streak}일 스트릭</span>
+                  <span className="font-bold" style={{ color: "#D9772E" }}>{streak}일 스트릭</span>
                 </span>
               )}
             </div>
@@ -367,9 +365,10 @@ export function HomeDashboard({
         ) : (
           /* 수련 완료 섹션 */
           <section style={{ marginBottom: "20px" }}>
-            <p className="text-[10px] tracking-[0.5px] font-semibold mb-2" style={{ color: "#8A8A94" }}>
-              오늘의 수련
-            </p>
+            <div className="flex items-center gap-1.5 mb-3">
+              <Flame size={16} color="#D9772E" />
+              <h2 className="text-[14.5px] font-bold text-white">오늘의 수련</h2>
+            </div>
             <div className="flex items-center gap-3 mb-3">
               <div
                 className="flex items-center justify-center shrink-0"
@@ -378,19 +377,17 @@ export function HomeDashboard({
                 <Check size={20} color="#34D399" />
               </div>
               <div className="min-w-0">
-                <h2 className="text-[15px] font-bold text-white leading-snug">오늘 수련 완료!</h2>
-                <p className="text-xs mt-0.5" style={{ color: "#8A8A94" }}>훌륭해요. 오늘도 도장에 나왔군요.</p>
+                <p className="text-sm font-bold text-white leading-snug">오늘 수련 완료!</p>
+                <p className="text-xs font-normal mt-0.5" style={{ color: "#8A8A94" }}>훌륭해요. 오늘도 도장에 나왔군요.</p>
               </div>
             </div>
-            <div className="flex items-center gap-3.5 text-xs" style={{ color: "#8A8A94" }}>
+            <div className="flex items-center gap-3.5 text-xs font-normal" style={{ color: "#8A8A94" }}>
               <span className="inline-flex items-center gap-1">
-                <Flame size={13} color="#D9772E" />
-                이번 주 <span className="font-semibold text-white">{weekXp.toLocaleString()} XP</span>
+                이번 주 <span className="font-bold" style={{ color: "#D9772E" }}>{weekXp.toLocaleString()} XP</span>
               </span>
               {streak >= 2 && (
                 <span className="inline-flex items-center gap-1">
-                  <Flame size={13} color="#D9772E" />
-                  <span className="font-semibold" style={{ color: "#D9772E" }}>{streak}일 연속</span>
+                  <span className="font-bold" style={{ color: "#D9772E" }}>{streak}일 연속</span>
                 </span>
               )}
             </div>
@@ -415,43 +412,39 @@ export function HomeDashboard({
 
         {/* ── 내가 배우고 싶은 기술(학습 목표) ─────────────────────────── */}
         {goalTechniques.length > 0 && (
-          <section
-            className="rounded-2xl p-4"
-            style={{ backgroundColor: "#1A1A24", border: "1px solid rgba(255,255,255,0.1)", marginBottom: "20px" }}
-          >
-            <div className="flex items-center gap-2 mb-3">
-              <Heart size={13} fill="#F87171" color="#F87171" />
-              <p className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: "#6B7280" }}>
-                내가 배우고 싶은 기술
-              </p>
-              <span className="text-[10px] tabular-nums font-semibold ml-auto" style={{ color: "#3A3A4A" }}>
+          <section style={{ marginBottom: "20px" }}>
+            <div className="flex items-center gap-1.5 mb-2">
+              <Heart size={14} fill="#F87171" color="#F87171" />
+              <h2 className="text-[14.5px] font-bold text-white">내가 배우고 싶은 기술</h2>
+              <span className="text-[11px] font-normal ml-auto" style={{ color: "#5A5A64" }}>
                 {goalTechniques.length}개
               </span>
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-              {goalTechniques.map(({ technique: t, athleteName, trained }) => (
+            <div>
+              {goalTechniques.map(({ technique: t, athleteName, trained }, i) => (
                 <Link
                   key={t.recordId}
                   href={`/tree/${t.parentId ?? ""}/${t.id}`}
-                  className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 active:scale-[0.98] transition-transform duration-fast"
-                  style={{ backgroundColor: "#22222E" }}
+                  className="flex items-center gap-2.5 py-2.5 active:opacity-70 transition-opacity duration-fast"
+                  style={{
+                    borderBottom: i < goalTechniques.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
+                  }}
                 >
                   <div className="flex-1 min-w-0">
-                    <span className="text-sm font-semibold text-white truncate block">{t.nameKo}</span>
+                    <span className="text-[13.5px] font-normal text-white truncate block">{t.nameKo}</span>
                     {athleteName && (
-                      <span className="text-[10px] truncate block" style={{ color: "#6B7280" }}>{athleteName}</span>
+                      <span className="text-[10.5px] font-normal truncate block" style={{ color: "#8A8A94" }}>{athleteName}</span>
                     )}
                   </div>
                   <span
                     className="text-[10px] px-2 py-0.5 rounded-full font-semibold shrink-0"
                     style={{
                       backgroundColor: trained ? "rgba(52,211,153,0.15)" : "rgba(255,255,255,0.06)",
-                      color: trained ? "#34D399" : "#6B7280",
+                      color: trained ? "#34D399" : "#8A8A94",
                     }}
                   >
                     {trained ? "수련중" : "미수련"}
                   </span>
-                  <ArrowRight size={12} style={{ color: "#F87171" }} className="shrink-0" />
                 </Link>
               ))}
             </div>
@@ -460,83 +453,63 @@ export function HomeDashboard({
 
         {/* ── 약점 스트림 카드 ───────────────────────────────────────── */}
         {weakness && (() => {
-          const wCap   = CAPSULE[weakness.weakestStream];
           const topCap = CAPSULE[weakness.topStream];
           return (
-            <section
-              className="rounded-2xl p-4"
-              style={{ backgroundColor: "#1A1A24", border: "1px solid rgba(255,255,255,0.1)", marginBottom: "20px" }}
-            >
+            <section style={{ marginBottom: "20px" }}>
               {/* 헤더 */}
-              <div className="flex items-center gap-2 mb-3">
-                <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: "#F87171", flexShrink: 0 }} />
-                <p className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: "#6B7280" }}>
-                  약점 스트림 감지
+              <div className="flex items-center gap-1.5 mb-3">
+                <Zap size={15} color="#F87171" />
+                <h2 className="text-[14.5px] font-bold text-white">약점 스트림 감지</h2>
+              </div>
+
+              {/* 진단 콜아웃 — 왼쪽 액센트 바 + 옅은 레드 배경으로 아래
+                  추천 리스트와 시각적으로 분리 (2026-09-19) */}
+              <div
+                className="flex items-center justify-between gap-3 rounded-xl px-3.5 py-3 mb-4"
+                style={{ backgroundColor: "rgba(248,113,113,0.08)", borderLeft: "3px solid #F87171" }}
+              >
+                <div>
+                  <p className="text-[13.5px] font-bold leading-tight text-white">
+                    {CAPSULE[weakness.weakestStream].label} 강화 필요
+                  </p>
+                  <p className="text-[11px] font-normal mt-0.5" style={{ color: "#8A8A94" }}>
+                    {topCap.label} 대비 수련 비율 격차
+                  </p>
+                </div>
+                <p className="text-[17px] font-bold tabular-nums shrink-0" style={{ color: "#F87171" }}>
+                  −{weakness.gapPct}%p
                 </p>
               </div>
 
-              {/* 격차 강조 행 */}
-              <div
-                className="flex items-center justify-between rounded-xl px-3 py-3 mb-4"
-                style={{ backgroundColor: "rgba(248,113,113,0.07)", border: "1px solid rgba(248,113,113,0.18)" }}
-              >
-                <div className="flex items-center gap-3">
-                  <wCap.IconCmp size={24} color="#FCA5A5" />
-                  <div>
-                    <p className="text-sm font-black leading-tight" style={{ color: "#FCA5A5" }}>
-                      {wCap.label} 강화 필요
-                    </p>
-                    <p className="text-[11px] mt-0.5" style={{ color: "#6B7280" }}>
-                      {topCap.label} 대비 수련 비율 격차
-                    </p>
-                  </div>
-                </div>
-                <div className="text-right shrink-0">
-                  <p className="text-lg font-black tabular-nums" style={{ color: "#F87171" }}>
-                    −{weakness.gapPct}%p
-                  </p>
-                  <p className="text-[9px]" style={{ color: "#6B7280" }}>격차</p>
-                </div>
-              </div>
-
-              {/* 추천 기술 */}
+              {/* 추천 기술 — 진단과 구분되는 플랫 리스트 */}
               {weakness.recommendations.length > 0 && (
                 <div>
-                  <p className="text-[10px] uppercase tracking-widest font-semibold mb-2" style={{ color: "#6B7280" }}>
+                  <p className="text-[11px] font-semibold mb-1" style={{ color: "#8A8A94" }}>
                     지금 연습하면 좋은 기술
                   </p>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                    {weakness.recommendations.map((t) => {
-                      const cnt = trainingCountMap[t.recordId] ?? 0;
-                      return (
-                        <Link
-                          key={t.recordId}
-                          href={`/tree/${t.parentId ?? ""}/${t.recordId}`}
-                          className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 active:scale-[0.98] transition-transform duration-fast"
-                          style={{ backgroundColor: "#22222E" }}
-                        >
-                          <wCap.IconCmp size={14} color="#F87171" />
-                          <span className="flex-1 text-sm font-semibold text-white truncate">
-                            {t.nameKo}
-                          </span>
-                          {t.xpValue != null && (
-                            <span
-                              className="text-[9px] px-2 py-0.5 rounded-full font-bold shrink-0"
-                              style={{ backgroundColor: "#D9772E26", color: "#D9772E" }}
-                            >
-                              XP {t.xpValue}
-                            </span>
-                          )}
+                  <div>
+                    {weakness.recommendations.map((t, i) => (
+                      <Link
+                        key={t.recordId}
+                        href={`/tree/${t.parentId ?? ""}/${t.recordId}`}
+                        className="flex items-center gap-2.5 py-2.5 active:opacity-70 transition-opacity duration-fast"
+                        style={{
+                          borderBottom: i < weakness.recommendations.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
+                        }}
+                      >
+                        <span className="flex-1 text-[13px] font-normal text-white truncate">
+                          {t.nameKo}
+                        </span>
+                        {t.xpValue != null && (
                           <span
-                            className="text-[10px] px-2 py-0.5 rounded-full font-semibold shrink-0"
-                            style={{ backgroundColor: "rgba(255,255,255,0.06)", color: "#8A8A94" }}
+                            className="text-[9.5px] px-2 py-0.5 rounded-full font-bold shrink-0"
+                            style={{ backgroundColor: "#D9772E26", color: "#D9772E" }}
                           >
-                            {cnt === 0 ? "미수련" : `${cnt}회`}
+                            XP {t.xpValue}
                           </span>
-                          <ArrowRight size={12} style={{ color: "#8A8A94" }} className="shrink-0" />
-                        </Link>
-                      );
-                    })}
+                        )}
+                      </Link>
+                    ))}
                   </div>
                 </div>
               )}
