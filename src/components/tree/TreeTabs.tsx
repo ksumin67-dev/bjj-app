@@ -38,7 +38,7 @@ export default function TreeTabs({
   return (
     <div>
       {/* 탭 스위처 — 스크롤해도 항상 보이도록 sticky */}
-      <div className="sticky top-0 z-sticky bg-bg-base/95 backdrop-blur-md px-4 py-2.5 border-b border-border-subtle/70">
+      <div className="sticky top-0 z-sticky bg-bg-base px-4 py-2.5 border-b border-border-subtle">
         <div className="relative flex gap-1 p-1 rounded-2xl bg-bg-elevated">
           {TABS.map(({ key, label }) => {
             const active = tab === key;
