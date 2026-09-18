@@ -3,10 +3,9 @@
 import { useState, useMemo } from "react";
 import {
   ChevronLeft, ChevronRight, Plus, Flame, Trophy, Activity,
-  Dumbbell, ArrowRight, LayoutList, CalendarDays, ChevronDown,
+  Dumbbell, Check, LayoutList, CalendarDays, ChevronDown,
 } from "lucide-react";
 import type { Technique, Sequence, TrainingSession } from "@/types/domain";
-import { getStreakBonus } from "@/types/domain";
 import { SessionFormModal } from "./SessionFormModal";
 import { SessionDetailSheet } from "./SessionDetailSheet";
 import { cn } from "@/lib/utils";
@@ -172,24 +171,21 @@ export function CalendarHome({
   return (
     <div className="space-y-6 pb-24">
 
-      {/* ── 헤더 ── */}
+      {/* ── 헤더 — 스트릭 배지를 이모지/오렌지 박스에서 브랜드 앰버 필
+          아이콘으로 단순화 (2026-09-19 리뉴얼) ── */}
       <header className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-black tracking-tight">수련 캘린더</h1>
-          <p className="text-text-secondary mt-1 text-sm">오늘도 매트 위에서 한 단계 진화.</p>
+          <h1 className="text-2xl font-bold tracking-tight">수련 캘린더</h1>
+          <p className="text-text-tertiary mt-1 text-sm font-normal">오늘도 매트 위에서 한 단계 진화</p>
         </div>
         <div className="flex items-center gap-2">
           {streak >= 3 && (
-            <div className="flex flex-col items-center rounded-xl px-3 py-2"
-              style={{ backgroundColor: "rgba(255,120,0,0.12)", border: "1px solid rgba(255,120,0,0.3)" }}>
-              <span className="text-xl">🔥</span>
-              <span className="text-sm font-black tabular-nums" style={{ color: "#FF7800" }}>{streak}일</span>
-              <span className="text-[9px] font-medium" style={{ color: "#FF9A3C" }}>
-                {streak >= 30 ? "전설" : streak >= 7 ? "불꽃" : "연속"}
-              </span>
-              {getStreakBonus(streak) > 0 && (
-                <span className="text-[9px] mt-0.5" style={{ color: "#FFB366" }}>+{getStreakBonus(streak)} XP</span>
-              )}
+            <div
+              className="inline-flex items-center gap-1 rounded-full px-2.5 py-1.5"
+              style={{ backgroundColor: "#D9772E1F" }}
+            >
+              <Flame size={13} style={{ color: "#D9772E" }} />
+              <span className="text-xs font-bold tabular-nums" style={{ color: "#D9772E" }}>{streak}일</span>
             </div>
           )}
 
@@ -215,49 +211,85 @@ export function CalendarHome({
         </div>
       </header>
 
-      {/* ── 오늘 기록 배너 ── */}
+      {/* ── 오늘 기록 배너 — 가장 중요한 액션이라 앰버 틴트 박스 +
+          원형 플러스 버튼으로 강조 (2026-09-19, 사용자 요청) ── */}
       {!sessionsByDate.has(todayKey) && (
-        <button type="button" onClick={() => openFormForDate(todayKey)}
-          className="w-full rounded-xl border border-dashed border-brand-primary/40 bg-brand-subtle/30 hover:bg-brand-subtle/60 px-4 py-4 text-left transition-all group">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="size-10 rounded-lg bg-brand-primary/20 flex items-center justify-center text-brand-primary">
-                <Dumbbell size={20} />
-              </div>
-              <div>
-                <p className="text-sm font-bold text-text-primary">오늘 수련 기록하기</p>
-                <p className="text-[11px] text-text-tertiary mt-px">기술 태그 + 디테일 메모 남기기</p>
-              </div>
-            </div>
-            <ArrowRight size={16} className="text-brand-primary group-hover:translate-x-0.5 transition-transform" />
+        <button
+          type="button"
+          onClick={() => openFormForDate(todayKey)}
+          className="w-full flex items-center gap-3 rounded-2xl px-3.5 py-3.5 text-left active:scale-[0.98] transition-transform duration-fast"
+          style={{ backgroundColor: "#D9772E14", border: "1px solid #D9772E3D" }}
+        >
+          <div
+            className="flex items-center justify-center shrink-0 rounded-xl"
+            style={{ width: 44, height: 44, backgroundColor: "#D9772E" }}
+          >
+            <Dumbbell size={21} style={{ color: "#0A0A0F" }} />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-[14.5px] font-bold text-text-primary">오늘 수련 기록하기</p>
+            <p className="text-[11.5px] font-normal mt-0.5" style={{ color: "#8A8A94" }}>기술 태그 + 디테일 메모 남기기</p>
+          </div>
+          <div
+            className="flex items-center justify-center shrink-0 rounded-full"
+            style={{ width: 30, height: 30, backgroundColor: "#D9772E" }}
+          >
+            <Plus size={16} style={{ color: "#0A0A0F" }} strokeWidth={2.5} />
           </div>
         </button>
       )}
       {sessionsByDate.has(todayKey) && (
-        <div className="w-full rounded-xl border border-brand-primary/30 bg-brand-subtle/20 px-4 py-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="text-base">✅</span>
-              <div>
-                <p className="text-sm font-semibold text-text-primary">오늘 수련 완료!</p>
-                <p className="text-[11px] text-text-tertiary">
-                  {(sessionsByDate.get(todayKey) ?? []).reduce((n, s) => n + s.techniqueRecordIds.length, 0)}개 기술 기록됨
-                </p>
-              </div>
-            </div>
-            <button type="button" onClick={() => openFormForDate(todayKey)}
-              className="text-[11px] text-brand-primary border border-brand-primary/30 rounded-full px-3 py-1 hover:bg-brand-subtle transition-colors">
-              + 추가
-            </button>
+        <div
+          className="w-full flex items-center gap-3 rounded-2xl px-3.5 py-3.5"
+          style={{ backgroundColor: "#34D3991F", border: "1px solid #34D3993D" }}
+        >
+          <div
+            className="flex items-center justify-center shrink-0 rounded-xl"
+            style={{ width: 44, height: 44, backgroundColor: "#34D399" }}
+          >
+            <Check size={21} style={{ color: "#0A0A0F" }} strokeWidth={2.5} />
           </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-[14.5px] font-bold text-text-primary">오늘 수련 완료!</p>
+            <p className="text-[11.5px] font-normal mt-0.5" style={{ color: "#8A8A94" }}>
+              {(sessionsByDate.get(todayKey) ?? []).reduce((n, s) => n + s.techniqueRecordIds.length, 0)}개 기술 기록됨
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => openFormForDate(todayKey)}
+            className="flex items-center justify-center shrink-0 rounded-full active:scale-90 transition-transform duration-fast"
+            style={{ width: 30, height: 30, backgroundColor: "#34D399" }}
+            aria-label="오늘 기록 추가"
+          >
+            <Plus size={16} style={{ color: "#0A0A0F" }} strokeWidth={2.5} />
+          </button>
         </div>
       )}
 
-      {/* ── 통계 칩 ── */}
-      <section className="grid grid-cols-3 gap-2">
-        <StatChip icon={<Flame size={16} />}    label="연속"       value={`${streak}일`}                  accent={streak > 0} />
-        <StatChip icon={<Activity size={16} />} label="이번 달"    value={`${monthStats.days}일`} />
-        <StatChip icon={<Trophy size={16} />}   label="이번 달 XP" value={monthStats.xp.toLocaleString()} />
+      {/* ── 통계 스트립 — 박스 카드 대신 위아래 구분선 + 세로 구분선으로
+          지표 3개를 하나의 묶음으로 시각화 (2026-09-19 리뉴얼) ── */}
+      <section
+        className="flex"
+        style={{ borderTop: "1px solid rgba(255,255,255,0.06)", borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "14px 0" }}
+      >
+        <div className="flex-1 text-center">
+          <Flame size={16} className="inline-block" style={{ color: streak > 0 ? "#D9772E" : "#5A5A64" }} />
+          <p className="text-[17px] font-bold mt-1" style={{ color: streak > 0 ? "#D9772E" : "#5A5A64" }}>{streak}일</p>
+          <p className="text-[10px] mt-0.5" style={{ color: "#8A8A94" }}>연속</p>
+        </div>
+        <div style={{ width: 1, backgroundColor: "rgba(255,255,255,0.06)" }} />
+        <div className="flex-1 text-center">
+          <Activity size={16} className="inline-block" style={{ color: "#8A8A94" }} />
+          <p className="text-[17px] font-bold mt-1 text-text-primary">{monthStats.days}일</p>
+          <p className="text-[10px] mt-0.5" style={{ color: "#8A8A94" }}>이번 달</p>
+        </div>
+        <div style={{ width: 1, backgroundColor: "rgba(255,255,255,0.06)" }} />
+        <div className="flex-1 text-center">
+          <Trophy size={16} className="inline-block" style={{ color: "#8A8A94" }} />
+          <p className="text-[17px] font-bold mt-1 text-text-primary">{monthStats.xp.toLocaleString()}</p>
+          <p className="text-[10px] mt-0.5" style={{ color: "#8A8A94" }}>이번 달 XP</p>
+        </div>
       </section>
 
       {/* ════════════════════════════════════════
@@ -311,7 +343,7 @@ export function CalendarHome({
                       "aspect-square min-h-[64px] flex flex-col items-stretch justify-between p-1.5 text-left border-r border-b border-border-subtle last:border-r-0 transition-colors",
                       i % 7 === 6 && "border-r-0",
                       i >= 35   && "border-b-0",
-                      inMonth ? "bg-bg-elevated" : "bg-bg-base/40",
+                      inMonth ? "bg-bg-elevated" : "bg-[rgba(10,10,15,0.5)]",
                       isSelected && "bg-brand-subtle border-brand-primary",
                       !isSelected && "hover:bg-bg-hover",
                     )}>
@@ -327,23 +359,17 @@ export function CalendarHome({
                       </span>
                     </div>
                     {hasSession && inMonth && (
-                      <div className="space-y-0.5">
-                        <div className="flex items-center gap-0.5 flex-wrap">
-                          {totalTechs > 0 && (
-                            <span className="text-[9px] px-1 py-px rounded-xs bg-status-drill/20 text-status-drill leading-tight">
-                              {totalTechs}기술
-                            </span>
-                          )}
-                          {totalSeqs > 0 && (
-                            <span className="text-[9px] px-1 py-px rounded-xs bg-brand-subtle text-brand-primary leading-tight">
-                              {totalSeqs}시퀀스
-                            </span>
-                          )}
-                        </div>
+                      <div className="flex items-center justify-center gap-2 pb-0.5">
+                        {totalTechs > 0 && (
+                          <span className="size-1 rounded-full shrink-0" style={{ backgroundColor: "#D9772E" }} />
+                        )}
+                        {totalSeqs > 0 && (
+                          <span className="size-1 rounded-full shrink-0" style={{ backgroundColor: "#8A8A94" }} />
+                        )}
                       </div>
                     )}
                     {hasSession && !inMonth && (
-                      <div className="size-1 rounded-full bg-brand-primary/40 self-center" />
+                      <div className="size-1 rounded-full self-center" style={{ backgroundColor: "#D9772E66" }} />
                     )}
                   </button>
                 );
@@ -365,51 +391,48 @@ export function CalendarHome({
             </div>
           )}
 
-          {/* ── 최근 수련 히스토리 ── */}
+          {/* ── 최근 수련 히스토리 — 박스 카드 제거, 헤어라인 플랫 리스트
+              (2026-09-19 리뉴얼) ── */}
           {recentEntries.length > 0 && (
-            <section className="space-y-3">
-              <h3 className="text-sm font-semibold text-text-secondary flex items-center gap-1.5">
-                <Activity size={14} />
-                최근 수련
-              </h3>
-              <div className="space-y-2">
-                {recentEntries.map(({ date, sessions: daySessions }) => {
+            <section>
+              <div className="flex items-center gap-1.5 mb-1">
+                <Activity size={14} className="text-text-tertiary" />
+                <h3 className="text-[13px] font-bold text-text-primary">최근 수련</h3>
+              </div>
+              <div>
+                {recentEntries.map(({ date, sessions: daySessions }, i) => {
                   const totalTechs = daySessions.reduce((n, s) => n + s.techniqueRecordIds.length, 0);
                   const totalSeqs  = daySessions.reduce((n, s) => n + s.sequenceRecordIds.length, 0);
                   const totalXp    = daySessions.reduce((sum, s) => sum + (s.xpEarned ?? 0), 0);
                   const isOpen     = expandedHistoryDate === date;
-                  const firstNote  = daySessions.find((s) => s.notes)?.notes;
+                  const metaParts  = [
+                    totalTechs > 0 ? `${totalTechs}기술` : null,
+                    totalSeqs > 0 ? `${totalSeqs}시퀀스` : null,
+                  ].filter(Boolean);
 
                   return (
                     <div key={date}>
-                      <button type="button" onClick={() => toggleHistory(date)}
-                        className={cn(
-                          "w-full border p-3 text-left transition-all",
-                          isOpen
-                            ? "rounded-t-xl border-brand-primary/50 bg-brand-subtle/20 border-b-0"
-                            : "rounded-xl border-border-subtle bg-bg-elevated hover:bg-bg-hover",
-                        )}>
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-medium">{formatListDate(date, todayKey)}</span>
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs text-brand-primary tabular-nums">+{totalXp.toLocaleString()} XP</span>
-                            <ChevronDown size={14} className={cn("text-text-tertiary transition-transform duration-base", isOpen && "rotate-180")} />
-                          </div>
+                      <button
+                        type="button"
+                        onClick={() => toggleHistory(date)}
+                        className="w-full flex items-center justify-between gap-2 py-2.5 text-left active:opacity-70 transition-opacity duration-fast"
+                        style={{
+                          borderBottom: !isOpen && i < recentEntries.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
+                        }}
+                      >
+                        <div className="min-w-0">
+                          <p className="text-[13px] font-normal text-text-primary">{formatListDate(date, todayKey)}</p>
+                          {metaParts.length > 0 && (
+                            <p className="text-[10.5px] font-normal mt-0.5" style={{ color: "#8A8A94" }}>{metaParts.join(" · ")}</p>
+                          )}
                         </div>
-                        <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
-                          {totalTechs > 0 && (
-                            <span className="text-[9px] px-1.5 py-0.5 rounded bg-status-drill/20 text-status-drill">{totalTechs}기술</span>
-                          )}
-                          {totalSeqs > 0 && (
-                            <span className="text-[9px] px-1.5 py-0.5 rounded bg-brand-subtle text-brand-primary">{totalSeqs}시퀀스</span>
-                          )}
-                          {firstNote && !isOpen && (
-                            <span className="text-[10px] text-text-tertiary truncate max-w-[180px]">{firstNote}</span>
-                          )}
+                        <div className="flex items-center gap-2 shrink-0">
+                          <span className="text-[11.5px] font-bold tabular-nums" style={{ color: "#D9772E" }}>+{totalXp.toLocaleString()} XP</span>
+                          <ChevronDown size={13} className={cn("text-text-tertiary transition-transform duration-base", isOpen && "rotate-180")} />
                         </div>
                       </button>
                       {isOpen && (
-                        <div className="border border-brand-primary/50 border-t-0 rounded-b-xl overflow-hidden">
+                        <div className="pb-2">
                           <SessionDetailSheet
                             {...sharedDetailProps(date, daySessions, () => setExpandedHistoryDate(null))}
                           />
@@ -425,53 +448,49 @@ export function CalendarHome({
       )}
 
       {/* ════════════════════════════════════════
-          리스트 뷰
+          리스트 뷰 — 박스 카드 제거, 헤어라인 플랫 리스트 (2026-09-19 리뉴얼)
       ════════════════════════════════════════ */}
       {viewMode === "list" && (
-        <section className="space-y-2">
+        <section>
           {sortedEntries.length === 0 ? (
             <div className="rounded-2xl border border-dashed border-border-default p-6 text-center">
               <p className="text-sm text-text-secondary">아직 기록된 수련이 없어요.</p>
               <p className="text-xs text-text-tertiary mt-1">+ 버튼으로 첫 수련을 기록해보세요.</p>
             </div>
           ) : (
-            sortedEntries.map(({ date, sessions: daySessions }) => {
+            sortedEntries.map(({ date, sessions: daySessions }, i) => {
               const totalTechs = daySessions.reduce((n, s) => n + s.techniqueRecordIds.length, 0);
               const totalSeqs  = daySessions.reduce((n, s) => n + s.sequenceRecordIds.length, 0);
               const totalXp    = daySessions.reduce((sum, s) => sum + (s.xpEarned ?? 0), 0);
               const isOpen     = selectedDate === date;
-              const firstNote  = daySessions.find((s) => s.notes)?.notes;
+              const metaParts  = [
+                totalTechs > 0 ? `${totalTechs}기술` : null,
+                totalSeqs > 0 ? `${totalSeqs}시퀀스` : null,
+              ].filter(Boolean);
 
               return (
                 <div key={date}>
-                  <button type="button" onClick={() => toggleList(date)}
-                    className={cn(
-                      "w-full border p-3 text-left transition-all",
-                      isOpen
-                        ? "rounded-t-xl border-brand-primary/50 bg-brand-subtle/20 border-b-0"
-                        : "rounded-xl border-border-subtle bg-bg-elevated hover:bg-bg-hover",
-                    )}>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium">{formatListDate(date, todayKey)}</span>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs text-brand-primary tabular-nums">+{totalXp.toLocaleString()} XP</span>
-                        <ChevronDown size={14} className={cn("text-text-tertiary transition-transform duration-base", isOpen && "rotate-180")} />
-                      </div>
+                  <button
+                    type="button"
+                    onClick={() => toggleList(date)}
+                    className="w-full flex items-center justify-between gap-2 py-2.5 text-left active:opacity-70 transition-opacity duration-fast"
+                    style={{
+                      borderBottom: !isOpen && i < sortedEntries.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
+                    }}
+                  >
+                    <div className="min-w-0">
+                      <p className="text-[13px] font-normal text-text-primary">{formatListDate(date, todayKey)}</p>
+                      {metaParts.length > 0 && (
+                        <p className="text-[10.5px] font-normal mt-0.5" style={{ color: "#8A8A94" }}>{metaParts.join(" · ")}</p>
+                      )}
                     </div>
-                    <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
-                      {totalTechs > 0 && (
-                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-status-drill/20 text-status-drill">{totalTechs}기술</span>
-                      )}
-                      {totalSeqs > 0 && (
-                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-brand-subtle text-brand-primary">{totalSeqs}시퀀스</span>
-                      )}
-                      {firstNote && !isOpen && (
-                        <span className="text-[10px] text-text-tertiary truncate max-w-[180px]">{firstNote}</span>
-                      )}
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="text-[11.5px] font-bold tabular-nums" style={{ color: "#D9772E" }}>+{totalXp.toLocaleString()} XP</span>
+                      <ChevronDown size={13} className={cn("text-text-tertiary transition-transform duration-base", isOpen && "rotate-180")} />
                     </div>
                   </button>
                   {isOpen && (
-                    <div className="border border-brand-primary/50 border-t-0 rounded-b-xl overflow-hidden">
+                    <div className="pb-2">
                       <SessionDetailSheet
                         {...sharedDetailProps(date, daySessions, () => setSelectedDate(null))}
                       />
@@ -502,29 +521,6 @@ export function CalendarHome({
           onClose={closeForm}
         />
       )}
-    </div>
-  );
-}
-
-// ── 서브 컴포넌트 ─────────────────────────────────────────────────────────────
-
-function StatChip({
-  icon, label, value, accent = false,
-}: {
-  icon: React.ReactNode; label: string; value: string; accent?: boolean;
-}) {
-  return (
-    <div className={cn(
-      "rounded-xl p-3 space-y-1 border",
-      accent ? "bg-brand-subtle/30 border-brand-primary/30" : "bg-bg-elevated border-border-subtle",
-    )}>
-      <div className={cn("flex items-center gap-1.5 text-xs", accent ? "text-brand-primary" : "text-text-tertiary")}>
-        {icon}
-        <span>{label}</span>
-      </div>
-      <p className={cn("text-lg font-black tabular-nums", accent ? "text-brand-primary" : "text-text-primary")}>
-        {value}
-      </p>
     </div>
   );
 }
