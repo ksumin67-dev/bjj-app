@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
-import { ChevronRight, Heart } from "lucide-react";
+import { Heart } from "lucide-react";
 import type { Technique } from "@/types/domain";
 import { TypeChip } from "@/components/tree/TypeChip";
 import { toggleTechniqueGoalAction } from "@/lib/actions/techniqueGoals";
@@ -62,7 +62,7 @@ export function AthleteTechniqueRow({
   return (
     <Link
       href={`/tree/${posSegment}/${technique.id}${query}`}
-      className="flex items-center gap-3 rounded-xl border border-border-subtle bg-bg-elevated p-3 hover:bg-bg-hover transition-colors"
+      className="flex items-center gap-3 py-3 border-b border-border-subtle last:border-b-0 active:opacity-70 transition-opacity duration-fast"
     >
       <TypeChip type={technique.type} className="shrink-0" />
       <div className="flex-1 min-w-0">
@@ -72,14 +72,14 @@ export function AthleteTechniqueRow({
             <span className="ml-1.5 text-[10px] font-semibold text-text-tertiary">(포지션 전체)</span>
           )}
         </p>
-        <p className="text-[10px] text-text-tertiary font-mono">{technique.id}</p>
+        <p className="text-[10px] text-text-tertiary font-mono mt-0.5">{technique.id}</p>
       </div>
       <button
         type="button"
         onClick={handleToggle}
         aria-label={isGoal ? "학습 목표에서 제거" : "학습 목표로 추가"}
         aria-pressed={isGoal}
-        className="shrink-0 w-8 h-8 -mr-1 flex items-center justify-center rounded-full active:scale-90 transition-transform duration-fast"
+        className="shrink-0 w-8 h-8 -mr-1.5 flex items-center justify-center rounded-full active:scale-90 transition-transform duration-fast"
       >
         <Heart
           size={17}
@@ -88,7 +88,6 @@ export function AthleteTechniqueRow({
           strokeWidth={2}
         />
       </button>
-      <ChevronRight size={15} className="text-text-disabled shrink-0" />
     </Link>
   );
 }

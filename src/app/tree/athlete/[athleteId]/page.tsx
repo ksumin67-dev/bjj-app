@@ -51,11 +51,8 @@ export default async function AthleteDetailPage({ params }: { params: Params }) 
         <ChevronLeft size={16} /> 선수 목록
       </Link>
 
-      {/* 헤더 카드 */}
-      <div
-        className="rounded-2xl p-5 mb-6"
-        style={{ background: `linear-gradient(150deg, ${accent}22 0%, #1A1A24 60%)` }}
-      >
+      {/* 헤더 — 그라디언트 박스 대신 플랫 (2026-09-19, 디자인 시스템 적용) */}
+      <div className="mb-6">
         <div className="flex items-center gap-4">
           <AthleteAvatar
             color={accent}
@@ -64,7 +61,7 @@ export default async function AthleteDetailPage({ params }: { params: Params }) 
             alt={athlete.nameKo}
           />
           <div className="min-w-0">
-            <h1 className="text-xl font-black text-text-primary truncate">{athlete.nameKo}</h1>
+            <h1 className="text-xl font-bold text-text-primary truncate">{athlete.nameKo}</h1>
             <p className="text-xs text-text-tertiary truncate">
               {athlete.nameEn} · {athlete.beltAcademy}
             </p>
@@ -72,8 +69,8 @@ export default async function AthleteDetailPage({ params }: { params: Params }) 
           </div>
         </div>
 
-        <div className="flex items-center gap-2 mt-4">
-          <div className="text-2xl font-black tabular-nums" style={{ color: accent }}>
+        <div className="flex items-baseline gap-2 mt-4">
+          <div className="text-[26px] font-bold tabular-nums text-brand-primary">
             {athlete.heroStat}
           </div>
           <div className="text-[11px] text-text-tertiary">{athlete.heroLabel}</div>
@@ -81,24 +78,20 @@ export default async function AthleteDetailPage({ params }: { params: Params }) 
 
         {athlete.styleTags.length > 0 && (
           <div className="flex gap-1.5 mt-3 flex-wrap">
-            {athlete.styleTags.map((tag) => {
-              const meta = STYLE_TAG_META[tag as StyleTag] ?? STYLE_TAG_FALLBACK;
-              return (
-                <span
-                  key={tag}
-                  className="text-[10px] font-bold px-2.5 py-1 rounded-full"
-                  style={{ backgroundColor: meta.color + "22", color: meta.color }}
-                >
-                  {tag}
-                </span>
-              );
-            })}
+            {athlete.styleTags.map((tag) => (
+              <span
+                key={tag}
+                className="text-[10.5px] font-bold px-2.5 py-1 rounded-full border border-border-subtle text-text-tertiary"
+              >
+                {tag}
+              </span>
+            ))}
           </div>
         )}
 
         {athlete.achievements && (
-          <div className="mt-4 rounded-xl p-3 bg-bg-overlay">
-            <p className="text-[10px] uppercase tracking-widest font-semibold text-text-tertiary mb-1">
+          <div className="mt-4">
+            <p className="text-[10px] tracking-[0.5px] font-semibold text-text-tertiary mb-1">
               대표 성과
             </p>
             <p className="text-[12px] text-text-secondary leading-relaxed">{athlete.achievements}</p>
@@ -112,12 +105,15 @@ export default async function AthleteDetailPage({ params }: { params: Params }) 
         )}
       </div>
 
+      <div className="h-px bg-border-subtle mb-4" />
+
       {/* 대표 기술 목록 */}
-      <div className="flex items-center gap-1.5 mb-2">
-        <span className="text-[11px] font-bold text-text-secondary">대표 기술</span>
-        <span className="text-[10px] text-text-tertiary">· {sortedTechniques.length}개</span>
+      <div className="flex items-center gap-1.5 mb-1">
+        <span className="text-[10px] tracking-[0.5px] font-semibold text-text-tertiary">
+          대표 기술 · {sortedTechniques.length}개
+        </span>
         {goalCount > 0 && (
-          <span className="text-[10px] font-semibold ml-auto" style={{ color: "#F87171" }}>
+          <span className="text-[10px] font-semibold ml-auto flex items-center gap-1" style={{ color: "#F87171" }}>
             ♥ {goalCount}개 목표 등록
           </span>
         )}
@@ -127,7 +123,7 @@ export default async function AthleteDetailPage({ params }: { params: Params }) 
           아직 이 선수의 대표 기술이 등록되지 않았습니다.
         </p>
       ) : (
-        <div className="space-y-2">
+        <div>
           {sortedTechniques.map((t) => (
             <AthleteTechniqueRow
               key={t.recordId}

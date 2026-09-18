@@ -71,7 +71,7 @@ export default async function PositionDetailPage({ params }: { params: Params })
       <div className="flex items-center gap-1.5 mb-2">
         <span className="text-[11px] font-bold text-text-secondary">기술 목록</span>
       </div>
-      <div className="space-y-2">
+      <div>
         <AthleteTechniqueRow
           key={position.recordId}
           technique={position}
