@@ -1,7 +1,7 @@
 import { getAllTechniques } from "@/lib/airtable/techniques";
 import { getAllAthletes } from "@/lib/airtable/athletes";
 import { getAllTrainingSessions } from "@/lib/supabase/trainingSessions";
-import { buildTrainingCountMap, getBeltRank, getBjjStyle } from "@/types/domain";
+import { buildTrainingCountMap, getBeltRank } from "@/types/domain";
 import type { Stream } from "@/types/domain";
 import TreeTabs from "@/components/tree/TreeTabs";
 import { BeltProgressBar } from "@/components/tree/BeltProgressBar";
@@ -45,13 +45,6 @@ export default async function TreePage() {
   const trained = Object.values(countMap).filter((c) => c > 0).length;
   const total = techniques.length;
 
-  // 스트림별 수련 합계 → 스타일 분석
-  const streamCounts: Record<string, number> = {};
-  for (const t of techniques) {
-    if (t.stream) streamCounts[t.stream] = (streamCounts[t.stream] ?? 0) + (countMap[t.recordId] ?? 0);
-  }
-  const bjjStyle = getBjjStyle(streamCounts, sessions.length);
-
   // ── 포지션 탭 데이터: 포지션(부모, parentId=null)별 요약 ──────────────
   // 예전 레벨링 시스템(Lv.1~4)은 부활시키지 않고 단순 수련 비율만 계산.
   const positions = techniques.filter((t) => t.parentId === null);
@@ -81,13 +74,6 @@ export default async function TreePage() {
         </div>
 
         <BeltProgressBar belt={beltRank.belt} totalXp={totalXP} />
-
-        {/* BJJ 스타일 — 카드 박스 없이 한 줄 캡션으로 (2026-09-18 리디자인) */}
-        <div className="flex items-center gap-1.5 pt-3 border-t border-border-subtle">
-          <span className="text-sm">{bjjStyle.emoji}</span>
-          <span className="text-[11px] font-semibold text-text-secondary">{bjjStyle.label}</span>
-          <span className="text-[11px] text-text-tertiary truncate">· {bjjStyle.desc}</span>
-        </div>
       </header>
 
       {/* ── 선수/포지션 이원화 탭 ─────────────────────────────── */}
