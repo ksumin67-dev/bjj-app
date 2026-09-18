@@ -64,13 +64,10 @@ export function AthleteTechniqueRow({
       href={`/tree/${posSegment}/${technique.id}${query}`}
       className="flex items-center gap-3 py-3 border-b border-border-subtle last:border-b-0 active:opacity-70 transition-opacity duration-fast"
     >
-      <TypeChip type={technique.type} className="shrink-0" />
+      <TypeChip type={isPositionSelf ? "포지션" : technique.type} className="shrink-0" />
       <div className="flex-1 min-w-0">
         <p className="text-[13px] font-bold text-text-primary truncate">
           {technique.nameKo}
-          {isPositionSelf && (
-            <span className="ml-1.5 text-[10px] font-semibold text-text-tertiary">(포지션 전체)</span>
-          )}
         </p>
         <p className="text-[10px] text-text-tertiary font-mono mt-0.5">{technique.id}</p>
       </div>

@@ -23,18 +23,10 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Shield, Swords, Zap, Users,
-  Lock, Moon, GitFork, RefreshCw, RefreshCcw, Asterisk, Link2, X, Slash,
-  Percent, Fence, Anchor, Hand,
-  MoveRight, Unlock, LockOpen, CircleDashed, Waves, RotateCcw, Crosshair,
-  Grip, ChevronsUp, Target, Compass, UserRound,
-  ArrowDownToLine,
-  LogOut, DoorOpen, ShieldOff, ArrowUpFromLine, ArrowLeftRight,
-  type LucideIcon,
-} from "lucide-react";
+import { Shield, Swords, Zap, Users, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Stream } from "@/types/domain";
+import { POSITION_ICON, POSITION_ICON_FALLBACK } from "@/lib/positionIcons";
 
 const STREAM_META: Record<Stream, { label: string; Icon: LucideIcon }> = {
   가드포지션: { label: "가드", Icon: Shield },
@@ -43,23 +35,6 @@ const STREAM_META: Record<Stream, { label: string; Icon: LucideIcon }> = {
   스탠딩:     { label: "스탠딩", Icon: Users },
 };
 const STREAM_ORDER: Stream[] = ["가드포지션", "탑포지션", "이스케이프", "스탠딩"];
-
-// 포지션 코드별 아이콘 — 기술 특징을 반영해 31개 전부 다르게 배정 (2026-09-19)
-const POSITION_ICON: Record<string, LucideIcon> = {
-  // 가드 (13) — 잠금/회전/방향 등 기술 메커니즘을 은유
-  CG: Lock, HG: Moon, BF: GitFork, DLR: RefreshCw, RDLR: RefreshCcw,
-  SP: Asterisk, LS: Link2, XG: X, SLX: Slash, FF: Percent,
-  KG: Fence, SG: Anchor, RG: Hand,
-  // 가드 브레이크/패싱 (7)
-  GP: MoveRight, GB: Unlock, GBCG: LockOpen, GBSP: CircleDashed,
-  GBLS: Waves, GBDLR: RotateCcw, GBBF: Crosshair,
-  // 탑 컨트롤 (6, KB는 KNB와 동일 포지션의 레거시 코드)
-  SC: Grip, MT: ChevronsUp, KNB: Target, KB: Target, NS: Compass, BC: UserRound,
-  // 스탠딩 (1)
-  TD: ArrowDownToLine,
-  // 이스케이프 (5)
-  ME: LogOut, SCE: DoorOpen, BD: ShieldOff, KNBE: ArrowUpFromLine, NSE: ArrowLeftRight,
-};
 
 export type PosSummary = {
   id: string;
@@ -73,7 +48,7 @@ export type StreamGroup = { stream: Stream; positions: PosSummary[] };
 
 function PositionRow({ pos }: { pos: PosSummary }) {
   const pct = pos.childCount === 0 ? 0 : Math.round((pos.trainedCount / pos.childCount) * 100);
-  const Icon = POSITION_ICON[pos.id] ?? Shield;
+  const Icon = POSITION_ICON[pos.id] ?? POSITION_ICON_FALLBACK;
   const isZero = pos.trainedCount === 0;
 
   return (
