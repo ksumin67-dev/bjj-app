@@ -17,10 +17,19 @@ export function AthleteTechniqueRow({
   technique,
   athleteRecordId,
   initialIsGoal,
+  backContext,
 }: {
   technique: Technique;
   athleteRecordId: string | null;
   initialIsGoal: boolean;
+  /**
+   * 기술 상세 페이지에서 "뒤로가기"가 돌아갈 곳 — 이 행이 실제로 렌더링된
+   * 화면(선수 상세 or 포지션 상세)을 명시적으로 넘겨준다.
+   * 생략 시 기술 상세 페이지가 대표선수 기준으로 알아서 추정(구버전 동작).
+   * (2026-09-18, 포지션 상세에서 들어갔는데 뒤로가기가 엉뚱한 선수 페이지로
+   * 가던 버그 수정)
+   */
+  backContext?: { href: string; label: string };
 }) {
   const [isGoal, setIsGoal] = useState(initialIsGoal);
   const [, startTransition] = useTransition();
@@ -46,9 +55,13 @@ export function AthleteTechniqueRow({
   const posSegment = technique.parentId ?? technique.id;
   const isPositionSelf = technique.parentId === null;
 
+  const query = backContext
+    ? `?backHref=${encodeURIComponent(backContext.href)}&backLabel=${encodeURIComponent(backContext.label)}`
+    : "";
+
   return (
     <Link
-      href={`/tree/${posSegment}/${technique.id}`}
+      href={`/tree/${posSegment}/${technique.id}${query}`}
       className="flex items-center gap-3 rounded-xl border border-border-subtle bg-bg-elevated p-3 hover:bg-bg-hover transition-colors"
     >
       <TypeChip type={technique.type} className="shrink-0" />

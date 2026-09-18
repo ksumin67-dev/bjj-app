@@ -5,10 +5,15 @@ import type { Athlete, StyleTag } from "@/types/domain";
 
 const F = FIELDS.ATHLETE;
 
-function toAthlete(record: { id: string; fields: Record<string, unknown> }): Athlete {
+function toAthlete(record: {
+  id: string;
+  fields: Record<string, unknown>;
+  createdTime?: string;
+}): Athlete {
   const f = record.fields;
   return {
     recordId: record.id,
+    createdTime: record.createdTime ?? "",
     nameKo: (f[F.NAME_KO] as string) ?? "",
     nameEn: (f[F.NAME_EN] as string) ?? "",
     beltAcademy: (f[F.BELT_ACADEMY] as string) ?? "",
@@ -35,7 +40,14 @@ export async function getAllAthletes(): Promise<Athlete[]> {
     })
     .all();
   return records
-    .map((r) => toAthlete({ id: r.id, fields: r.fields }))
+    .map((r) =>
+      toAthlete({
+        id: r.id,
+        fields: r.fields,
+        createdTime: (r as unknown as { _rawJson?: { createdTime?: string } })._rawJson
+          ?.createdTime,
+      }),
+    )
     .filter((a) => a.includeInLaunch);
 }
 
@@ -49,5 +61,10 @@ export async function getAthleteByRecordId(recordId: string): Promise<Athlete | 
     })
     .firstPage();
   if (!records[0]) return null;
-  return toAthlete({ id: records[0].id, fields: records[0].fields });
+  return toAthlete({
+    id: records[0].id,
+    fields: records[0].fields,
+    createdTime: (records[0] as unknown as { _rawJson?: { createdTime?: string } })._rawJson
+      ?.createdTime,
+  });
 }

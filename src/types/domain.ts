@@ -88,6 +88,12 @@ export interface Athlete {
   heroStat: string;
   /** 히어로 숫자 아래 붙는 짧은 설명 (예: "ADCC 우승") */
   heroLabel: string;
+  /**
+   * Airtable 레코드 생성 시각(ISO 8601). "이달의 추천" 최신 등록순 정렬 전용.
+   * heroStat은 선수마다 단위가 다른(우승 횟수/나이/포지션명) 필드라 선수 간 순위
+   * 비교에 쓸 수 없음이 확인되어(2026-09-18) 정렬 기준을 이걸로 교체했다.
+   */
+  createdTime: string;
 }
 
 export const STYLE_TAG_ORDER: StyleTag[] = [

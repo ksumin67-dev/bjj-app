@@ -46,9 +46,11 @@ export default function AthleteEntryScreen({ athletes }: { athletes: Athlete[] }
 
   const filtered = active === "전체" ? athletes : athletes.filter((a) => a.styleTags.includes(active));
 
+  // 최신 등록순 정렬 (2026-09-18) — heroStat은 선수마다 단위가 다른 필드
+  // (우승 횟수/나이/포지션명 혼재)라 크기순 비교가 무의미함이 확인되어 교체.
   const featured = useMemo(() => {
     return [...athletes]
-      .sort((a, b) => (parseInt(b.heroStat, 10) || 0) - (parseInt(a.heroStat, 10) || 0))
+      .sort((a, b) => (b.createdTime || "").localeCompare(a.createdTime || ""))
       .slice(0, 4);
   }, [athletes]);
 

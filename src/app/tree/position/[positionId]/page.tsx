@@ -77,6 +77,7 @@ export default async function PositionDetailPage({ params }: { params: Params })
           technique={position}
           athleteRecordId={position.athleteRecordIds[0] ?? null}
           initialIsGoal={goalIdSet.has(position.recordId)}
+          backContext={{ href: `/tree/position/${position.id}`, label: position.nameKo }}
         />
         {sortedChildren.map((t) => (
           <AthleteTechniqueRow
@@ -84,6 +85,7 @@ export default async function PositionDetailPage({ params }: { params: Params })
             technique={t}
             athleteRecordId={t.athleteRecordIds[0] ?? null}
             initialIsGoal={goalIdSet.has(t.recordId)}
+            backContext={{ href: `/tree/position/${position.id}`, label: position.nameKo }}
           />
         ))}
       </div>

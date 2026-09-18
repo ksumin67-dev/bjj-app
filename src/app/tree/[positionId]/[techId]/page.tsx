@@ -24,6 +24,7 @@ import { PageWrapper } from "@/components/layout/PageWrapper";
 export const dynamic = "force-dynamic";
 
 type Params = { positionId: string; techId: string };
+type SearchParams = { backHref?: string; backLabel?: string };
 
 export async function generateMetadata({ params }: { params: Params }) {
   const tech = await getTechniqueByTechId(params.techId.toUpperCase());
@@ -66,8 +67,10 @@ const STREAM_STYLES: Record<string, { bg: string; text: string; label: string }>
 
 export default async function TechniqueDetailPage({
   params,
+  searchParams,
 }: {
   params: Params;
+  searchParams: SearchParams;
 }) {
   const techId = params.techId.toUpperCase();
 
@@ -79,12 +82,19 @@ export default async function TechniqueDetailPage({
 
   if (!technique) notFound();
 
-  // 포지션 드릴다운(레벨링) 페이지는 선수 중심 개편으로 제거됨(2026-09-14) —
-  // 뒤로가기는 이 기술을 대표 기술로 둔 선수 상세로, 없으면 선수 목록으로.
-  const primaryAthleteId = technique.athleteRecordIds[0] ?? null;
-  const primaryAthlete = primaryAthleteId ? await getAthleteByRecordId(primaryAthleteId) : null;
-  const backHref = primaryAthlete ? `/tree/athlete/${primaryAthlete.recordId}` : "/tree";
-  const backLabel = primaryAthlete ? primaryAthlete.nameKo : "선수 목록";
+  // 뒤로가기 경로: 진입한 화면(선수 상세/포지션 상세)이 backHref/backLabel
+  // 쿼리로 명시적으로 넘겨준 경우 그대로 사용 (2026-09-18, 포지션 상세에서
+  // 들어왔는데 뒤로가기가 엉뚱한 대표선수 페이지로 튀던 버그 수정).
+  // 쿼리가 없는 경우(북마크/직접 링크 등)에만 대표선수 기준으로 추정하는
+  // 구버전 폴백을 사용.
+  let backHref = searchParams.backHref;
+  let backLabel = searchParams.backLabel;
+  if (!backHref) {
+    const primaryAthleteId = technique.athleteRecordIds[0] ?? null;
+    const primaryAthlete = primaryAthleteId ? await getAthleteByRecordId(primaryAthleteId) : null;
+    backHref = primaryAthlete ? `/tree/athlete/${primaryAthlete.recordId}` : "/tree";
+    backLabel = primaryAthlete ? primaryAthlete.nameKo : "선수 목록";
+  }
 
   const countMap = buildTrainingCountMap(sessions);
   const trainingCount = countMap[technique.recordId] ?? 0;

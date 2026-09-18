@@ -134,6 +134,7 @@ export default async function AthleteDetailPage({ params }: { params: Params }) 
               technique={t}
               athleteRecordId={athlete.recordId}
               initialIsGoal={goalIdSet.has(t.recordId)}
+              backContext={{ href: `/tree/athlete/${athlete.recordId}`, label: athlete.nameKo }}
             />
           ))}
         </div>
