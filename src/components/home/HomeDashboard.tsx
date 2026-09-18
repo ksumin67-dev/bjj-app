@@ -1,10 +1,10 @@
 import type { Technique, TrainingSession, Stream, Athlete } from "@/types/domain";
 import { getBjjStyle, calculateStreak } from "@/types/domain";
 import type { UserProfile } from "@/lib/supabase/userProfile";
-import { BeltDisplay, BELT_CONFIG } from "@/components/ui/BeltDisplay";
+import { BeltDisplay } from "@/components/ui/BeltDisplay";
 import Link from "next/link";
 import { Swords, Shield, Zap, Users, type LucideIcon } from "lucide-react";
-import { AlertTriangle, ArrowRight, Bell, Dumbbell, Heart } from "lucide-react";
+import { ArrowRight, Bell, Dumbbell, Flame, Calendar, Check, Heart } from "lucide-react";
 
 // ── 상수 ───────────────────────────────────────────────────────────────────
 
@@ -14,12 +14,17 @@ const STREAMS: Stream[] = ["가드포지션", "탑포지션", "이스케이프",
 
 const DAY_EN = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-/** 레퍼런스 파스텔 캡슐 컬러 */
-const CAPSULE: Record<Stream, { bg: string; text: string; bar: string; label: string; emoji: string; IconCmp: LucideIcon }> = {
-  가드포지션: { bg: "#1A3050", text: "#7EC8FF", bar: "#2E80F0", label: "가드",   emoji: "🛡", IconCmp: Shield },
-  탑포지션:   { bg: "#3A1F00", text: "#FFB347", bar: "#FF8C42", label: "탑",     emoji: "⚔️", IconCmp: Swords },
-  이스케이프: { bg: "#2A1050", text: "#C4A4FF", bar: "#A78BFA", label: "이스케이프", emoji: "🏃", IconCmp: Zap },
-  스탠딩:     { bg: "#2A2400", text: "#FFE066", bar: "#FBBF24", label: "스탠딩", emoji: "🥋", IconCmp: Users },
+/**
+ * 스트림별 아이콘 + 라벨 — 기술도감 포지션 탭/기술 상세 페이지와 동일한
+ * lucide 아이콘 체계(Shield/Swords/Zap/Users) 재사용. (2026-09-19 리뉴얼)
+ * 색은 더 이상 스트림마다 다르게 배정하지 않음 — "데이터=액센트 색 하나"
+ * 원칙에 따라 최강 스트림만 brand-primary, 나머지는 중립 회색으로 표시.
+ */
+const CAPSULE: Record<Stream, { label: string; IconCmp: LucideIcon }> = {
+  가드포지션: { label: "가드", IconCmp: Shield },
+  탑포지션:   { label: "탑", IconCmp: Swords },
+  이스케이프: { label: "이스케이프", IconCmp: Zap },
+  스탠딩:     { label: "스탠딩", IconCmp: Users },
 };
 
 
@@ -128,8 +133,7 @@ export function HomeDashboard({
   const hasTodaySession = sessions.some((s) => s.date === todayKey);
 
   // 벨트는 프로필에서 직접 가져옴 (XP 계산 아님)
-  const beltCfg = BELT_CONFIG[profile.belt] ?? BELT_CONFIG["White Belt"];
-  const stripe  = profile.stripe;
+  const stripe = profile.stripe;
 
   // XP 바: 이번 달 수련 활동 지표로 활용
   const thisMonthKey = todayKey.slice(0, 7); // "YYYY-MM"
@@ -168,6 +172,7 @@ export function HomeDashboard({
   const maxStreamTotal = Math.max(...Object.values(streamTotals), 1);
   const bjjStyle       = getBjjStyle(streamTotals, sessions.length);
   const weakness       = analyzeWeakness(streamTotals, techniques, trainingCountMap);
+  const TodayStyleIcon = bjjStyle.dominant ? CAPSULE[bjjStyle.dominant].IconCmp : Dumbbell;
 
   // ── 학습 목표(찜한 기술) — 선수 상세에서 하트로 찜한 시그니처 기술
   const athleteNameMap = new Map(athletes.map((a) => [a.recordId, a.nameKo]));
@@ -198,13 +203,14 @@ export function HomeDashboard({
 
           {/* 왼쪽: 아바타 + 텍스트 */}
           <div className="flex items-center gap-3 min-w-0">
-            {/* 아바타 원형 — /profile 링크 */}
+            {/* 아바타 원형 — /profile 링크. 퍼플-마젠타 그라디언트 → 브랜드
+                앰버 단일 색으로 통일 (2026-09-19 리뉴얼) */}
             <Link href="/profile">
               <div
-                className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 active:scale-95 transition-transform duration-fast"
-                style={{ background: "linear-gradient(135deg, #7B61FF, #B44FD4)" }}
+                className="w-11 h-11 rounded-full flex items-center justify-center shrink-0 active:scale-95 transition-transform duration-fast"
+                style={{ backgroundColor: "#D9772E" }}
               >
-                <span className="text-white font-black text-xl leading-none">
+                <span className="font-bold text-lg leading-none" style={{ color: "#0A0A0F" }}>
                   {USER_NAME.charAt(0)}
                 </span>
               </div>
@@ -212,22 +218,22 @@ export function HomeDashboard({
 
             {/* 텍스트 */}
             <div className="min-w-0">
-              <p className="text-sm font-medium" style={{ color: "#B4BCC8" }}>
-                Hello, {USER_NAME} 👋
+              <p className="text-xs" style={{ color: "#8A8A94" }}>
+                안녕하세요, {USER_NAME}
               </p>
-              <h1 className="text-[26px] font-black tracking-tight leading-tight text-white">
-                Welcome Back
+              <h1 className="text-[19px] font-bold tracking-tight leading-snug text-white">
+                오늘도 수련하러 가볼까요
               </h1>
             </div>
           </div>
 
           {/* 오른쪽: 벨 아이콘 */}
           <button
-            className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 active:scale-95 transition-transform duration-fast"
+            className="w-9 h-9 rounded-full flex items-center justify-center shrink-0 active:scale-95 transition-transform duration-fast"
             style={{ backgroundColor: "#1A1A24" }}
             aria-label="알림"
           >
-            <Bell size={18} style={{ color: "#B4BCC8" }} />
+            <Bell size={16} style={{ color: "#8A8A94" }} />
           </button>
         </div>
       </header>
@@ -252,10 +258,10 @@ export function HomeDashboard({
                 className="flex-1 flex flex-col items-center justify-center gap-1 py-3 rounded-2xl"
                 style={{
                   backgroundColor: isToday
-                    ? "#7B61FF"
+                    ? "#D9772E"
                     : trained
-                    ? "rgba(123,97,255,0.16)"
-                    : "rgba(255,255,255,0.04)",
+                    ? "#D9772E24"
+                    : "rgba(255,255,255,0.03)",
                 }}
               >
                 {/* 요일명 (pill 안) */}
@@ -263,11 +269,11 @@ export function HomeDashboard({
                   className="text-[11px] font-semibold leading-none"
                   style={{
                     color: isToday
-                      ? "rgba(255,255,255,0.75)"
+                      ? "rgba(10,10,15,0.65)"
                       : isFuture
                       ? "#4A4A5A"
                       : trained
-                      ? "#A78BFA"
+                      ? "#D9772E"
                       : "#4A4A5A",
                   }}
                 >
@@ -279,9 +285,9 @@ export function HomeDashboard({
                   className="text-[15px] font-black tabular-nums leading-none"
                   style={{
                     color: isToday
-                      ? "#FFFFFF"
+                      ? "#0A0A0F"
                       : trained
-                      ? "#A78BFA"
+                      ? "#D9772E"
                       : isFuture
                       ? "#4A4A5A"
                       : "#4A4A5A",
@@ -292,7 +298,7 @@ export function HomeDashboard({
 
                 {/* 수련 완료 점 (오늘 아닌 수련일) */}
                 {trained && !isToday && (
-                  <div className="w-1 h-1 rounded-full" style={{ backgroundColor: "#7B61FF" }} />
+                  <div className="w-1 h-1 rounded-full" style={{ backgroundColor: "#D9772E" }} />
                 )}
               </div>
             );
@@ -309,205 +315,157 @@ export function HomeDashboard({
       >
 
         {/* ──────────────────────────────────────────────────────────────
-            3. 오늘의 수련 카드  (레퍼런스: Today's Workout 카드)
+            3. 오늘의 수련 — 박스 카드 제거, 플랫 섹션 (2026-09-19 리뉴얼)
             ────────────────────────────────────────────────────────────── */}
         {!hasTodaySession ? (
-          /* 미수련 → CTA 카드 */
-          <section
-            className="rounded-2xl p-4 overflow-hidden relative"
-            style={{ backgroundColor: "#1A1A24", border: "1px solid rgba(255,255,255,0.1)", marginBottom: "20px" }}
-          >
-            {/* 배경 워터마크 아이콘 */}
-            <div
-              className="absolute -right-4 -bottom-4 pointer-events-none select-none"
-              style={{ opacity: 0.06 }}
-            >
-              <Dumbbell size={120} color="#FFFFFF" />
-            </div>
+          /* 미수련 → CTA 섹션 */
+          <section style={{ marginBottom: "20px" }}>
+            <p className="text-[10px] tracking-[0.5px] font-semibold mb-2" style={{ color: "#8A8A94" }}>
+              오늘의 수련
+            </p>
 
-            {/* 콘텐츠 */}
-            <div className="relative z-10">
-              <p className="text-[10px] font-semibold uppercase tracking-widest mb-3"
-                 style={{ color: "#6B7280" }}>
-                Today&apos;s Training
-              </p>
-
-              {/* A안: 아이콘 배지 + 스타일명 */}
-              <div className="flex items-center gap-3.5 mb-4">
-                {/* 아이콘 배지 */}
-                <div
-                  className="flex items-center justify-center shrink-0"
-                  style={{
-                    width: 48,
-                    height: 48,
-                    borderRadius: 12,
-                    backgroundColor: "rgba(123,97,255,0.15)",
-                  }}
-                >
-                  <span style={{ fontSize: 24, lineHeight: 1 }}>{bjjStyle.emoji}</span>
-                </div>
-                {/* 텍스트 */}
-                <div className="min-w-0">
-                  <h2 className="text-lg font-black text-white leading-snug">
-                    {bjjStyle.label}
-                  </h2>
-                  <p className="text-sm mt-0.5 truncate" style={{ color: "#B4BCC8" }}>
-                    {bjjStyle.desc}
-                  </p>
-                </div>
-              </div>
-
-              {/* 수치 행 */}
-              <div className="flex items-center gap-4 mb-5">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-base">🔥</span>
-                  <span className="text-sm font-bold" style={{ color: "#F5F7FA" }}>
-                    {weekXp > 0 ? `+${weekXp.toLocaleString()} XP` : "0 XP"}
-                  </span>
-                  <span className="text-[11px]" style={{ color: "#6B7280" }}>이번 주</span>
-                </div>
-                <div className="w-px h-4" style={{ backgroundColor: "#2A2A38" }} />
-                <div className="flex items-center gap-1.5">
-                  <span className="text-base">⏱</span>
-                  <span className="text-sm font-bold" style={{ color: "#F5F7FA" }}>
-                    {weekDayCount}일
-                  </span>
-                  <span className="text-[11px]" style={{ color: "#6B7280" }}>수련</span>
-                </div>
-                {streak >= 2 && (
-                  <>
-                    <div className="w-px h-4" style={{ backgroundColor: "#2A2A38" }} />
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-base">🔥</span>
-                      <span className="text-sm font-bold" style={{ color: "#FF7800" }}>
-                        {streak}일 스트릭
-                      </span>
-                    </div>
-                  </>
-                )}
-              </div>
-
-              {/* 그라디언트 CTA 버튼 — w-full */}
-              <Link
-                href="/calendar"
-                className="flex items-center justify-center w-full py-3 rounded-xl font-bold text-white text-[14px] hover:brightness-110 active:scale-[0.97] transition-all duration-fast"
-                style={{
-                  background: "linear-gradient(135deg, #7B61FF 0%, #B44FD4 100%)",
-                  boxShadow: "0 4px 16px rgba(123,97,255,0.35)",
-                }}
+            <div className="flex items-center gap-3 mb-3">
+              <div
+                className="flex items-center justify-center shrink-0"
+                style={{ width: 42, height: 42, borderRadius: 12, backgroundColor: "#1A1A24" }}
               >
-                수련 기록하기
-              </Link>
+                <TodayStyleIcon size={20} color="#D9772E" />
+              </div>
+              <div className="min-w-0">
+                <h2 className="text-[15px] font-bold text-white leading-snug">
+                  {bjjStyle.label}
+                </h2>
+                <p className="text-xs mt-0.5 truncate" style={{ color: "#8A8A94" }}>
+                  {bjjStyle.desc}
+                </p>
+              </div>
             </div>
+
+            {/* 수치 행 */}
+            <div className="flex items-center gap-3.5 mb-3 text-xs" style={{ color: "#8A8A94" }}>
+              <span className="inline-flex items-center gap-1">
+                <Flame size={13} color="#D9772E" />
+                이번 주 <span className="font-semibold text-white">{weekXp.toLocaleString()} XP</span>
+              </span>
+              <span className="inline-flex items-center gap-1">
+                <Calendar size={13} />
+                <span className="font-semibold text-white">{weekDayCount}일</span> 수련
+              </span>
+              {streak >= 2 && (
+                <span className="inline-flex items-center gap-1">
+                  <Flame size={13} color="#D9772E" />
+                  <span className="font-semibold" style={{ color: "#D9772E" }}>{streak}일 스트릭</span>
+                </span>
+              )}
+            </div>
+
+            {/* CTA 버튼 — 브랜드 앰버 단색 (그라디언트/그림자 제거) */}
+            <Link
+              href="/calendar"
+              className="flex items-center justify-center w-full py-3 rounded-xl font-bold text-[14px] active:scale-[0.97] transition-transform duration-fast"
+              style={{ backgroundColor: "#D9772E", color: "#0A0A0F" }}
+            >
+              수련 기록하기
+            </Link>
           </section>
         ) : (
-          /* 수련 완료 → 완료 카드 */
-          <section
-            className="rounded-2xl p-4 overflow-hidden relative"
-            style={{ backgroundColor: "#1A1A24", border: "1px solid rgba(255,255,255,0.1)", marginBottom: "20px" }}
-          >
-            <div className="absolute -right-4 -bottom-4 pointer-events-none select-none" style={{ opacity: 0.06 }}>
-              <Dumbbell size={120} color="#34D399" />
-            </div>
-            <div className="relative z-10">
-              <p className="text-[10px] font-semibold uppercase tracking-widest mb-1" style={{ color: "#6B7280" }}>
-                Today&apos;s Training
-              </p>
-              <h2 className="text-lg font-black text-white mb-1">오늘 수련 완료! ✅</h2>
-              <p className="text-sm mb-4" style={{ color: "#B4BCC8" }}>훌륭해요. 오늘도 도장에 나왔군요.</p>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-1.5">
-                  <span>🔥</span>
-                  <span className="text-sm font-bold text-white">{weekXp.toLocaleString()} XP</span>
-                  <span className="text-[11px]" style={{ color: "#6B7280" }}>이번 주</span>
-                </div>
-                {streak >= 2 && (
-                  <>
-                    <div className="w-px h-4" style={{ backgroundColor: "#2A2A38" }} />
-                    <div className="flex items-center gap-1.5">
-                      <span>🔥</span>
-                      <span className="text-sm font-bold" style={{ color: "#FF7800" }}>{streak}일 연속</span>
-                    </div>
-                  </>
-                )}
+          /* 수련 완료 섹션 */
+          <section style={{ marginBottom: "20px" }}>
+            <p className="text-[10px] tracking-[0.5px] font-semibold mb-2" style={{ color: "#8A8A94" }}>
+              오늘의 수련
+            </p>
+            <div className="flex items-center gap-3 mb-3">
+              <div
+                className="flex items-center justify-center shrink-0"
+                style={{ width: 42, height: 42, borderRadius: 12, backgroundColor: "#1A1A24" }}
+              >
+                <Check size={20} color="#34D399" />
               </div>
+              <div className="min-w-0">
+                <h2 className="text-[15px] font-bold text-white leading-snug">오늘 수련 완료!</h2>
+                <p className="text-xs mt-0.5" style={{ color: "#8A8A94" }}>훌륭해요. 오늘도 도장에 나왔군요.</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3.5 text-xs" style={{ color: "#8A8A94" }}>
+              <span className="inline-flex items-center gap-1">
+                <Flame size={13} color="#D9772E" />
+                이번 주 <span className="font-semibold text-white">{weekXp.toLocaleString()} XP</span>
+              </span>
+              {streak >= 2 && (
+                <span className="inline-flex items-center gap-1">
+                  <Flame size={13} color="#D9772E" />
+                  <span className="font-semibold" style={{ color: "#D9772E" }}>{streak}일 연속</span>
+                </span>
+              )}
             </div>
           </section>
         )}
 
-        {/* ── 벨트 레벨 카드 ─────────────────────────────────────────── */}
-        <Link href="/profile">
-          <section className="rounded-2xl p-4 active:scale-[0.98] transition-transform duration-fast" style={{ backgroundColor: "#1A1A24", border: "1px solid rgba(255,255,255,0.1)", marginBottom: "20px" }}>
-            {/* 상단: 벨트명 + XP */}
-            <div className="flex items-center justify-between mb-3">
-              <div>
-                <p className="text-[10px] uppercase tracking-widest font-semibold mb-0.5"
-                   style={{ color: "#6B7280" }}>Current Belt</p>
-                <p className="text-lg font-black" style={{ color: beltCfg.textColor }}>
-                  {profile.belt}
-                </p>
-              </div>
-              <div className="text-right">
-                <p className="text-xl font-black tabular-nums tracking-tight"
-                   style={{ color: beltCfg.textColor }}>
-                  {totalXp.toLocaleString()}
-                </p>
-                <p className="text-[10px]" style={{ color: "#3A3A4A" }}>Total XP</p>
-              </div>
-            </div>
+        <div className="h-px" style={{ backgroundColor: "rgba(255,255,255,0.05)", marginBottom: "20px" }} />
 
-            {/* 벨트 형태 시각화 */}
-            <BeltDisplay
-              belt={profile.belt}
-              stripe={stripe}
-              height={20}
-              tipWidth={48}
-              className="mb-3"
-            />
+        {/* ── 벨트/학습 레벨 — 박스 카드 제거, 플랫 섹션 (2026-09-19 리뉴얼) ── */}
+        <Link href="/profile" className="block active:opacity-80 transition-opacity duration-fast" style={{ marginBottom: "20px" }}>
+          <div className="flex items-baseline justify-between mb-2.5">
+            <p className="text-[10px] tracking-[0.5px] font-semibold" style={{ color: "#8A8A94" }}>
+              {profile.belt} · {stripe}그랄
+            </p>
+            <p className="text-[19px] font-bold tabular-nums tracking-tight" style={{ color: "#D9772E" }}>
+              {totalXp.toLocaleString()}
+              <span className="text-[10px] font-medium ml-0.5" style={{ color: "#8A8A94" }}>XP</span>
+            </p>
+          </div>
 
-            {/* 이번 달 활동 바 */}
-            <div className="space-y-1.5">
-              <div className="h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: "#0A0A0F" }}>
-                <div
-                  className="h-full rounded-full"
-                  style={{
-                    width: `${monthProgress}%`,
-                    background: `linear-gradient(90deg, ${beltCfg.bodyGrad[0]}, ${beltCfg.bodyGrad[1]})`,
-                    transition: "width 0.6s cubic-bezier(0.34,1.56,0.64,1)",
-                  }}
-                />
-              </div>
-              <div className="flex justify-between text-[10px]">
-                <span style={{ color: "#6B7280" }}>이번 달 활동</span>
-                <span style={{ color: beltCfg.textColor }}>
-                  {monthXp.toLocaleString()} / {monthXpGoal.toLocaleString()} XP
-                </span>
-              </div>
+          {/* 벨트 형태 시각화 */}
+          <BeltDisplay
+            belt={profile.belt}
+            stripe={stripe}
+            height={20}
+            tipWidth={48}
+            className="mb-3"
+          />
+
+          {/* 이번 달 활동 바 — 브랜드 앰버 단색 */}
+          <div className="space-y-1.5">
+            <div className="h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: "rgba(255,255,255,0.06)" }}>
+              <div
+                className="h-full rounded-full"
+                style={{
+                  width: `${monthProgress}%`,
+                  backgroundColor: "#D9772E",
+                  transition: "width 0.6s cubic-bezier(0.34,1.56,0.64,1)",
+                }}
+              />
             </div>
-          </section>
+            <div className="flex justify-between text-[10.5px]" style={{ color: "#8A8A94" }}>
+              <span>이번 달 활동</span>
+              <span>{monthXp.toLocaleString()} / {monthXpGoal.toLocaleString()} XP</span>
+            </div>
+          </div>
         </Link>
 
-        {/* ── 스트림 강도 ─────────────────────────────────────────────── */}
-        <section className="rounded-2xl p-4" style={{ backgroundColor: "#1A1A24", border: "1px solid rgba(255,255,255,0.1)", marginBottom: "20px" }}>
+        <div className="h-px" style={{ backgroundColor: "rgba(255,255,255,0.05)", marginBottom: "20px" }} />
+
+        {/* ── 스트림 강도 — 박스 카드 제거, 무지개색 → 단일 액센트 (2026-09-19 리뉴얼) ── */}
+        <section style={{ marginBottom: "20px" }}>
 
           {/* 헤더 */}
-          <div className="flex items-center justify-between mb-4">
-            <p className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: "#6B7280" }}>
+          <div className="flex items-baseline justify-between mb-3">
+            <p className="text-[10px] tracking-[0.5px] font-semibold" style={{ color: "#8A8A94" }}>
               스트림 강도
             </p>
-            <span className="text-[10px] tabular-nums font-semibold" style={{ color: "#3A3A4A" }}>
+            <span className="text-[10.5px] tabular-nums" style={{ color: "#5A5A64" }}>
               총 {Object.values(streamTotals).reduce((a, b) => a + b, 0)}회
             </span>
           </div>
 
-          {/* 가로 바 행 — 횟수 기준 내림차순 */}
+          {/* 가로 바 행 — 횟수 기준 내림차순. 최강 스트림만 brand-primary, 나머지는 중립 */}
           {(() => {
             const totalAll  = Object.values(streamTotals).reduce((a, b) => a + b, 0);
             const sorted    = [...STREAMS].sort((a, b) => streamTotals[b] - streamTotals[a]);
             const topStream = sorted[0];
 
             return (
-              <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "16px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "9px", marginBottom: "16px" }}>
                 {sorted.map((stream) => {
                   const cap    = CAPSULE[stream];
                   const cnt    = streamTotals[stream];
@@ -515,43 +473,33 @@ export function HomeDashboard({
                   const pct    = totalAll > 0 ? Math.round((cnt / totalAll) * 100) : 0;
                   const barPct = maxStreamTotal > 0 ? (cnt / maxStreamTotal) * 100 : 0;
                   const minPct = cnt > 0 ? 6 : 3;
+                  const tint   = isTop ? "#D9772E" : cnt > 0 ? "#D9772E59" : "rgba(255,255,255,0.08)";
 
                   return (
-                    <div key={stream} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                    <div key={stream} style={{ display: "flex", alignItems: "center", gap: "9px" }}>
                       {/* 라벨 */}
-                      <div style={{ width: "52px", display: "flex", alignItems: "center", gap: "5px", flexShrink: 0 }}>
-                        <cap.IconCmp size={15} color={isTop ? cap.text : "#4A4A5A"} />
-                        <span style={{ fontSize: "11px", fontWeight: 600, color: isTop ? cap.text : "#4A4A5A" }}>
+                      <div style={{ width: "52px", display: "flex", alignItems: "center", gap: "4px", flexShrink: 0 }}>
+                        <cap.IconCmp size={13} color={isTop ? "#D9772E" : "#5A5A64"} />
+                        <span style={{ fontSize: "11px", fontWeight: 600, color: isTop ? "#D9772E" : "#5A5A64" }}>
                           {cap.label}
                         </span>
                       </div>
 
                       {/* 바 트랙 */}
-                      <div style={{ flex: 1, height: "28px", backgroundColor: "rgba(255,255,255,0.06)", borderRadius: "999px", overflow: "hidden" }}>
+                      <div style={{ flex: 1, height: "20px", backgroundColor: "rgba(255,255,255,0.05)", borderRadius: "999px", overflow: "hidden" }}>
                         <div
                           style={{
                             width: `${Math.max(barPct, minPct)}%`,
                             height: "100%",
                             borderRadius: "999px",
-                            backgroundColor: isTop ? cap.bar : cnt > 0 ? cap.bar + "70" : "rgba(255,255,255,0.04)",
-                            boxShadow: isTop ? `0 0 12px ${cap.bar}50` : "none",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "flex-end",
-                            paddingRight: cnt > 0 ? "10px" : "0",
+                            backgroundColor: tint,
                             transition: "width 0.6s cubic-bezier(0.34,1.56,0.64,1)",
                           }}
-                        >
-                          {cnt > 0 && (
-                            <span style={{ fontSize: "10px", fontWeight: 700, color: "#fff", whiteSpace: "nowrap" }}>
-                              {cnt}회
-                            </span>
-                          )}
-                        </div>
+                        />
                       </div>
 
                       {/* 퍼센트 */}
-                      <span style={{ width: "28px", fontSize: "10px", fontWeight: 700, textAlign: "right", flexShrink: 0, color: isTop ? cap.text : "#3A3A4A" }}>
+                      <span style={{ width: "26px", fontSize: "10px", fontWeight: 600, textAlign: "right", flexShrink: 0, color: isTop ? "#D9772E" : "#5A5A64" }}>
                         {cnt > 0 ? `${pct}%` : "—"}
                       </span>
                     </div>
@@ -562,32 +510,32 @@ export function HomeDashboard({
           })()}
 
           {/* 구분선 */}
-          <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", marginBottom: "12px" }} />
+          <div style={{ borderTop: "1px solid rgba(255,255,255,0.05)", marginBottom: "12px" }} />
 
-          {/* 3개 스탯 칩 */}
+          {/* 3개 스탯 — 박스 없이 텍스트만, 숫자는 brand-primary */}
           {(() => {
             const totalAll  = Object.values(streamTotals).reduce((a, b) => a + b, 0);
             const topStream = STREAMS.reduce((a, b) => streamTotals[a] >= streamTotals[b] ? a : b);
             const topCap    = CAPSULE[topStream];
             return (
-              <div style={{ display: "flex", gap: "8px" }}>
-                <div style={{ flex: 1, backgroundColor: "rgba(255,255,255,0.04)", borderRadius: "10px", padding: "8px", textAlign: "center" }}>
-                  <div style={{ fontSize: "15px", fontWeight: 800, color: "#F5F7FA", lineHeight: 1.2 }}>
+              <div style={{ display: "flex" }}>
+                <div style={{ flex: 1, textAlign: "center" }}>
+                  <div style={{ fontSize: "16px", fontWeight: 700, color: "#D9772E", lineHeight: 1.2 }}>
                     {totalAll}
                   </div>
-                  <div style={{ fontSize: "9px", color: "#6B7280", marginTop: "3px" }}>총 수련</div>
+                  <div style={{ fontSize: "10px", color: "#8A8A94", marginTop: "3px" }}>총 수련</div>
                 </div>
-                <div style={{ flex: 1, backgroundColor: "rgba(255,255,255,0.04)", borderRadius: "10px", padding: "8px", textAlign: "center" }}>
-                  <div style={{ fontSize: "15px", fontWeight: 800, lineHeight: 1.2, color: totalAll > 0 ? topCap.text : "#3A3A4A" }}>
+                <div style={{ flex: 1, textAlign: "center" }}>
+                  <div style={{ fontSize: "16px", fontWeight: 700, lineHeight: 1.2, color: totalAll > 0 ? "#D9772E" : "#5A5A64" }}>
                     {totalAll > 0 ? topCap.label : "—"}
                   </div>
-                  <div style={{ fontSize: "9px", color: "#6B7280", marginTop: "3px" }}>최강 스트림</div>
+                  <div style={{ fontSize: "10px", color: "#8A8A94", marginTop: "3px" }}>최강 스트림</div>
                 </div>
-                <div style={{ flex: 1, backgroundColor: "rgba(255,255,255,0.04)", borderRadius: "10px", padding: "8px", textAlign: "center" }}>
-                  <div style={{ fontSize: "15px", fontWeight: 800, color: "#F5F7FA", lineHeight: 1.2 }}>
+                <div style={{ flex: 1, textAlign: "center" }}>
+                  <div style={{ fontSize: "16px", fontWeight: 700, color: "#D9772E", lineHeight: 1.2 }}>
                     {weekDayCount}
                   </div>
-                  <div style={{ fontSize: "9px", color: "#6B7280", marginTop: "3px" }}>이번 주 수련일</div>
+                  <div style={{ fontSize: "10px", color: "#8A8A94", marginTop: "3px" }}>이번 주 수련일</div>
                 </div>
               </div>
             );
@@ -697,25 +645,25 @@ export function HomeDashboard({
                           className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 active:scale-[0.98] transition-transform duration-fast"
                           style={{ backgroundColor: "#22222E" }}
                         >
-                          <wCap.IconCmp size={14} color={wCap.text} />
+                          <wCap.IconCmp size={14} color="#F87171" />
                           <span className="flex-1 text-sm font-semibold text-white truncate">
                             {t.nameKo}
                           </span>
                           {t.xpValue != null && (
                             <span
                               className="text-[9px] px-2 py-0.5 rounded-full font-bold shrink-0"
-                              style={{ backgroundColor: "rgba(167,139,250,0.18)", color: "#A78BFA" }}
+                              style={{ backgroundColor: "#D9772E26", color: "#D9772E" }}
                             >
                               XP {t.xpValue}
                             </span>
                           )}
                           <span
                             className="text-[10px] px-2 py-0.5 rounded-full font-semibold shrink-0"
-                            style={{ backgroundColor: wCap.bg, color: wCap.text }}
+                            style={{ backgroundColor: "rgba(255,255,255,0.06)", color: "#8A8A94" }}
                           >
                             {cnt === 0 ? "미수련" : `${cnt}회`}
                           </span>
-                          <ArrowRight size={12} style={{ color: wCap.bar }} className="shrink-0" />
+                          <ArrowRight size={12} style={{ color: "#8A8A94" }} className="shrink-0" />
                         </Link>
                       );
                     })}
