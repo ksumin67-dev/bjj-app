@@ -11,7 +11,7 @@ import { BeltDisplay, BELT_CONFIG } from "@/components/ui/BeltDisplay";
 import { TrainingReminderToggle } from "@/components/profile/TrainingReminderToggle";
 import {
   Loader2, Pencil, Check, Flame, Trophy, CalendarCheck,
-  Swords, Shield, Zap, Users, ChevronRight, type LucideIcon,
+  Swords, Shield, Zap, Users, Dumbbell, ChevronRight, type LucideIcon,
 } from "lucide-react";
 
 // ── 상수 ──────────────────────────────────────────────────────────────────
@@ -26,18 +26,14 @@ const BELTS: { value: BeltLevel; label: string }[] = [
 
 const STREAMS: Stream[] = ["가드포지션", "탑포지션", "이스케이프", "스탠딩"];
 
-const CAPSULE: Record<Stream, { text: string; bar: string; label: string; Icon: LucideIcon }> = {
-  가드포지션: { text: "#7EC8FF", bar: "#2E80F0", label: "가드",       Icon: Shield },
-  탑포지션:   { text: "#FFB347", bar: "#FF8C42", label: "탑",         Icon: Swords },
-  이스케이프: { text: "#C4A4FF", bar: "#A78BFA", label: "이스케이프", Icon: Zap    },
-  스탠딩:     { text: "#FFE066", bar: "#FBBF24", label: "스탠딩",     Icon: Users  },
+// 스트림 아이콘 — 색상 필드는 제거(2026-09-19 리뉴얼, 단일 액센트 원칙).
+// 홈/기술도감과 동일한 Shield/Swords/Zap/Users 체계 재사용.
+const CAPSULE: Record<Stream, { label: string; Icon: LucideIcon }> = {
+  가드포지션: { label: "가드",       Icon: Shield },
+  탑포지션:   { label: "탑",         Icon: Swords },
+  이스케이프: { label: "이스케이프", Icon: Zap    },
+  스탠딩:     { label: "스탠딩",     Icon: Users  },
 };
-
-// 공통 카드 스타일 (홈/캘린더 디자인 시스템과 동일)
-const CARD = {
-  backgroundColor: "#1A1A24",
-  border: "1px solid rgba(255,255,255,0.1)",
-} as const;
 
 const SECTION_GAP = { marginBottom: "20px" } as const;
 
@@ -85,6 +81,7 @@ export function ProfileEditor({
   const sortedStreams = [...STREAMS].sort((a, b) => streamTotals[b] - streamTotals[a]);
 
   const beltIndex = BELTS.findIndex((b) => b.value === belt);
+  const StyleIcon = bjjStyle.dominant ? CAPSULE[bjjStyle.dominant].Icon : Dumbbell;
 
   function handleBeltChange(b: BeltLevel) {
     setBelt(b);
@@ -119,7 +116,7 @@ export function ProfileEditor({
       <header className="flex items-start justify-between" style={SECTION_GAP}>
         <div>
           <h1 className="text-2xl font-black tracking-tight text-white">프로필</h1>
-          <p className="text-sm mt-1" style={{ color: "#B4BCC8" }}>
+          <p className="text-sm font-normal mt-1" style={{ color: "#8A8A94" }}>
             나의 주짓수 여정과 기록
           </p>
         </div>
@@ -127,110 +124,95 @@ export function ProfileEditor({
           <button
             onClick={() => setEditing(true)}
             className="flex items-center gap-1.5 rounded-full px-3.5 py-2 active:scale-95 transition-all duration-fast"
-            style={{ backgroundColor: "rgba(123,97,255,0.15)" }}
+            style={{ border: "1px solid rgba(217,119,46,0.4)" }}
           >
-            <Pencil size={13} style={{ color: "#A78BFA" }} />
-            <span className="text-[12px] font-bold" style={{ color: "#A78BFA" }}>수정</span>
+            <Pencil size={13} color="#D9772E" />
+            <span className="text-[12px] font-bold" style={{ color: "#D9772E" }}>수정</span>
           </button>
         )}
       </header>
 
       {/* ════════════════════════════════════════════════════════════════
-          1. 히어로 카드 — 아바타 + 닉네임 + 벨트 + 스타일
+          1. 히어로 — 아바타 + 닉네임 + 벨트 + 스타일 (박스 카드 없이 플랫)
           ════════════════════════════════════════════════════════════════ */}
-      <section className="rounded-2xl p-4 overflow-hidden relative" style={{ ...CARD, ...SECTION_GAP }}>
-        {/* 배경 글로우 */}
-        <div
-          className="absolute -right-10 -top-10 pointer-events-none"
-          style={{
-            width: 160, height: 160, borderRadius: "50%",
-            background: `radial-gradient(circle, ${cfg.bodyGrad[0]}33 0%, transparent 70%)`,
-          }}
-        />
-        <div className="relative z-10">
-          <div className="flex items-center gap-4 mb-4">
-            {/* 아바타 */}
+      <section style={SECTION_GAP}>
+        <div className="flex items-center gap-4">
+          {/* 아바타 */}
+          <div
+            className="w-16 h-16 rounded-full flex items-center justify-center shrink-0 text-2xl font-black"
+            style={{ backgroundColor: "#D9772E", color: "#fff" }}
+          >
+            {(nickname.charAt(0) || "A").toUpperCase()}
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="text-xl font-bold text-white truncate leading-tight">
+              {nickname || "아쿠아"}
+            </p>
+            <p className="text-sm font-bold mt-1" style={{ color: cfg.textColor }}>
+              {belt}{stripe > 0 ? ` · ${stripe} Stripe` : ""}
+            </p>
+            {/* 스타일 배지 — lucide 아웃라인 칩 */}
             <div
-              className="w-16 h-16 rounded-full flex items-center justify-center shrink-0 text-2xl font-black"
-              style={{
-                background: "linear-gradient(135deg, #7B61FF, #B44FD4)",
-                color: "#fff",
-                boxShadow: "0 4px 16px rgba(123,97,255,0.35)",
-              }}
+              className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 mt-2"
+              style={{ border: "1px solid rgba(255,255,255,0.1)" }}
             >
-              {(nickname.charAt(0) || "A").toUpperCase()}
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-xl font-black text-white truncate leading-tight">
-                {nickname || "아쿠아"}
-              </p>
-              <p className="text-sm font-bold mt-1" style={{ color: cfg.textColor }}>
-                {belt}{stripe > 0 ? ` · ${stripe} Stripe` : ""}
-              </p>
-              {/* 스타일 배지 */}
-              <div
-                className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 mt-2"
-                style={{ backgroundColor: "rgba(255,255,255,0.06)" }}
-              >
-                <span style={{ fontSize: 13 }}>{bjjStyle.emoji}</span>
-                <span className="text-[11px] font-semibold" style={{ color: "#B4BCC8" }}>
-                  {bjjStyle.label}
-                </span>
-              </div>
+              <StyleIcon size={12} color="#8A8A94" />
+              <span className="text-[11px] font-normal" style={{ color: "#B4BCC8" }}>
+                {bjjStyle.label}
+              </span>
             </div>
           </div>
-
-          {/* 벨트 시각화 */}
-          <BeltDisplay belt={belt} stripe={stripe} height={28} tipWidth={64} />
         </div>
       </section>
 
       {/* ════════════════════════════════════════════════════════════════
-          2. 통계 그리드 (2x2)
+          2. 통계 스트립 — 헤어라인 상하 구분선 + 세로 구분선 (A안)
           ════════════════════════════════════════════════════════════════ */}
-      <div style={{ ...SECTION_GAP }}>
-        <p className="text-[10px] uppercase tracking-widest font-semibold mb-3" style={{ color: "#6B7280" }}>
-          나의 기록
-        </p>
-        <div className="grid grid-cols-2 gap-2.5">
-          <StatCard
-            icon={<Trophy size={16} style={{ color: "#FBBF24" }} />}
-            label="누적 XP"
-            value={totalXp.toLocaleString()}
-            accent="#FBBF24"
-          />
-          <StatCard
-            icon={<CalendarCheck size={16} style={{ color: "#A78BFA" }} />}
-            label="총 수련일"
-            value={`${totalDays}일`}
-            accent="#A78BFA"
-          />
-          <StatCard
-            icon={<Flame size={16} style={{ color: "#FF7800" }} />}
-            label="연속 스트릭"
-            value={`${streak}일`}
-            accent="#FF7800"
-            sub={streakBonus > 0 ? `보너스 +${streakBonus} XP` : undefined}
-          />
-          <StatCard
-            icon={<topCap.Icon size={16} style={{ color: topCap.text }} />}
-            label="최강 스트림"
-            value={totalReps > 0 ? topCap.label : "—"}
-            accent={topCap.text}
-            sub={totalReps > 0 ? `${streamTotals[topStream]}회 수련` : "기록 없음"}
-          />
+      <section
+        className="flex"
+        style={{
+          borderTop: "1px solid rgba(255,255,255,0.06)",
+          borderBottom: "1px solid rgba(255,255,255,0.06)",
+          padding: "14px 0",
+          ...SECTION_GAP,
+        }}
+      >
+        <div className="flex-1 text-center">
+          <Trophy size={16} color="#8A8A94" className="mx-auto mb-1.5" />
+          <p className="text-[17px] font-bold tabular-nums" style={{ color: "#D9772E" }}>{totalXp.toLocaleString()}</p>
+          <p className="text-[10px] font-normal mt-0.5" style={{ color: "#6B7280" }}>누적 XP</p>
         </div>
-      </div>
+        <div style={{ width: 1, backgroundColor: "rgba(255,255,255,0.06)" }} />
+        <div className="flex-1 text-center">
+          <CalendarCheck size={16} color="#8A8A94" className="mx-auto mb-1.5" />
+          <p className="text-[17px] font-bold tabular-nums text-white">{totalDays}일</p>
+          <p className="text-[10px] font-normal mt-0.5" style={{ color: "#6B7280" }}>총 수련일</p>
+        </div>
+        <div style={{ width: 1, backgroundColor: "rgba(255,255,255,0.06)" }} />
+        <div className="flex-1 text-center">
+          <Flame size={16} color="#8A8A94" className="mx-auto mb-1.5" />
+          <p className="text-[17px] font-bold tabular-nums text-white">{streak}일</p>
+          <p className="text-[10px] font-normal mt-0.5" style={{ color: "#6B7280" }}>
+            {streakBonus > 0 ? `보너스 +${streakBonus}` : "연속 스트릭"}
+          </p>
+        </div>
+        <div style={{ width: 1, backgroundColor: "rgba(255,255,255,0.06)" }} />
+        <div className="flex-1 text-center">
+          <topCap.Icon size={16} color="#8A8A94" className="mx-auto mb-1.5" />
+          <p className="text-[17px] font-bold tabular-nums text-white">
+            {totalReps > 0 ? topCap.label : "—"}
+          </p>
+          <p className="text-[10px] font-normal mt-0.5" style={{ color: "#6B7280" }}>최강 스트림</p>
+        </div>
+      </section>
 
       {/* ════════════════════════════════════════════════════════════════
           3. 스트림 분포
           ════════════════════════════════════════════════════════════════ */}
-      <section className="rounded-2xl p-4" style={{ ...CARD, ...SECTION_GAP }}>
+      <section style={SECTION_GAP}>
         <div className="flex items-center justify-between mb-4">
-          <p className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: "#6B7280" }}>
-            스트림 분포
-          </p>
-          <span className="text-[10px] tabular-nums font-semibold" style={{ color: "#3A3A4A" }}>
+          <h2 className="text-[13.5px] font-bold text-white">스트림 분포</h2>
+          <span className="text-[10px] tabular-nums font-normal" style={{ color: "#6B7280" }}>
             총 {totalReps}회
           </span>
         </div>
@@ -245,8 +227,8 @@ export function ProfileEditor({
             return (
               <div key={stream} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                 <div style={{ width: "52px", display: "flex", alignItems: "center", gap: "5px", flexShrink: 0 }}>
-                  <cap.Icon size={15} color={isTop ? cap.text : "#4A4A5A"} />
-                  <span style={{ fontSize: "11px", fontWeight: 600, color: isTop ? cap.text : "#4A4A5A" }}>
+                  <cap.Icon size={15} color={isTop ? "#D9772E" : "#4A4A5A"} />
+                  <span style={{ fontSize: "11px", fontWeight: 400, color: isTop ? "#D9772E" : "#4A4A5A" }}>
                     {cap.label}
                   </span>
                 </div>
@@ -256,8 +238,7 @@ export function ProfileEditor({
                       width: `${Math.max(barPct, minPct)}%`,
                       height: "100%",
                       borderRadius: "999px",
-                      backgroundColor: isTop ? cap.bar : cnt > 0 ? cap.bar + "70" : "rgba(255,255,255,0.04)",
-                      boxShadow: isTop ? `0 0 12px ${cap.bar}50` : "none",
+                      backgroundColor: isTop ? "#D9772E" : cnt > 0 ? "#D9772E70" : "rgba(255,255,255,0.04)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "flex-end",
@@ -272,7 +253,7 @@ export function ProfileEditor({
                     )}
                   </div>
                 </div>
-                <span style={{ width: "28px", fontSize: "10px", fontWeight: 700, textAlign: "right", flexShrink: 0, color: isTop ? cap.text : "#3A3A4A" }}>
+                <span style={{ width: "28px", fontSize: "10px", fontWeight: 700, textAlign: "right", flexShrink: 0, color: isTop ? "#D9772E" : "#3A3A4A" }}>
                   {cnt > 0 ? `${pct}%` : "—"}
                 </span>
               </div>
@@ -282,12 +263,10 @@ export function ProfileEditor({
       </section>
 
       {/* ════════════════════════════════════════════════════════════════
-          4. 벨트 여정
+          4. 벨트 여정 — 실제 벨트 색상은 정당한 예외로 유지
           ════════════════════════════════════════════════════════════════ */}
-      <section className="rounded-2xl p-4" style={{ ...CARD, ...SECTION_GAP }}>
-        <p className="text-[10px] uppercase tracking-widest font-semibold mb-4" style={{ color: "#6B7280" }}>
-          벨트 여정
-        </p>
+      <section style={SECTION_GAP}>
+        <h2 className="text-[13.5px] font-bold text-white mb-4">벨트 여정</h2>
         <div className="flex items-end justify-between gap-1.5">
           {BELTS.map((b, i) => {
             const bCfg     = BELT_CONFIG[b.value];
@@ -342,39 +321,32 @@ export function ProfileEditor({
       {editing && (
         <>
           {/* 닉네임 */}
-          <section className="rounded-2xl p-4 space-y-3" style={{ ...CARD, ...SECTION_GAP }}>
-            <p className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: "#6B7280" }}>
-              Nickname
-            </p>
+          <section style={SECTION_GAP}>
+            <h2 className="text-[13px] font-bold text-white mb-3">닉네임</h2>
             <input
               type="text"
               value={nickname}
               maxLength={20}
               onChange={(e) => { setNickname(e.target.value); }}
-              className="w-full h-11 rounded-xl px-4 text-sm font-medium text-text-primary placeholder:text-text-disabled outline-none transition-colors duration-fast"
+              className="w-full h-11 rounded-xl px-4 text-sm font-normal text-text-primary placeholder:text-text-disabled outline-none transition-colors duration-fast"
               style={{ backgroundColor: "#0A0A0F", border: "1px solid rgba(255,255,255,0.08)" }}
               placeholder="닉네임 입력"
             />
           </section>
 
           {/* 벨트 선택 */}
-          <section className="rounded-2xl p-4 space-y-4" style={{ ...CARD, ...SECTION_GAP }}>
-            <p className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: "#6B7280" }}>
-              Belt
-            </p>
-            <div className="space-y-2.5">
-              {BELTS.map((b) => {
+          <section style={SECTION_GAP}>
+            <h2 className="text-[13px] font-bold text-white mb-3">벨트</h2>
+            <div>
+              {BELTS.map((b, i) => {
                 const active = belt === b.value;
                 const bCfg   = BELT_CONFIG[b.value];
                 return (
                   <button
                     key={b.value}
                     onClick={() => handleBeltChange(b.value)}
-                    className="w-full flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-fast active:scale-[0.98]"
-                    style={{
-                      backgroundColor: active ? "rgba(255,255,255,0.04)" : "#0A0A0F",
-                      border: active ? `1.5px solid ${bCfg.bodyGrad[0]}55` : "1.5px solid transparent",
-                    }}
+                    className="w-full flex items-center gap-3 px-1 py-3 transition-all duration-fast active:scale-[0.98]"
+                    style={{ borderBottom: i < BELTS.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none" }}
                   >
                     <div style={{ width: 120, flexShrink: 0 }}>
                       <BeltDisplay
@@ -387,7 +359,7 @@ export function ProfileEditor({
                       />
                     </div>
                     <span
-                      className="text-sm font-bold flex-1 text-left"
+                      className={active ? "text-sm font-bold flex-1 text-left" : "text-sm font-normal flex-1 text-left"}
                       style={{ color: active ? bCfg.textColor : "#4A4A5A" }}
                     >
                       {b.value}
@@ -402,11 +374,9 @@ export function ProfileEditor({
           </section>
 
           {/* 그랄 선택 */}
-          <section className="rounded-2xl p-4 space-y-3" style={{ ...CARD, ...SECTION_GAP }}>
-            <div className="flex items-center justify-between">
-              <p className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: "#6B7280" }}>
-                Stripe
-              </p>
+          <section style={SECTION_GAP}>
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-[13px] font-bold text-white">그랄</h2>
               <span className="text-sm font-bold" style={{ color: cfg.textColor }}>
                 {stripe} / {maxStripe}
               </span>
@@ -418,11 +388,11 @@ export function ProfileEditor({
                   <button
                     key={i}
                     onClick={() => { setStripe(i); }}
-                    className="flex-1 py-2.5 rounded-xl text-xs font-bold transition-all active:scale-95"
+                    className={active ? "flex-1 py-2.5 rounded-xl text-xs font-bold transition-all active:scale-95" : "flex-1 py-2.5 rounded-xl text-xs font-normal transition-all active:scale-95"}
                     style={{
-                      backgroundColor: active ? cfg.bodyGrad[0] + "22" : "#0A0A0F",
-                      color:           active ? cfg.textColor : "#4A4A5A",
-                      border:          active ? `1.5px solid ${cfg.bodyGrad[0]}` : "1.5px solid transparent",
+                      backgroundColor: active ? "#D9772E22" : "#0A0A0F",
+                      color:           active ? "#D9772E" : "#4A4A5A",
+                      border:          active ? "1.5px solid #D9772E" : "1.5px solid transparent",
                     }}
                   >
                     {i}
@@ -447,8 +417,7 @@ export function ProfileEditor({
               disabled={isPending}
               className="flex-1 py-3 rounded-xl font-bold text-white text-[14px] flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.97] transition-all duration-fast"
               style={{
-                background: "linear-gradient(135deg, #7B61FF 0%, #B44FD4 100%)",
-                boxShadow:  "0 4px 16px rgba(123,97,255,0.35)",
+                backgroundColor: "#D9772E",
                 opacity: isPending ? 0.7 : 1,
               }}
             >
@@ -462,48 +431,23 @@ export function ProfileEditor({
       {!editing && (
         <button
           onClick={() => setEditing(true)}
-          className="rounded-2xl p-4 flex items-center justify-between active:scale-[0.98] transition-transform duration-fast"
-          style={CARD}
+          className="flex items-center justify-between active:scale-[0.98] transition-transform duration-fast"
+          style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "16px" }}
         >
           <div className="flex items-center gap-3">
             <div
               className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-              style={{ backgroundColor: "rgba(123,97,255,0.15)" }}
+              style={{ border: "1px solid rgba(217,119,46,0.4)" }}
             >
-              <Pencil size={15} style={{ color: "#A78BFA" }} />
+              <Pencil size={15} color="#D9772E" />
             </div>
             <div className="text-left">
               <p className="text-sm font-bold text-white">프로필 수정</p>
-              <p className="text-[11px]" style={{ color: "#6B7280" }}>승급하면 벨트·그랄을 업데이트하세요</p>
+              <p className="text-[11px] font-normal" style={{ color: "#6B7280" }}>승급하면 벨트·그랄을 업데이트하세요</p>
             </div>
           </div>
           <ChevronRight size={18} style={{ color: "#4A4A5A" }} />
         </button>
-      )}
-    </div>
-  );
-}
-
-// ── 서브 컴포넌트 ───────────────────────────────────────────────────────────
-
-function StatCard({
-  icon, label, value, accent, sub,
-}: {
-  icon: React.ReactNode; label: string; value: string; accent: string; sub?: string;
-}) {
-  return (
-    <div className="rounded-2xl p-3.5" style={CARD}>
-      <div className="flex items-center gap-1.5 mb-2">
-        {icon}
-        <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: "#6B7280" }}>
-          {label}
-        </span>
-      </div>
-      <p className="text-xl font-black tabular-nums leading-none" style={{ color: accent }}>
-        {value}
-      </p>
-      {sub && (
-        <p className="text-[10px] mt-1.5" style={{ color: "#6B7280" }}>{sub}</p>
       )}
     </div>
   );
