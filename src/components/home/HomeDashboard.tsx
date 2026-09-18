@@ -1,7 +1,6 @@
 import type { Technique, TrainingSession, Stream, Athlete } from "@/types/domain";
 import { getBjjStyle, calculateStreak } from "@/types/domain";
 import type { UserProfile } from "@/lib/supabase/userProfile";
-import { BeltDisplay } from "@/components/ui/BeltDisplay";
 import Link from "next/link";
 import { Swords, Shield, Zap, Users, type LucideIcon } from "lucide-react";
 import { ArrowRight, Bell, Dumbbell, Flame, Calendar, Check, Heart } from "lucide-react";
@@ -135,14 +134,6 @@ export function HomeDashboard({
   // 벨트는 프로필에서 직접 가져옴 (XP 계산 아님)
   const stripe = profile.stripe;
 
-  // XP 바: 이번 달 수련 활동 지표로 활용
-  const thisMonthKey = todayKey.slice(0, 7); // "YYYY-MM"
-  const monthXp = sessions
-    .filter((s) => s.date?.startsWith(thisMonthKey))
-    .reduce((sum, s) => sum + (s.xpEarned ?? 0), 0);
-  const monthXpGoal = 2000; // 월 목표 XP
-  const monthProgress = Math.min(100, (monthXp / monthXpGoal) * 100);
-
   // ── 주간 7일 (오늘 기준 Mon-Sun 정렬)
   // 오늘이 속한 주의 월요일부터 일요일까지
   const todayDow = today.getDay(); // 0=일 1=월 ... 6=토
@@ -169,10 +160,15 @@ export function HomeDashboard({
       streamTotals[t.stream as Stream] += trainingCountMap[t.recordId] ?? 0;
     }
   }
-  const maxStreamTotal = Math.max(...Object.values(streamTotals), 1);
   const bjjStyle       = getBjjStyle(streamTotals, sessions.length);
   const weakness       = analyzeWeakness(streamTotals, techniques, trainingCountMap);
   const TodayStyleIcon = bjjStyle.dominant ? CAPSULE[bjjStyle.dominant].IconCmp : Dumbbell;
+
+  // 요약 한 줄용 — 벨트/XP/스트릭/최강 스트림은 프로필 화면에 이미 상세
+  // 버전(벨트 여정, 스트림 분포)이 있어서 홈에서는 중복 섹션 대신 한 줄
+  // 요약 + 프로필 링크로 축소 (2026-09-19, IA 정리)
+  const totalReps = Object.values(streamTotals).reduce((a, b) => a + b, 0);
+  const topStreamForSummary = STREAMS.reduce((a, b) => (streamTotals[a] >= streamTotals[b] ? a : b));
 
   // ── 학습 목표(찜한 기술) — 선수 상세에서 하트로 찜한 시그니처 기술
   const athleteNameMap = new Map(athletes.map((a) => [a.recordId, a.nameKo]));
@@ -401,147 +397,21 @@ export function HomeDashboard({
           </section>
         )}
 
-        <div className="h-px" style={{ backgroundColor: "rgba(255,255,255,0.05)", marginBottom: "20px" }} />
-
-        {/* ── 벨트/학습 레벨 — 박스 카드 제거, 플랫 섹션 (2026-09-19 리뉴얼) ── */}
-        <Link href="/profile" className="block active:opacity-80 transition-opacity duration-fast" style={{ marginBottom: "20px" }}>
-          <div className="flex items-baseline justify-between mb-2.5">
-            <p className="text-[10px] tracking-[0.5px] font-semibold" style={{ color: "#8A8A94" }}>
-              {profile.belt} · {stripe}그랄
-            </p>
-            <p className="text-[19px] font-bold tabular-nums tracking-tight" style={{ color: "#D9772E" }}>
-              {totalXp.toLocaleString()}
-              <span className="text-[10px] font-medium ml-0.5" style={{ color: "#8A8A94" }}>XP</span>
-            </p>
-          </div>
-
-          {/* 벨트 형태 시각화 */}
-          <BeltDisplay
-            belt={profile.belt}
-            stripe={stripe}
-            height={20}
-            tipWidth={48}
-            className="mb-3"
-          />
-
-          {/* 이번 달 활동 바 — 브랜드 앰버 단색 */}
-          <div className="space-y-1.5">
-            <div className="h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: "rgba(255,255,255,0.06)" }}>
-              <div
-                className="h-full rounded-full"
-                style={{
-                  width: `${monthProgress}%`,
-                  backgroundColor: "#D9772E",
-                  transition: "width 0.6s cubic-bezier(0.34,1.56,0.64,1)",
-                }}
-              />
-            </div>
-            <div className="flex justify-between text-[10.5px]" style={{ color: "#8A8A94" }}>
-              <span>이번 달 활동</span>
-              <span>{monthXp.toLocaleString()} / {monthXpGoal.toLocaleString()} XP</span>
-            </div>
-          </div>
+        {/* ── 벨트/XP/스트릭/최강스트림 한 줄 요약 — 프로필 화면에 이미
+            상세 버전(벨트 여정, 스트림 분포)이 있어서 홈에서는 중복
+            섹션 대신 한 줄 요약 + 링크로 축소 (2026-09-19, IA 정리) ── */}
+        <Link
+          href="/profile"
+          className="flex items-center justify-between gap-2 py-2.5 active:opacity-70 transition-opacity duration-fast"
+          style={{ borderBottom: "1px solid rgba(255,255,255,0.05)", marginBottom: "20px" }}
+        >
+          <span className="text-[11.5px]" style={{ color: "#8A8A94" }}>
+            {profile.belt} · {stripe}그랄 &nbsp;·&nbsp;{" "}
+            <span className="font-semibold" style={{ color: "#D9772E" }}>{totalXp.toLocaleString()} XP</span>
+            &nbsp;·&nbsp; {streak}일 스트릭 &nbsp;·&nbsp; {totalReps > 0 ? CAPSULE[topStreamForSummary].label : "—"} 최강
+          </span>
+          <ArrowRight size={13} style={{ color: "#5A5A64" }} className="shrink-0" />
         </Link>
-
-        <div className="h-px" style={{ backgroundColor: "rgba(255,255,255,0.05)", marginBottom: "20px" }} />
-
-        {/* ── 스트림 강도 — 박스 카드 제거, 무지개색 → 단일 액센트 (2026-09-19 리뉴얼) ── */}
-        <section style={{ marginBottom: "20px" }}>
-
-          {/* 헤더 */}
-          <div className="flex items-baseline justify-between mb-3">
-            <p className="text-[10px] tracking-[0.5px] font-semibold" style={{ color: "#8A8A94" }}>
-              스트림 강도
-            </p>
-            <span className="text-[10.5px] tabular-nums" style={{ color: "#5A5A64" }}>
-              총 {Object.values(streamTotals).reduce((a, b) => a + b, 0)}회
-            </span>
-          </div>
-
-          {/* 가로 바 행 — 횟수 기준 내림차순. 최강 스트림만 brand-primary, 나머지는 중립 */}
-          {(() => {
-            const totalAll  = Object.values(streamTotals).reduce((a, b) => a + b, 0);
-            const sorted    = [...STREAMS].sort((a, b) => streamTotals[b] - streamTotals[a]);
-            const topStream = sorted[0];
-
-            return (
-              <div style={{ display: "flex", flexDirection: "column", gap: "9px", marginBottom: "16px" }}>
-                {sorted.map((stream) => {
-                  const cap    = CAPSULE[stream];
-                  const cnt    = streamTotals[stream];
-                  const isTop  = stream === topStream && cnt > 0;
-                  const pct    = totalAll > 0 ? Math.round((cnt / totalAll) * 100) : 0;
-                  const barPct = maxStreamTotal > 0 ? (cnt / maxStreamTotal) * 100 : 0;
-                  const minPct = cnt > 0 ? 6 : 3;
-                  const tint   = isTop ? "#D9772E" : cnt > 0 ? "#D9772E59" : "rgba(255,255,255,0.08)";
-
-                  return (
-                    <div key={stream} style={{ display: "flex", alignItems: "center", gap: "9px" }}>
-                      {/* 라벨 */}
-                      <div style={{ width: "52px", display: "flex", alignItems: "center", gap: "4px", flexShrink: 0 }}>
-                        <cap.IconCmp size={13} color={isTop ? "#D9772E" : "#5A5A64"} />
-                        <span style={{ fontSize: "11px", fontWeight: 600, color: isTop ? "#D9772E" : "#5A5A64" }}>
-                          {cap.label}
-                        </span>
-                      </div>
-
-                      {/* 바 트랙 */}
-                      <div style={{ flex: 1, height: "20px", backgroundColor: "rgba(255,255,255,0.05)", borderRadius: "999px", overflow: "hidden" }}>
-                        <div
-                          style={{
-                            width: `${Math.max(barPct, minPct)}%`,
-                            height: "100%",
-                            borderRadius: "999px",
-                            backgroundColor: tint,
-                            transition: "width 0.6s cubic-bezier(0.34,1.56,0.64,1)",
-                          }}
-                        />
-                      </div>
-
-                      {/* 퍼센트 */}
-                      <span style={{ width: "26px", fontSize: "10px", fontWeight: 600, textAlign: "right", flexShrink: 0, color: isTop ? "#D9772E" : "#5A5A64" }}>
-                        {cnt > 0 ? `${pct}%` : "—"}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          })()}
-
-          {/* 구분선 */}
-          <div style={{ borderTop: "1px solid rgba(255,255,255,0.05)", marginBottom: "12px" }} />
-
-          {/* 3개 스탯 — 박스 없이 텍스트만, 숫자는 brand-primary */}
-          {(() => {
-            const totalAll  = Object.values(streamTotals).reduce((a, b) => a + b, 0);
-            const topStream = STREAMS.reduce((a, b) => streamTotals[a] >= streamTotals[b] ? a : b);
-            const topCap    = CAPSULE[topStream];
-            return (
-              <div style={{ display: "flex" }}>
-                <div style={{ flex: 1, textAlign: "center" }}>
-                  <div style={{ fontSize: "16px", fontWeight: 700, color: "#D9772E", lineHeight: 1.2 }}>
-                    {totalAll}
-                  </div>
-                  <div style={{ fontSize: "10px", color: "#8A8A94", marginTop: "3px" }}>총 수련</div>
-                </div>
-                <div style={{ flex: 1, textAlign: "center" }}>
-                  <div style={{ fontSize: "16px", fontWeight: 700, lineHeight: 1.2, color: totalAll > 0 ? "#D9772E" : "#5A5A64" }}>
-                    {totalAll > 0 ? topCap.label : "—"}
-                  </div>
-                  <div style={{ fontSize: "10px", color: "#8A8A94", marginTop: "3px" }}>최강 스트림</div>
-                </div>
-                <div style={{ flex: 1, textAlign: "center" }}>
-                  <div style={{ fontSize: "16px", fontWeight: 700, color: "#D9772E", lineHeight: 1.2 }}>
-                    {weekDayCount}
-                  </div>
-                  <div style={{ fontSize: "10px", color: "#8A8A94", marginTop: "3px" }}>이번 주 수련일</div>
-                </div>
-              </div>
-            );
-          })()}
-
-        </section>
 
         {/* ── 내가 배우고 싶은 기술(학습 목표) ─────────────────────────── */}
         {goalTechniques.length > 0 && (
