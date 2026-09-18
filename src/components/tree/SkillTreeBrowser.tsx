@@ -11,30 +11,54 @@
  *    플랫 리스트. 퍼센트는 선수 리스트의 heroStat과 동일한 자리(우측 상단
  *    큰 숫자)에 브랜드 액센트 색으로 표시.
  *  - 필터 전환 시 크로스페이드 + 리스트 순차 등장 애니메이션 추가.
+ *
+ * (2026-09-19) 색색의 이모지(포지션별 31종 + 스트림별 4종) → lucide-react
+ * 라인 아이콘으로 전면 교체. 홈 화면(HomeDashboard.tsx)에 이미 있던
+ * 스트림 아이콘(Shield/Swords/Zap/Users) 체계를 그대로 재사용하고,
+ * 포지션 31개는 각 기술의 특징(회전 방향, 잠금/해제, 방향 등)을 반영해
+ * 전부 다른 아이콘을 배정 — 13개 가드가 전부 같은 아이콘으로 뭉뚱그려지는
+ * 것도, 색깔 있는 이모지가 주는 "AI 목업" 느낌도 둘 다 피함.
  */
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  Shield, Swords, Zap, Users,
+  Lock, Moon, GitFork, RefreshCw, RefreshCcw, Asterisk, Link2, X, Slash,
+  Percent, Fence, Anchor, Hand,
+  MoveRight, Unlock, LockOpen, CircleDashed, Waves, RotateCcw, Crosshair,
+  Grip, ChevronsUp, Target, Compass, UserRound,
+  ArrowDownToLine,
+  LogOut, DoorOpen, ShieldOff, ArrowUpFromLine, ArrowLeftRight,
+  type LucideIcon,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Stream } from "@/types/domain";
 
-const STREAM_META: Record<Stream, { label: string; emoji: string }> = {
-  가드포지션: { label: "가드", emoji: "🛡️" },
-  탑포지션:   { label: "탑", emoji: "⚔️" },
-  이스케이프: { label: "이스케이프", emoji: "🏃" },
-  스탠딩:     { label: "스탠딩", emoji: "🥋" },
+const STREAM_META: Record<Stream, { label: string; Icon: LucideIcon }> = {
+  가드포지션: { label: "가드", Icon: Shield },
+  탑포지션:   { label: "탑", Icon: Swords },
+  이스케이프: { label: "이스케이프", Icon: Zap },
+  스탠딩:     { label: "스탠딩", Icon: Users },
 };
 const STREAM_ORDER: Stream[] = ["가드포지션", "탑포지션", "이스케이프", "스탠딩"];
 
-// 포지션 코드별 이모지 (목업 기준 + 확장)
-const POSITION_EMOJI: Record<string, string> = {
-  CG: "🛡️", HG: "🌓", BF: "🦋", DLR: "🌀", RDLR: "🔄", SP: "🕷️", LS: "🕸️",
-  RG: "🧤", XG: "❌", SLX: "🦵", FF: "🤝", SG: "🐎", KG: "🔑",
-  GP: "🚪", GB: "🔨", GBCG: "🔨", GBSP: "🔨", GBLS: "🔨", GBDLR: "🔨", GBBF: "🔨",
-  SC: "📐", MT: "⛰️", KNB: "🔻", KB: "🔻", NS: "🧭", BC: "🎒",
-  ME: "🆙", SCE: "↔️", BD: "🛡️", KNBE: "⬆️", NSE: "🧭",
-  TD: "🤼",
+// 포지션 코드별 아이콘 — 기술 특징을 반영해 31개 전부 다르게 배정 (2026-09-19)
+const POSITION_ICON: Record<string, LucideIcon> = {
+  // 가드 (13) — 잠금/회전/방향 등 기술 메커니즘을 은유
+  CG: Lock, HG: Moon, BF: GitFork, DLR: RefreshCw, RDLR: RefreshCcw,
+  SP: Asterisk, LS: Link2, XG: X, SLX: Slash, FF: Percent,
+  KG: Fence, SG: Anchor, RG: Hand,
+  // 가드 브레이크/패싱 (7)
+  GP: MoveRight, GB: Unlock, GBCG: LockOpen, GBSP: CircleDashed,
+  GBLS: Waves, GBDLR: RotateCcw, GBBF: Crosshair,
+  // 탑 컨트롤 (6, KB는 KNB와 동일 포지션의 레거시 코드)
+  SC: Grip, MT: ChevronsUp, KNB: Target, KB: Target, NS: Compass, BC: UserRound,
+  // 스탠딩 (1)
+  TD: ArrowDownToLine,
+  // 이스케이프 (5)
+  ME: LogOut, SCE: DoorOpen, BD: ShieldOff, KNBE: ArrowUpFromLine, NSE: ArrowLeftRight,
 };
 
 export type PosSummary = {
@@ -49,7 +73,7 @@ export type StreamGroup = { stream: Stream; positions: PosSummary[] };
 
 function PositionRow({ pos }: { pos: PosSummary }) {
   const pct = pos.childCount === 0 ? 0 : Math.round((pos.trainedCount / pos.childCount) * 100);
-  const emoji = POSITION_EMOJI[pos.id] ?? "🥋";
+  const Icon = POSITION_ICON[pos.id] ?? Shield;
   const isZero = pos.trainedCount === 0;
 
   return (
@@ -57,8 +81,8 @@ function PositionRow({ pos }: { pos: PosSummary }) {
       href={`/tree/position/${pos.id}`}
       className="flex items-center gap-3 py-3 border-b border-border-subtle last:border-b-0 active:opacity-70 active:scale-[0.99] transition-all duration-fast origin-left"
     >
-      <div className="flex items-center justify-center w-9 h-9 rounded-full bg-bg-elevated text-base shrink-0">
-        {emoji}
+      <div className="flex items-center justify-center w-9 h-9 rounded-full bg-bg-elevated text-text-tertiary shrink-0">
+        <Icon size={17} strokeWidth={1.8} />
       </div>
       <div className="flex-1 min-w-0">
         <h3 className="text-[13.5px] font-bold truncate text-text-primary">{pos.nameKo}</h3>
@@ -103,6 +127,7 @@ export default function SkillTreeBrowser({ groups }: { groups: StreamGroup[] }) 
           const meta = STREAM_META[stream];
           const active = stream === activeStream;
           const disabled = (byStream.get(stream)?.length ?? 0) === 0;
+          const Icon = meta.Icon;
           return (
             <button
               key={stream}
@@ -116,7 +141,7 @@ export default function SkillTreeBrowser({ groups }: { groups: StreamGroup[] }) 
                 disabled && "opacity-35",
               )}
             >
-              <span className="text-[13px] leading-none">{meta.emoji}</span>
+              <Icon size={13} strokeWidth={2} />
               {meta.label}
             </button>
           );
