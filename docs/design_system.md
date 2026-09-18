@@ -64,7 +64,7 @@ Whoop / Oura 스타일의 "미니멀 프리미엄 피트니스 앱" 톤. 화려�
 - [x] 기술도감 - 포지션 탭 (`SkillTreeBrowser.tsx`)
 - [x] 선수 상세 페이지 (`/tree/athlete/[athleteId]`) — 부수로 `AthleteTechniqueRow`/`TypeChip` 공용 컴포넌트도 개선(포지션 상세에도 자동 반영)
 - [ ] 포지션 상세 페이지 (`/tree/position/[positionId]`)
-- [ ] 기술 상세 페이지 (`/tree/[positionId]/[techId]`)
+- [x] 기술 상세 페이지 (`/tree/[positionId]/[techId]`) — 심화 정보 박스 카드 → 플랫 아이콘+텍스트, 스트림 배지 이모지 → lucide 아웃라인 칩, 프리미엄 업셀 게이팅 제거(아직 실제 반영 안 된 기능이라 전원 노출로 변경)
 - [ ] 기술도감 밖 화면 (홈, 캘린더, 프로필, 시퀀스)
 
 ## 작업 프로세스

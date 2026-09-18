@@ -10,12 +10,15 @@ import {
   Target,
   AlertTriangle,
   ShieldX,
-  Lock,
+  Shield,
+  Swords,
+  Zap,
+  Users,
+  type LucideIcon,
 } from "lucide-react";
 import { getTechniqueByTechId } from "@/lib/airtable/techniques";
 import { getAthleteByRecordId } from "@/lib/airtable/athletes";
 import { getAllTrainingSessions } from "@/lib/supabase/trainingSessions";
-import { getUserProfile } from "@/lib/supabase/userProfile";
 import { buildTrainingCountMap, trainingCountLabel } from "@/types/domain";
 import { TypeChip } from "@/components/tree/TypeChip";
 import { StatusIcon } from "@/components/tree/StatusIcon";
@@ -33,6 +36,8 @@ export async function generateMetadata({ params }: { params: Params }) {
   };
 }
 
+// (2026-09-19) 박스 카드(rounded-2xl border bg-elevated) → 아이콘+라벨+텍스트만
+// 있는 플랫 섹션으로. 디자인 시스템 "박스 카드 지양" 원칙 적용.
 function DetailSection({
   icon,
   label,
@@ -44,25 +49,27 @@ function DetailSection({
 }) {
   if (!content) return null;
   return (
-    <div className="rounded-2xl border border-border-subtle bg-bg-elevated p-4">
-      <div className="flex items-center gap-2 mb-2">
-        <span className="text-brand-primary">{icon}</span>
-        <h3 className="text-xs font-semibold text-text-secondary uppercase tracking-wide">
+    <div className="flex gap-2.5">
+      <span className="text-brand-primary shrink-0 mt-0.5">{icon}</span>
+      <div className="min-w-0">
+        <h3 className="text-[11px] font-semibold text-text-tertiary mb-0.5">
           {label}
         </h3>
+        <p className="text-[12.5px] text-text-secondary whitespace-pre-wrap leading-relaxed">
+          {content}
+        </p>
       </div>
-      <p className="text-sm text-text-primary whitespace-pre-wrap leading-relaxed">
-        {content}
-      </p>
     </div>
   );
 }
 
-const STREAM_STYLES: Record<string, { bg: string; text: string; label: string }> = {
-  가드포지션:   { bg: "bg-[#2E80F0]/15", text: "text-[#2E80F0]", label: "🛡 가드포지션" },
-  탑포지션:     { bg: "bg-[#FF8C42]/15", text: "text-[#FF8C42]", label: "⚔️ 탑포지션" },
-  이스케이프:   { bg: "bg-[#A78BFA]/15", text: "text-[#A78BFA]", label: "🔓 이스케이프" },
-  스탠딩:       { bg: "bg-[#FBBF24]/15", text: "text-[#FBBF24]", label: "🥋 스탠딩" },
+// 스트림 배지 — 기술도감 포지션 탭과 동일한 아이콘 체계(Shield/Swords/Zap/
+// Users) 재사용, 이모지·색깔 필 대신 아웃라인 칩 (2026-09-19).
+const STREAM_META: Record<string, { label: string; Icon: LucideIcon }> = {
+  가드포지션: { label: "가드포지션", Icon: Shield },
+  탑포지션:   { label: "탑포지션", Icon: Swords },
+  이스케이프: { label: "이스케이프", Icon: Zap },
+  스탠딩:     { label: "스탠딩", Icon: Users },
 };
 
 export default async function TechniqueDetailPage({
@@ -74,10 +81,9 @@ export default async function TechniqueDetailPage({
 }) {
   const techId = params.techId.toUpperCase();
 
-  const [technique, sessions, profile] = await Promise.all([
+  const [technique, sessions] = await Promise.all([
     getTechniqueByTechId(techId),
     getAllTrainingSessions(),
-    getUserProfile(),
   ]);
 
   if (!technique) notFound();
@@ -100,7 +106,7 @@ export default async function TechniqueDetailPage({
   const trainingCount = countMap[technique.recordId] ?? 0;
   const countLabel = trainingCountLabel(trainingCount);
 
-  const streamStyle = technique.stream ? STREAM_STYLES[technique.stream] : null;
+  const streamMeta = technique.stream ? STREAM_META[technique.stream] : null;
   const hasDetails =
     technique.keyPoint ||
     technique.practicalTip ||
@@ -130,11 +136,10 @@ export default async function TechniqueDetailPage({
             {technique.id}
           </span>
           <TypeChip type={technique.type} />
-          {streamStyle && (
-            <span
-              className={`text-[11px] font-medium px-2 py-0.5 rounded-full ${streamStyle.bg} ${streamStyle.text}`}
-            >
-              {streamStyle.label}
+          {streamMeta && (
+            <span className="inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full border border-border-subtle text-text-tertiary">
+              <streamMeta.Icon size={12} strokeWidth={1.8} />
+              {streamMeta.label}
             </span>
           )}
         </div>
@@ -182,61 +187,44 @@ export default async function TechniqueDetailPage({
         </section>
       )}
 
-      {/* 심화 정보 — 프리미엄 전용 */}
+      {/* 심화 정보 — 프리미엄 게이팅은 아직 실제로 반영된 기능이 아니라
+          제거하고 전원 노출 (2026-09-19, 사용자 지시) */}
       {hasDetails && (
-        <section className="space-y-3">
-          <h2 className="text-sm font-semibold text-text-secondary">
+        <section className="space-y-4">
+          <h2 className="text-[10px] tracking-[0.5px] font-semibold text-text-tertiary">
             심화 정보
           </h2>
-          {profile.isPremium ? (
-            <>
-              <DetailSection icon={<Hand size={14} />} label="그립" content={technique.grip} />
-              <DetailSection icon={<PersonStanding size={14} />} label="체형 추천" content={technique.bodyType} />
-              <DetailSection icon={<Lightbulb size={14} />} label="핵심 포인트" content={technique.keyPoint} />
-              <DetailSection icon={<Target size={14} />} label="실전 팁" content={technique.practicalTip} />
-              <DetailSection icon={<AlertTriangle size={14} />} label="흔한 실수" content={technique.commonMistake} />
-              <DetailSection icon={<ShieldX size={14} />} label="카운터" content={technique.counter} />
-            </>
-          ) : (
-            <Link
-              href="/upgrade"
-              className="block rounded-2xl border border-border-subtle bg-bg-elevated p-5 text-center hover:bg-bg-hover transition-colors"
-            >
-              <Lock size={20} className="text-brand-primary mx-auto mb-2" />
-              <p className="text-sm font-semibold text-text-primary">
-                프리미엄 전용 콘텐츠
-              </p>
-              <p className="text-xs text-text-tertiary mt-1">
-                그립·핵심포인트·실전팁·흔한실수·카운터 등 상세 코칭 정보를 보려면
-                프리미엄으로 업그레이드하세요
-              </p>
-            </Link>
-          )}
+          <DetailSection icon={<Hand size={14} />} label="그립" content={technique.grip} />
+          <DetailSection icon={<PersonStanding size={14} />} label="체형 추천" content={technique.bodyType} />
+          <DetailSection icon={<Lightbulb size={14} />} label="핵심 포인트" content={technique.keyPoint} />
+          <DetailSection icon={<Target size={14} />} label="실전 팁" content={technique.practicalTip} />
+          <DetailSection icon={<AlertTriangle size={14} />} label="흔한 실수" content={technique.commonMistake} />
+          <DetailSection icon={<ShieldX size={14} />} label="카운터" content={technique.counter} />
         </section>
       )}
 
-      {/* 내 수련 현황 */}
-      <section className="rounded-2xl border border-border-subtle bg-bg-elevated p-5">
-        <h2 className="text-sm font-semibold text-text-secondary mb-3">
-          내 수련 현황
-        </h2>
-        <div className="flex items-center gap-3">
-          <StatusIcon count={trainingCount} size={24} showLabel />
-          <div className="text-sm text-text-tertiary">
-            총 <span className="font-semibold text-text-primary">{trainingCount}회</span> 수련
-          </div>
+      <div className="h-px bg-border-subtle" />
+
+      {/* 내 수련 현황 — 박스 카드 대신 플랫 한 줄 */}
+      <section className="flex items-center gap-3">
+        <StatusIcon count={trainingCount} size={22} />
+        <div className="text-sm text-text-secondary">
+          총 <span className="font-semibold text-text-primary">{trainingCount}회</span> 수련 · {countLabel}
         </div>
       </section>
 
       {technique.notes && (
-        <section className="rounded-2xl border border-border-subtle bg-bg-elevated p-5">
-          <h2 className="text-sm font-semibold text-text-secondary mb-2">
-            메모
-          </h2>
-          <p className="text-sm text-text-primary whitespace-pre-wrap">
-            {technique.notes}
-          </p>
-        </section>
+        <>
+          <div className="h-px bg-border-subtle" />
+          <section>
+            <h2 className="text-[10px] tracking-[0.5px] font-semibold text-text-tertiary mb-1.5">
+              메모
+            </h2>
+            <p className="text-[13px] text-text-secondary whitespace-pre-wrap leading-relaxed">
+              {technique.notes}
+            </p>
+          </section>
+        </>
       )}
       </div>
     </PageWrapper>
