@@ -1,17 +1,16 @@
 import { getAllTechniques } from "@/lib/airtable/techniques";
 import { getAllAthletes } from "@/lib/airtable/athletes";
 import { getAllTrainingSessions } from "@/lib/supabase/trainingSessions";
-import { getUserProfile } from "@/lib/supabase/userProfile";
 import { buildTrainingCountMap } from "@/types/domain";
 import type { Stream } from "@/types/domain";
 import TreeTabs from "@/components/tree/TreeTabs";
-import { ProgressHeader } from "@/components/tree/ProgressHeader";
+import { LevelBar } from "@/components/tree/LevelBar";
 import type { StreamGroup } from "@/components/tree/SkillTreeBrowser";
 
 export const metadata = { title: "기술도감" };
-// 벨트/스트라이프는 유저별 프로필(쿠키 기반) 데이터라 정적 재검증과 안 맞음
-// → force-dynamic (calendar/profile/athlete 상세 페이지와 동일 패턴, 2026-09-19).
-export const dynamic = "force-dynamic";
+// (2026-09-19) 실제 벨트(프로필/쿠키 데이터) 표시를 이 화면에서 제거하면서
+// force-dynamic일 이유도 없어짐 → 원래 컨벤션인 짧은 ISR로 복귀.
+export const revalidate = 30;
 
 const STREAM_ORDER: Stream[] = ["가드포지션", "탑포지션", "이스케이프", "스탠딩"];
 
@@ -28,17 +27,16 @@ const prio = (id: string) => {
 };
 
 export default async function TreePage() {
-  const [techniques, sessions, athletes, profile] = await Promise.all([
+  const [techniques, sessions, athletes] = await Promise.all([
     getAllTechniques(),
     getAllTrainingSessions(),
     getAllAthletes(),
-    getUserProfile(),
   ]);
 
   const countMap = buildTrainingCountMap(sessions);
 
-  // 총 XP — 이건 "학습 레벨"(게이미피케이션) 산정용이지 벨트가 아님.
-  // 벨트는 profile.belt/stripe(프로필에서 직접 설정한 실제 값)를 그대로 씀.
+  // 총 XP — "학습 레벨"(게이미피케이션) 산정용. 실제 벨트는 이 화면에 없음
+  // (홈 화면/프로필에서 확인).
   const techMap = new Map(techniques.map((t) => [t.recordId, t]));
   let totalXP = 0;
   for (const session of sessions) {
@@ -66,10 +64,16 @@ export default async function TreePage() {
     return { stream, positions: list };
   }).filter((g) => g.positions.length > 0);
 
+  // (2026-09-19) 예전엔 이 페이지가 height:100dvh 고정 + 내부 flex-1/
+  // overflow-y-auto 스크롤 컨테이너였음 — 탭 스위처를 항상 보이게 하려는
+  // 의도였지만, 그 결과 "전체 선수" 리스트가 화면의 일부 칸에만 갇혀서
+  // 정작 메인 콘텐츠인 리스트가 차지하는 비율이 작았고 불필요한 이중
+  // 스크롤(안쪽 리스트 스크롤 + 바깥 페이지는 안 움직임)이 생겼음.
+  // → 일반 문서 스크롤로 전환. 탭 스위처는 TreeTabs 내부에서 sticky로
+  // 처리해 스크롤해도 계속 보이도록 유지.
   return (
-    <div className="flex flex-col" style={{ height: "100dvh" }}>
-      {/* ── 헤더 ─────────────────────────────────────────────── */}
-      <header className="px-4 pt-5 pb-4 shrink-0 space-y-4">
+    <div className="pb-24 lg:pb-8">
+      <header className="px-4 pt-5 pb-4 space-y-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-text-primary">기술도감</h1>
           <p className="text-xs text-text-tertiary mt-0.5">
@@ -77,13 +81,10 @@ export default async function TreePage() {
           </p>
         </div>
 
-        <ProgressHeader belt={profile.belt} stripe={profile.stripe} totalXp={totalXP} />
+        <LevelBar totalXp={totalXP} />
       </header>
 
-      {/* ── 선수/포지션 이원화 탭 ─────────────────────────────── */}
-      <div className="flex-1 min-h-0 pb-16 lg:pb-0">
-        <TreeTabs athletes={athletes} groups={groups} />
-      </div>
+      <TreeTabs athletes={athletes} groups={groups} />
     </div>
   );
 }

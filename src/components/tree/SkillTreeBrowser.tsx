@@ -95,9 +95,9 @@ export default function SkillTreeBrowser({ groups }: { groups: StreamGroup[] }) 
   const color = STREAM_META[activeStream].color;
 
   return (
-    <div className="flex flex-col h-full">
+    <div>
       {/* 스트림 세그먼트 (4균등) */}
-      <div className="grid grid-cols-4 gap-1.5 px-3 pt-3 pb-3 shrink-0">
+      <div className="grid grid-cols-4 gap-1.5 px-3 pt-3 pb-3">
         {STREAM_ORDER.map((stream) => {
           const meta = STREAM_META[stream];
           const active = stream === activeStream;
@@ -122,14 +122,14 @@ export default function SkillTreeBrowser({ groups }: { groups: StreamGroup[] }) 
       </div>
 
       {/* 섹션 라벨 */}
-      <div className="px-4 pb-2 shrink-0">
+      <div className="px-4 pb-2">
         <span className="text-[10px] uppercase tracking-[1.5px] font-bold text-text-tertiary">
           {STREAM_META[activeStream].label} 포지션 · {positions.length}개
         </span>
       </div>
 
-      {/* 포지션 카드 리스트 */}
-      <div className="flex-1 min-h-0 overflow-y-auto px-3 pb-4 space-y-2.5">
+      {/* 포지션 카드 리스트 — 내부 스크롤 없이 일반 문서 흐름 (2026-09-19) */}
+      <div className="px-3 pb-4 space-y-2.5">
         {positions.map((p) => (
           <PositionCard key={p.id} pos={p} color={color} />
         ))}
