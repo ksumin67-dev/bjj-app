@@ -2,31 +2,31 @@
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Trophy, Trash2 } from "lucide-react";
-import { incrementSuccessAction, deleteSequenceAction } from "@/lib/actions/sequences";
+import { Star, Trash2 } from "lucide-react";
+import { setPrimaryAction, deleteSequenceAction } from "@/lib/actions/sequences";
 import { useToast } from "@/contexts/ToastContext";
 
 export function SequenceActions({
   recordId,
   seqName,
+  isPrimary,
 }: {
   recordId: string;
   seqName: string;
+  isPrimary: boolean;
 }) {
-  const [incPending, startInc] = useTransition();
+  const [primaryPending, startPrimary] = useTransition();
   const [delPending, startDel] = useTransition();
   const toast = useToast();
   const router = useRouter();
 
-  function handleSuccess() {
-    startInc(async () => {
+  function handleTogglePrimary() {
+    startPrimary(async () => {
       try {
-        await incrementSuccessAction(recordId);
-        toast.show("success", `${seqName} 성공 기록!`);
-        // revalidatePath in server action handles cache invalidation
-        // No router.refresh() needed — avoids re-mounting ToastProvider
+        await setPrimaryAction(recordId, !isPrimary);
+        toast.show("success", isPrimary ? "주력 표시를 해제했습니다." : "주력 기술로 표시했습니다.");
       } catch {
-        toast.show("error", "기록에 실패했습니다.");
+        toast.show("error", "변경에 실패했습니다.");
       }
     });
   }
@@ -45,19 +45,20 @@ export function SequenceActions({
   }
 
   return (
-    <section className="space-y-3 pt-2">
+    <section className="space-y-2.5 pt-2">
       <button
         type="button"
-        onClick={handleSuccess}
-        disabled={incPending}
-        className="w-full py-3 rounded-xl text-white font-bold text-[14px] hover:brightness-110 active:scale-[0.97] transition-all duration-fast inline-flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-        style={{
-          background: "linear-gradient(135deg, #7B61FF 0%, #B44FD4 100%)",
-          boxShadow: "0 4px 16px rgba(123,97,255,0.30)",
-        }}
+        onClick={handleTogglePrimary}
+        disabled={primaryPending}
+        className="w-full py-3 rounded-xl font-bold text-[14px] hover:brightness-110 active:scale-[0.97] transition-all duration-fast inline-flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+        style={
+          isPrimary
+            ? { backgroundColor: "#D9772E", color: "#fff" }
+            : { backgroundColor: "transparent", border: "1px solid rgba(217,119,46,0.4)", color: "#D9772E" }
+        }
       >
-        <Trophy size={18} strokeWidth={2.5} />
-        {incPending ? "기록 중…" : "오늘 성공 +1"}
+        <Star size={16} fill={isPrimary ? "#fff" : "none"} />
+        {primaryPending ? "변경 중…" : isPrimary ? "주력 기술 해제" : "주력 기술로 표시"}
       </button>
 
       <button

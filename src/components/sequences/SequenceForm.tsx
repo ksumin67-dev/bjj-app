@@ -2,22 +2,13 @@
 
 import { useFormState, useFormStatus } from "react-dom";
 import { useState, useMemo } from "react";
-import { Search, X, ChevronDown, ArrowUp, ArrowDown } from "lucide-react";
+import { Search, X, ChevronDown, ArrowUp, ArrowDown, Star } from "lucide-react";
 import {
   createSequenceAction,
   type CreateSequenceFormState,
 } from "@/lib/actions/sequences";
 import type { Technique } from "@/types/domain";
 import { cn } from "@/lib/utils";
-
-const TAG_OPTIONS = ["공격형", "방어형", "가드전", "탑게임"];
-
-const STREAM_DOT: Record<string, string> = {
-  가드포지션: "#2E80F0",
-  탑포지션:   "#FF8C42",
-  이스케이프: "#A78BFA",
-  스탠딩:     "#FBBF24",
-};
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -30,10 +21,7 @@ function SubmitButton() {
         "hover:brightness-110 active:scale-[0.97]",
         "disabled:opacity-50 disabled:cursor-not-allowed",
       )}
-      style={{
-        background: "linear-gradient(135deg, #7B61FF 0%, #B44FD4 100%)",
-        boxShadow: "0 4px 16px rgba(123,97,255,0.30)",
-      }}
+      style={{ backgroundColor: "#D9772E" }}
     >
       {pending ? "저장 중..." : "시퀀스 저장"}
     </button>
@@ -56,6 +44,7 @@ export function SequenceForm({
 
   const [selectedTechniques, setSelectedTechniques] = useState<string[]>([]);
   const [hasBranch, setHasBranch] = useState(false);
+  const [isPrimary, setIsPrimary] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [techPickerOpen, setTechPickerOpen] = useState(false);
 
@@ -130,6 +119,24 @@ export function SequenceForm({
         />
       </FormField>
 
+      {/* 주력 기술로 표시 */}
+      <label
+        className="flex items-center justify-between rounded-xl px-4 py-3 cursor-pointer transition-colors duration-fast"
+        style={{ backgroundColor: "#1A1A24", border: "1px solid rgba(217,119,46,0.35)" }}
+      >
+        <span className="flex items-center gap-2">
+          <Star size={14} color="#D9772E" fill={isPrimary ? "#D9772E" : "none"} />
+          <span className="text-sm font-bold text-white">주력 기술로 표시</span>
+        </span>
+        <input
+          type="checkbox"
+          name="isPrimary"
+          checked={isPrimary}
+          onChange={(e) => setIsPrimary(e.target.checked)}
+          className="size-4 accent-[#D9772E]"
+        />
+      </label>
+
       {/* 시작 포지션 */}
       <FormField label="시작 포지션">
         <div className="relative">
@@ -152,26 +159,6 @@ export function SequenceForm({
         </div>
       </FormField>
 
-      {/* 태그 */}
-      <FormField label="태그 (복수 선택)">
-        <div className="flex flex-wrap gap-2">
-          {TAG_OPTIONS.map((tag) => (
-            <label
-              key={tag}
-              className="inline-flex items-center h-9 px-3 rounded-full bg-bg-elevated border border-border-default cursor-pointer text-sm hover:border-border-strong has-[:checked]:bg-brand-subtle has-[:checked]:border-brand-primary has-[:checked]:text-brand-primary transition-colors duration-fast"
-            >
-              <input
-                type="checkbox"
-                name="tags"
-                value={tag}
-                className="sr-only"
-              />
-              {tag}
-            </label>
-          ))}
-        </div>
-      </FormField>
-
       {/* 사용 기술 (순서 포함 멀티 선택) */}
       <FormField label={`사용 기술 (${selectedTechniques.length}개 선택)`}>
         {/* 선택된 기술 — 순서 재정렬 가능 */}
@@ -180,29 +167,22 @@ export function SequenceForm({
             {selectedTechniques.map((recordId, idx) => {
               const t = techniques.find((x) => x.recordId === recordId);
               if (!t) return null;
-              const dot = t.stream ? STREAM_DOT[t.stream] : "#4A5160";
               return (
                 <div
                   key={recordId}
                   className="flex items-center gap-2 rounded-lg px-2 py-1.5"
-                  style={{
-                    backgroundColor: dot + "15",
-                    border: `1px solid ${dot}30`,
-                  }}
+                  style={{ backgroundColor: "#1A1A24", border: "1px solid rgba(255,255,255,0.08)" }}
                 >
                   {/* 순서 번호 */}
                   <span
                     className="size-5 rounded-full text-[10px] font-bold flex items-center justify-center shrink-0"
-                    style={{ backgroundColor: dot + "30", color: dot }}
+                    style={{ backgroundColor: "#D9772E30", color: "#D9772E" }}
                   >
                     {idx + 1}
                   </span>
 
                   {/* 기술 정보 */}
-                  <span
-                    className="flex-1 min-w-0 flex items-center gap-1.5 text-[12px] font-medium truncate"
-                    style={{ color: dot }}
-                  >
+                  <span className="flex-1 min-w-0 flex items-center gap-1.5 text-[12px] font-normal truncate text-white">
                     <span className="font-mono text-[10px] opacity-70">{t.id}</span>
                     <span>{t.nameKo}</span>
                   </span>
@@ -299,7 +279,6 @@ export function SequenceForm({
                     <div className="space-y-1">
                       {list.map((t) => {
                         const checked = selectedTechniques.includes(t.recordId);
-                        const dot = t.stream ? STREAM_DOT[t.stream] : undefined;
                         const orderNum = selectedTechniques.indexOf(t.recordId) + 1;
                         return (
                           <button
@@ -313,18 +292,11 @@ export function SequenceForm({
                                 : "hover:bg-bg-hover text-text-secondary",
                             )}
                           >
-                            {checked && (
+                            {checked ? (
                               <span className="size-4 rounded-full text-[9px] font-bold flex items-center justify-center shrink-0 bg-brand-primary text-text-inverse">
                                 {orderNum}
                               </span>
-                            )}
-                            {!checked && dot && (
-                              <span
-                                className="size-2 rounded-full shrink-0 ml-1"
-                                style={{ backgroundColor: dot }}
-                              />
-                            )}
-                            {!checked && !dot && (
+                            ) : (
                               <span className="size-2 rounded-full shrink-0 ml-1 bg-text-tertiary" />
                             )}
                             <span className="font-mono text-[10px] opacity-70">

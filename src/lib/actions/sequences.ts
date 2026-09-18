@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
   createSequence,
-  incrementSuccessCount,
+  setSequencePrimary,
   deleteSequence,
   type CreateSequenceInput,
 } from "@/lib/supabase/sequences";
@@ -39,10 +39,7 @@ export async function createSequenceAction(
     .getAll("techniques")
     .map((v) => v.toString())
     .filter(Boolean);
-  const tags = formData
-    .getAll("tags")
-    .map((v) => v.toString())
-    .filter(Boolean);
+  const isPrimary = formData.get("isPrimary") === "on";
 
   const input: CreateSequenceInput = {
     seqName,
@@ -51,7 +48,7 @@ export async function createSequenceAction(
     stepsText,
     hasBranch,
     branchCondition,
-    tags,
+    isPrimary,
   };
 
   let newRecordId: string;
@@ -70,10 +67,13 @@ export async function createSequenceAction(
 }
 
 /**
- * Server Action — 성공 카운트 +1.
+ * Server Action — 주력 기술 표시 토글.
  */
-export async function incrementSuccessAction(recordId: string): Promise<void> {
-  await incrementSuccessCount(recordId);
+export async function setPrimaryAction(
+  recordId: string,
+  isPrimary: boolean,
+): Promise<void> {
+  await setSequencePrimary(recordId, isPrimary);
   revalidatePath("/sequences");
   revalidatePath(`/sequences/${recordId}`);
 }

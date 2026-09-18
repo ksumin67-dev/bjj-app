@@ -127,9 +127,7 @@ export interface Sequence {
   stepsText: string;
   hasBranch: boolean;
   branchCondition: string | null;
-  tags: string[];
-  successCount: number;
-  lastUsed: string | null;
+  isPrimary: boolean;
 }
 
 export interface TrainingSession {

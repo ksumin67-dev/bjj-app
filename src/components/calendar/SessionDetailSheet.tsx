@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import Link from "next/link";
-import { X, Plus, Trash2, Trophy, Pencil } from "lucide-react";
+import { X, Plus, Trash2, Trophy, Pencil, Star } from "lucide-react";
 import type { TrainingSession, Technique, Sequence } from "@/types/domain";
 import { deleteTrainingSessionAction } from "@/lib/actions/trainingSessions";
 import { TypeChip } from "@/components/tree/TypeChip";
@@ -148,9 +148,9 @@ export function SessionDetailSheet({
                     <div className="space-y-1.5">
                       {seqList.map((s) => (
                         <Link key={s.recordId} href={`/sequences/${s.recordId}`}
-                          className="flex items-center gap-2.5 p-2.5 rounded-xl bg-bg-base hover:bg-bg-hover transition-colors duration-fast">
+                          className="flex items-center gap-1.5 p-2.5 rounded-xl bg-bg-base hover:bg-bg-hover transition-colors duration-fast">
+                          {s.isPrimary && <Star size={11} className="text-brand-primary shrink-0" fill="currentColor" />}
                           <span className="text-sm flex-1 truncate">{s.seqName}</span>
-                          <span className="text-[10px] text-brand-primary tabular-nums">성공 {s.successCount}</span>
                         </Link>
                       ))}
                     </div>

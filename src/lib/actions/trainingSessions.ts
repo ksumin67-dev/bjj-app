@@ -75,7 +75,7 @@ async function maybeCreateSequence(
       techniquesUsedRecordIds: techOrder,
       stepsText,
       hasBranch: false,
-      tags: [],
+      isPrimary: false,
     });
   } catch (e) {
     console.warn("[trainingSessions] 시퀀스 생성 실패:", e);

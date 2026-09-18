@@ -10,9 +10,7 @@ type SequenceRow = {
   steps_text: string | null;
   has_branch: boolean;
   branch_condition: string | null;
-  tags: string[] | null;
-  success_count: number;
-  last_used: string | null;
+  is_primary: boolean;
 };
 
 function toSequence(row: SequenceRow): Sequence {
@@ -24,9 +22,7 @@ function toSequence(row: SequenceRow): Sequence {
     stepsText: row.steps_text ?? "",
     hasBranch: row.has_branch,
     branchCondition: row.branch_condition,
-    tags: row.tags ?? [],
-    successCount: row.success_count,
-    lastUsed: row.last_used,
+    isPrimary: row.is_primary,
   };
 }
 
@@ -44,7 +40,8 @@ export async function getAllSequences(): Promise<Sequence[]> {
   const { data, error } = await supabase
     .from("sequences")
     .select("*")
-    .order("last_used", { ascending: false, nullsFirst: false });
+    .order("is_primary", { ascending: false })
+    .order("created_at", { ascending: false });
   if (error) throw error;
   return (data ?? []).map(toSequence);
 }
@@ -69,7 +66,7 @@ export type CreateSequenceInput = {
   stepsText: string;
   hasBranch: boolean;
   branchCondition?: string;
-  tags: string[];
+  isPrimary: boolean;
 };
 
 /**
@@ -91,8 +88,7 @@ export async function createSequence(
       steps_text: input.stepsText,
       has_branch: input.hasBranch,
       branch_condition: input.branchCondition ?? null,
-      tags: input.tags,
-      success_count: 0,
+      is_primary: input.isPrimary,
     })
     .select("id")
     .single();
@@ -102,17 +98,16 @@ export async function createSequence(
 }
 
 /**
- * 성공 카운트 +1, last_used 갱신.
+ * 주력 기술 표시 토글.
  */
-export async function incrementSuccessCount(recordId: string): Promise<void> {
-  const current = await getSequenceById(recordId);
-  if (!current) throw new Error(`Sequence not found: ${recordId}`);
-  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-
+export async function setSequencePrimary(
+  recordId: string,
+  isPrimary: boolean,
+): Promise<void> {
   const supabase = createClient();
   const { error } = await supabase
     .from("sequences")
-    .update({ success_count: current.successCount + 1, last_used: today })
+    .update({ is_primary: isPrimary })
     .eq("id", recordId);
   if (error) throw error;
 }

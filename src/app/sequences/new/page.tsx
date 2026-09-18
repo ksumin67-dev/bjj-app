@@ -29,12 +29,12 @@ export default async function NewSequencePage() {
           className="inline-flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
         >
           <ChevronLeft size={16} />
-          시퀀스 목록
+          나의 시퀀스
         </Link>
 
         <header>
-          <h1 className="text-2xl font-black tracking-tight text-white">새 시퀀스</h1>
-          <p className="mt-1 text-sm" style={{ color: "#B4BCC8" }}>
+          <h1 className="text-2xl font-bold tracking-tight text-white">새 시퀀스</h1>
+          <p className="mt-1 text-sm font-normal" style={{ color: "#8A8A94" }}>
             기술 조합과 분기 흐름을 정리해보세요.
           </p>
         </header>
