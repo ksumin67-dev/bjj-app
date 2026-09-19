@@ -55,9 +55,9 @@ export default function LoginPage() {
       {/* 브랜드 마크 — 워드마크를 크게, 부가 아이콘 없이 */}
       <div className="flex flex-col items-center">
         <h1 className="text-4xl font-black tracking-tight text-text-primary">
-          grap<span className="text-brand-primary">plog</span>
+          grapp<span className="text-brand-primary">log</span>
         </h1>
-        <p className="text-[12px] text-text-tertiary mt-2">주짓수 기술 기록</p>
+        <p className="text-[12px] text-text-tertiary mt-2">주짓수 스킬 로그</p>
       </div>
 
       <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-3">

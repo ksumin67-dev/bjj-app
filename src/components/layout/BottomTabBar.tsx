@@ -71,9 +71,9 @@ export function BottomTabBar() {
         {/* 로고 */}
         <div className="px-5 py-5 border-b border-border-subtle">
           <span className="text-xl font-black tracking-tight text-text-primary">
-            grap<span className="text-brand-primary">plog</span>
+            grapp<span className="text-brand-primary">log</span>
           </span>
-          <p className="text-[11px] text-text-tertiary mt-0.5">주짓수 기술 기록</p>
+          <p className="text-[11px] text-text-tertiary mt-0.5">주짓수 스킬 로그</p>
         </div>
 
         {/* 탭 목록 */}
