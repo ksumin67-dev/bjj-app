@@ -72,6 +72,10 @@ Whoop / Oura 스타일의 "미니멀 프리미엄 피트니스 앱" 톤. 화려�
 - [x] 수련 기록 모달 (`SessionFormModal.tsx`) — 디테일 가이드 칩·스트림 선택·완료 화면의 이모지를 전부 lucide 아이콘으로 교체(스트림 아이콘은 Shield/Swords/Zap/Users로 앱 전체와 통일), "이 기술들로 시퀀스 만들기" 섹션 퍼플 → 앰버, 미등록(커스텀) 기술 태그의 별도 orange 색상 → 중립+점선 테두리(단일 액센트 원칙). 기능 수정: 예상 XP 미리보기가 `선택기술수×100` 고정값이라 실제 서버 계산식(기술별 xpValue 합 + 시퀀스 생성 +200 + 스트릭 보너스)과 어긋나던 버그 수정 — 정확한 합산 + 보너스 내역 표시로 교체. "DB에 없는 기술 추가"가 검색 결과가 없을 때만 조건부로 노출되던 발견성 문제 해결 — 검색 여부와 무관하게 상시 노출되는 "+직접 입력" 버튼과 이름 입력 필드를 갖춘 통합 패널로 재구성
 - [x] `globals.css` / `types/domain.ts` 죽은 색상·이모지 상수 정리 — 실제로는 대부분 이미 사용처가 없는 죽은 코드였음(오해 정정: globals.css 토큰이 화면에 실제로 색을 "새어나가게" 하고 있진 않았음, 모든 컴포넌트가 이미 인라인 hex로 우회 중). `types/domain.ts`의 `BjjStyle.emoji` 필드(🌱🥋🛡⚔️🏃🤼, 아무 데서도 안 씀 — Home/Profile이 이미 lucide 아이콘으로 대체해서 참조 안 함)와 `streakLabel()` 함수(🔥, import하는 곳 없음) 완전 삭제. `globals.css`/`tailwind.config.ts`의 `--stream-*`/`--type-*`/`--status-*`/`--tier-*` CSS 변수 + Tailwind 테마 컬러 엔트리 삭제(전부 아무 컴포넌트도 참조 안 하는 고아 토큰 — TypeChip/StatusIcon/AthleteEntryScreen은 이미 각자 인라인 hex 팔레트를 씀). **의도적으로 보존한 것**: `--belt-*`(BeltChip.tsx가 실제로 사용하는 진짜 벨트 색), `STYLE_TAG_META`(선수 스타일 태그 7종 — TypeChip과 동일한 정당한 카테고리 색 예외), `StatusIcon.tsx`의 4단계 진행도 색(미수련/시작/드릴중/익숙 — 기존 UX 리뷰에서 이미 승인된 예외)
 
+- [x] 레벨업 축하 화면 (`BeltUpCelebration.tsx`) — 레벨 텍스트 옆 🔥 이모지 제거(Trophy 아이콘이 이미 시각적 앵커 역할)
+- [x] 선수 상세 페이지 목표 등록 카운트 — 유니코드 하트(♥) → lucide `Heart` 아이콘(fill 처리로 기존 채워진 하트 느낌 유지)
+- [x] 죽은 코드 삭제: `SkillTreeGraph.tsx`/`TechDetailSheet.tsx`/`StreamChip.tsx`/`PositionCard.tsx`/`TechniqueRow.tsx` — 전면 감사(2026-09-19) 결과 확인된, 앱 내 어느 페이지에서도 import되지 않는 구버전 스킬트리 잔재(레인보우 스트림 색상 + 이모지 + 박스카드). 리뉴얼 없이 파일 삭제로 정리
+
 ## 작업 프로세스
 
 1. 대상 화면의 현재 코드/데이터 구조 파악

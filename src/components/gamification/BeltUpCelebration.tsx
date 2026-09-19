@@ -109,7 +109,7 @@ export function LevelUpCelebration({ level, onDismiss }: Props) {
             레벨 업!
           </p>
           <h2 className="text-3xl font-black text-white tracking-tight">
-            {level} 🔥
+            {level}
           </h2>
           <p className="text-base text-text-secondary mt-1">
             {LEVEL_MESSAGES[level]}

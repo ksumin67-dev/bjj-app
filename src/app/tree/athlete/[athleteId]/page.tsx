@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Heart } from "lucide-react";
 import { getAthleteByRecordId } from "@/lib/airtable/athletes";
 import { getAllTechniques } from "@/lib/airtable/techniques";
 import { getMyTechniqueGoalIdSet } from "@/lib/supabase/techniqueGoals";
@@ -114,7 +114,8 @@ export default async function AthleteDetailPage({ params }: { params: Params }) 
         </span>
         {goalCount > 0 && (
           <span className="text-[10px] font-semibold ml-auto flex items-center gap-1" style={{ color: "#F87171" }}>
-            ♥ {goalCount}개 목표 등록
+            <Heart size={10} fill="#F87171" color="#F87171" />
+            {goalCount}개 목표 등록
           </span>
         )}
       </div>
