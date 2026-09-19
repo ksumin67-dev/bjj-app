@@ -38,7 +38,13 @@ function accentFor(a: Athlete): string {
   return t ? tagMeta(t).color : DEFAULT_ACCENT;
 }
 
-export default function AthleteEntryScreen({ athletes }: { athletes: Athlete[] }) {
+export default function AthleteEntryScreen({
+  athletes,
+  preferredStyleTag = null,
+}: {
+  athletes: Athlete[];
+  preferredStyleTag?: StyleTag | null;
+}) {
   const availableTags = useMemo(() => {
     const set = new Set<StyleTag>();
     athletes.forEach((a) => a.styleTags.forEach((t) => set.add(t as StyleTag)));
@@ -57,6 +63,18 @@ export default function AthleteEntryScreen({ athletes }: { athletes: Athlete[] }
       .slice(0, 2);
   }, [athletes]);
 
+  // 추천 선수 (2026-09-19) — 온보딩에서 고른 선호 스타일과 겹치는 선수를
+  // 우선 노출. 선호 스타일을 안 골랐거나(온보딩 건너뜀) 해당 스타일
+  // 선수가 없으면 기존 "최근 추가"로 자연스럽게 폴백.
+  const recommended = useMemo(() => {
+    if (!preferredStyleTag) return null;
+    const matches = athletes.filter((a) => a.styleTags.includes(preferredStyleTag));
+    return matches.length > 0 ? matches.slice(0, 2) : null;
+  }, [athletes, preferredStyleTag]);
+
+  const highlightAthletes = recommended ?? recentlyAdded;
+  const highlightLabel = recommended ? "추천 선수" : "최근 추가";
+
   if (athletes.length === 0) {
     return (
       <div className="px-6 py-16">
@@ -69,14 +87,14 @@ export default function AthleteEntryScreen({ athletes }: { athletes: Athlete[] }
 
   return (
     <div>
-      {/* 최근 추가 — 박스 없이 아바타+텍스트 인라인 페어 2개만 (2026-09-18) */}
-      {recentlyAdded.length > 0 && (
+      {/* 추천 선수 / 최근 추가 — 박스 없이 아바타+텍스트 인라인 페어 2개만 (2026-09-18) */}
+      {highlightAthletes.length > 0 && (
         <div className="px-4 pt-4 pb-3">
           <span className="text-[10px] tracking-[0.5px] font-semibold text-text-tertiary">
-            최근 추가
+            {highlightLabel}
           </span>
           <div className="flex gap-5 mt-2.5">
-            {recentlyAdded.map((a) => (
+            {highlightAthletes.map((a) => (
               <Link
                 key={a.recordId}
                 href={`/tree/athlete/${a.recordId}`}

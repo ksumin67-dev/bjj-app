@@ -18,7 +18,7 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import AthleteEntryScreen from "./AthleteEntryScreen";
 import SkillTreeBrowser, { type StreamGroup } from "./SkillTreeBrowser";
-import type { Athlete } from "@/types/domain";
+import type { Athlete, StyleTag } from "@/types/domain";
 
 type Tab = "athlete" | "position";
 const TABS: { key: Tab; label: string }[] = [
@@ -29,9 +29,11 @@ const TABS: { key: Tab; label: string }[] = [
 export default function TreeTabs({
   athletes,
   groups,
+  preferredStyleTag = null,
 }: {
   athletes: Athlete[];
   groups: StreamGroup[];
+  preferredStyleTag?: StyleTag | null;
 }) {
   const [tab, setTab] = useState<Tab>("athlete");
 
@@ -67,7 +69,7 @@ export default function TreeTabs({
       </div>
 
       {tab === "athlete" ? (
-        <AthleteEntryScreen athletes={athletes} />
+        <AthleteEntryScreen athletes={athletes} preferredStyleTag={preferredStyleTag} />
       ) : (
         <SkillTreeBrowser groups={groups} />
       )}

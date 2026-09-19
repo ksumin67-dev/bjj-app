@@ -6,10 +6,10 @@ import { LocalNotifications } from "@capacitor/local-notifications";
 /**
  * 수련 리마인더 로컬 알림.
  * 네이티브 앱(Capacitor)에서만 동작 — 웹 버전에서는 항상 비활성 상태로 취급.
- * 매일 저녁 8시에 "오늘 수련 기록 남기셨나요?" 알림을 보냄.
+ * 시간은 온보딩/프로필에서 고른 시(hour)를 그대로 받아서 예약함(기본 20시).
  */
 const REMINDER_ID = 1001;
-const REMINDER_HOUR = 20;
+const DEFAULT_REMINDER_HOUR = 20;
 const REMINDER_MINUTE = 0;
 
 export function isNativePlatform(): boolean {
@@ -26,7 +26,9 @@ export async function isTrainingReminderEnabled(): Promise<boolean> {
   }
 }
 
-export async function enableTrainingReminder(): Promise<{
+export async function enableTrainingReminder(
+  hour: number = DEFAULT_REMINDER_HOUR,
+): Promise<{
   ok: boolean;
   error?: string;
 }> {
@@ -47,6 +49,11 @@ export async function enableTrainingReminder(): Promise<{
     };
   }
 
+  // 시간을 바꿔서 다시 켤 수도 있으므로, 기존 예약을 먼저 지우고 새로 예약
+  // (플랫폼에 따라 동일 id로 재예약 시 조용히 무시되거나 에러가 날 수 있어
+  // 명시적으로 취소 후 재예약하는 편이 안전함).
+  await LocalNotifications.cancel({ notifications: [{ id: REMINDER_ID }] });
+
   await LocalNotifications.schedule({
     notifications: [
       {
@@ -54,7 +61,7 @@ export async function enableTrainingReminder(): Promise<{
         title: "그래플로그",
         body: "오늘 수련 기록을 남겨보세요.",
         schedule: {
-          on: { hour: REMINDER_HOUR, minute: REMINDER_MINUTE },
+          on: { hour, minute: REMINDER_MINUTE },
           repeats: true,
           allowWhileIdle: true,
         },

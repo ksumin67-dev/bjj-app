@@ -394,6 +394,42 @@ export function HomeDashboard({
           </section>
         )}
 
+        {/* ── 이번 주 목표 — 온보딩에서 주당 목표 횟수를 정한 사용자에게만
+            노출(건너뛴 사용자는 weeklyGoal이 null이라 자동으로 안 보임).
+            (2026-09-19 추가) ── */}
+        {profile.weeklyGoal != null && (() => {
+          const goal = profile.weeklyGoal;
+          const done = Math.min(weekDayCount, goal);
+          const pct  = Math.round((done / goal) * 100);
+          const met  = weekDayCount >= goal;
+          return (
+            <section style={{ marginBottom: "20px" }}>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[12.5px] font-semibold text-white">이번 주 목표</span>
+                <span className="text-[12.5px] font-bold tabular-nums" style={{ color: met ? "#34D399" : "#D9772E" }}>
+                  {weekDayCount} / {goal}일
+                </span>
+              </div>
+              <div style={{ height: 8, borderRadius: 999, backgroundColor: "rgba(255,255,255,0.06)", overflow: "hidden" }}>
+                <div
+                  style={{
+                    width: `${pct}%`,
+                    height: "100%",
+                    borderRadius: 999,
+                    backgroundColor: met ? "#34D399" : "#D9772E",
+                    transition: "width 0.6s cubic-bezier(0.34,1.56,0.64,1)",
+                  }}
+                />
+              </div>
+              {met && (
+                <p className="text-[10.5px] font-normal mt-1.5 flex items-center gap-1" style={{ color: "#34D399" }}>
+                  <Check size={11} /> 이번 주 목표 달성!
+                </p>
+              )}
+            </section>
+          );
+        })()}
+
         {/* ── 벨트/XP/스트릭/최강스트림 한 줄 요약 — 프로필 화면에 이미
             상세 버전(벨트 여정, 스트림 분포)이 있어서 홈에서는 중복
             섹션 대신 한 줄 요약 + 링크로 축소 (2026-09-19, IA 정리) ── */}

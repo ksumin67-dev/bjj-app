@@ -1,6 +1,7 @@
 import { getAllTechniques } from "@/lib/airtable/techniques";
 import { getAllAthletes } from "@/lib/airtable/athletes";
 import { getAllTrainingSessions } from "@/lib/supabase/trainingSessions";
+import { getUserProfile } from "@/lib/supabase/userProfile";
 import { buildTrainingCountMap } from "@/types/domain";
 import type { Stream } from "@/types/domain";
 import TreeTabs from "@/components/tree/TreeTabs";
@@ -8,9 +9,9 @@ import { LevelBar } from "@/components/tree/LevelBar";
 import type { StreamGroup } from "@/components/tree/SkillTreeBrowser";
 
 export const metadata = { title: "기술도감" };
-// (2026-09-19) 실제 벨트(프로필/쿠키 데이터) 표시를 이 화면에서 제거하면서
-// force-dynamic일 이유도 없어짐 → 원래 컨벤션인 짧은 ISR로 복귀.
-export const revalidate = 30;
+// (2026-09-19) 온보딩에서 고른 선호 스타일로 "추천 선수"를 보여주려면
+// 다시 사용자별 프로필(쿠키) 데이터가 필요해짐 → ISR에서 force-dynamic으로 복귀.
+export const dynamic = "force-dynamic";
 
 const STREAM_ORDER: Stream[] = ["가드포지션", "탑포지션", "이스케이프", "스탠딩"];
 
@@ -27,10 +28,11 @@ const prio = (id: string) => {
 };
 
 export default async function TreePage() {
-  const [techniques, sessions, athletes] = await Promise.all([
+  const [techniques, sessions, athletes, profile] = await Promise.all([
     getAllTechniques(),
     getAllTrainingSessions(),
     getAllAthletes(),
+    getUserProfile(),
   ]);
 
   const countMap = buildTrainingCountMap(sessions);
@@ -84,7 +86,7 @@ export default async function TreePage() {
         <LevelBar totalXp={totalXP} />
       </header>
 
-      <TreeTabs athletes={athletes} groups={groups} />
+      <TreeTabs athletes={athletes} groups={groups} preferredStyleTag={profile.preferredStyleTag} />
     </div>
   );
 }
