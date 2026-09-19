@@ -14,7 +14,7 @@ import {
 } from "@/lib/actions/trainingSessions";
 import type { Technique, Stream, TrainingSession, LearningLevel } from "@/types/domain";
 import { calculateNewStreak, getStreakBonus } from "@/types/domain";
-import { cn } from "@/lib/utils";
+import { cn, normalizeKorean } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { LevelUpCelebration } from "@/components/gamification/BeltUpCelebration";
 import { useToast } from "@/contexts/ToastContext";
@@ -308,7 +308,10 @@ function TechPicker({
   }, [open]);
 
   const groupedTechniques = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    // normalizeKorean: 소문자 변환 + 된소리(ㄲㄸㅃㅆㅉ)→예사소리(ㄱㄷㅂㅅㅈ) 정규화.
+    // "라쏘"로 검색해도 "라소 가드"가 매칭되도록 비교 전에 양쪽 다 정규화한다
+    // (외래어 표기 시 된소리/예사소리 혼용이 잦음 — 2026-09-19).
+    const q = normalizeKorean(query.trim());
     const qNoSpace = q.replace(/\s+/g, "");
 
     /**
@@ -321,14 +324,14 @@ function TechPicker({
      */
     function matchScore(t: Technique): number {
       if (!q) return 0;
-      const nameKo = t.nameKo.toLowerCase();
-      const nameEn = t.nameEn.toLowerCase();
-      const id = t.id.toLowerCase();
+      const nameKo = normalizeKorean(t.nameKo);
+      const nameEn = normalizeKorean(t.nameEn);
+      const id = normalizeKorean(t.id);
       const nameKoNoSpace = nameKo.replace(/\s+/g, "");
       const parent = t.parentId ? techniqueByShortId[t.parentId] : null;
-      const parentNameKo = (parent?.nameKo ?? "").toLowerCase();
-      const parentNameEn = (parent?.nameEn ?? "").toLowerCase();
-      const parentId = (parent?.id ?? "").toLowerCase();
+      const parentNameKo = normalizeKorean(parent?.nameKo ?? "");
+      const parentNameEn = normalizeKorean(parent?.nameEn ?? "");
+      const parentId = normalizeKorean(parent?.id ?? "");
 
       if (nameKo === q || nameEn === q || id === q) return 100;
       if (nameKo.startsWith(q) || nameEn.startsWith(q) || nameKoNoSpace.startsWith(qNoSpace)) return 90;
@@ -388,9 +391,9 @@ function TechPicker({
   const totalResults = groupedTechniques.reduce((acc, g) => acc + g.list.length, 0);
   const q = query.trim();
   const exactMatch = q ? techniques.some((t) =>
-    t.nameKo.toLowerCase() === q.toLowerCase() || t.nameEn.toLowerCase() === q.toLowerCase()
+    normalizeKorean(t.nameKo) === normalizeKorean(q) || normalizeKorean(t.nameEn) === normalizeKorean(q)
   ) : false;
-  const normalizeCustomName = (name: string) => name.trim().toLowerCase();
+  const normalizeCustomName = (name: string) => normalizeKorean(name.trim());
   const canAddCustom = q.length > 0 && !exactMatch &&
     !customTechs.some((c) => normalizeCustomName(c.name) === normalizeCustomName(q));
   // null = 패널 닫힘, string = 패널 열림 상태에서 입력 중인 기술 이름
@@ -502,60 +505,10 @@ function TechPicker({
             )}
           </div>
 
-          {customName === null && (
-            <button type="button" onClick={() => setCustomName(q)}
-              className="w-full flex items-center gap-2.5 px-3 py-2.5 mb-2 rounded-xl text-sm text-left border border-dashed border-border-subtle hover:bg-bg-hover text-text-secondary transition-colors duration-fast">
-              <Plus size={13} className="text-brand-primary shrink-0" />
-              {canAddCustom ? (
-                <span>
-                  <span className="text-text-tertiary text-xs">DB에 없는 기술 추가: </span>
-                  <span className="font-medium text-text-primary">&quot;{q}&quot;</span>
-                </span>
-              ) : (
-                <span>DB에 없는 기술 직접 입력</span>
-              )}
-            </button>
-          )}
-
-          {customName !== null && (
-            <div className="mb-3 rounded-lg p-3" style={{ backgroundColor: "rgba(217,119,46,0.06)", border: "1px solid rgba(217,119,46,0.3)" }}>
-              <label className="text-xs font-semibold mb-1.5 block" style={{ color: "#D9772E" }}>
-                기술 이름
-              </label>
-              <input
-                type="text"
-                autoFocus
-                value={customName}
-                onChange={(e) => setCustomName(e.target.value)}
-                placeholder="예) 암바"
-                className="w-full h-9 rounded-lg px-3 text-sm text-white placeholder:text-text-disabled outline-none mb-2"
-                style={{ backgroundColor: "#0A0A0F", border: "1px solid rgba(217,119,46,0.3)" }}
-              />
-              <p className="text-xs text-text-secondary mb-2">스트림 선택</p>
-              <div className="grid grid-cols-2 gap-1.5">
-                {STREAM_OPTS.map(({ stream, label }) => {
-                  const StreamIcon = STREAM_ICON[stream];
-                  const trimmed = customName.trim();
-                  return (
-                    <button key={stream} type="button"
-                      disabled={!trimmed}
-                      onClick={() => { onAddCustom(trimmed, stream); setCustomName(null); setQuery(""); searchRef.current?.focus(); }}
-                      className="flex items-center gap-2 h-9 px-3 rounded-lg border text-xs font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                      style={{ borderColor: "rgba(255,255,255,0.12)", color: "#B4BCC8" }}>
-                      <StreamIcon size={13} /><span>{label}</span>
-                    </button>
-                  );
-                })}
-              </div>
-              <button type="button" onClick={() => setCustomName(null)}
-                className="mt-2 w-full text-xs text-text-tertiary hover:text-text-secondary">취소</button>
-            </div>
-          )}
-
           {totalResults === 0 ? (
             <p className="text-xs text-text-tertiary py-4 text-center">검색 결과 없음</p>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-3 mb-3">
               {groupedTechniques.map((group) => (
                 <div key={group.key}>
                   <div className="flex items-center gap-1.5 mb-1 px-1">
@@ -588,6 +541,60 @@ function TechPicker({
                   </div>
                 </div>
               ))}
+            </div>
+          )}
+
+          {/* DB에 없는 기술 직접 입력 — 결과 목록 맨 아래에 배치.
+              검색창 바로 아래(2026-09-18)에 뒀더니 "이게 검색 결과인가?"
+              헷갈린다는 피드백 → 목록 다음으로 이동. 대신 검색 결과가 없을 때도
+              항상 노출되게 유지해 발견성은 그대로 유지(2026-09-19). */}
+          {customName === null && (
+            <button type="button" onClick={() => setCustomName(q)}
+              className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-left border border-dashed border-border-subtle hover:bg-bg-hover text-text-secondary transition-colors duration-fast">
+              <Plus size={13} className="text-brand-primary shrink-0" />
+              {canAddCustom ? (
+                <span>
+                  <span className="text-text-tertiary text-xs">DB에 없는 기술 추가: </span>
+                  <span className="font-medium text-text-primary">&quot;{q}&quot;</span>
+                </span>
+              ) : (
+                <span>DB에 없는 기술 직접 입력</span>
+              )}
+            </button>
+          )}
+
+          {customName !== null && (
+            <div className="rounded-lg p-3" style={{ backgroundColor: "rgba(217,119,46,0.06)", border: "1px solid rgba(217,119,46,0.3)" }}>
+              <label className="text-xs font-semibold mb-1.5 block" style={{ color: "#D9772E" }}>
+                기술 이름
+              </label>
+              <input
+                type="text"
+                autoFocus
+                value={customName}
+                onChange={(e) => setCustomName(e.target.value)}
+                placeholder="예) 암바"
+                className="w-full h-9 rounded-lg px-3 text-sm text-white placeholder:text-text-disabled outline-none mb-2"
+                style={{ backgroundColor: "#0A0A0F", border: "1px solid rgba(217,119,46,0.3)" }}
+              />
+              <p className="text-xs text-text-secondary mb-2">스트림 선택</p>
+              <div className="grid grid-cols-2 gap-1.5">
+                {STREAM_OPTS.map(({ stream, label }) => {
+                  const StreamIcon = STREAM_ICON[stream];
+                  const trimmed = customName.trim();
+                  return (
+                    <button key={stream} type="button"
+                      disabled={!trimmed}
+                      onClick={() => { onAddCustom(trimmed, stream); setCustomName(null); setQuery(""); searchRef.current?.focus(); }}
+                      className="flex items-center gap-2 h-9 px-3 rounded-lg border text-xs font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                      style={{ borderColor: "rgba(255,255,255,0.12)", color: "#B4BCC8" }}>
+                      <StreamIcon size={13} /><span>{label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+              <button type="button" onClick={() => setCustomName(null)}
+                className="mt-2 w-full text-xs text-text-tertiary hover:text-text-secondary">취소</button>
             </div>
           )}
         </div>

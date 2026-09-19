@@ -8,7 +8,7 @@ import {
   type CreateSequenceFormState,
 } from "@/lib/actions/sequences";
 import type { Technique } from "@/types/domain";
-import { cn } from "@/lib/utils";
+import { cn, normalizeKorean } from "@/lib/utils";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -50,12 +50,15 @@ export function SequenceForm({
 
   // 기술을 포지션 순으로 그룹핑 (parentId 기반)
   const groupedTechniques = useMemo(() => {
-    const filtered = searchQuery
+    // normalizeKorean으로 된소리/예사소리 표기 차이(예: "라쏘"/"라소")를
+    // 무시하고 매칭 — SessionFormModal의 기술 검색과 동일한 규칙(2026-09-19).
+    const q = normalizeKorean(searchQuery);
+    const filtered = q
       ? techniques.filter(
           (t) =>
-            t.nameKo.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            t.nameEn.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            t.id.toLowerCase().includes(searchQuery.toLowerCase()),
+            normalizeKorean(t.nameKo).includes(q) ||
+            normalizeKorean(t.nameEn).includes(q) ||
+            normalizeKorean(t.id).includes(q),
         )
       : techniques;
 
