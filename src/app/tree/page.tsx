@@ -43,7 +43,7 @@ export default async function TreePage() {
   let totalXP = 0;
   for (const session of sessions) {
     for (const id of session.techniqueRecordIds) totalXP += techMap.get(id)?.xpValue ?? 0;
-    totalXP += session.sequenceRecordIds.length * 200;
+    totalXP += session.gamePlanRecordIds.length * 200;
   }
 
   const trained = Object.values(countMap).filter((c) => c > 0).length;

@@ -3,11 +3,11 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Plus, ListOrdered, Star, Shield, Swords, Zap, Users, type LucideIcon } from "lucide-react";
-import type { Sequence, Stream } from "@/types/domain";
-import { SequenceCard } from "@/components/sequences/SequenceCard";
+import type { GamePlan, Stream } from "@/types/domain";
+import { GamePlanCard } from "@/components/gamePlans/GamePlanCard";
 
-export type SequenceListItem = {
-  sequence: Sequence;
+export type GamePlanListItem = {
+  gamePlan: GamePlan;
   startPositionName?: string;
   stream: Stream | null;
   previewTechs: { recordId: string; nameKo: string }[];
@@ -24,12 +24,12 @@ const STREAM_TABS: { value: Stream; label: string; Icon: LucideIcon }[] = [
 
 type Filter = "all" | "primary" | Stream;
 
-export function SequenceListClient({ items }: { items: SequenceListItem[] }) {
+export function GamePlanListClient({ items }: { items: GamePlanListItem[] }) {
   const [filter, setFilter] = useState<Filter>("all");
 
   const filtered = useMemo(() => {
     if (filter === "all") return items;
-    if (filter === "primary") return items.filter((it) => it.sequence.isPrimary);
+    if (filter === "primary") return items.filter((it) => it.gamePlan.isPrimary);
     return items.filter((it) => it.stream === filter);
   }, [items, filter]);
 
@@ -60,7 +60,7 @@ export function SequenceListClient({ items }: { items: SequenceListItem[] }) {
       ) : (
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
           {filtered.map((item) => (
-            <SequenceCard key={item.sequence.recordId} item={item} />
+            <GamePlanCard key={item.gamePlan.recordId} item={item} />
           ))}
         </div>
       )}
@@ -106,7 +106,7 @@ function EmptyState() {
         예) &quot;클가 → 시저 스윕 → 마운트 → 암바&quot;
       </p>
       <Link
-        href="/sequences/new"
+        href="/gameplans/new"
         className="inline-flex items-center gap-1.5 h-10 px-4 rounded-xl text-white text-sm font-bold hover:brightness-110 active:scale-[0.97] transition-all duration-fast"
         style={{ backgroundColor: "#D9772E" }}
       >

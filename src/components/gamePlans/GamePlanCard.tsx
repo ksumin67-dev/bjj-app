@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ChevronRight, ArrowRight, Star, Shield, Swords, Zap, Users, ListOrdered, type LucideIcon } from "lucide-react";
 import type { Stream } from "@/types/domain";
-import type { SequenceListItem } from "@/components/sequences/SequenceListClient";
+import type { GamePlanListItem } from "@/components/gamePlans/GamePlanListClient";
 
 const STREAM_ICON: Record<Stream, LucideIcon> = {
   가드포지션: Shield,
@@ -10,15 +10,15 @@ const STREAM_ICON: Record<Stream, LucideIcon> = {
   스탠딩:     Users,
 };
 
-export function SequenceCard({ item }: { item: SequenceListItem }) {
-  const { sequence, startPositionName, stream, previewTechs, techniqueCount, trainedCount } = item;
+export function GamePlanCard({ item }: { item: GamePlanListItem }) {
+  const { gamePlan, startPositionName, stream, previewTechs, techniqueCount, trainedCount } = item;
   const StreamIcon = stream ? STREAM_ICON[stream] : ListOrdered;
   const hasCompletion = techniqueCount > 0;
   const complete = hasCompletion && trainedCount === techniqueCount;
 
   return (
     <Link
-      href={`/sequences/${sequence.recordId}`}
+      href={`/gameplans/${gamePlan.recordId}`}
       className="block py-3 active:scale-[0.98] transition-transform duration-fast"
       style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
     >
@@ -32,9 +32,9 @@ export function SequenceCard({ item }: { item: SequenceListItem }) {
 
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5">
-            {sequence.isPrimary && <Star size={11} color="#D9772E" fill="#D9772E" className="shrink-0" />}
+            {gamePlan.isPrimary && <Star size={11} color="#D9772E" fill="#D9772E" className="shrink-0" />}
             <h3 className="text-[13.5px] font-bold text-white truncate">
-              {sequence.seqName || "이름 없음"}
+              {gamePlan.planName || "이름 없음"}
             </h3>
           </div>
           <p className="text-[10.5px] font-normal mt-0.5" style={{ color: "#6B7280" }}>

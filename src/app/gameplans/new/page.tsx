@@ -2,14 +2,14 @@ import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { getAllPositions } from "@/lib/airtable/positions";
 import { getAllTechniques } from "@/lib/airtable/techniques";
-import { SequenceForm } from "@/components/sequences/SequenceForm";
+import { GamePlanForm } from "@/components/gamePlans/GamePlanForm";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 import type { Technique } from "@/types/domain";
 
 export const metadata = { title: "새 게임플랜" };
 export const dynamic = "force-dynamic";
 
-export default async function NewSequencePage() {
+export default async function NewGamePlanPage() {
   const [positions, techniques] = await Promise.all([
     getAllPositions(),
     getAllTechniques(),
@@ -25,7 +25,7 @@ export default async function NewSequencePage() {
     <PageWrapper>
       <div className="space-y-6 max-w-2xl">
         <Link
-          href="/sequences"
+          href="/gameplans"
           className="inline-flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
         >
           <ChevronLeft size={16} />
@@ -39,7 +39,7 @@ export default async function NewSequencePage() {
           </p>
         </header>
 
-        <SequenceForm
+        <GamePlanForm
           positions={positions}
           techniques={stepTechniques}
           positionsById={positionsById}

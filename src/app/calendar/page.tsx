@@ -1,5 +1,5 @@
 import { getAllTechniques } from "@/lib/airtable/techniques";
-import { getAllSequences } from "@/lib/supabase/sequences";
+import { getAllGamePlans } from "@/lib/supabase/gamePlans";
 import { getAllTrainingSessions } from "@/lib/supabase/trainingSessions";
 import { getMyTechniqueGoalIdSet } from "@/lib/supabase/techniqueGoals";
 import { CalendarHome } from "@/components/calendar/CalendarHome";
@@ -9,9 +9,9 @@ export const metadata = { title: "캘린더" };
 export const dynamic = "force-dynamic";
 
 export default async function CalendarPage() {
-  const [techniques, sequences, sessions, goalIdSet] = await Promise.all([
+  const [techniques, gamePlans, sessions, goalIdSet] = await Promise.all([
     getAllTechniques(),
-    getAllSequences(),
+    getAllGamePlans(),
     getAllTrainingSessions(),
     getMyTechniqueGoalIdSet(),
   ]);
@@ -20,7 +20,7 @@ export default async function CalendarPage() {
     <PageWrapper>
       <CalendarHome
         techniques={techniques}
-        sequences={sequences}
+        gamePlans={gamePlans}
         sessions={sessions}
         goalTechRecordIds={Array.from(goalIdSet)}
       />

@@ -4,9 +4,9 @@ import { useFormState, useFormStatus } from "react-dom";
 import { useState, useMemo } from "react";
 import { Search, X, ChevronDown, ArrowUp, ArrowDown, Star } from "lucide-react";
 import {
-  createSequenceAction,
-  type CreateSequenceFormState,
-} from "@/lib/actions/sequences";
+  createGamePlanAction,
+  type CreateGamePlanFormState,
+} from "@/lib/actions/gamePlans";
 import type { Technique } from "@/types/domain";
 import { cn, normalizeKorean } from "@/lib/utils";
 
@@ -28,7 +28,7 @@ function SubmitButton() {
   );
 }
 
-export function SequenceForm({
+export function GamePlanForm({
   positions,
   techniques,
   positionsById,
@@ -38,9 +38,9 @@ export function SequenceForm({
   positionsById: Record<string, Technique>;
 }) {
   const [state, formAction] = useFormState<
-    CreateSequenceFormState,
+    CreateGamePlanFormState,
     FormData
-  >(createSequenceAction, { ok: true });
+  >(createGamePlanAction, { ok: true });
 
   const [selectedTechniques, setSelectedTechniques] = useState<string[]>([]);
   const [hasBranch, setHasBranch] = useState(false);
@@ -114,7 +114,7 @@ export function SequenceForm({
       <FormField label="게임플랜 이름" required>
         <input
           type="text"
-          name="seqName"
+          name="planName"
           placeholder="예) 클가 → 백테이크 가는 길"
           required
           maxLength={120}

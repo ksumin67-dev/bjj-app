@@ -3,27 +3,27 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
-  createSequence,
-  setSequencePrimary,
-  deleteSequence,
-  type CreateSequenceInput,
-} from "@/lib/supabase/sequences";
+  createGamePlan,
+  setGamePlanPrimary,
+  deleteGamePlan,
+  type CreateGamePlanInput,
+} from "@/lib/supabase/gamePlans";
 
-export type CreateSequenceFormState = {
+export type CreateGamePlanFormState = {
   ok: boolean;
   error?: string;
 };
 
 /**
  * Server Action — 새 게임플랜 생성.
- * 폼에서 호출: action={createSequenceAction}
+ * 폼에서 호출: action={createGamePlanAction}
  */
-export async function createSequenceAction(
-  _prevState: CreateSequenceFormState,
+export async function createGamePlanAction(
+  _prevState: CreateGamePlanFormState,
   formData: FormData,
-): Promise<CreateSequenceFormState> {
-  const seqName = (formData.get("seqName") as string)?.trim();
-  if (!seqName) {
+): Promise<CreateGamePlanFormState> {
+  const planName = (formData.get("planName") as string)?.trim();
+  if (!planName) {
     return { ok: false, error: "게임플랜 이름은 필수입니다." };
   }
 
@@ -41,8 +41,8 @@ export async function createSequenceAction(
     .filter(Boolean);
   const isPrimary = formData.get("isPrimary") === "on";
 
-  const input: CreateSequenceInput = {
-    seqName,
+  const input: CreateGamePlanInput = {
+    planName,
     startPositionRecordId,
     techniquesUsedRecordIds,
     stepsText,
@@ -53,17 +53,17 @@ export async function createSequenceAction(
 
   let newRecordId: string;
   try {
-    newRecordId = await createSequence(input);
+    newRecordId = await createGamePlan(input);
   } catch (e) {
-    console.error("[createSequenceAction] failed:", e);
+    console.error("[createGamePlanAction] failed:", e);
     return {
       ok: false,
       error: e instanceof Error ? e.message : "생성 실패",
     };
   }
 
-  revalidatePath("/sequences");
-  redirect(`/sequences/${newRecordId}`);
+  revalidatePath("/gameplans");
+  redirect(`/gameplans/${newRecordId}`);
 }
 
 /**
@@ -73,16 +73,16 @@ export async function setPrimaryAction(
   recordId: string,
   isPrimary: boolean,
 ): Promise<void> {
-  await setSequencePrimary(recordId, isPrimary);
-  revalidatePath("/sequences");
-  revalidatePath(`/sequences/${recordId}`);
+  await setGamePlanPrimary(recordId, isPrimary);
+  revalidatePath("/gameplans");
+  revalidatePath(`/gameplans/${recordId}`);
 }
 
 /**
  * Server Action — 게임플랜 삭제.
  */
-export async function deleteSequenceAction(recordId: string): Promise<void> {
-  await deleteSequence(recordId);
-  revalidatePath("/sequences");
-  redirect("/sequences");
+export async function deleteGamePlanAction(recordId: string): Promise<void> {
+  await deleteGamePlan(recordId);
+  revalidatePath("/gameplans");
+  redirect("/gameplans");
 }

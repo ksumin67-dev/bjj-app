@@ -8,7 +8,7 @@ import {
   getAllTrainingSessions,
   type CreateTrainingSessionInput,
 } from "@/lib/supabase/trainingSessions";
-import { createSequence } from "@/lib/supabase/sequences";
+import { createGamePlan } from "@/lib/supabase/gamePlans";
 import { recordCustomTechniqueUsage } from "@/lib/airtable/customTechniques";
 import { getAllTechniques } from "@/lib/airtable/techniques";
 import { calculateNewStreak, getStreakBonus, getLevelRank } from "@/types/domain";
@@ -52,26 +52,26 @@ function parseCustomTechs(formData: FormData): {
   return { names, streams };
 }
 
-async function maybeCreateSequence(
+async function maybeCreateGamePlan(
   formData: FormData,
   techMap: Map<string, { nameKo: string }>,
 ): Promise<string | null> {
-  const shouldCreate = formData.get("createSequence") === "true";
-  const newSeqName   = ((formData.get("newSeqName") as string) ?? "").trim();
+  const shouldCreate = formData.get("createGamePlan") === "true";
+  const newPlanName  = ((formData.get("newPlanName") as string) ?? "").trim();
   const techOrder    = formData
-    .getAll("newSeqTechOrder")
+    .getAll("newPlanTechOrder")
     .map((v) => v.toString())
     .filter(Boolean);
 
-  if (!shouldCreate || !newSeqName || techOrder.length < 2) return null;
+  if (!shouldCreate || !newPlanName || techOrder.length < 2) return null;
 
   try {
     const stepsText = techOrder
       .map((id) => techMap.get(id)?.nameKo || "")
       .filter(Boolean)
       .join("\n");
-    return await createSequence({
-      seqName: newSeqName,
+    return await createGamePlan({
+      planName: newPlanName,
       techniquesUsedRecordIds: techOrder,
       stepsText,
       hasBranch: false,
@@ -116,16 +116,16 @@ export async function createTrainingSessionAction(
   const techMap = await parseTechMap();
 
   // 새 게임플랜 생성 (수련에서 직접 만들기)
-  const sequenceRecordIds: string[] = [];
-  const newSeqId = await maybeCreateSequence(formData, techMap);
-  if (newSeqId) sequenceRecordIds.push(newSeqId);
+  const gamePlanRecordIds: string[] = [];
+  const newPlanId = await maybeCreateGamePlan(formData, techMap);
+  if (newPlanId) gamePlanRecordIds.push(newPlanId);
 
   // XP 계산
   let baseXp = 0;
   for (const id of techniqueRecordIds) {
     baseXp += techMap.get(id)?.xpValue ?? 100;
   }
-  baseXp += sequenceRecordIds.length * 200;
+  baseXp += gamePlanRecordIds.length * 200;
 
   // 스트릭 보너스 + 벨트 승급 감지 (기존 세션 한 번만 로드)
   let streak = 1;
@@ -148,7 +148,7 @@ export async function createTrainingSessionAction(
   const input: CreateTrainingSessionInput = {
     date,
     techniqueRecordIds,
-    sequenceRecordIds,
+    gamePlanRecordIds,
     notes: notes || undefined,
     xpEarned,
   };
@@ -211,21 +211,21 @@ export async function updateTrainingSessionAction(
   const techMap = await parseTechMap();
 
   // 새 게임플랜 생성 (수련에서 직접 만들기)
-  const sequenceRecordIds: string[] = [];
-  const newSeqId = await maybeCreateSequence(formData, techMap);
-  if (newSeqId) sequenceRecordIds.push(newSeqId);
+  const gamePlanRecordIds: string[] = [];
+  const newPlanId = await maybeCreateGamePlan(formData, techMap);
+  if (newPlanId) gamePlanRecordIds.push(newPlanId);
 
   // XP 재계산 (스트릭 보너스 없이)
   let xpEarned = 0;
   for (const id of techniqueRecordIds) {
     xpEarned += techMap.get(id)?.xpValue ?? 100;
   }
-  xpEarned += sequenceRecordIds.length * 200;
+  xpEarned += gamePlanRecordIds.length * 200;
 
   const input: CreateTrainingSessionInput = {
     date,
     techniqueRecordIds,
-    sequenceRecordIds,
+    gamePlanRecordIds,
     notes: notes || undefined,
     xpEarned,
   };

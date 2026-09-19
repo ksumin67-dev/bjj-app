@@ -5,7 +5,7 @@ import {
   ChevronLeft, ChevronRight, Plus, Flame, Trophy, Activity,
   Dumbbell, Check, LayoutList, CalendarDays, ChevronDown,
 } from "lucide-react";
-import type { Technique, Sequence, TrainingSession } from "@/types/domain";
+import type { Technique, GamePlan, TrainingSession } from "@/types/domain";
 import { SessionFormModal } from "./SessionFormModal";
 import { SessionDetailSheet } from "./SessionDetailSheet";
 import { cn } from "@/lib/utils";
@@ -52,12 +52,12 @@ function formatListDate(date: string, todayKey: string): string {
 
 export function CalendarHome({
   techniques,
-  sequences,
+  gamePlans,
   sessions,
   goalTechRecordIds = [],
 }: {
   techniques: Technique[];
-  sequences: Sequence[];
+  gamePlans: GamePlan[];
   sessions: TrainingSession[];
   goalTechRecordIds?: string[];
 }) {
@@ -76,11 +76,11 @@ export function CalendarHome({
     return m;
   }, [techniques]);
 
-  const sequenceByRecordId = useMemo(() => {
-    const m = new Map<string, Sequence>();
-    for (const s of sequences) m.set(s.recordId, s);
+  const gamePlanByRecordId = useMemo(() => {
+    const m = new Map<string, GamePlan>();
+    for (const s of gamePlans) m.set(s.recordId, s);
     return m;
-  }, [sequences]);
+  }, [gamePlans]);
 
   const techniqueByShortId = useMemo(() => {
     const m: Record<string, Technique> = {};
@@ -160,7 +160,7 @@ export function CalendarHome({
       date,
       sessions: daySessions,
       techniqueByRecordId,
-      sequenceByRecordId,
+      gamePlanByRecordId,
       techniqueByShortId,
       onClose,
       onAdd: () => openFormForDate(date),
@@ -334,7 +334,7 @@ export function CalendarHome({
                 const isSelected = key === selectedDate;
                 const dayList    = sessionsByDate.get(key) ?? [];
                 const totalTechs = dayList.reduce((n, s) => n + s.techniqueRecordIds.length, 0);
-                const totalSeqs  = dayList.reduce((n, s) => n + s.sequenceRecordIds.length, 0);
+                const totalPlans = dayList.reduce((n, s) => n + s.gamePlanRecordIds.length, 0);
                 const hasSession = dayList.length > 0;
                 const dow        = d.getDay();
                 return (
@@ -363,7 +363,7 @@ export function CalendarHome({
                         {totalTechs > 0 && (
                           <span className="size-1 rounded-full shrink-0" style={{ backgroundColor: "#D9772E" }} />
                         )}
-                        {totalSeqs > 0 && (
+                        {totalPlans > 0 && (
                           <span className="size-1 rounded-full shrink-0" style={{ backgroundColor: "#8A8A94" }} />
                         )}
                       </div>
@@ -402,12 +402,12 @@ export function CalendarHome({
               <div>
                 {recentEntries.map(({ date, sessions: daySessions }, i) => {
                   const totalTechs = daySessions.reduce((n, s) => n + s.techniqueRecordIds.length, 0);
-                  const totalSeqs  = daySessions.reduce((n, s) => n + s.sequenceRecordIds.length, 0);
+                  const totalPlans = daySessions.reduce((n, s) => n + s.gamePlanRecordIds.length, 0);
                   const totalXp    = daySessions.reduce((sum, s) => sum + (s.xpEarned ?? 0), 0);
                   const isOpen     = expandedHistoryDate === date;
                   const metaParts  = [
                     totalTechs > 0 ? `${totalTechs}기술` : null,
-                    totalSeqs > 0 ? `${totalSeqs}게임플랜` : null,
+                    totalPlans > 0 ? `${totalPlans}게임플랜` : null,
                   ].filter(Boolean);
 
                   return (
@@ -460,12 +460,12 @@ export function CalendarHome({
           ) : (
             sortedEntries.map(({ date, sessions: daySessions }, i) => {
               const totalTechs = daySessions.reduce((n, s) => n + s.techniqueRecordIds.length, 0);
-              const totalSeqs  = daySessions.reduce((n, s) => n + s.sequenceRecordIds.length, 0);
+              const totalPlans = daySessions.reduce((n, s) => n + s.gamePlanRecordIds.length, 0);
               const totalXp    = daySessions.reduce((sum, s) => sum + (s.xpEarned ?? 0), 0);
               const isOpen     = selectedDate === date;
               const metaParts  = [
                 totalTechs > 0 ? `${totalTechs}기술` : null,
-                totalSeqs > 0 ? `${totalSeqs}게임플랜` : null,
+                totalPlans > 0 ? `${totalPlans}게임플랜` : null,
               ].filter(Boolean);
 
               return (

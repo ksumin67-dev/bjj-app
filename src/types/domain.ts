@@ -119,9 +119,9 @@ export const STYLE_TAG_META: Record<StyleTag, { color: string; glow: string }> =
 /** 알 수 없는/누락된 스타일 태그에 대한 안전한 기본값 (Airtable 값이 코드와 어긋나도 빌드가 죽지 않도록) */
 export const STYLE_TAG_FALLBACK = { color: "#7B61FF", glow: "rgba(123,97,255,0.5)" };
 
-export interface Sequence {
+export interface GamePlan {
   recordId: string;
-  seqName: string;
+  planName: string;
   startPositionRecordId?: string;
   techniquesUsedRecordIds: string[];
   stepsText: string;
@@ -135,7 +135,7 @@ export interface TrainingSession {
   sessionLabel: string;
   date: string;
   techniqueRecordIds: string[];
-  sequenceRecordIds: string[];
+  gamePlanRecordIds: string[];
   notes: string | null;
   xpEarned: number;
   createdAt: string | null;

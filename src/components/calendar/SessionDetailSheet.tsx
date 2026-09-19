@@ -3,7 +3,7 @@
 import { useTransition } from "react";
 import Link from "next/link";
 import { X, Plus, Trash2, Trophy, Pencil, Star } from "lucide-react";
-import type { TrainingSession, Technique, Sequence } from "@/types/domain";
+import type { TrainingSession, Technique, GamePlan } from "@/types/domain";
 import { deleteTrainingSessionAction } from "@/lib/actions/trainingSessions";
 import { TypeChip } from "@/components/tree/TypeChip";
 import { cn } from "@/lib/utils";
@@ -21,7 +21,7 @@ export function SessionDetailSheet({
   date,
   sessions,
   techniqueByRecordId,
-  sequenceByRecordId,
+  gamePlanByRecordId,
   techniqueByShortId,
   onClose,
   onAdd,
@@ -30,7 +30,7 @@ export function SessionDetailSheet({
   date: string;
   sessions: TrainingSession[];
   techniqueByRecordId: Map<string, Technique>;
-  sequenceByRecordId: Map<string, Sequence>;
+  gamePlanByRecordId: Map<string, GamePlan>;
   techniqueByShortId: Record<string, Technique>;
   onClose: () => void;
   onAdd: () => void;
@@ -91,9 +91,9 @@ export function SessionDetailSheet({
             const techList = session.techniqueRecordIds
               .map((id) => techniqueByRecordId.get(id))
               .filter((t): t is Technique => Boolean(t));
-            const seqList = session.sequenceRecordIds
-              .map((id) => sequenceByRecordId.get(id))
-              .filter((s): s is Sequence => Boolean(s));
+            const planList = session.gamePlanRecordIds
+              .map((id) => gamePlanByRecordId.get(id))
+              .filter((s): s is GamePlan => Boolean(s));
 
             return (
               <article key={session.recordId} className="p-4 space-y-3">
@@ -142,15 +142,15 @@ export function SessionDetailSheet({
                   </div>
                 )}
 
-                {seqList.length > 0 && (
+                {planList.length > 0 && (
                   <div className="space-y-1.5">
-                    <div className="text-[10px] uppercase tracking-widest font-semibold text-text-tertiary mb-1">게임플랜 ({seqList.length})</div>
+                    <div className="text-[10px] uppercase tracking-widest font-semibold text-text-tertiary mb-1">게임플랜 ({planList.length})</div>
                     <div className="space-y-1.5">
-                      {seqList.map((s) => (
-                        <Link key={s.recordId} href={`/sequences/${s.recordId}`}
+                      {planList.map((s) => (
+                        <Link key={s.recordId} href={`/gameplans/${s.recordId}`}
                           className="flex items-center gap-1.5 p-2.5 rounded-xl bg-bg-base hover:bg-bg-hover transition-colors duration-fast">
                           {s.isPrimary && <Star size={11} className="text-brand-primary shrink-0" fill="currentColor" />}
-                          <span className="text-sm flex-1 truncate">{s.seqName}</span>
+                          <span className="text-sm flex-1 truncate">{s.planName}</span>
                         </Link>
                       ))}
                     </div>

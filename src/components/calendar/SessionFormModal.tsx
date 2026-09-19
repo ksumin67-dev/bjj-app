@@ -73,7 +73,7 @@ function parseSessionNotes(
 
 // ── 게임플랜 이름 추천 ────────────────────────────────────────────────────────
 
-function generateSeqNameSuggestions(
+function generatePlanNameSuggestions(
   orderedIds: string[],
   techniques: Technique[],
 ): string[] {
@@ -645,10 +645,10 @@ export function SessionFormModal({
   const [techNotes, setTechNotes] = useState<Record<string, string>>(_parsed.techNotes);
   const [customTechNotes, setCustomTechNotes] = useState<Record<string, string>>({});
   // 게임플랜 직접 생성
-  const [createSeq, setCreateSeq] = useState(false);
-  const [newSeqName, setNewSeqName] = useState("");
-  const [newSeqTechOrder, setNewSeqTechOrder] = useState<string[]>([]);
-  const [seqSuggestions, setSeqSuggestions] = useState<string[]>([]);
+  const [createPlan, setCreatePlan] = useState(false);
+  const [newPlanName, setNewPlanName] = useState("");
+  const [newPlanTechOrder, setNewPlanTechOrder] = useState<string[]>([]);
+  const [planSuggestions, setPlanSuggestions] = useState<string[]>([]);
   // 전체 세션 메모
   const [sessionNote, setSessionNote] = useState(_parsed.sessionNote);
   const sessionNoteRef = useRef<HTMLTextAreaElement>(null);
@@ -657,13 +657,13 @@ export function SessionFormModal({
   const [celebLevel, setCelebLevel] = useState<LearningLevel | null>(null);
 
   useEffect(() => {
-    if (!createSeq) return;
-    setNewSeqTechOrder((prev) => {
+    if (!createPlan) return;
+    setNewPlanTechOrder((prev) => {
       const kept  = prev.filter((id) => selectedTech.includes(id));
       const added = selectedTech.filter((id) => !prev.includes(id));
       return [...kept, ...added];
     });
-  }, [selectedTech, createSeq]);
+  }, [selectedTech, createPlan]);
 
   useEffect(() => {
     if (state.ok && state.sessionId && !closedRef.current) {
@@ -699,15 +699,15 @@ export function SessionFormModal({
   );
 
   // 예상 XP — 실제 서버 계산식과 동일: 기술별 xpValue 합 + 게임플랜 생성 시 +200 + 스트릭 보너스
-  const willCreateSeq = createSeq && newSeqName.trim().length > 0 && newSeqTechOrder.length >= 2;
+  const willCreatePlan = createPlan && newPlanName.trim().length > 0 && newPlanTechOrder.length >= 2;
   const previewTechXp = useMemo(
     () => selectedTechObjects.reduce((sum, t) => sum + (t.xpValue ?? 100), 0),
     [selectedTechObjects],
   );
-  const previewSeqBonus = willCreateSeq ? 200 : 0;
+  const previewPlanBonus = willCreatePlan ? 200 : 0;
   const previewStreak = useMemo(() => calculateNewStreak(sessions), [sessions]);
   const previewStreakBonus = isEditMode ? 0 : getStreakBonus(previewStreak);
-  const previewTotalXp = previewTechXp + previewSeqBonus + previewStreakBonus;
+  const previewTotalXp = previewTechXp + previewPlanBonus + previewStreakBonus;
 
   const toggleTech = (id: string) =>
     setSelectedTech((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]);
@@ -724,8 +724,8 @@ export function SessionFormModal({
     setCustomTechNotes((prev) => { const n = { ...prev }; delete n[name]; return n; });
   };
 
-  const moveSeqTech = (idx: number, dir: -1 | 1) => {
-    setNewSeqTechOrder((prev) => {
+  const movePlanTech = (idx: number, dir: -1 | 1) => {
+    setNewPlanTechOrder((prev) => {
       const arr = [...prev];
       const target = idx + dir;
       if (target < 0 || target >= arr.length) return prev;
@@ -955,24 +955,24 @@ export function SessionFormModal({
                 <button
                   type="button"
                   onClick={() => {
-                    if (!createSeq) setNewSeqTechOrder([...selectedTech]);
-                    setCreateSeq((v) => !v);
-                    setNewSeqName("");
-                    setSeqSuggestions([]);
+                    if (!createPlan) setNewPlanTechOrder([...selectedTech]);
+                    setCreatePlan((v) => !v);
+                    setNewPlanName("");
+                    setPlanSuggestions([]);
                   }}
                   className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg border transition-all text-sm"
                   style={{
-                    borderColor: createSeq ? "rgba(217,119,46,0.4)" : "rgba(255,255,255,0.06)",
-                    backgroundColor: createSeq ? "rgba(217,119,46,0.08)" : "rgba(255,255,255,0.03)",
-                    color: createSeq ? "#D9772E" : "#6B7280",
+                    borderColor: createPlan ? "rgba(217,119,46,0.4)" : "rgba(255,255,255,0.06)",
+                    backgroundColor: createPlan ? "rgba(217,119,46,0.08)" : "rgba(255,255,255,0.03)",
+                    color: createPlan ? "#D9772E" : "#6B7280",
                   }}
                 >
                   <Link2 size={14} />
                   <span className="font-semibold flex-1 text-left">이 기술들로 게임플랜 만들기</span>
-                  {createSeq ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                  {createPlan ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                 </button>
 
-                {createSeq && (
+                {createPlan && (
                   <div className="mt-2 rounded-lg p-4 space-y-3 border"
                     style={{ backgroundColor: "rgba(217,119,46,0.06)", borderColor: "rgba(217,119,46,0.25)" }}>
                     <p className="text-[11px]" style={{ color: "#6B7280" }}>
@@ -986,8 +986,8 @@ export function SessionFormModal({
                         <button
                           type="button"
                           onClick={() => {
-                            const suggestions = generateSeqNameSuggestions(newSeqTechOrder, techniques);
-                            setSeqSuggestions(suggestions);
+                            const suggestions = generatePlanNameSuggestions(newPlanTechOrder, techniques);
+                            setPlanSuggestions(suggestions);
                           }}
                           className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-semibold transition-all hover:opacity-80 active:scale-95"
                           style={{ backgroundColor: "rgba(217,119,46,0.15)", color: "#D9772E", border: "1px solid rgba(217,119,46,0.3)" }}
@@ -997,19 +997,19 @@ export function SessionFormModal({
                         </button>
                       </div>
                       <input
-                        type="text" value={newSeqName}
-                        onChange={(e) => { setNewSeqName(e.target.value); setSeqSuggestions([]); }}
+                        type="text" value={newPlanName}
+                        onChange={(e) => { setNewPlanName(e.target.value); setPlanSuggestions([]); }}
                         placeholder="예) 롱스텝 백테이크, 딥하프 스윕 콤보…"
                         className="w-full rounded-lg px-3 py-2 text-sm text-white placeholder:text-text-disabled outline-none focus:ring-1"
                         style={{ backgroundColor: "#0A0A0F", border: "1px solid rgba(217,119,46,0.3)" }}
                       />
-                      {seqSuggestions.length > 0 && (
+                      {planSuggestions.length > 0 && (
                         <div className="mt-2 flex flex-wrap gap-1.5">
-                          {seqSuggestions.map((s) => (
+                          {planSuggestions.map((s) => (
                             <button
                               key={s}
                               type="button"
-                              onClick={() => { setNewSeqName(s); setSeqSuggestions([]); }}
+                              onClick={() => { setNewPlanName(s); setPlanSuggestions([]); }}
                               className="px-2.5 py-1 rounded-full text-xs font-medium transition-all hover:opacity-90 active:scale-95"
                               style={{ backgroundColor: "rgba(217,119,46,0.2)", color: "#F0B375", border: "1px solid rgba(217,119,46,0.35)" }}
                             >
@@ -1024,7 +1024,7 @@ export function SessionFormModal({
                         단계 순서 — ▲▼로 조정
                       </label>
                       <div className="space-y-1">
-                        {newSeqTechOrder.map((id, idx) => {
+                        {newPlanTechOrder.map((id, idx) => {
                           const tech = techniques.find((t) => t.recordId === id);
                           if (!tech) return null;
                           return (
@@ -1038,11 +1038,11 @@ export function SessionFormModal({
                               </span>
                               <span className="flex-1 text-sm text-white truncate">{tech.nameKo}</span>
                               <div className="flex flex-col gap-0.5 shrink-0">
-                                <button type="button" onClick={() => moveSeqTech(idx, -1)} disabled={idx === 0}
+                                <button type="button" onClick={() => movePlanTech(idx, -1)} disabled={idx === 0}
                                   aria-label="위로"
                                   className="w-5 h-4 flex items-center justify-center rounded disabled:opacity-40 hover:bg-white/10 transition-colors"
                                   style={{ color: "#D9772E" }}><ChevronUp size={10} /></button>
-                                <button type="button" onClick={() => moveSeqTech(idx, 1)} disabled={idx === newSeqTechOrder.length - 1}
+                                <button type="button" onClick={() => movePlanTech(idx, 1)} disabled={idx === newPlanTechOrder.length - 1}
                                   aria-label="아래로"
                                   className="w-5 h-4 flex items-center justify-center rounded disabled:opacity-40 hover:bg-white/10 transition-colors"
                                   style={{ color: "#D9772E" }}><ChevronDown size={10} /></button>
@@ -1052,19 +1052,19 @@ export function SessionFormModal({
                         })}
                       </div>
                     </div>
-                    {newSeqTechOrder.length >= 2 && (
+                    {newPlanTechOrder.length >= 2 && (
                       <div className="rounded-xl px-3 py-2 text-[11px] leading-relaxed"
                         style={{ backgroundColor: "rgba(0,0,0,0.3)", color: "#6B7280" }}>
                         <span style={{ color: "#D9772E" }} className="font-semibold mr-1">미리보기:</span>
-                        {newSeqTechOrder.map((id) => techniques.find((t) => t.recordId === id)?.nameKo).filter(Boolean).join(" → ")}
+                        {newPlanTechOrder.map((id) => techniques.find((t) => t.recordId === id)?.nameKo).filter(Boolean).join(" → ")}
                       </div>
                     )}
-                    {newSeqName.trim() && newSeqTechOrder.length >= 2 && (
+                    {newPlanName.trim() && newPlanTechOrder.length >= 2 && (
                       <>
-                        <input type="hidden" name="createSequence" value="true" />
-                        <input type="hidden" name="newSeqName" value={newSeqName.trim()} />
-                        {newSeqTechOrder.map((id) => (
-                          <input key={id} type="hidden" name="newSeqTechOrder" value={id} />
+                        <input type="hidden" name="createGamePlan" value="true" />
+                        <input type="hidden" name="newPlanName" value={newPlanName.trim()} />
+                        {newPlanTechOrder.map((id) => (
+                          <input key={id} type="hidden" name="newPlanTechOrder" value={id} />
                         ))}
                       </>
                     )}
@@ -1082,10 +1082,10 @@ export function SessionFormModal({
                     +{previewTotalXp.toLocaleString()} XP
                   </span>
                 </div>
-                {(previewSeqBonus > 0 || previewStreakBonus > 0) && (
+                {(previewPlanBonus > 0 || previewStreakBonus > 0) && (
                   <p className="text-[10px] mt-1 text-right text-text-tertiary">
                     기술 {previewTechXp}
-                    {previewSeqBonus > 0 && ` + 게임플랜 ${previewSeqBonus}`}
+                    {previewPlanBonus > 0 && ` + 게임플랜 ${previewPlanBonus}`}
                     {previewStreakBonus > 0 && (
                       <span className="inline-flex items-center gap-0.5 ml-0.5">
                         + <Flame size={9} className="text-brand-primary" />{previewStreakBonus}

@@ -3,16 +3,16 @@
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Star, Trash2 } from "lucide-react";
-import { setPrimaryAction, deleteSequenceAction } from "@/lib/actions/sequences";
+import { setPrimaryAction, deleteGamePlanAction } from "@/lib/actions/gamePlans";
 import { useToast } from "@/contexts/ToastContext";
 
-export function SequenceActions({
+export function GamePlanActions({
   recordId,
-  seqName,
+  planName,
   isPrimary,
 }: {
   recordId: string;
-  seqName: string;
+  planName: string;
   isPrimary: boolean;
 }) {
   const [primaryPending, startPrimary] = useTransition();
@@ -32,12 +32,12 @@ export function SequenceActions({
   }
 
   function handleDelete() {
-    if (!confirm(`"${seqName}"을 삭제할까요?`)) return;
+    if (!confirm(`"${planName}"을 삭제할까요?`)) return;
     startDel(async () => {
       try {
-        await deleteSequenceAction(recordId);
+        await deleteGamePlanAction(recordId);
         toast.show("success", "게임플랜이 삭제됐습니다.");
-        router.push("/sequences");
+        router.push("/gameplans");
       } catch {
         toast.show("error", "삭제에 실패했습니다.");
       }

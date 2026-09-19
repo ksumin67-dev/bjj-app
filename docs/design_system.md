@@ -84,6 +84,7 @@ Whoop / Oura 스타일의 "미니멀 프리미엄 피트니스 앱" 톤. 화려�
 - [x] 홈 화면에 "이번 주 목표" 진행률 바 추가 — 온보딩에서 정한 주당 목표 대비 이번 주 수련일 수 표시(목표를 안 정했으면 자동으로 숨김)
 - [x] 프로필의 수련 리마인더에 시간 선택 추가 — 기존엔 고정 20시, 이제 온보딩에서 고른 시간이 기본값이고 토글 켜진 상태에서 언제든 변경 가능(로컬 알림 재예약)
 - [x] 기술도감 선수탭 "최근 추가" → 온보딩에서 고른 선호 스타일이 있으면 "추천 선수"로 대체(해당 스타일 선수 우선 노출, 없으면 기존 최신순 폴백)
+- [x] **용어 변경: 시퀀스 → 게임플랜**. 사용자 노출 텍스트뿐 아니라 내부 코드까지 전면 통일: Supabase 테이블 `sequences`→`game_plans`(컬럼 `seq_name`→`plan_name`, `training_sessions.sequence_ids`→`game_plan_ids`, RLS 정책명도 함께 rename), TS 타입 `Sequence`→`GamePlan`, 라우트 `/sequences`→`/gameplans`(동적 세그먼트 `[seqId]`→`[planId]`), 컴포넌트/파일 `Sequence*.tsx`→`GamePlan*.tsx`(`src/components/sequences/`→`src/components/gamePlans/`), 관련 함수/변수명(`getAllSequences`→`getAllGamePlans` 등) 전부 반영. 데이터 0건 상태에서 진행해 무손실
 
 ## 작업 프로세스
 

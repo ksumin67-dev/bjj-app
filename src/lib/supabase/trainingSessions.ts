@@ -6,7 +6,7 @@ type SessionRow = {
   id: string;
   session_date: string;
   technique_ids: string[] | null;
-  sequence_ids: string[] | null;
+  game_plan_ids: string[] | null;
   notes: string | null;
   xp_earned: number | null;
   created_at: string;
@@ -14,10 +14,10 @@ type SessionRow = {
 
 function toSession(row: SessionRow): TrainingSession {
   const techCount = row.technique_ids?.length ?? 0;
-  const seqCount = row.sequence_ids?.length ?? 0;
+  const planCount = row.game_plan_ids?.length ?? 0;
   const labelParts: string[] = [];
   if (techCount > 0) labelParts.push(`${techCount}개 기술`);
-  if (seqCount > 0) labelParts.push(`${seqCount}개 게임플랜`);
+  if (planCount > 0) labelParts.push(`${planCount}개 게임플랜`);
   const label = `${row.session_date}${labelParts.length > 0 ? ` (${labelParts.join(", ")})` : ""}`;
 
   return {
@@ -25,7 +25,7 @@ function toSession(row: SessionRow): TrainingSession {
     sessionLabel: label,
     date: row.session_date,
     techniqueRecordIds: row.technique_ids ?? [],
-    sequenceRecordIds: row.sequence_ids ?? [],
+    gamePlanRecordIds: row.game_plan_ids ?? [],
     notes: row.notes,
     xpEarned: row.xp_earned ?? 0,
     createdAt: row.created_at,
@@ -112,7 +112,7 @@ export async function getSessionById(
 export type CreateTrainingSessionInput = {
   date: string; // YYYY-MM-DD
   techniqueRecordIds: string[];
-  sequenceRecordIds: string[];
+  gamePlanRecordIds: string[];
   notes?: string;
   xpEarned?: number;
 };
@@ -121,7 +121,7 @@ export async function createTrainingSession(
   input: CreateTrainingSessionInput,
 ): Promise<string> {
   const userId = await requireUserId();
-  const xp = input.xpEarned ?? input.sequenceRecordIds.length * 200;
+  const xp = input.xpEarned ?? input.gamePlanRecordIds.length * 200;
 
   const supabase = createClient();
   const { data, error } = await supabase
@@ -130,7 +130,7 @@ export async function createTrainingSession(
       user_id: userId,
       session_date: input.date,
       technique_ids: input.techniqueRecordIds,
-      sequence_ids: input.sequenceRecordIds,
+      game_plan_ids: input.gamePlanRecordIds,
       notes: input.notes?.trim() || null,
       xp_earned: xp,
     })
@@ -160,7 +160,7 @@ export async function updateTrainingSession(
     .update({
       session_date: input.date,
       technique_ids: input.techniqueRecordIds,
-      sequence_ids: input.sequenceRecordIds,
+      game_plan_ids: input.gamePlanRecordIds,
       notes: (input.notes ?? "").trim() || null,
       xp_earned: input.xpEarned ?? 0,
     })

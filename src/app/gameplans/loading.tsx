@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/Skeleton";
 
-export default function SequencesLoading() {
+export default function GamePlansLoading() {
   return (
     <div className="mx-auto w-full max-w-2xl lg:max-w-4xl px-4 py-6 pb-24 space-y-4">
       {/* 페이지 헤더 */}

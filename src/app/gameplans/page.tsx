@@ -1,20 +1,20 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
-import { getAllSequences } from "@/lib/supabase/sequences";
+import { getAllGamePlans } from "@/lib/supabase/gamePlans";
 import { getAllTrainingSessions } from "@/lib/supabase/trainingSessions";
 import { getAllPositions } from "@/lib/airtable/positions";
 import { getAllTechniques } from "@/lib/airtable/techniques";
 import { buildTrainingCountMap } from "@/types/domain";
 import type { Technique } from "@/types/domain";
 import { PageWrapper } from "@/components/layout/PageWrapper";
-import { SequenceListClient, type SequenceListItem } from "@/components/sequences/SequenceListClient";
+import { GamePlanListClient, type GamePlanListItem } from "@/components/gamePlans/GamePlanListClient";
 
 export const metadata = { title: "나의 게임플랜" };
 export const revalidate = 30;
 
-export default async function SequencesPage() {
-  const [sequences, positions, techniques, sessions] = await Promise.all([
-    getAllSequences(),
+export default async function GamePlansPage() {
+  const [gamePlans, positions, techniques, sessions] = await Promise.all([
+    getAllGamePlans(),
     getAllPositions(),
     getAllTechniques(),
     getAllTrainingSessions(),
@@ -28,17 +28,17 @@ export default async function SequencesPage() {
 
   const trainingCountMap = buildTrainingCountMap(sessions);
 
-  const items: SequenceListItem[] = sequences.map((seq) => {
-    const startPosition = seq.startPositionRecordId
-      ? positionsByRecordId.get(seq.startPositionRecordId)
+  const items: GamePlanListItem[] = gamePlans.map((plan) => {
+    const startPosition = plan.startPositionRecordId
+      ? positionsByRecordId.get(plan.startPositionRecordId)
       : undefined;
-    const usedTechs = seq.techniquesUsedRecordIds
+    const usedTechs = plan.techniquesUsedRecordIds
       .map((id) => techMap.get(id))
       .filter((t): t is Technique => Boolean(t));
     const trainedCount = usedTechs.filter((t) => (trainingCountMap[t.recordId] ?? 0) > 0).length;
 
     return {
-      sequence: seq,
+      gamePlan: plan,
       startPositionName: startPosition?.nameKo,
       stream: startPosition?.stream ?? null,
       previewTechs: usedTechs.slice(0, 4).map((t) => ({ recordId: t.recordId, nameKo: t.nameKo })),
@@ -58,7 +58,7 @@ export default async function SequencesPage() {
             </p>
           </div>
           <Link
-            href="/sequences/new"
+            href="/gameplans/new"
             className="inline-flex items-center gap-1.5 h-10 px-4 rounded-xl text-white text-sm font-bold shrink-0 hover:brightness-110 active:scale-[0.97] transition-all duration-fast"
             style={{ backgroundColor: "#D9772E" }}
           >
@@ -67,7 +67,7 @@ export default async function SequencesPage() {
           </Link>
         </header>
 
-        <SequenceListClient items={items} />
+        <GamePlanListClient items={items} />
       </div>
     </PageWrapper>
   );

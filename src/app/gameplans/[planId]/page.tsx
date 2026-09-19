@@ -5,17 +5,17 @@ import {
   ChevronLeft, GitBranch, ArrowRight, Star,
   Shield, Swords, Zap, Users, type LucideIcon,
 } from "lucide-react";
-import { getSequenceById } from "@/lib/supabase/sequences";
+import { getGamePlanById } from "@/lib/supabase/gamePlans";
 import { getAllPositions } from "@/lib/airtable/positions";
 import { getAllTechniques } from "@/lib/airtable/techniques";
 import { getAllTrainingSessions } from "@/lib/supabase/trainingSessions";
 import { buildTrainingCountMap } from "@/types/domain";
-import { SequenceActions } from "@/components/sequences/SequenceActions";
+import { GamePlanActions } from "@/components/gamePlans/GamePlanActions";
 import type { Technique, Stream } from "@/types/domain";
 
 export const dynamic = "force-dynamic";
 
-type Params = { seqId: string };
+type Params = { planId: string };
 
 const STREAM_ICON: Record<Stream, LucideIcon> = {
   가드포지션: Shield,
@@ -72,28 +72,28 @@ function TechFlowRow({ tech, index, trained }: { tech: Technique; index: number;
 }
 
 export async function generateMetadata({ params }: { params: Params }) {
-  const seq = await getSequenceById(params.seqId);
-  return { title: seq?.seqName ?? "게임플랜" };
+  const plan = await getGamePlanById(params.planId);
+  return { title: plan?.planName ?? "게임플랜" };
 }
 
-export default async function SequenceDetailPage({ params }: { params: Params }) {
-  const [sequence, positions, techniques, sessions] = await Promise.all([
-    getSequenceById(params.seqId),
+export default async function GamePlanDetailPage({ params }: { params: Params }) {
+  const [gamePlan, positions, techniques, sessions] = await Promise.all([
+    getGamePlanById(params.planId),
     getAllPositions(),
     getAllTechniques(),
     getAllTrainingSessions(),
   ]);
 
-  if (!sequence) notFound();
+  if (!gamePlan) notFound();
 
   const trainingCountMap = buildTrainingCountMap(sessions);
 
-  const startPos = sequence.startPositionRecordId
-    ? positions.find((p) => p.recordId === sequence.startPositionRecordId)
+  const startPos = gamePlan.startPositionRecordId
+    ? positions.find((p) => p.recordId === gamePlan.startPositionRecordId)
     : undefined;
 
   const techMap = new Map(techniques.map((t) => [t.recordId, t]));
-  const usedTechs = sequence.techniquesUsedRecordIds
+  const usedTechs = gamePlan.techniquesUsedRecordIds
     .map((id) => techMap.get(id))
     .filter((t): t is Technique => Boolean(t));
 
@@ -105,7 +105,7 @@ export default async function SequenceDetailPage({ params }: { params: Params })
       <div className="space-y-5 max-w-2xl">
 
         <Link
-          href="/sequences"
+          href="/gameplans"
           className="inline-flex items-center gap-1 text-sm font-normal"
           style={{ color: "#8A8A94" }}
         >
@@ -115,9 +115,9 @@ export default async function SequenceDetailPage({ params }: { params: Params })
 
         <header>
           <div className="flex items-center gap-1.5">
-            {sequence.isPrimary && <Star size={16} color="#D9772E" fill="#D9772E" />}
+            {gamePlan.isPrimary && <Star size={16} color="#D9772E" fill="#D9772E" />}
             <h1 className="text-2xl font-bold tracking-tight text-white leading-tight">
-              {sequence.seqName}
+              {gamePlan.planName}
             </h1>
           </div>
           <div className="flex items-center gap-2 flex-wrap mt-2">
@@ -157,24 +157,24 @@ export default async function SequenceDetailPage({ params }: { params: Params })
           </section>
         )}
 
-        {sequence.stepsText && (
+        {gamePlan.stepsText && (
           <section>
             <h2 className="text-[13.5px] font-bold text-white mb-2">단계 메모</h2>
-            <p className="text-sm font-normal whitespace-pre-wrap" style={{ color: "#B4BCC8" }}>{sequence.stepsText}</p>
+            <p className="text-sm font-normal whitespace-pre-wrap" style={{ color: "#B4BCC8" }}>{gamePlan.stepsText}</p>
           </section>
         )}
 
-        {sequence.hasBranch && sequence.branchCondition && (
+        {gamePlan.hasBranch && gamePlan.branchCondition && (
           <section className="rounded-2xl p-4" style={{ backgroundColor: "rgba(251,191,36,0.06)", border: "1px solid rgba(251,191,36,0.28)" }}>
             <div className="flex items-center gap-2 mb-2" style={{ color: "#FBBF24" }}>
               <GitBranch size={16} />
               <p className="text-[10px] uppercase tracking-widest font-semibold">분기 조건</p>
             </div>
-            <p className="text-sm font-normal" style={{ color: "#F5F7FA" }}>{sequence.branchCondition}</p>
+            <p className="text-sm font-normal" style={{ color: "#F5F7FA" }}>{gamePlan.branchCondition}</p>
           </section>
         )}
 
-        <SequenceActions recordId={sequence.recordId} seqName={sequence.seqName} isPrimary={sequence.isPrimary} />
+        <GamePlanActions recordId={gamePlan.recordId} planName={gamePlan.planName} isPrimary={gamePlan.isPrimary} />
       </div>
     </PageWrapper>
   );
