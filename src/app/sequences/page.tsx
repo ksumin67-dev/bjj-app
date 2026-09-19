@@ -9,7 +9,7 @@ import type { Technique } from "@/types/domain";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 import { SequenceListClient, type SequenceListItem } from "@/components/sequences/SequenceListClient";
 
-export const metadata = { title: "나의 시퀀스" };
+export const metadata = { title: "나의 게임플랜" };
 export const revalidate = 30;
 
 export default async function SequencesPage() {
@@ -52,7 +52,7 @@ export default async function SequencesPage() {
       <div className="space-y-5">
         <header className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <h1 className="text-2xl font-bold tracking-tight text-white">나의 시퀀스</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-white">나의 게임플랜</h1>
             <p className="mt-1 text-sm font-normal" style={{ color: "#8A8A94" }}>
               내가 정리한 기술 조합 도감
             </p>
@@ -63,7 +63,7 @@ export default async function SequencesPage() {
             style={{ backgroundColor: "#D9772E" }}
           >
             <Plus size={16} strokeWidth={2.5} />
-            새 시퀀스
+            새 게임플랜
           </Link>
         </header>
 

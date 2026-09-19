@@ -50,12 +50,12 @@ export function SequenceListClient({ items }: { items: SequenceListItem[] }) {
       </div>
 
       <p className="text-[11px] font-normal" style={{ color: "#6B7280" }}>
-        총 {filtered.length}개 시퀀스
+        총 {filtered.length}개 게임플랜
       </p>
 
       {filtered.length === 0 ? (
         <p className="text-sm font-normal text-center py-10" style={{ color: "#6B7280" }}>
-          해당하는 시퀀스가 없습니다.
+          해당하는 게임플랜이 없습니다.
         </p>
       ) : (
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
@@ -99,7 +99,7 @@ function EmptyState() {
       >
         <ListOrdered size={20} color="#D9772E" />
       </div>
-      <h3 className="text-base font-bold text-white mb-1">아직 시퀀스가 없습니다</h3>
+      <h3 className="text-base font-bold text-white mb-1">아직 게임플랜이 없습니다</h3>
       <p className="text-sm font-normal mb-4" style={{ color: "#6B7280" }}>
         스파링에서 시도하고 싶은 기술 조합을 정리해보세요.
         <br />
@@ -110,7 +110,7 @@ function EmptyState() {
         className="inline-flex items-center gap-1.5 h-10 px-4 rounded-xl text-white text-sm font-bold hover:brightness-110 active:scale-[0.97] transition-all duration-fast"
         style={{ backgroundColor: "#D9772E" }}
       >
-        <Plus size={16} strokeWidth={2.5} />첫 시퀀스 만들기
+        <Plus size={16} strokeWidth={2.5} />첫 게임플랜 만들기
       </Link>
     </div>
   );

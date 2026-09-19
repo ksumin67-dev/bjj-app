@@ -6,7 +6,7 @@ export const metadata = { title: "프리미엄" };
 const PREMIUM_FEATURES = [
   "기술별 심화 코칭 정보 (그립·핵심포인트·실전팁·흔한실수·카운터)",
   "통계 대시보드 (준비 중)",
-  "무제한 시퀀스 저장",
+  "무제한 게임플랜 저장",
 ];
 
 export default function UpgradePage() {

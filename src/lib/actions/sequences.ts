@@ -15,7 +15,7 @@ export type CreateSequenceFormState = {
 };
 
 /**
- * Server Action — 새 시퀀스 생성.
+ * Server Action — 새 게임플랜 생성.
  * 폼에서 호출: action={createSequenceAction}
  */
 export async function createSequenceAction(
@@ -24,7 +24,7 @@ export async function createSequenceAction(
 ): Promise<CreateSequenceFormState> {
   const seqName = (formData.get("seqName") as string)?.trim();
   if (!seqName) {
-    return { ok: false, error: "시퀀스 이름은 필수입니다." };
+    return { ok: false, error: "게임플랜 이름은 필수입니다." };
   }
 
   const startPositionRecordId =
@@ -79,7 +79,7 @@ export async function setPrimaryAction(
 }
 
 /**
- * Server Action — 시퀀스 삭제.
+ * Server Action — 게임플랜 삭제.
  */
 export async function deleteSequenceAction(recordId: string): Promise<void> {
   await deleteSequence(recordId);

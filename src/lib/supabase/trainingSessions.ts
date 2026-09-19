@@ -17,7 +17,7 @@ function toSession(row: SessionRow): TrainingSession {
   const seqCount = row.sequence_ids?.length ?? 0;
   const labelParts: string[] = [];
   if (techCount > 0) labelParts.push(`${techCount}개 기술`);
-  if (seqCount > 0) labelParts.push(`${seqCount}개 시퀀스`);
+  if (seqCount > 0) labelParts.push(`${seqCount}개 게임플랜`);
   const label = `${row.session_date}${labelParts.length > 0 ? ` (${labelParts.join(", ")})` : ""}`;
 
   return {

@@ -23,7 +23,7 @@ function SubmitButton() {
       )}
       style={{ backgroundColor: "#D9772E" }}
     >
-      {pending ? "저장 중..." : "시퀀스 저장"}
+      {pending ? "저장 중..." : "게임플랜 저장"}
     </button>
   );
 }
@@ -110,8 +110,8 @@ export function SequenceForm({
         </div>
       )}
 
-      {/* 시퀀스 이름 */}
-      <FormField label="시퀀스 이름" required>
+      {/* 게임플랜 이름 */}
+      <FormField label="게임플랜 이름" required>
         <input
           type="text"
           name="seqName"

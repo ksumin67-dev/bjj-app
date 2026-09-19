@@ -36,7 +36,7 @@ export function SequenceActions({
     startDel(async () => {
       try {
         await deleteSequenceAction(recordId);
-        toast.show("success", "시퀀스가 삭제됐습니다.");
+        toast.show("success", "게임플랜이 삭제됐습니다.");
         router.push("/sequences");
       } catch {
         toast.show("error", "삭제에 실패했습니다.");
@@ -68,7 +68,7 @@ export function SequenceActions({
         className="w-full py-2.5 rounded-xl bg-bg-elevated border border-border-subtle text-danger hover:bg-danger/10 hover:border-danger/40 active:scale-[0.97] transition-all duration-fast inline-flex items-center justify-center gap-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <Trash2 size={16} />
-        {delPending ? "삭제 중…" : "시퀀스 삭제"}
+        {delPending ? "삭제 중…" : "게임플랜 삭제"}
       </button>
     </section>
   );

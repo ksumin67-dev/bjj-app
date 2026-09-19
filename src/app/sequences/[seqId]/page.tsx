@@ -73,7 +73,7 @@ function TechFlowRow({ tech, index, trained }: { tech: Technique; index: number;
 
 export async function generateMetadata({ params }: { params: Params }) {
   const seq = await getSequenceById(params.seqId);
-  return { title: seq?.seqName ?? "시퀀스" };
+  return { title: seq?.seqName ?? "게임플랜" };
 }
 
 export default async function SequenceDetailPage({ params }: { params: Params }) {
@@ -110,7 +110,7 @@ export default async function SequenceDetailPage({ params }: { params: Params })
           style={{ color: "#8A8A94" }}
         >
           <ChevronLeft size={16} />
-          나의 시퀀스
+          나의 게임플랜
         </Link>
 
         <header>

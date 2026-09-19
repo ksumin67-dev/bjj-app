@@ -11,7 +11,7 @@ const TABS: Tab[] = [
   { href: "/",          label: "홈",       icon: Home },
   { href: "/calendar",  label: "캘린더",   icon: Calendar },
   { href: "/tree",      label: "기술도감", icon: BookOpen },
-  { href: "/sequences", label: "시퀀스",   icon: ListOrdered },
+  { href: "/sequences", label: "게임플랜",   icon: ListOrdered },
   { href: "/profile",   label: "프로필",   icon: UserCircle },
 ];
 

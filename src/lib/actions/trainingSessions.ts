@@ -78,7 +78,7 @@ async function maybeCreateSequence(
       isPrimary: false,
     });
   } catch (e) {
-    console.warn("[trainingSessions] 시퀀스 생성 실패:", e);
+    console.warn("[trainingSessions] 게임플랜 생성 실패:", e);
     return null;
   }
 }
@@ -87,7 +87,7 @@ async function maybeCreateSequence(
 
 /**
  * Server Action — 새 수련 세션 생성.
- * XP = 기술 xpValue 합계 + 시퀀스 * 200 + 스트릭 보너스
+ * XP = 기술 xpValue 합계 + 게임플랜 * 200 + 스트릭 보너스
  */
 export async function createTrainingSessionAction(
   _prevState: CreateSessionFormState,
@@ -115,7 +115,7 @@ export async function createTrainingSessionAction(
   // 기술 데이터 로드
   const techMap = await parseTechMap();
 
-  // 새 시퀀스 생성 (수련에서 직접 만들기)
+  // 새 게임플랜 생성 (수련에서 직접 만들기)
   const sequenceRecordIds: string[] = [];
   const newSeqId = await maybeCreateSequence(formData, techMap);
   if (newSeqId) sequenceRecordIds.push(newSeqId);
@@ -210,7 +210,7 @@ export async function updateTrainingSessionAction(
   // 기술 데이터 로드
   const techMap = await parseTechMap();
 
-  // 새 시퀀스 생성 (수련에서 직접 만들기)
+  // 새 게임플랜 생성 (수련에서 직접 만들기)
   const sequenceRecordIds: string[] = [];
   const newSeqId = await maybeCreateSequence(formData, techMap);
   if (newSeqId) sequenceRecordIds.push(newSeqId);

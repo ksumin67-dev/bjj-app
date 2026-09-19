@@ -70,7 +70,7 @@ export type CreateSequenceInput = {
 };
 
 /**
- * 시퀀스 생성. 반환은 새 레코드 ID만.
+ * 게임플랜 생성. 반환은 새 레코드 ID만.
  * 호출 측에서 redirect/revalidate 직후 fresh fetch.
  */
 export async function createSequence(
@@ -93,7 +93,7 @@ export async function createSequence(
     .select("id")
     .single();
 
-  if (error || !data) throw error ?? new Error("시퀀스 생성 실패");
+  if (error || !data) throw error ?? new Error("게임플랜 생성 실패");
   return data.id;
 }
 

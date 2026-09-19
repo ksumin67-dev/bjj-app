@@ -71,7 +71,7 @@ function parseSessionNotes(
 }
 
 
-// ── 시퀀스 이름 추천 ────────────────────────────────────────────────────────
+// ── 게임플랜 이름 추천 ────────────────────────────────────────────────────────
 
 function generateSeqNameSuggestions(
   orderedIds: string[],
@@ -644,7 +644,7 @@ export function SessionFormModal({
   // 기술별 디테일 메모
   const [techNotes, setTechNotes] = useState<Record<string, string>>(_parsed.techNotes);
   const [customTechNotes, setCustomTechNotes] = useState<Record<string, string>>({});
-  // 시퀀스 직접 생성
+  // 게임플랜 직접 생성
   const [createSeq, setCreateSeq] = useState(false);
   const [newSeqName, setNewSeqName] = useState("");
   const [newSeqTechOrder, setNewSeqTechOrder] = useState<string[]>([]);
@@ -698,7 +698,7 @@ export function SessionFormModal({
     [selectedTech, techniques],
   );
 
-  // 예상 XP — 실제 서버 계산식과 동일: 기술별 xpValue 합 + 시퀀스 생성 시 +200 + 스트릭 보너스
+  // 예상 XP — 실제 서버 계산식과 동일: 기술별 xpValue 합 + 게임플랜 생성 시 +200 + 스트릭 보너스
   const willCreateSeq = createSeq && newSeqName.trim().length > 0 && newSeqTechOrder.length >= 2;
   const previewTechXp = useMemo(
     () => selectedTechObjects.reduce((sum, t) => sum + (t.xpValue ?? 100), 0),
@@ -842,7 +842,7 @@ export function SessionFormModal({
                 {state.streak >= 30 ? "전설의 수련러" : state.streak >= 7 ? "강철 의지!" : `${state.streak}일 연속 수련 중`}
               </p>
             )}
-            <p className="text-xs text-text-tertiary">기술도감과 시퀀스에 자동 반영됐어요</p>
+            <p className="text-xs text-text-tertiary">기술도감과 게임플랜에 자동 반영됐어요</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="p-5 space-y-5">
@@ -949,7 +949,7 @@ export function SessionFormModal({
               />
             </div>
 
-            {/* 이 기술들로 시퀀스 만들기 */}
+            {/* 이 기술들로 게임플랜 만들기 */}
             {selectedTech.length >= 2 && (
               <div>
                 <button
@@ -968,7 +968,7 @@ export function SessionFormModal({
                   }}
                 >
                   <Link2 size={14} />
-                  <span className="font-semibold flex-1 text-left">이 기술들로 시퀀스 만들기</span>
+                  <span className="font-semibold flex-1 text-left">이 기술들로 게임플랜 만들기</span>
                   {createSeq ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                 </button>
 
@@ -976,12 +976,12 @@ export function SessionFormModal({
                   <div className="mt-2 rounded-lg p-4 space-y-3 border"
                     style={{ backgroundColor: "rgba(217,119,46,0.06)", borderColor: "rgba(217,119,46,0.25)" }}>
                     <p className="text-[11px]" style={{ color: "#6B7280" }}>
-                      직접 입력한(미등록) 기술은 시퀀스에 포함되지 않아요.
+                      직접 입력한(미등록) 기술은 게임플랜에 포함되지 않아요.
                     </p>
                     <div>
                       <div className="flex items-center justify-between mb-1.5">
                         <label className="text-xs font-semibold" style={{ color: "#D9772E" }}>
-                          시퀀스 이름 <span style={{ color: "#F87171" }}>*</span>
+                          게임플랜 이름 <span style={{ color: "#F87171" }}>*</span>
                         </label>
                         <button
                           type="button"
@@ -1085,7 +1085,7 @@ export function SessionFormModal({
                 {(previewSeqBonus > 0 || previewStreakBonus > 0) && (
                   <p className="text-[10px] mt-1 text-right text-text-tertiary">
                     기술 {previewTechXp}
-                    {previewSeqBonus > 0 && ` + 시퀀스 ${previewSeqBonus}`}
+                    {previewSeqBonus > 0 && ` + 게임플랜 ${previewSeqBonus}`}
                     {previewStreakBonus > 0 && (
                       <span className="inline-flex items-center gap-0.5 ml-0.5">
                         + <Flame size={9} className="text-brand-primary" />{previewStreakBonus}

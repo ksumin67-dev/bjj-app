@@ -407,7 +407,7 @@ export function CalendarHome({
                   const isOpen     = expandedHistoryDate === date;
                   const metaParts  = [
                     totalTechs > 0 ? `${totalTechs}기술` : null,
-                    totalSeqs > 0 ? `${totalSeqs}시퀀스` : null,
+                    totalSeqs > 0 ? `${totalSeqs}게임플랜` : null,
                   ].filter(Boolean);
 
                   return (
@@ -465,7 +465,7 @@ export function CalendarHome({
               const isOpen     = selectedDate === date;
               const metaParts  = [
                 totalTechs > 0 ? `${totalTechs}기술` : null,
-                totalSeqs > 0 ? `${totalSeqs}시퀀스` : null,
+                totalSeqs > 0 ? `${totalSeqs}게임플랜` : null,
               ].filter(Boolean);
 
               return (

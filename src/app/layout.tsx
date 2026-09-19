@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     default: "그래플로그",
     template: "%s · 그래플로그",
   },
-  description: "그래플로그 — 주짓수(BJJ) 기술 기록, 포지션별 스킬트리, 수련 일지, 시퀀스 관리",
+  description: "그래플로그 — 주짓수(BJJ) 기술 기록, 포지션별 스킬트리, 수련 일지, 게임플랜 관리",
   applicationName: "그래플로그",
   manifest: "/manifest.json",
   appleWebApp: {

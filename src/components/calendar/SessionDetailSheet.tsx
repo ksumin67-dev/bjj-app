@@ -144,7 +144,7 @@ export function SessionDetailSheet({
 
                 {seqList.length > 0 && (
                   <div className="space-y-1.5">
-                    <div className="text-[10px] uppercase tracking-widest font-semibold text-text-tertiary mb-1">시퀀스 ({seqList.length})</div>
+                    <div className="text-[10px] uppercase tracking-widest font-semibold text-text-tertiary mb-1">게임플랜 ({seqList.length})</div>
                     <div className="space-y-1.5">
                       {seqList.map((s) => (
                         <Link key={s.recordId} href={`/sequences/${s.recordId}`}

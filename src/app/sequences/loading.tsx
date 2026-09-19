@@ -12,7 +12,7 @@ export default function SequencesLoading() {
         <Skeleton className="h-9 w-24 rounded-xl" />
       </div>
 
-      {/* 시퀀스 카드 목록 */}
+      {/* 게임플랜 카드 목록 */}
       {[1, 2, 3, 4].map((i) => (
         <div
           key={i}
