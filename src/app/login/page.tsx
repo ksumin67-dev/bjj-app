@@ -64,7 +64,7 @@ export default function LoginPage() {
           className="w-full rounded-xl bg-bg-elevated p-3 text-sm text-text-primary outline-none"
         />
 
-        {error && <p className="text-sm text-red-400">{error}</p>}
+        {error && <p className="text-sm text-danger">{error}</p>}
 
         <button
           type="submit"

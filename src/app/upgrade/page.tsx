@@ -25,7 +25,7 @@ export default function UpgradePage() {
           </p>
         </header>
 
-        <section className="rounded-2xl border border-border-subtle bg-bg-elevated p-5 space-y-3">
+        <section className="pt-4 border-t border-border-subtle space-y-3">
           <h2 className="text-sm font-semibold text-text-secondary">
             프리미엄에서 제공될 기능
           </h2>
@@ -39,14 +39,14 @@ export default function UpgradePage() {
           </ul>
         </section>
 
-        <section className="rounded-2xl border border-border-subtle bg-bg-elevated p-5">
+        <section className="pt-4 border-t border-border-subtle">
           <h2 className="text-sm font-semibold text-text-secondary mb-3">예정 가격</h2>
-          <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-xl bg-bg-overlay p-4 text-center">
+          <div className="grid grid-cols-2">
+            <div className="text-center py-1 border-r border-border-subtle">
               <p className="text-xs text-text-tertiary mb-1">월간</p>
               <p className="text-lg font-black">6,900원</p>
             </div>
-            <div className="rounded-xl bg-bg-overlay p-4 text-center">
+            <div className="text-center py-1">
               <p className="text-xs text-text-tertiary mb-1">연간 (41% 할인)</p>
               <p className="text-lg font-black">49,000원</p>
             </div>
