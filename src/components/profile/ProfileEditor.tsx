@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { updateProfileAction } from "@/lib/actions/userProfile";
 import { useToast } from "@/contexts/ToastContext";
+import { createClient } from "@/lib/supabase/client";
 import type { UserProfile } from "@/lib/supabase/userProfile";
 import type { BeltLevel, Stream, Technique, TrainingSession } from "@/types/domain";
 import { calculateStreak, getBjjStyle, getStreakBonus } from "@/types/domain";
@@ -11,7 +12,7 @@ import { BeltDisplay, BELT_CONFIG } from "@/components/ui/BeltDisplay";
 import { TrainingReminderToggle } from "@/components/profile/TrainingReminderToggle";
 import {
   Loader2, Pencil, Check, Flame, Trophy, CalendarCheck,
-  Swords, Shield, Zap, Users, Dumbbell, ChevronRight, type LucideIcon,
+  Swords, Shield, Zap, Users, Dumbbell, ChevronRight, LogOut, type LucideIcon,
 } from "lucide-react";
 
 // ── 상수 ──────────────────────────────────────────────────────────────────
@@ -55,6 +56,7 @@ export function ProfileEditor({
   const [nickname, setNickname] = useState(profile.nickname);
   const [editing,  setEditing]  = useState(false);
   const [isPending, startTransition] = useTransition();
+  const [loggingOut, setLoggingOut] = useState(false);
   const toast = useToast();
   const router = useRouter();
 
@@ -107,6 +109,13 @@ export function ProfileEditor({
     setStripe(profile.stripe);
     setNickname(profile.nickname);
     setEditing(false);
+  }
+
+  async function handleLogout() {
+    setLoggingOut(true);
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    window.location.href = "/login";
   }
 
   return (
@@ -449,6 +458,28 @@ export function ProfileEditor({
           <ChevronRight size={18} style={{ color: "#4A4A5A" }} />
         </button>
       )}
+
+      {/* ════════════════════════════════════════════════════════════════
+          7. 계정 — 로그아웃
+          ════════════════════════════════════════════════════════════════ */}
+      <button
+        onClick={handleLogout}
+        disabled={loggingOut}
+        className="flex items-center gap-3 active:scale-[0.98] transition-transform duration-fast disabled:opacity-60"
+        style={{ borderTop: "1px solid rgba(255,255,255,0.06)", marginTop: "20px", paddingTop: "16px" }}
+      >
+        <div
+          className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+          style={{ border: "1px solid rgba(255,255,255,0.1)" }}
+        >
+          {loggingOut
+            ? <Loader2 size={15} className="animate-spin" color="#6B7280" />
+            : <LogOut size={15} color="#6B7280" />}
+        </div>
+        <p className="text-sm font-bold" style={{ color: "#B4BCC8" }}>
+          {loggingOut ? "로그아웃 중…" : "로그아웃"}
+        </p>
+      </button>
     </div>
   );
 }
