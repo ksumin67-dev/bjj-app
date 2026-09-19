@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { ShieldCheck, Mail, Lock, AlertCircle } from "lucide-react";
+import { Mail, Lock, AlertCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
@@ -52,42 +52,12 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-6 px-6">
-      {/* 브랜드 마크 — 사이드바 로고와 동일한 아이덴티티 */}
+      {/* 브랜드 마크 — 워드마크를 크게, 부가 아이콘 없이 */}
       <div className="flex flex-col items-center">
-        <div
-          className="w-14 h-14 rounded-full flex items-center justify-center mb-3"
-          style={{ backgroundColor: "rgba(217,119,46,0.15)", border: "1px solid rgba(217,119,46,0.4)" }}
-        >
-          <ShieldCheck size={26} className="text-brand-primary" strokeWidth={1.8} />
-        </div>
-        <h1 className="text-xl font-bold tracking-tight text-text-primary">
+        <h1 className="text-4xl font-black tracking-tight text-text-primary">
           grap<span className="text-brand-primary">plog</span>
         </h1>
-        <p className="text-[11px] text-text-tertiary mt-1">주짓수 기술 기록</p>
-      </div>
-
-      {/* 로그인 / 회원가입 세그먼트 탭 */}
-      <div className="w-full max-w-sm flex bg-bg-elevated rounded-xl p-1">
-        <button
-          type="button"
-          onClick={() => { setMode("signin"); setError(null); }}
-          className={
-            "flex-1 py-2 rounded-lg text-sm font-semibold transition-colors duration-fast " +
-            (mode === "signin" ? "bg-brand-primary text-text-inverse" : "text-text-tertiary")
-          }
-        >
-          로그인
-        </button>
-        <button
-          type="button"
-          onClick={() => { setMode("signup"); setError(null); }}
-          className={
-            "flex-1 py-2 rounded-lg text-sm font-semibold transition-colors duration-fast " +
-            (mode === "signup" ? "bg-brand-primary text-text-inverse" : "text-text-tertiary")
-          }
-        >
-          회원가입
-        </button>
+        <p className="text-[12px] text-text-tertiary mt-2">주짓수 기술 기록</p>
       </div>
 
       <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-3">
@@ -145,6 +115,16 @@ export default function LoginPage() {
         className="w-full max-w-sm rounded-xl border border-border-subtle py-3 text-sm font-bold text-text-primary hover:bg-bg-hover active:scale-[0.98] transition-all duration-fast disabled:opacity-50"
       >
         {googleLoading ? "연결 중…" : "구글로 계속하기"}
+      </button>
+
+      <button
+        type="button"
+        onClick={() => { setMode(mode === "signin" ? "signup" : "signin"); setError(null); }}
+        className="text-xs text-text-tertiary"
+      >
+        {mode === "signin"
+          ? "계정이 없나요? 회원가입"
+          : "이미 계정이 있나요? 로그인"}
       </button>
     </div>
   );
