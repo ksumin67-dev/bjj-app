@@ -10,11 +10,6 @@ import {
   isTrainingReminderEnabled,
 } from "@/lib/notifications/trainingReminder";
 
-const CARD = {
-  backgroundColor: "#1A1A24",
-  border: "1px solid rgba(255,255,255,0.1)",
-} as const;
-
 /**
  * 수련 리마인더 알림 on/off 토글.
  * 네이티브 앱(Capacitor)에서만 노출 — 웹 버전에서는 렌더링하지 않음.
@@ -66,19 +61,19 @@ export function TrainingReminderToggle() {
 
   return (
     <section
-      className="rounded-2xl p-4 flex items-center justify-between gap-3"
-      style={{ ...CARD, marginBottom: "20px" }}
+      className="flex items-center justify-between gap-3"
+      style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "16px", marginBottom: "20px" }}
     >
       <div className="flex items-center gap-3 min-w-0">
         <div
           className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-          style={{ backgroundColor: "rgba(123,97,255,0.15)" }}
+          style={{ border: "1px solid rgba(217,119,46,0.4)" }}
         >
-          <Bell size={15} style={{ color: "#A78BFA" }} />
+          <Bell size={15} color="#D9772E" />
         </div>
         <div className="text-left min-w-0">
           <p className="text-sm font-bold text-white">수련 리마인더</p>
-          <p className="text-[11px]" style={{ color: "#6B7280" }}>
+          <p className="text-[11px] font-normal" style={{ color: "#6B7280" }}>
             매일 저녁 8시에 수련 기록을 알려드려요
           </p>
         </div>
@@ -92,7 +87,7 @@ export function TrainingReminderToggle() {
         style={{
           width: 44,
           height: 26,
-          backgroundColor: enabled ? "#7B61FF" : "rgba(255,255,255,0.12)",
+          backgroundColor: enabled ? "#D9772E" : "rgba(255,255,255,0.12)",
           opacity: pending ? 0.6 : 1,
         }}
       >

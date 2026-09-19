@@ -46,9 +46,9 @@ const STYLE: Record<ToastType, {
   },
   xp: {
     bg:         "rgba(26,26,36,0.97)",
-    border:     "rgba(123,97,255,0.45)",
-    iconClass:  "text-[#7B61FF]",
-    labelClass: "text-[#7B61FF]",
+    border:     "rgba(217,119,46,0.45)",
+    iconClass:  "text-[#D9772E]",
+    labelClass: "text-[#D9772E]",
   },
 };
 
