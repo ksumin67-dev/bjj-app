@@ -21,13 +21,6 @@ const TYPES: TechniqueType[] = [
   "가드", "탑포지션", "방어",
 ];
 
-const STREAM_COLOR: Record<string, string> = {
-  가드스윕: "bg-blue-500/15 text-blue-300",
-  탑패스: "bg-orange-500/15 text-orange-300",
-  이스케이프: "bg-violet-500/15 text-violet-300",
-  스탠딩: "bg-amber-500/15 text-amber-300",
-};
-
 // ── types ────────────────────────────────────────────────────────────────────
 
 type FormData = {
@@ -521,7 +514,7 @@ export function TechniqueManager({ techniques: initial, positions, customTechniq
             onClick={() => setStreamFilter(s)}
             className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
               streamFilter === s
-                ? "bg-blue-600 text-white"
+                ? "bg-[#D9772E] text-white"
                 : "bg-neutral-800 text-neutral-400 hover:text-neutral-200"
             }`}
           >
@@ -559,7 +552,7 @@ export function TechniqueManager({ techniques: initial, positions, customTechniq
                 </td>
                 <td className="px-3 py-2.5 hidden md:table-cell">
                   {t.stream ? (
-                    <Badge label={t.stream} className={STREAM_COLOR[t.stream]} />
+                    <Badge label={t.stream} />
                   ) : (
                     <span className="text-neutral-600">—</span>
                   )}
