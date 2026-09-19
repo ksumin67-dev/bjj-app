@@ -2,18 +2,30 @@
 
 import { useFormState, useFormStatus } from "react-dom";
 import { useState, useMemo, useEffect, useRef, useCallback } from "react";
-import { Search, X, ChevronDown, Check, Plus, Lightbulb, BookOpen, Pen, Link2, ChevronUp, Sparkles, Heart } from "lucide-react";
+import {
+  Search, X, ChevronDown, Check, Plus, Lightbulb, BookOpen, Pen, Link2, ChevronUp,
+  Sparkles, Heart, Target, HelpCircle, Clock, RefreshCw, Shield, Swords, Zap, Users,
+  Flame, type LucideIcon,
+} from "lucide-react";
 import {
   createTrainingSessionAction,
   updateTrainingSessionAction,
   type CreateSessionFormState,
 } from "@/lib/actions/trainingSessions";
-import type { Technique, Stream, TrainingSession } from "@/types/domain";
+import type { Technique, Stream, TrainingSession, LearningLevel } from "@/types/domain";
+import { calculateNewStreak, getStreakBonus } from "@/types/domain";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { LevelUpCelebration } from "@/components/gamification/BeltUpCelebration";
-import type { LearningLevel } from "@/types/domain";
 import { useToast } from "@/contexts/ToastContext";
+
+// 스트림 아이콘 — 앱 전체에서 공유하는 중립 아이콘 체계(Shield/Swords/Zap/Users)
+const STREAM_ICON: Record<Stream, LucideIcon> = {
+  가드포지션: Shield,
+  탑포지션:   Swords,
+  이스케이프: Zap,
+  스탠딩:     Users,
+};
 
 // ── 수정 모드: 저장된 notes 문자열을 기술별 메모 + 전체 메모로 파싱 ─────────────
 
@@ -124,11 +136,11 @@ function generateSeqNameSuggestions(
 // ── 디테일 가이드 프롬프트 ────────────────────────────────────────────────────
 
 const DETAIL_GUIDES = [
-  { emoji: "🎯", label: "핵심 발견",    desc: "오늘 새롭게 깨달은 것",             template: "🎯 핵심 발견\n→ " },
-  { emoji: "❓", label: "안 된 점",      desc: "왜 실패했는지 분석",               template: "❓ 안 된 점\n→ " },
-  { emoji: "⏱️", label: "타이밍/디테일", desc: "성공한 순간의 작은 디테일",          template: "⏱️ 타이밍/디테일\n→ " },
-  { emoji: "🤼", label: "상대 반응",     desc: "상대가 어떻게 반응했나",             template: "🤼 상대 반응\n→ " },
-  { emoji: "🔄", label: "다음 집중",     desc: "다음 수련에서 의도적으로 연습할 것", template: "🔄 다음 집중\n→ " },
+  { Icon: Target,     label: "핵심 발견",    desc: "오늘 새롭게 깨달은 것",             template: "[핵심 발견]\n→ " },
+  { Icon: HelpCircle, label: "안 된 점",      desc: "왜 실패했는지 분석",               template: "[안 된 점]\n→ " },
+  { Icon: Clock,      label: "타이밍/디테일", desc: "성공한 순간의 작은 디테일",          template: "[타이밍/디테일]\n→ " },
+  { Icon: Users,      label: "상대 반응",     desc: "상대가 어떻게 반응했나",             template: "[상대 반응]\n→ " },
+  { Icon: RefreshCw,  label: "다음 집중",     desc: "다음 수련에서 의도적으로 연습할 것", template: "[다음 집중]\n→ " },
 ] as const;
 
 // ── DetailGuidePanel ─────────────────────────────────────────────────────────
@@ -165,7 +177,7 @@ function DetailGuidePanel({ onInsert }: { onInsert: (text: string) => void }) {
                 title={g.desc}
                 className="flex items-center gap-1.5 h-8 px-2.5 rounded-full bg-bg-base border border-border-default hover:border-brand-primary/50 hover:bg-brand-subtle/30 text-xs text-text-secondary transition-all"
               >
-                <span>{g.emoji}</span>
+                <g.Icon size={12} />
                 <span>{g.label}</span>
               </button>
             ))}
@@ -174,7 +186,7 @@ function DetailGuidePanel({ onInsert }: { onInsert: (text: string) => void }) {
             <p className="text-[10px] font-semibold text-text-tertiary mb-1.5 flex items-center gap-1">
               <BookOpen size={10} /> 작성 예시
             </p>
-            <p className="text-[10px] text-text-tertiary font-mono leading-[1.7] whitespace-pre-wrap">{`🎯 핵심 발견\n→ 기무라 그립은 팔꿈치 위에서 — 손목 아님\n\n❓ 안 된 점\n→ 상대가 몸 쪽으로 당기면 레버리지가 사라짐\n\n⏱️ 타이밍/디테일\n→ 상대가 업포스처 할 때가 그립 진입 타이밍\n\n🔄 다음 집중\n→ 팔 멀리 유지한 상태로 드릴 20회`}</p>
+            <p className="text-[10px] text-text-tertiary font-mono leading-[1.7] whitespace-pre-wrap">{`[핵심 발견]\n→ 기무라 그립은 팔꿈치 위에서 — 손목 아님\n\n[안 된 점]\n→ 상대가 몸 쪽으로 당기면 레버리지가 사라짐\n\n[타이밍/디테일]\n→ 상대가 업포스처 할 때가 그립 진입 타이밍\n\n[다음 집중]\n→ 팔 멀리 유지한 상태로 드릴 20회`}</p>
           </div>
         </div>
       )}
@@ -232,7 +244,7 @@ function PerTechNote({
               title={g.desc}
               className="flex items-center gap-1 h-6 px-2 rounded-full bg-bg-base border border-border-subtle hover:border-brand-primary/40 text-[10px] text-text-tertiary hover:text-text-secondary transition-all"
             >
-              <span>{g.emoji}</span>
+              <g.Icon size={10} />
               <span className="hidden sm:inline">{g.label}</span>
             </button>
           ))}
@@ -378,14 +390,17 @@ function TechPicker({
   const exactMatch = q ? techniques.some((t) =>
     t.nameKo.toLowerCase() === q.toLowerCase() || t.nameEn.toLowerCase() === q.toLowerCase()
   ) : false;
-  const canAddCustom = q.length > 0 && !exactMatch && !customTechs.some((c) => c.name === q);
-  const [pendingStream, setPendingStream] = useState<string | null>(null);
+  const normalizeCustomName = (name: string) => name.trim().toLowerCase();
+  const canAddCustom = q.length > 0 && !exactMatch &&
+    !customTechs.some((c) => normalizeCustomName(c.name) === normalizeCustomName(q));
+  // null = 패널 닫힘, string = 패널 열림 상태에서 입력 중인 기술 이름
+  const [customName, setCustomName] = useState<string | null>(null);
 
-  const STREAM_OPTS: { stream: Stream; emoji: string; label: string; color: string }[] = [
-    { stream: "가드포지션", emoji: "🛡",  label: "가드",       color: "#2E80F0" },
-    { stream: "탑포지션",   emoji: "⚔️", label: "탑/패스",   color: "#FF8C42" },
-    { stream: "이스케이프", emoji: "🏃",  label: "이스케이프", color: "#A78BFA" },
-    { stream: "스탠딩",     emoji: "🥋",  label: "스탠딩",    color: "#FBBF24" },
+  const STREAM_OPTS: { stream: Stream; label: string }[] = [
+    { stream: "가드포지션", label: "가드"       },
+    { stream: "탑포지션",   label: "탑/패스"    },
+    { stream: "이스케이프", label: "이스케이프" },
+    { stream: "스탠딩",     label: "스탠딩"     },
   ];
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -396,7 +411,7 @@ function TechPicker({
         onToggleTech(only.recordId);
         setQuery("");
       } else if (canAddCustom) {
-        setPendingStream(q);
+        setCustomName(q);
       }
     }
   };
@@ -416,15 +431,16 @@ function TechPicker({
               </span>
             );
           })}
-          {customTechs.map(({ name, stream }) => (
-            <span key={name} className="inline-flex items-center gap-1 h-7 px-2 rounded-full bg-orange-500/15 text-orange-300 text-[12px]">
-              <span className="text-[9px] opacity-50">
-                {stream === "가드포지션" ? "🛡" : stream === "탑포지션" ? "⚔️" : stream === "이스케이프" ? "🏃" : "🥋"}
+          {customTechs.map(({ name, stream }) => {
+            const StreamIcon = STREAM_ICON[stream];
+            return (
+              <span key={name} className="inline-flex items-center gap-1 h-7 px-2 rounded-full text-[12px] text-text-secondary" style={{ border: "1px dashed rgba(255,255,255,0.18)" }}>
+                <StreamIcon size={10} className="text-text-tertiary" />
+                <span>{name}</span>
+                <button type="button" onClick={() => onRemoveCustom(name)} aria-label="제거"><X size={12} /></button>
               </span>
-              <span>{name}</span>
-              <button type="button" onClick={() => onRemoveCustom(name)} aria-label="제거"><X size={12} /></button>
-            </span>
-          ))}
+            );
+          })}
         </div>
       )}
       <button
@@ -486,38 +502,57 @@ function TechPicker({
             )}
           </div>
 
-          {canAddCustom && !pendingStream && (
-            <button type="button" onClick={() => setPendingStream(q)}
+          {customName === null && (
+            <button type="button" onClick={() => setCustomName(q)}
               className="w-full flex items-center gap-2.5 px-3 py-2.5 mb-2 rounded-xl text-sm text-left border border-dashed border-border-subtle hover:bg-bg-hover text-text-secondary transition-colors duration-fast">
               <Plus size={13} className="text-brand-primary shrink-0" />
-              <span>
-                <span className="text-text-tertiary text-xs">DB에 없는 기술 추가: </span>
-                <span className="font-medium text-text-primary">"{q}"</span>
-              </span>
+              {canAddCustom ? (
+                <span>
+                  <span className="text-text-tertiary text-xs">DB에 없는 기술 추가: </span>
+                  <span className="font-medium text-text-primary">&quot;{q}&quot;</span>
+                </span>
+              ) : (
+                <span>DB에 없는 기술 직접 입력</span>
+              )}
             </button>
           )}
 
-          {pendingStream && (
-            <div className="mb-3 rounded-lg border border-orange-500/40 bg-orange-500/5 p-3">
-              <p className="text-xs text-text-secondary mb-2">
-                <span className="font-semibold text-orange-300">"{pendingStream}"</span> 스트림 선택
-              </p>
+          {customName !== null && (
+            <div className="mb-3 rounded-lg p-3" style={{ backgroundColor: "rgba(217,119,46,0.06)", border: "1px solid rgba(217,119,46,0.3)" }}>
+              <label className="text-xs font-semibold mb-1.5 block" style={{ color: "#D9772E" }}>
+                기술 이름
+              </label>
+              <input
+                type="text"
+                autoFocus
+                value={customName}
+                onChange={(e) => setCustomName(e.target.value)}
+                placeholder="예) 암바"
+                className="w-full h-9 rounded-lg px-3 text-sm text-white placeholder:text-text-disabled outline-none mb-2"
+                style={{ backgroundColor: "#0A0A0F", border: "1px solid rgba(217,119,46,0.3)" }}
+              />
+              <p className="text-xs text-text-secondary mb-2">스트림 선택</p>
               <div className="grid grid-cols-2 gap-1.5">
-                {STREAM_OPTS.map(({ stream, emoji, label, color }) => (
-                  <button key={stream} type="button"
-                    onClick={() => { onAddCustom(pendingStream, stream); setPendingStream(null); setQuery(""); searchRef.current?.focus(); }}
-                    className="flex items-center gap-2 h-9 px-3 rounded-lg border text-xs font-medium transition-all hover:brightness-110"
-                    style={{ borderColor: color + "55", backgroundColor: color + "15", color }}>
-                    <span>{emoji}</span><span>{label}</span>
-                  </button>
-                ))}
+                {STREAM_OPTS.map(({ stream, label }) => {
+                  const StreamIcon = STREAM_ICON[stream];
+                  const trimmed = customName.trim();
+                  return (
+                    <button key={stream} type="button"
+                      disabled={!trimmed}
+                      onClick={() => { onAddCustom(trimmed, stream); setCustomName(null); setQuery(""); searchRef.current?.focus(); }}
+                      className="flex items-center gap-2 h-9 px-3 rounded-lg border text-xs font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                      style={{ borderColor: "rgba(255,255,255,0.12)", color: "#B4BCC8" }}>
+                      <StreamIcon size={13} /><span>{label}</span>
+                    </button>
+                  );
+                })}
               </div>
-              <button type="button" onClick={() => setPendingStream(null)}
+              <button type="button" onClick={() => setCustomName(null)}
                 className="mt-2 w-full text-xs text-text-tertiary hover:text-text-secondary">취소</button>
             </div>
           )}
 
-          {totalResults === 0 && !canAddCustom ? (
+          {totalResults === 0 ? (
             <p className="text-xs text-text-tertiary py-4 text-center">검색 결과 없음</p>
           ) : (
             <div className="space-y-3">
@@ -569,6 +604,7 @@ export function SessionFormModal({
   techniqueByShortId,
   goalTechRecordIds = [],
   initialSession,
+  sessions = [],
   onClose,
 }: {
   initialDate: string;
@@ -576,6 +612,7 @@ export function SessionFormModal({
   techniqueByShortId: Record<string, Technique>;
   goalTechRecordIds?: string[];
   initialSession?: TrainingSession;  // 수정 모드일 때 기존 세션 데이터
+  sessions?: TrainingSession[];      // XP 미리보기의 스트릭 보너스 계산용
   onClose: () => void;
 }) {
   const isEditMode = Boolean(initialSession);
@@ -654,11 +691,26 @@ export function SessionFormModal({
     [selectedTech, techniques],
   );
 
+  // 예상 XP — 실제 서버 계산식과 동일: 기술별 xpValue 합 + 시퀀스 생성 시 +200 + 스트릭 보너스
+  const willCreateSeq = createSeq && newSeqName.trim().length > 0 && newSeqTechOrder.length >= 2;
+  const previewTechXp = useMemo(
+    () => selectedTechObjects.reduce((sum, t) => sum + (t.xpValue ?? 100), 0),
+    [selectedTechObjects],
+  );
+  const previewSeqBonus = willCreateSeq ? 200 : 0;
+  const previewStreak = useMemo(() => calculateNewStreak(sessions), [sessions]);
+  const previewStreakBonus = isEditMode ? 0 : getStreakBonus(previewStreak);
+  const previewTotalXp = previewTechXp + previewSeqBonus + previewStreakBonus;
+
   const toggleTech = (id: string) =>
     setSelectedTech((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]);
 
   const addCustom = (name: string, stream: Stream) =>
-    setCustomTechs((prev) => prev.some((c) => c.name === name) ? prev : [...prev, { name, stream }]);
+    setCustomTechs((prev) =>
+      prev.some((c) => c.name.trim().toLowerCase() === name.trim().toLowerCase())
+        ? prev
+        : [...prev, { name, stream }],
+    );
 
   const removeCustom = (name: string) => {
     setCustomTechs((prev) => prev.filter((c) => c.name !== name));
@@ -764,22 +816,23 @@ export function SessionFormModal({
             <div className="size-16 rounded-full bg-brand-primary text-text-inverse flex items-center justify-center mx-auto">
               <Check size={32} strokeWidth={3} />
             </div>
-            <h3 className="text-lg font-bold">{isEditMode ? "수정 완료! ✏️" : "기록 완료! 💪"}</h3>
+            <h3 className="text-lg font-bold">{isEditMode ? "수정 완료!" : "기록 완료!"}</h3>
             {!isEditMode && typeof state.xpEarned === "number" && (
               <div className="space-y-1">
                 <p className="text-xl font-black text-brand-primary tabular-nums">
                   +{state.xpEarned.toLocaleString()} XP
                 </p>
                 {typeof state.streakBonus === "number" && state.streakBonus > 0 && (
-                  <p className="text-sm text-orange-400 font-semibold">
-                    🔥 {state.streak}일 연속 보너스 +{state.streakBonus} XP
+                  <p className="text-sm font-semibold text-brand-primary inline-flex items-center gap-1 justify-center w-full">
+                    <Flame size={13} />{state.streak}일 연속 보너스 +{state.streakBonus} XP
                   </p>
                 )}
               </div>
             )}
             {!isEditMode && typeof state.streak === "number" && state.streak > 0 && (
-              <p className="text-xs text-orange-300/80">
-                {state.streak >= 30 ? "전설의 수련러 👑" : state.streak >= 7 ? "🔥 강철 의지!" : `${state.streak}일 연속 수련 중`}
+              <p className="text-xs inline-flex items-center gap-1 justify-center w-full" style={{ color: "#D9772E99" }}>
+                <Flame size={11} />
+                {state.streak >= 30 ? "전설의 수련러" : state.streak >= 7 ? "강철 의지!" : `${state.streak}일 연속 수련 중`}
               </p>
             )}
             <p className="text-xs text-text-tertiary">기술도감과 시퀀스에 자동 반영됐어요</p>
@@ -848,11 +901,13 @@ export function SessionFormModal({
                     onChange={(v) => setTechNotes((prev) => ({ ...prev, [tech.recordId]: v }))}
                   />
                 ))}
-                {customTechs.map(({ name, stream }) => (
-                  <div key={name} className="rounded-lg border border-orange-500/30 bg-bg-elevated overflow-hidden">
+                {customTechs.map(({ name, stream }) => {
+                  const StreamIcon = STREAM_ICON[stream];
+                  return (
+                  <div key={name} className="rounded-lg overflow-hidden" style={{ border: "1px dashed rgba(255,255,255,0.18)" }}>
                     <div className="flex items-center gap-2 px-3 py-2 border-b border-border-subtle bg-bg-overlay/50">
-                      <span className="text-[10px] font-mono text-orange-400 opacity-80">
-                        {stream === "가드포지션" ? "🛡" : stream === "탑포지션" ? "⚔️" : stream === "이스케이프" ? "🏃" : "🥋"} 미등록
+                      <span className="inline-flex items-center gap-1 text-[10px] text-text-tertiary">
+                        <StreamIcon size={11} /> 미등록
                       </span>
                       <span className="text-[12px] font-semibold text-text-primary">{name}</span>
                     </div>
@@ -864,7 +919,8 @@ export function SessionFormModal({
                       className="w-full bg-transparent px-3 py-2 text-[13px] text-text-primary placeholder:text-text-disabled resize-none outline-none leading-relaxed"
                     />
                   </div>
-                ))}
+                  );
+                })}
               </div>
             )}
 
@@ -899,9 +955,9 @@ export function SessionFormModal({
                   }}
                   className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg border transition-all text-sm"
                   style={{
-                    borderColor: createSeq ? "rgba(123,97,255,0.4)" : "rgba(255,255,255,0.06)",
-                    backgroundColor: createSeq ? "rgba(123,97,255,0.08)" : "rgba(255,255,255,0.03)",
-                    color: createSeq ? "#A78BFA" : "#6B7280",
+                    borderColor: createSeq ? "rgba(217,119,46,0.4)" : "rgba(255,255,255,0.06)",
+                    backgroundColor: createSeq ? "rgba(217,119,46,0.08)" : "rgba(255,255,255,0.03)",
+                    color: createSeq ? "#D9772E" : "#6B7280",
                   }}
                 >
                   <Link2 size={14} />
@@ -911,10 +967,13 @@ export function SessionFormModal({
 
                 {createSeq && (
                   <div className="mt-2 rounded-lg p-4 space-y-3 border"
-                    style={{ backgroundColor: "rgba(123,97,255,0.06)", borderColor: "rgba(123,97,255,0.25)" }}>
+                    style={{ backgroundColor: "rgba(217,119,46,0.06)", borderColor: "rgba(217,119,46,0.25)" }}>
+                    <p className="text-[11px]" style={{ color: "#6B7280" }}>
+                      직접 입력한(미등록) 기술은 시퀀스에 포함되지 않아요.
+                    </p>
                     <div>
                       <div className="flex items-center justify-between mb-1.5">
-                        <label className="text-xs font-semibold" style={{ color: "#A78BFA" }}>
+                        <label className="text-xs font-semibold" style={{ color: "#D9772E" }}>
                           시퀀스 이름 <span style={{ color: "#F87171" }}>*</span>
                         </label>
                         <button
@@ -924,7 +983,7 @@ export function SessionFormModal({
                             setSeqSuggestions(suggestions);
                           }}
                           className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-semibold transition-all hover:opacity-80 active:scale-95"
-                          style={{ backgroundColor: "rgba(123,97,255,0.15)", color: "#A78BFA", border: "1px solid rgba(123,97,255,0.3)" }}
+                          style={{ backgroundColor: "rgba(217,119,46,0.15)", color: "#D9772E", border: "1px solid rgba(217,119,46,0.3)" }}
                         >
                           <Sparkles size={11} />
                           이름 추천
@@ -935,7 +994,7 @@ export function SessionFormModal({
                         onChange={(e) => { setNewSeqName(e.target.value); setSeqSuggestions([]); }}
                         placeholder="예) 롱스텝 백테이크, 딥하프 스윕 콤보…"
                         className="w-full rounded-lg px-3 py-2 text-sm text-white placeholder:text-text-disabled outline-none focus:ring-1"
-                        style={{ backgroundColor: "#0A0A0F", border: "1px solid rgba(123,97,255,0.3)" }}
+                        style={{ backgroundColor: "#0A0A0F", border: "1px solid rgba(217,119,46,0.3)" }}
                       />
                       {seqSuggestions.length > 0 && (
                         <div className="mt-2 flex flex-wrap gap-1.5">
@@ -945,7 +1004,7 @@ export function SessionFormModal({
                               type="button"
                               onClick={() => { setNewSeqName(s); setSeqSuggestions([]); }}
                               className="px-2.5 py-1 rounded-full text-xs font-medium transition-all hover:opacity-90 active:scale-95"
-                              style={{ backgroundColor: "rgba(123,97,255,0.2)", color: "#C4B5FD", border: "1px solid rgba(123,97,255,0.35)" }}
+                              style={{ backgroundColor: "rgba(217,119,46,0.2)", color: "#F0B375", border: "1px solid rgba(217,119,46,0.35)" }}
                             >
                               {s}
                             </button>
@@ -954,7 +1013,7 @@ export function SessionFormModal({
                       )}
                     </div>
                     <div>
-                      <label className="text-xs font-semibold mb-1.5 block" style={{ color: "#A78BFA" }}>
+                      <label className="text-xs font-semibold mb-1.5 block" style={{ color: "#D9772E" }}>
                         단계 순서 — ▲▼로 조정
                       </label>
                       <div className="space-y-1">
@@ -964,20 +1023,22 @@ export function SessionFormModal({
                           return (
                             <div key={id} className="flex items-center gap-2 rounded-xl px-3 py-2"
                               style={{ backgroundColor: "rgba(0,0,0,0.3)" }}>
-                              <span className="text-[10px] tabular-nums w-4 text-center font-bold" style={{ color: "#7B61FF" }}>
+                              <span className="text-[10px] tabular-nums w-4 text-center font-bold" style={{ color: "#D9772E" }}>
                                 {idx + 1}
                               </span>
-                              <span className="font-mono text-[10px] w-10 shrink-0" style={{ color: "#7B61FF", opacity: 0.8 }}>
+                              <span className="font-mono text-[10px] w-10 shrink-0" style={{ color: "#D9772E", opacity: 0.8 }}>
                                 {tech.id}
                               </span>
                               <span className="flex-1 text-sm text-white truncate">{tech.nameKo}</span>
                               <div className="flex flex-col gap-0.5 shrink-0">
                                 <button type="button" onClick={() => moveSeqTech(idx, -1)} disabled={idx === 0}
+                                  aria-label="위로"
                                   className="w-5 h-4 flex items-center justify-center rounded disabled:opacity-40 hover:bg-white/10 transition-colors"
-                                  style={{ color: "#A78BFA" }}><ChevronUp size={10} /></button>
+                                  style={{ color: "#D9772E" }}><ChevronUp size={10} /></button>
                                 <button type="button" onClick={() => moveSeqTech(idx, 1)} disabled={idx === newSeqTechOrder.length - 1}
+                                  aria-label="아래로"
                                   className="w-5 h-4 flex items-center justify-center rounded disabled:opacity-40 hover:bg-white/10 transition-colors"
-                                  style={{ color: "#A78BFA" }}><ChevronDown size={10} /></button>
+                                  style={{ color: "#D9772E" }}><ChevronDown size={10} /></button>
                               </div>
                             </div>
                           );
@@ -987,7 +1048,7 @@ export function SessionFormModal({
                     {newSeqTechOrder.length >= 2 && (
                       <div className="rounded-xl px-3 py-2 text-[11px] leading-relaxed"
                         style={{ backgroundColor: "rgba(0,0,0,0.3)", color: "#6B7280" }}>
-                        <span style={{ color: "#A78BFA" }} className="font-semibold mr-1">미리보기:</span>
+                        <span style={{ color: "#D9772E" }} className="font-semibold mr-1">미리보기:</span>
                         {newSeqTechOrder.map((id) => techniques.find((t) => t.recordId === id)?.nameKo).filter(Boolean).join(" → ")}
                       </div>
                     )}
@@ -1007,11 +1068,24 @@ export function SessionFormModal({
 
             {/* XP 미리보기 (신규 기록 전용) */}
             {!isEditMode && (
-              <div className="rounded-lg bg-bg-elevated border border-border-subtle p-3 flex items-center justify-between">
-                <span className="text-xs text-text-tertiary">예상 XP</span>
-                <span className="text-lg font-black text-brand-primary tabular-nums">
-                  +{(selectedTech.length * 100).toLocaleString()} XP
-                </span>
+              <div className="rounded-lg bg-bg-elevated border border-border-subtle p-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-text-tertiary">예상 XP</span>
+                  <span className="text-lg font-black text-brand-primary tabular-nums">
+                    +{previewTotalXp.toLocaleString()} XP
+                  </span>
+                </div>
+                {(previewSeqBonus > 0 || previewStreakBonus > 0) && (
+                  <p className="text-[10px] mt-1 text-right text-text-tertiary">
+                    기술 {previewTechXp}
+                    {previewSeqBonus > 0 && ` + 시퀀스 ${previewSeqBonus}`}
+                    {previewStreakBonus > 0 && (
+                      <span className="inline-flex items-center gap-0.5 ml-0.5">
+                        + <Flame size={9} className="text-brand-primary" />{previewStreakBonus}
+                      </span>
+                    )}
+                  </p>
+                )}
               </div>
             )}
 

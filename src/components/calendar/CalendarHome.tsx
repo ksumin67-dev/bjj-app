@@ -518,6 +518,7 @@ export function CalendarHome({
           techniqueByShortId={techniqueByShortId}
           goalTechRecordIds={goalTechRecordIds}
           initialSession={editingSession ?? undefined}
+          sessions={sessions}
           onClose={closeForm}
         />
       )}
