@@ -5,7 +5,7 @@ import { getUserProfile } from "@/lib/supabase/userProfile";
 import { getMyTechniqueGoalIdSet } from "@/lib/supabase/techniqueGoals";
 import { buildTrainingCountMap } from "@/types/domain";
 import { HomeDashboard } from "@/components/home/HomeDashboard";
-export const metadata = { title: "홈 · bjj.app" };
+export const metadata = { title: "홈 · 그래플로그" };
 export const dynamic  = "force-dynamic";
 
 export default async function HomePage() {

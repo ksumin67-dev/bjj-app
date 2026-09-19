@@ -10,7 +10,7 @@ import type { CapacitorConfig } from "@capacitor/cli";
  */
 const config: CapacitorConfig = {
   appId: "com.aqua.bjjapp",
-  appName: "BJJ 스킬트리",
+  appName: "그래플로그",
   webDir: "public",
   server: {
     url: "https://bjj-app-brown.vercel.app",

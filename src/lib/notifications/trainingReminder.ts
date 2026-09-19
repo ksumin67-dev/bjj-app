@@ -51,7 +51,7 @@ export async function enableTrainingReminder(): Promise<{
     notifications: [
       {
         id: REMINDER_ID,
-        title: "BJJ 스킬트리",
+        title: "그래플로그",
         body: "오늘 수련 기록을 남겨보세요.",
         schedule: {
           on: { hour: REMINDER_HOUR, minute: REMINDER_MINUTE },

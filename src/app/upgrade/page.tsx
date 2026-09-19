@@ -18,7 +18,7 @@ export default function UpgradePage() {
             <Lock size={22} className="text-brand-primary" />
           </div>
           <h1 className="text-2xl font-black tracking-tight">
-            BJJ 스킬트리 프리미엄
+            그래플로그 프리미엄
           </h1>
           <p className="text-text-tertiary mt-1 text-sm">
             결제 기능은 현재 준비 중이에요. 곧 만나요!

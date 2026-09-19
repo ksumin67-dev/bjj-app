@@ -5,16 +5,16 @@ import { Providers } from "@/components/layout/Providers";
 
 export const metadata: Metadata = {
   title: {
-    default: "BJJ 스킬트리",
-    template: "%s · BJJ 스킬트리",
+    default: "그래플로그",
+    template: "%s · 그래플로그",
   },
-  description: "BJJ 스킬트리 — 포지션별 기술 트리, 수련 기록, 시퀀스 관리",
-  applicationName: "BJJ 스킬트리",
+  description: "그래플로그 — 주짓수(BJJ) 기술 기록, 포지션별 스킬트리, 수련 일지, 시퀀스 관리",
+  applicationName: "그래플로그",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "BJJ 스킬트리",
+    title: "그래플로그",
   },
   icons: {
     apple: "/icons/apple-touch-icon.png",

@@ -76,7 +76,8 @@ Whoop / Oura 스타일의 "미니멀 프리미엄 피트니스 앱" 톤. 화려�
 - [x] 선수 상세 페이지 목표 등록 카운트 — 유니코드 하트(♥) → lucide `Heart` 아이콘(fill 처리로 기존 채워진 하트 느낌 유지)
 - [x] 죽은 코드 삭제: `SkillTreeGraph.tsx`/`TechDetailSheet.tsx`/`StreamChip.tsx`/`PositionCard.tsx`/`TechniqueRow.tsx` — 전면 감사(2026-09-19) 결과 확인된, 앱 내 어느 페이지에서도 import되지 않는 구버전 스킬트리 잔재(레인보우 스트림 색상 + 이모지 + 박스카드). 리뉴얼 없이 파일 삭제로 정리
 - [x] `/stats`, `/upgrade` — 하단 탭바 등 앱 어디서도 링크 안 걸린 고아 라우트(직접 URL 입력해야 도달)로 확인. 내용도 플레이스홀더뿐이라 전면 리뉴얼 대신 이모지/박스카드만 최소 수정(헤어라인 플랫 섹션으로 전환)
-- [x] `/login` — 원래도 브랜드 토큰을 쓰고 있어 대체로 정합. 에러 메시지 `text-red-400` → `text-danger` 시맨틱 토큰으로 통일
+- [x] `/login` — 브랜드 리네이밍(그래플로그)에 맞춰 전면 리뉴얼: 브랜드 마크(원형 아이콘 배지 + 워드마크, 사이드바 로고와 통일), 로그인/회원가입 텍스트 토글 → 세그먼트 탭, 입력창에 Mail/Lock 아이콘 + 포커스 시 앰버 테두리, 에러 메시지 텍스트 한 줄 → danger 톤 박스, 이메일 로그인/구글 로그인 사이 "또는" 구분선, 제출 버튼 로딩 중 텍스트 변경("로그인 중…"), 구글 로그인 실패 시에도 에러 피드백 노출
+- [x] **브랜드 리네이밍**: "BJJ 스킬트리" / "bjj.app" → **그래플로그 (Grapplog)**. 앱스토어 검색 키워드(BJJ/주짓수)가 브랜드명에 없는 대신, 메타데이터 description/PWA manifest description에 "주짓수(BJJ)" 키워드를 병기해 검색 노출을 보완. 사이드바 로고, 로그인 화면, 알림 제목, capacitor.config.ts의 appName, manifest.json의 name/short_name, layout.tsx 메타데이터 전체 반영. `appId`(com.aqua.bjjapp)는 내부 식별자라 그대로 유지
 - [x] `/admin/techniques` (`TechniqueManager.tsx`) — 본인만 쓰는 720줄 내부 도구라 전면 리뉴얼(목업 승인 과정) 대신 색상만 최소 수정: 스트림 배지의 레인보우 컬러맵(`STREAM_COLOR`, 키 자체가 실제 stream 값과 안 맞아 절반은 매칭도 안 되던 버그 포함) 삭제하고 중립 기본 배지로 통일, 스트림 필터 탭 활성색 `bg-blue-600` → 앰버(`#D9772E`)로 교체. 나머지 raw Tailwind 팔레트(모달/버튼 등)는 범위 밖이라 그대로 유지
 
 ## 작업 프로세스

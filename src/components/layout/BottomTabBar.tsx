@@ -71,9 +71,9 @@ export function BottomTabBar() {
         {/* 로고 */}
         <div className="px-5 py-5 border-b border-border-subtle">
           <span className="text-xl font-black tracking-tight text-text-primary">
-            bjj<span className="text-brand-primary">.</span>app
+            grap<span className="text-brand-primary">plog</span>
           </span>
-          <p className="text-[11px] text-text-tertiary mt-0.5">주짓수 스킬트리</p>
+          <p className="text-[11px] text-text-tertiary mt-0.5">주짓수 기술 기록</p>
         </div>
 
         {/* 탭 목록 */}
@@ -102,7 +102,7 @@ export function BottomTabBar() {
 
         {/* 버전 */}
         <div className="px-5 py-4 border-t border-border-subtle">
-          <span className="text-[11px] text-text-tertiary">v1.0 · bjj skill tree</span>
+          <span className="text-[11px] text-text-tertiary">v1.0 · grapplog</span>
         </div>
       </aside>
     </>
