@@ -7,6 +7,10 @@ const PUBLIC_PATHS = ["/login", "/auth/callback"];
 // 가입 직후 온보딩(벨트/주간 목표/선호 스타일 설정) 경로 — 이메일 가입/구글
 // 로그인 어느 쪽으로 들어와도 여기서 한 번에 처리하기 위해 미들웨어에서 확인.
 const ONBOARDING_PATH = "/onboarding";
+// 관리자 전용 경로 — 기술도감 마스터 데이터(Airtable)를 직접 수정하는 화면이라
+// 회원가입이 열려 있는 이상 소유자 계정만 접근 가능해야 함 (2026-09-19 추가).
+const ADMIN_PATH = "/admin";
+const ADMIN_EMAIL = "ksumin67@gmail.com";
 
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
@@ -49,6 +53,16 @@ export async function middleware(request: NextRequest) {
   if (!user && !isPublicPath) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
+    return NextResponse.redirect(url);
+  }
+
+  // 관리자 전용 경로 — 로그인했더라도 소유자 계정이 아니면 홈으로 돌려보냄.
+  if (
+    request.nextUrl.pathname.startsWith(ADMIN_PATH) &&
+    user?.email !== ADMIN_EMAIL
+  ) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/";
     return NextResponse.redirect(url);
   }
 
