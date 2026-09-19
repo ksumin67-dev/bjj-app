@@ -311,20 +311,10 @@ export function getStreakBonus(streak: number): number {
   return 0;
 }
 
-/** 스트릭 표시 텍스트 */
-export function streakLabel(streak: number): string {
-  if (streak === 0) return "";
-  if (streak >= 30) return `🔥 ${streak}일 연속 · 전설`;
-  if (streak >= 7)  return `🔥 ${streak}일 연속 · 불꽃`;
-  if (streak >= 3)  return `🔥 ${streak}일 연속`;
-  return `${streak}일 연속`;
-}
-
 // ── BJJ 스타일 분석 ──────────────────────────────────────────────────────────
 
 export type BjjStyle = {
   label: string;
-  emoji: string;
   desc: string;
   dominant: Stream | null;
 };
@@ -334,7 +324,7 @@ export type BjjStyle = {
  * 수련 기록이 하나도 없을 때만 "탐색 중" 반환.
  */
 export function getBjjStyle(streamTotals: Record<string, number>, totalSessions: number): BjjStyle {
-  const noData = { label: "탐색 중", emoji: "🌱", desc: "수련 기록을 등록해 스타일을 완성하세요", dominant: null };
+  const noData = { label: "탐색 중", desc: "수련 기록을 등록해 스타일을 완성하세요", dominant: null };
 
   if (totalSessions === 0) return noData;
 
@@ -352,17 +342,17 @@ export function getBjjStyle(streamTotals: Record<string, number>, totalSessions:
 
   // 올라운더: 최다 스트림이 50% 미만
   if (topPct < 0.5) {
-    return { label: "올라운더", emoji: "🥋", desc: "공격·수비 균형 잡힌 올라운더", dominant: null };
+    return { label: "올라운더", desc: "공격·수비 균형 잡힌 올라운더", dominant: null };
   }
 
   const styleMap: Record<string, BjjStyle> = {
-    "가드포지션": { label: "가드 스페셜리스트", emoji: "🛡",  desc: "바텀에서 공격하는 가드 플레이어",          dominant: "가드포지션" },
-    "탑포지션":   { label: "탑 게임 스페셜리스트", emoji: "⚔️", desc: "패스·서브미션으로 압박하는 탑 플레이어", dominant: "탑포지션"   },
-    "이스케이프": { label: "이스케이프 아티스트", emoji: "🏃", desc: "어떤 위기에서도 빠져나오는 서바이버",       dominant: "이스케이프" },
-    "스탠딩":     { label: "레슬러",              emoji: "🤼", desc: "테이크다운으로 주도권을 잡는 레슬러",       dominant: "스탠딩"     },
+    "가드포지션": { label: "가드 스페셜리스트",   desc: "바텀에서 공격하는 가드 플레이어",          dominant: "가드포지션" },
+    "탑포지션":   { label: "탑 게임 스페셜리스트", desc: "패스·서브미션으로 압박하는 탑 플레이어", dominant: "탑포지션"   },
+    "이스케이프": { label: "이스케이프 아티스트",   desc: "어떤 위기에서도 빠져나오는 서바이버",       dominant: "이스케이프" },
+    "스탠딩":     { label: "레슬러",               desc: "테이크다운으로 주도권을 잡는 레슬러",       dominant: "스탠딩"     },
   };
 
-  return styleMap[top[0]] ?? { label: "올라운더", emoji: "🥋", desc: "나만의 스타일 형성 중", dominant: null };
+  return styleMap[top[0]] ?? { label: "올라운더", desc: "나만의 스타일 형성 중", dominant: null };
 }
 
 // ── 난이도 ────────────────────────────────────────────────────────────────

@@ -56,39 +56,6 @@ const config: Config = {
           brown: "var(--belt-brown)",
           black: "var(--belt-black)",
         },
-        // Tier
-        tier: {
-          s: "var(--tier-s)",
-          a: "var(--tier-a)",
-          b: "var(--tier-b)",
-          c: "var(--tier-c)",
-          d: "var(--tier-d)",
-        },
-        // BJJ Stream
-        stream: {
-          guard:    "var(--stream-guard)",
-          top:      "var(--stream-top)",
-          escape:   "var(--stream-escape)",
-          standing: "var(--stream-standing)",
-        },
-        // Technique Type
-        type: {
-          sweep: "var(--type-sweep)",
-          submit: "var(--type-submit)",
-          pass: "var(--type-pass)",
-          escape: "var(--type-escape)",
-          trans: "var(--type-trans)",
-          control: "var(--type-control)",
-        },
-        // Status
-        status: {
-          locked: "var(--status-locked)",
-          aware: "var(--status-aware)",
-          drill: "var(--status-drill)",
-          spar: "var(--status-spar)",
-          prof: "var(--status-prof)",
-          master: "var(--status-master)",
-        },
       },
       borderRadius: {
         xs: "var(--radius-xs)",
