@@ -3,7 +3,10 @@
 import { useState, useTransition, useMemo } from "react";
 import type { Technique, Stream, GiNogi, TechniqueType } from "@/types/domain";
 import type { CustomTechnique } from "@/lib/airtable/customTechniques";
-import { actionDeleteCustomTechnique } from "@/app/admin/techniques/actions";
+import {
+  actionDeleteCustomTechnique,
+  actionSetCustomTechniqueRegistered,
+} from "@/app/admin/techniques/actions";
 import {
   actionCreateTechnique,
   actionUpdateTechnique,
@@ -343,6 +346,14 @@ export function TechniqueManager({ techniques: initial, positions, customTechniq
     setDrawerOpen(true);
   };
 
+  // 미등록 기술 목록에서 "이 이름으로 기술 등록" 클릭 시 — 이름/스트림을
+  // 미리 채운 채로 신규 등록 폼을 염 (검토 흐름의 핵심: 재입력 없이 승격).
+  const openAddFromCustom = (ct: CustomTechnique) => {
+    setEditTarget(null);
+    setForm({ ...EMPTY_FORM, nameKo: ct.name, stream: ct.stream ?? "" });
+    setDrawerOpen(true);
+  };
+
   const openEdit = (t: Technique) => {
     setEditTarget(t);
     setForm(techniqueToForm(t));
@@ -473,6 +484,20 @@ export function TechniqueManager({ techniques: initial, positions, customTechniq
         showToast("삭제 완료", true);
       } else {
         showToast("삭제 오류: " + res.error, false);
+      }
+    });
+  };
+
+  const handleToggleRegistered = (recordId: string, next: boolean) => {
+    startTransition(async () => {
+      const res = await actionSetCustomTechniqueRegistered(recordId, next);
+      if (res.ok) {
+        setCustomTechniques((prev) =>
+          prev.map((t) => (t.recordId === recordId ? { ...t, registered: next } : t)),
+        );
+        showToast(next ? "등록 완료로 표시했어요" : "표시를 해제했어요", true);
+      } else {
+        showToast("변경 오류: " + res.error, false);
       }
     });
   };
@@ -661,7 +686,21 @@ export function TechniqueManager({ techniques: initial, positions, customTechniq
                     <td className="px-3 py-2.5 hidden sm:table-cell text-xs text-neutral-400">
                       {ct.lastUsed ?? "—"}
                     </td>
-                    <td className="px-3 py-2.5 text-right">
+                    <td className="px-3 py-2.5 text-right whitespace-nowrap">
+                      <button
+                        onClick={() => openAddFromCustom(ct)}
+                        disabled={isPending}
+                        className="rounded px-2 py-1 text-xs text-neutral-400 hover:text-emerald-400 hover:bg-emerald-900/30 transition-colors disabled:opacity-40"
+                      >
+                        기술 등록
+                      </button>
+                      <button
+                        onClick={() => handleToggleRegistered(ct.recordId, !ct.registered)}
+                        disabled={isPending}
+                        className="rounded px-2 py-1 text-xs text-neutral-400 hover:text-sky-400 hover:bg-sky-900/30 transition-colors disabled:opacity-40"
+                      >
+                        {ct.registered ? "등록 해제" : "등록됨 표시"}
+                      </button>
                       <button
                         onClick={() => handleDeleteCustomTech(ct.recordId)}
                         disabled={isPending}

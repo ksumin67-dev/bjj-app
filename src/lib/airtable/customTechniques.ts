@@ -96,3 +96,18 @@ export async function recordCustomTechniqueUsage(
 export async function deleteCustomTechnique(recordId: string): Promise<void> {
   await airtable(TABLES.CUSTOM_TECHNIQUES).destroy([recordId]);
 }
+
+/**
+ * 미등록 기술의 "정식 등록 완료" 표시 토글.
+ * 실제 기술도감(Techniques 테이블)에 정식 기술로 옮긴 뒤, 여기서 체크해
+ * 검토 완료로 표시 — 별도 삭제 없이도 목록에서 처리 여부를 구분 가능.
+ */
+export async function setCustomTechniqueRegistered(
+  recordId: string,
+  registered: boolean,
+): Promise<void> {
+  if (!F.REGISTERED) return;
+  await airtable(TABLES.CUSTOM_TECHNIQUES).update([
+    { id: recordId, fields: { [F.REGISTERED]: registered } as unknown as FieldSet },
+  ]);
+}

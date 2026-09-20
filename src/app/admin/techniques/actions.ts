@@ -1,7 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { deleteCustomTechnique } from "@/lib/airtable/customTechniques";
+import {
+  deleteCustomTechnique,
+  setCustomTechniqueRegistered,
+} from "@/lib/airtable/customTechniques";
 import {
   createTechnique,
   updateTechnique,
@@ -54,6 +57,19 @@ export async function actionDeleteCustomTechnique(
 ): Promise<{ ok: true } | { ok: false; error: string }> {
   try {
     await deleteCustomTechnique(recordId);
+    revalidatePath("/admin/techniques");
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: String(e) };
+  }
+}
+
+export async function actionSetCustomTechniqueRegistered(
+  recordId: string,
+  registered: boolean,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  try {
+    await setCustomTechniqueRegistered(recordId, registered);
     revalidatePath("/admin/techniques");
     return { ok: true };
   } catch (e) {
