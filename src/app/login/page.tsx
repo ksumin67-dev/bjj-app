@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Link from "next/link";
 import { Mail, Lock, AlertCircle, CheckCircle2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -204,6 +205,12 @@ export default function LoginPage() {
           </button>
         </>
       )}
+
+      <p className="text-[10px] text-text-disabled">
+        <Link href="/terms" className="hover:text-text-tertiary">이용약관</Link>
+        {" · "}
+        <Link href="/privacy" className="hover:text-text-tertiary">개인정보처리방침</Link>
+      </p>
     </div>
   );
 }

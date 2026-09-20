@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { updateProfileAction } from "@/lib/actions/userProfile";
 import { useToast } from "@/contexts/ToastContext";
 import { createClient } from "@/lib/supabase/client";
@@ -480,6 +481,12 @@ export function ProfileEditor({
           {loggingOut ? "로그아웃 중…" : "로그아웃"}
         </p>
       </button>
+
+      <p className="text-[11px] mt-3" style={{ color: "#4A4A5A" }}>
+        <Link href="/terms" className="hover:opacity-80">이용약관</Link>
+        {" · "}
+        <Link href="/privacy" className="hover:opacity-80">개인정보처리방침</Link>
+      </p>
     </div>
   );
 }

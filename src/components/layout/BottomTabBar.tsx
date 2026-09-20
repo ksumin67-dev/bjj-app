@@ -20,8 +20,15 @@ function isActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(href + "/");
 }
 
+// 로그인/약관 등 앱 셸(탭바·사이드바) 없이 보여줘야 하는 공개 페이지
+const HIDDEN_SHELL_PATHS = ["/login", "/auth", "/terms", "/privacy"];
+
 export function BottomTabBar() {
   const pathname = usePathname();
+
+  if (HIDDEN_SHELL_PATHS.some((p) => pathname === p || pathname.startsWith(p + "/"))) {
+    return null;
+  }
 
   return (
     <>
