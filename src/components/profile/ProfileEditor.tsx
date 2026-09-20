@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { updateProfileAction } from "@/lib/actions/userProfile";
+import { deleteAccountAction } from "@/lib/actions/account";
 import { useToast } from "@/contexts/ToastContext";
 import { createClient } from "@/lib/supabase/client";
 import type { UserProfile } from "@/lib/supabase/userProfile";
@@ -13,7 +14,7 @@ import { BeltDisplay, BELT_CONFIG } from "@/components/ui/BeltDisplay";
 import { TrainingReminderToggle } from "@/components/profile/TrainingReminderToggle";
 import {
   Loader2, Pencil, Check, Flame, Trophy, CalendarCheck,
-  Swords, Shield, Zap, Users, Dumbbell, ChevronRight, LogOut, type LucideIcon,
+  Swords, Shield, Zap, Users, Dumbbell, ChevronRight, LogOut, Trash2, type LucideIcon,
 } from "lucide-react";
 
 // ── 상수 ──────────────────────────────────────────────────────────────────
@@ -58,6 +59,7 @@ export function ProfileEditor({
   const [editing,  setEditing]  = useState(false);
   const [isPending, startTransition] = useTransition();
   const [loggingOut, setLoggingOut] = useState(false);
+  const [deletingAccount, setDeletingAccount] = useState(false);
   const toast = useToast();
   const router = useRouter();
 
@@ -117,6 +119,24 @@ export function ProfileEditor({
     const supabase = createClient();
     await supabase.auth.signOut();
     window.location.href = "/login";
+  }
+
+  async function handleDeleteAccount() {
+    if (
+      !confirm(
+        "정말 계정을 삭제할까요?\n수련 기록·게임플랜 등 모든 데이터가 영구히 삭제되며 복구할 수 없습니다.",
+      )
+    ) {
+      return;
+    }
+    setDeletingAccount(true);
+    const res = await deleteAccountAction();
+    if (res.ok) {
+      window.location.href = "/login";
+      return;
+    }
+    setDeletingAccount(false);
+    toast.show("error", res.error ?? "계정 삭제에 실패했습니다.");
   }
 
   return (
@@ -479,6 +499,25 @@ export function ProfileEditor({
         </div>
         <p className="text-sm font-bold" style={{ color: "#B4BCC8" }}>
           {loggingOut ? "로그아웃 중…" : "로그아웃"}
+        </p>
+      </button>
+
+      <button
+        onClick={handleDeleteAccount}
+        disabled={deletingAccount}
+        className="flex items-center gap-3 active:scale-[0.98] transition-transform duration-fast disabled:opacity-60"
+        style={{ marginTop: "10px" }}
+      >
+        <div
+          className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+          style={{ border: "1px solid rgba(248,113,113,0.25)" }}
+        >
+          {deletingAccount
+            ? <Loader2 size={15} className="animate-spin" style={{ color: "#F87171" }} />
+            : <Trash2 size={15} style={{ color: "#F87171" }} />}
+        </div>
+        <p className="text-sm font-bold" style={{ color: "#F87171" }}>
+          {deletingAccount ? "삭제 중…" : "계정 삭제"}
         </p>
       </button>
 
