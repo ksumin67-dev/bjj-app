@@ -14,7 +14,7 @@ import { BeltDisplay, BELT_CONFIG } from "@/components/ui/BeltDisplay";
 import { TrainingReminderToggle } from "@/components/profile/TrainingReminderToggle";
 import {
   Loader2, Pencil, Check, Flame, Trophy, CalendarCheck,
-  Swords, Shield, Zap, Users, Dumbbell, ChevronRight, LogOut, Trash2, type LucideIcon,
+  Swords, Shield, Zap, Users, Dumbbell, ChevronRight, LogOut, Trash2, BarChart3, type LucideIcon,
 } from "lucide-react";
 
 // ── 상수 ──────────────────────────────────────────────────────────────────
@@ -151,14 +151,24 @@ export function ProfileEditor({
           </p>
         </div>
         {!editing && (
-          <button
-            onClick={() => setEditing(true)}
-            className="flex items-center gap-1.5 rounded-full px-3.5 py-2 active:scale-95 transition-all duration-fast"
-            style={{ border: "1px solid rgba(217,119,46,0.4)" }}
-          >
-            <Pencil size={13} color="#D9772E" />
-            <span className="text-[12px] font-bold" style={{ color: "#D9772E" }}>수정</span>
-          </button>
+          <div className="flex items-center gap-2 shrink-0">
+            <Link
+              href="/stats"
+              className="flex items-center gap-1.5 rounded-full px-3.5 py-2 active:scale-95 transition-all duration-fast"
+              style={{ border: "1px solid rgba(255,255,255,0.12)" }}
+            >
+              <BarChart3 size={13} style={{ color: "#B4BCC8" }} />
+              <span className="text-[12px] font-bold" style={{ color: "#B4BCC8" }}>통계</span>
+            </Link>
+            <button
+              onClick={() => setEditing(true)}
+              className="flex items-center gap-1.5 rounded-full px-3.5 py-2 active:scale-95 transition-all duration-fast"
+              style={{ border: "1px solid rgba(217,119,46,0.4)" }}
+            >
+              <Pencil size={13} color="#D9772E" />
+              <span className="text-[12px] font-bold" style={{ color: "#D9772E" }}>수정</span>
+            </button>
+          </div>
         )}
       </header>
 
