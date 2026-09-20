@@ -19,6 +19,14 @@ const ADMIN_PATH = "/admin";
 const ADMIN_EMAIL = "ksumin67@gmail.com";
 
 export async function middleware(request: NextRequest) {
+  // API 라우트는 페이지 로그인 리다이렉트 대상이 아님 — 각 라우트가 자체
+  // 인증(웹훅 시크릿 등)을 처리하므로 여기서는 그냥 통과시킴. 이 체크가
+  // 없으면 예: RevenueCat 웹훅 POST가 세션 쿠키 없이 들어와서 /login으로
+  // 302 리다이렉트되어 웹훅이 항상 실패하는 문제가 생김.
+  if (request.nextUrl.pathname.startsWith("/api/")) {
+    return NextResponse.next({ request });
+  }
+
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(
