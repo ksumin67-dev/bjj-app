@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { publicEnv } from "@/lib/publicEnv";
 
 // 로그인 없이 접근 가능한 경로
-const PUBLIC_PATHS = ["/login", "/auth/callback"];
+const PUBLIC_PATHS = ["/login", "/auth/callback", "/auth/reset-password"];
 // 가입 직후 온보딩(벨트/주간 목표/선호 스타일 설정) 경로 — 이메일 가입/구글
 // 로그인 어느 쪽으로 들어와도 여기서 한 번에 처리하기 위해 미들웨어에서 확인.
 const ONBOARDING_PATH = "/onboarding";
