@@ -4,7 +4,7 @@ import type { UserProfile } from "@/lib/supabase/userProfile";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { Swords, Shield, Zap, Users, type LucideIcon } from "lucide-react";
-import { ArrowRight, Bell, Dumbbell, Flame, Check, Heart } from "lucide-react";
+import { Bell, Dumbbell, Flame, Check, Heart } from "lucide-react";
 
 // ── 상수 ───────────────────────────────────────────────────────────────────
 
@@ -220,12 +220,6 @@ export function HomeDashboard({
   const weakness       = analyzeWeakness(streamTotals, techniques, trainingCountMap);
   const TodayStyleIcon = bjjStyle.dominant ? CAPSULE[bjjStyle.dominant].IconCmp : Dumbbell;
 
-  // 요약 한 줄용 — 벨트/XP/스트릭/최강 스트림은 프로필 화면에 이미 상세
-  // 버전(벨트 여정, 스트림 분포)이 있어서 홈에서는 중복 섹션 대신 한 줄
-  // 요약 + 프로필 링크로 축소 (2026-09-19, IA 정리)
-  const totalReps = Object.values(streamTotals).reduce((a, b) => a + b, 0);
-  const topStreamForSummary = STREAMS.reduce((a, b) => (streamTotals[a] >= streamTotals[b] ? a : b));
-
   // ── 학습 목표(찜한 기술) — 선수 상세에서 하트로 찜한 시그니처 기술
   const athleteNameMap = new Map(athletes.map((a) => [a.recordId, a.nameKo]));
   const goalIdSet = new Set(goalTechniqueIds);
@@ -276,6 +270,13 @@ export function HomeDashboard({
               <h1 className="text-[19px] font-bold tracking-tight leading-snug text-white">
                 오늘도 수련하러 가볼까요
               </h1>
+              {/* 벨트 · 누적 XP — 본문에 있던 요약 줄을 헤더로 이동 (2026-09-20) */}
+              <Link href="/profile" className="block mt-0.5 active:opacity-70 transition-opacity duration-fast">
+                <span className="text-[11.5px]" style={{ color: "#8A8A94" }}>
+                  {profile.belt} · {stripe}그랄 · {" "}
+                  <span className="font-semibold" style={{ color: "#D9772E" }}>{totalXp.toLocaleString()} XP</span>
+                </span>
+              </Link>
             </div>
           </div>
 
@@ -461,22 +462,7 @@ export function HomeDashboard({
           </section>
         )}
 
-        {/* ── 벨트/XP/스트릭/최강스트림 한 줄 요약 — 프로필 화면에 이미
-            상세 버전(벨트 여정, 스트림 분포)이 있어서 홈에서는 중복
-            섹션 대신 한 줄 요약 + 링크로 축소 (2026-09-19, IA 정리).
-            2026-09-20: 다른 섹션과 같은 톤온톤 서피스의 얇은 카드로 통일 ── */}
-        <Link
-          href="/profile"
-          className="flex items-center justify-between gap-2 active:opacity-70 transition-opacity duration-fast"
-          style={{ ...SECTION_SURFACE, padding: "11px 14px" }}
-        >
-          <span className="text-[11.5px]" style={{ color: "#8A8A94" }}>
-            {profile.belt} · {stripe}그랄 &nbsp;·&nbsp;{" "}
-            <span className="font-semibold" style={{ color: "#D9772E" }}>{totalXp.toLocaleString()} XP</span>
-            &nbsp;·&nbsp; {streak}일 스트릭 &nbsp;·&nbsp; {totalReps > 0 ? CAPSULE[topStreamForSummary].label : "—"} 최강
-          </span>
-          <ArrowRight size={13} style={{ color: "#5A5A64" }} className="shrink-0" />
-        </Link>
+        {/* (벨트/XP 요약 줄은 2026-09-20 상단 헤더로 이동) */}
 
         {/* ── 내가 배우고 싶은 기술(학습 목표) ─────────────────────────── */}
         {goalTechniques.length > 0 && (
