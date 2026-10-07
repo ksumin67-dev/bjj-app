@@ -5,7 +5,7 @@ import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import {
   Search, X, ChevronDown, Check, Plus, Lightbulb, BookOpen, Pen, Link2, ChevronUp,
   Sparkles, Heart, Target, HelpCircle, Clock, RefreshCw, Shield, Swords, Zap, Users,
-  Flame, type LucideIcon,
+  Flame, CalendarDays, type LucideIcon,
 } from "lucide-react";
 import {
   createTrainingSessionAction,
@@ -237,17 +237,24 @@ function PerTechNote({
         <span className="ml-auto text-[9px] text-text-tertiary italic">{technique.nameEn}</span>
       </div>
       {(focused || value) && (
-        <div className="flex gap-1 px-3 pt-2 flex-wrap">
-          {DETAIL_GUIDES.map((g) => (
-            <button key={g.label} type="button"
-              onMouseDown={(e) => { e.preventDefault(); insertGuide(g.template); }}
-              title={g.desc}
-              className="flex items-center gap-1 h-6 px-2 rounded-full bg-bg-base border border-border-subtle hover:border-brand-primary/40 text-[10px] text-text-tertiary hover:text-text-secondary transition-all"
-            >
-              <g.Icon size={10} />
-              <span className="hidden sm:inline">{g.label}</span>
-            </button>
-          ))}
+        <div className="px-3 pt-2">
+          {/* 아이콘만 있으면 의미를 알 수 없어서 라벨을 항상 표시하고,
+              무엇을 하는 버튼인지 한 줄 안내를 추가 (2026-09-20) */}
+          <p className="text-[10.5px] text-text-tertiary mb-1.5">
+            항목을 누르면 메모에 질문이 추가돼요
+          </p>
+          <div className="flex gap-1.5 flex-wrap">
+            {DETAIL_GUIDES.map((g) => (
+              <button key={g.label} type="button"
+                onMouseDown={(e) => { e.preventDefault(); insertGuide(g.template); }}
+                title={g.desc}
+                className="flex items-center gap-1 h-7 px-2.5 rounded-full bg-bg-base border border-border-subtle hover:border-brand-primary/40 text-[11px] text-text-secondary hover:text-text-primary transition-all"
+              >
+                <g.Icon size={11} />
+                <span>{g.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
       )}
       <textarea
@@ -859,12 +866,32 @@ export function SessionFormModal({
 
             {/* 날짜 */}
             <Field label="날짜" required>
-              <input
-                type="date" name="date" value={date}
-                onChange={(e) => setDate(e.target.value)}
-                required
-                className="w-full h-11 rounded-xl bg-bg-base border border-border-subtle px-4 text-text-primary focus:border-border-focus outline-none transition-colors duration-fast"
-              />
+              {/* 기본 date input은 어두운 배경에서 달력 아이콘이 안 보여 눌러도
+                  되는 줄 모르는 문제가 있었음 → 보이는 날짜 + 달력 아이콘을 직접
+                  그리고, 실제 input은 그 위에 투명하게 덮어 어디를 눌러도 달력이
+                  열리게 함 (2026-09-20) */}
+              <div className="relative w-full h-11 rounded-xl bg-bg-base border border-border-subtle focus-within:border-border-focus transition-colors duration-fast">
+                <div className="absolute inset-0 flex items-center justify-between px-4 pointer-events-none">
+                  <span className="text-text-primary">
+                    {date
+                      ? new Date(date + "T12:00:00").toLocaleDateString("ko-KR", {
+                          year: "numeric", month: "long", day: "numeric", weekday: "short",
+                        })
+                      : "날짜를 선택하세요"}
+                  </span>
+                  <CalendarDays size={16} className="text-brand-primary" />
+                </div>
+                <input
+                  type="date" name="date" value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  onClick={(e) => {
+                    try { e.currentTarget.showPicker(); } catch { /* 미지원 브라우저는 기본 동작 */ }
+                  }}
+                  required
+                  aria-label="수련 날짜"
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                />
+              </div>
             </Field>
 
             {/* 기술 태그 */}
