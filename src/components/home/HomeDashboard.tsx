@@ -2,6 +2,7 @@ import type { Technique, TrainingSession, Stream, Athlete } from "@/types/domain
 import { getBjjStyle, calculateStreak } from "@/types/domain";
 import type { UserProfile } from "@/lib/supabase/userProfile";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import { Swords, Shield, Zap, Users, type LucideIcon } from "lucide-react";
 import { ArrowRight, Bell, Dumbbell, Flame, Check, Heart } from "lucide-react";
 
@@ -12,6 +13,18 @@ const USER_NAME = "아쿠아";
 const STREAMS: Stream[] = ["가드포지션", "탑포지션", "이스케이프", "스탠딩"];
 
 const DAY_EN = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+/**
+ * 홈 섹션 구분용 톤온톤 서피스 (2026-09-20) — 테두리·색 없이 배경만 한 톤
+ * 올린 라운드 면. 플랫 섹션들이 서로 구분되지 않던 문제를 기존 다크 톤을
+ * 유지한 채 해결하기 위해 도입.
+ */
+const SECTION_SURFACE: CSSProperties = {
+  backgroundColor: "#14171D",
+  borderRadius: 14,
+  padding: 14,
+  marginBottom: 12,
+};
 
 /**
  * 스트림별 아이콘 + 라벨 — 기술도감 포지션 탭/기술 상세 페이지와 동일한
@@ -315,7 +328,7 @@ export function HomeDashboard({
             ────────────────────────────────────────────────────────────── */}
         {!hasTodaySession ? (
           /* 미수련 → CTA 섹션 */
-          <section style={{ marginBottom: "20px" }}>
+          <section style={SECTION_SURFACE}>
             <div className="flex items-center gap-1.5 mb-3">
               <Flame size={16} color="#D9772E" />
               <h2 className="text-[14.5px] font-bold text-white">오늘의 수련</h2>
@@ -364,7 +377,7 @@ export function HomeDashboard({
           </section>
         ) : (
           /* 수련 완료 섹션 */
-          <section style={{ marginBottom: "20px" }}>
+          <section style={SECTION_SURFACE}>
             <div className="flex items-center gap-1.5 mb-3">
               <Flame size={16} color="#D9772E" />
               <h2 className="text-[14.5px] font-bold text-white">오늘의 수련</h2>
@@ -403,7 +416,7 @@ export function HomeDashboard({
           const pct  = Math.round((done / goal) * 100);
           const met  = weekDayCount >= goal;
           return (
-            <section style={{ marginBottom: "20px" }}>
+            <section style={SECTION_SURFACE}>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[12.5px] font-semibold text-white">이번 주 목표</span>
                 <span className="text-[12.5px] font-bold tabular-nums" style={{ color: met ? "#34D399" : "#D9772E" }}>
@@ -448,7 +461,7 @@ export function HomeDashboard({
 
         {/* ── 내가 배우고 싶은 기술(학습 목표) ─────────────────────────── */}
         {goalTechniques.length > 0 && (
-          <section style={{ marginBottom: "20px" }}>
+          <section style={SECTION_SURFACE}>
             <div className="flex items-center gap-1.5 mb-2">
               <Heart size={14} fill="#F87171" color="#F87171" />
               <h2 className="text-[14.5px] font-bold text-white">내가 배우고 싶은 기술</h2>
@@ -491,7 +504,7 @@ export function HomeDashboard({
         {weakness && (() => {
           const topCap = CAPSULE[weakness.topStream];
           return (
-            <section style={{ marginBottom: "20px" }}>
+            <section style={SECTION_SURFACE}>
               {/* 헤더 */}
               <div className="flex items-center gap-1.5 mb-3">
                 <Zap size={15} color="#F87171" />
