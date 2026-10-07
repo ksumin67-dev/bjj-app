@@ -1,8 +1,9 @@
 "use client";
 
 import { useTransition } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Star, Trash2 } from "lucide-react";
+import { Star, Trash2, Pencil } from "lucide-react";
 import { setPrimaryAction, deleteGamePlanAction } from "@/lib/actions/gamePlans";
 import { useToast } from "@/contexts/ToastContext";
 
@@ -46,6 +47,15 @@ export function GamePlanActions({
 
   return (
     <section className="space-y-2.5 pt-2">
+      <Link
+        href={`/gameplans/${recordId}/edit`}
+        className="w-full py-3 rounded-xl font-bold text-[14px] text-white hover:brightness-110 active:scale-[0.97] transition-all duration-fast inline-flex items-center justify-center gap-2"
+        style={{ backgroundColor: "#D9772E" }}
+      >
+        <Pencil size={16} />
+        게임플랜 수정
+      </Link>
+
       <button
         type="button"
         onClick={handleTogglePrimary}

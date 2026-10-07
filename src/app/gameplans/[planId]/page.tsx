@@ -159,7 +159,7 @@ export default async function GamePlanDetailPage({ params }: { params: Params })
 
         {gamePlan.stepsText && (
           <section>
-            <h2 className="text-[13.5px] font-bold text-white mb-2">단계 메모</h2>
+            <h2 className="text-[13.5px] font-bold text-white mb-2">설명</h2>
             <p className="text-sm font-normal whitespace-pre-wrap" style={{ color: "#B4BCC8" }}>{gamePlan.stepsText}</p>
           </section>
         )}

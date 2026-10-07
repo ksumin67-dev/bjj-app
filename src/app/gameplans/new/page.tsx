@@ -1,25 +1,15 @@
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
-import { getAllPositions } from "@/lib/airtable/positions";
-import { getAllTechniques } from "@/lib/airtable/techniques";
+import { getGamePlanFormData } from "@/lib/gamePlanFormData";
 import { GamePlanForm } from "@/components/gamePlans/GamePlanForm";
 import { PageWrapper } from "@/components/layout/PageWrapper";
-import type { Technique } from "@/types/domain";
 
 export const metadata = { title: "새 게임플랜" };
 export const dynamic = "force-dynamic";
 
 export default async function NewGamePlanPage() {
-  const [positions, techniques] = await Promise.all([
-    getAllPositions(),
-    getAllTechniques(),
-  ]);
-
-  const positionsById: Record<string, Technique> = {};
-  for (const p of positions) positionsById[p.recordId] = p;
-
-  // 포지션(부모) 레코드는 게임플랜 단계로 직접 선택하지 않음 — 구체적 자식 기술만 선택 대상
-  const stepTechniques = techniques.filter((t) => t.id.includes("-"));
+  const { stepTechniques, positionNameById, goalTechniqueIds, recentTechniqueIds } =
+    await getGamePlanFormData();
 
   return (
     <PageWrapper>
@@ -40,9 +30,11 @@ export default async function NewGamePlanPage() {
         </header>
 
         <GamePlanForm
-          positions={positions}
+          mode="create"
           techniques={stepTechniques}
-          positionsById={positionsById}
+          positionNameById={positionNameById}
+          goalTechniqueIds={goalTechniqueIds}
+          recentTechniqueIds={recentTechniqueIds}
         />
       </div>
     </PageWrapper>

@@ -98,6 +98,29 @@ export async function createGamePlan(
 }
 
 /**
+ * 게임플랜 수정 (2026-09-20). RLS가 본인 행만 허용하므로 id로만 필터.
+ */
+export async function updateGamePlan(
+  recordId: string,
+  input: CreateGamePlanInput,
+): Promise<void> {
+  const supabase = createClient();
+  const { error } = await supabase
+    .from("game_plans")
+    .update({
+      plan_name: input.planName,
+      start_position: input.startPositionRecordId ?? null,
+      technique_ids: input.techniquesUsedRecordIds,
+      steps_text: input.stepsText,
+      has_branch: input.hasBranch,
+      branch_condition: input.branchCondition ?? null,
+      is_primary: input.isPrimary,
+    })
+    .eq("id", recordId);
+  if (error) throw error;
+}
+
+/**
  * 주력 기술 표시 토글.
  */
 export async function setGamePlanPrimary(
