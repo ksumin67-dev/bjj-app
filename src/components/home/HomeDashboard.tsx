@@ -27,6 +27,49 @@ const SECTION_SURFACE: CSSProperties = {
 };
 
 /**
+ * 이번 주 목표 진행바 — 오늘의 수련 카드 하단에 합쳐서 표시 (2026-09-20).
+ * 온보딩에서 주당 목표를 정한 사용자에게만 노출(건너뛰면 weeklyGoal이 null).
+ * 상단 헤어라인으로 카드 안에서 영역만 나눔.
+ */
+function WeeklyGoalBar({ weekDayCount, goal }: { weekDayCount: number; goal: number }) {
+  const done = Math.min(weekDayCount, goal);
+  const pct  = Math.round((done / goal) * 100);
+  const met  = weekDayCount >= goal;
+  return (
+    <div
+      style={{
+        marginTop: 14,
+        paddingTop: 12,
+        borderTop: "1px solid rgba(255,255,255,0.06)",
+      }}
+    >
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-[12.5px] font-semibold text-white">이번 주 목표</span>
+        <span className="text-[12.5px] font-bold tabular-nums" style={{ color: met ? "#34D399" : "#D9772E" }}>
+          {weekDayCount} / {goal}일
+        </span>
+      </div>
+      <div style={{ height: 8, borderRadius: 999, backgroundColor: "rgba(255,255,255,0.06)", overflow: "hidden" }}>
+        <div
+          style={{
+            width: `${pct}%`,
+            height: "100%",
+            borderRadius: 999,
+            backgroundColor: met ? "#34D399" : "#D9772E",
+            transition: "width 0.6s cubic-bezier(0.34,1.56,0.64,1)",
+          }}
+        />
+      </div>
+      {met && (
+        <p className="text-[10.5px] font-normal mt-1.5 flex items-center gap-1" style={{ color: "#34D399" }}>
+          <Check size={11} /> 이번 주 목표 달성!
+        </p>
+      )}
+    </div>
+  );
+}
+
+/**
  * 스트림별 아이콘 + 라벨 — 기술도감 포지션 탭/기술 상세 페이지와 동일한
  * lucide 아이콘 체계(Shield/Swords/Zap/Users) 재사용. (2026-09-19 리뉴얼)
  * 색은 더 이상 스트림마다 다르게 배정하지 않음 — "데이터=액센트 색 하나"
@@ -356,9 +399,12 @@ export function HomeDashboard({
               <span className="inline-flex items-center gap-1">
                 이번 주 <span className="font-bold" style={{ color: "#D9772E" }}>{weekXp.toLocaleString()} XP</span>
               </span>
-              <span className="inline-flex items-center gap-1">
-                <span className="font-bold text-white">{weekDayCount}일</span> 수련
-              </span>
+              {/* 주간 목표가 있으면 아래 진행바에 "N / M일"로 나오므로 중복 숨김 */}
+              {profile.weeklyGoal == null && (
+                <span className="inline-flex items-center gap-1">
+                  <span className="font-bold text-white">{weekDayCount}일</span> 수련
+                </span>
+              )}
               {streak >= 2 && (
                 <span className="inline-flex items-center gap-1">
                   <span className="font-bold" style={{ color: "#D9772E" }}>{streak}일 스트릭</span>
@@ -374,6 +420,10 @@ export function HomeDashboard({
             >
               수련 기록하기
             </Link>
+
+            {profile.weeklyGoal != null && (
+              <WeeklyGoalBar weekDayCount={weekDayCount} goal={profile.weeklyGoal} />
+            )}
           </section>
         ) : (
           /* 수련 완료 섹션 */
@@ -404,52 +454,21 @@ export function HomeDashboard({
                 </span>
               )}
             </div>
+
+            {profile.weeklyGoal != null && (
+              <WeeklyGoalBar weekDayCount={weekDayCount} goal={profile.weeklyGoal} />
+            )}
           </section>
         )}
 
-        {/* ── 이번 주 목표 — 온보딩에서 주당 목표 횟수를 정한 사용자에게만
-            노출(건너뛴 사용자는 weeklyGoal이 null이라 자동으로 안 보임).
-            (2026-09-19 추가) ── */}
-        {profile.weeklyGoal != null && (() => {
-          const goal = profile.weeklyGoal;
-          const done = Math.min(weekDayCount, goal);
-          const pct  = Math.round((done / goal) * 100);
-          const met  = weekDayCount >= goal;
-          return (
-            <section style={SECTION_SURFACE}>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[12.5px] font-semibold text-white">이번 주 목표</span>
-                <span className="text-[12.5px] font-bold tabular-nums" style={{ color: met ? "#34D399" : "#D9772E" }}>
-                  {weekDayCount} / {goal}일
-                </span>
-              </div>
-              <div style={{ height: 8, borderRadius: 999, backgroundColor: "rgba(255,255,255,0.06)", overflow: "hidden" }}>
-                <div
-                  style={{
-                    width: `${pct}%`,
-                    height: "100%",
-                    borderRadius: 999,
-                    backgroundColor: met ? "#34D399" : "#D9772E",
-                    transition: "width 0.6s cubic-bezier(0.34,1.56,0.64,1)",
-                  }}
-                />
-              </div>
-              {met && (
-                <p className="text-[10.5px] font-normal mt-1.5 flex items-center gap-1" style={{ color: "#34D399" }}>
-                  <Check size={11} /> 이번 주 목표 달성!
-                </p>
-              )}
-            </section>
-          );
-        })()}
-
         {/* ── 벨트/XP/스트릭/최강스트림 한 줄 요약 — 프로필 화면에 이미
             상세 버전(벨트 여정, 스트림 분포)이 있어서 홈에서는 중복
-            섹션 대신 한 줄 요약 + 링크로 축소 (2026-09-19, IA 정리) ── */}
+            섹션 대신 한 줄 요약 + 링크로 축소 (2026-09-19, IA 정리).
+            2026-09-20: 다른 섹션과 같은 톤온톤 서피스의 얇은 카드로 통일 ── */}
         <Link
           href="/profile"
-          className="flex items-center justify-between gap-2 py-2.5 active:opacity-70 transition-opacity duration-fast"
-          style={{ borderBottom: "1px solid rgba(255,255,255,0.05)", marginBottom: "20px" }}
+          className="flex items-center justify-between gap-2 active:opacity-70 transition-opacity duration-fast"
+          style={{ ...SECTION_SURFACE, padding: "11px 14px" }}
         >
           <span className="text-[11.5px]" style={{ color: "#8A8A94" }}>
             {profile.belt} · {stripe}그랄 &nbsp;·&nbsp;{" "}
