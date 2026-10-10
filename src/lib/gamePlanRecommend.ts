@@ -84,13 +84,11 @@ function buildChain(candidates: Technique[], ctx: Ctx): Technique[] | null {
   return chain.length >= 3 ? chain : null;
 }
 
-/** 포지션 기반 플랜의 직관적·유머러스한 제목 (포지션 ID로 고정 선택 → 같은 추천은 항상 같은 제목) */
+/** 포지션 기반 플랜 제목 — 목표형(C안). 포지션 ID로 고정 선택해 같은 추천은 항상 같은 제목 */
 const TITLE_TEMPLATES: ((n: string, f: string) => string)[] = [
-  (n, f) => `${n} 입장 → ${f} 퇴장`,
-  (n, f) => `${n} 장인의 ${f} 코스`,
-  (n, f) => `${n}에서 ${f}까지, 안 놓아줌`,
-  (n, f) => `${n} 오면 ${f}로 정리해드림`,
-  (n, f) => `${n} 한 번 잡으면 ${f}까지`,
+  (n, f) => `${n} ${f} 셋업`,
+  (n, f) => `${f}로 가는 ${n} 플랜`,
+  (n, f) => `${n} 피니시 플랜`,
 ];
 
 function funTitle(posId: string, posName: string, finisher: string): string {
