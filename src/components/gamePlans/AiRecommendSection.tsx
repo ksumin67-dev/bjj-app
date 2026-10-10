@@ -188,23 +188,11 @@ function PlanCard({ plan }: { plan: RecommendationView }) {
         </span>
       </div>
 
-      <ol className="mt-1.5 space-y-1">
-        {plan.steps.map((st, i) => (
-          <li key={i} className="text-[12px] font-normal" style={{ color: "#B4BCC8" }}>
-            <span className="font-semibold" style={{ color: i === 0 ? BRAND : MUTED }}>
-              {st.role}
-            </span>{" "}
-            {st.name}
-            {st.trigger && (
-              <span className="block text-[11px]" style={{ color: MUTED }}>
-                {st.trigger}
-              </span>
-            )}
-          </li>
-        ))}
-      </ol>
-
-      <p className="text-[11px] font-normal mt-1.5" style={{ color: MUTED }}>
+      {/* 접힌 상태: 기술 흐름 한 줄 + 추천 이유 한 줄 */}
+      <p className="text-[12px] font-normal mt-1" style={{ color: "#B4BCC8" }}>
+        {plan.steps.map((st) => st.name).join(" → ")}
+      </p>
+      <p className="text-[11px] font-normal mt-1" style={{ color: MUTED }}>
         {plan.reason}
       </p>
 
@@ -215,12 +203,27 @@ function PlanCard({ plan }: { plan: RecommendationView }) {
         className="mt-2 inline-flex items-center gap-1 text-[11px] font-semibold"
         style={{ color: MUTED }}
       >
-        근거와 자세히 보기
+        단계와 근거 보기
         <ChevronDown size={12} className={open ? "rotate-180 transition-transform" : "transition-transform"} />
       </button>
 
       {open && (
         <div className="mt-2 space-y-2 text-[11.5px] font-normal" style={{ color: "#B4BCC8" }}>
+          <ol className="space-y-1.5">
+            {plan.steps.map((st, i) => (
+              <li key={i} className="text-[12px]">
+                <span className="font-semibold" style={{ color: i === 0 ? BRAND : MUTED }}>
+                  {st.role}
+                </span>{" "}
+                {st.name}
+                {st.trigger && (
+                  <span className="block text-[11px]" style={{ color: MUTED }}>
+                    {st.trigger}
+                  </span>
+                )}
+              </li>
+            ))}
+          </ol>
           <p>
             <span style={{ color: MUTED }}>상황 </span>
             {plan.start}
@@ -249,7 +252,7 @@ function PlanCard({ plan }: { plan: RecommendationView }) {
             </ul>
           )}
           <p className="text-[10.5px]" style={{ color: "#5C5C66" }}>
-            주짓수는 상대와 룰에 따라 달라져요. 기·노기, 대회 룰(레그락 제한 등)도 확인하세요.
+            기·노기와 대회 룰(레그락 제한 등)은 직접 확인하세요.
           </p>
         </div>
       )}
