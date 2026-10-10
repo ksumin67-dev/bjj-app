@@ -68,9 +68,14 @@ export default async function GamePlansPage() {
           </Link>
         </header>
 
-        <AiRecommendSection />
-
-        <GamePlanListClient items={items} />
+        {items.length === 0 ? (
+          <AiRecommendSection />
+        ) : (
+          <>
+            <GamePlanListClient items={items} />
+            <AiRecommendSection hasPlans />
+          </>
+        )}
       </div>
     </PageWrapper>
   );

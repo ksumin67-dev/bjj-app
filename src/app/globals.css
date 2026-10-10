@@ -146,3 +146,32 @@ body {
   animation: skeleton-shimmer 1.6s ease-in-out infinite;
   border-radius: 0.5rem;
 }
+
+/* AI 추천 게임플랜 — 반짝이는 앰버 (2026-10-10) */
+@keyframes ai-shine {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+@keyframes ai-glow {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+.ai-shine-text {
+  background: linear-gradient(90deg, #D9772E, #FFD27A, #F08A5D, #D9772E);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: ai-shine 3s linear infinite;
+}
+.ai-shine-border {
+  padding: 1.5px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #D9772E, #FFD27A, #F08A5D, #D9772E);
+  background-size: 200% 100%;
+  animation: ai-shine 3s linear infinite;
+}
+.ai-sparkle { animation: ai-glow 1.8s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .ai-shine-text, .ai-shine-border, .ai-sparkle { animation: none; }
+}

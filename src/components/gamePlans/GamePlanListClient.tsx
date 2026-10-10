@@ -1,8 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Link from "next/link";
-import { Plus, ListOrdered, Star, Shield, Swords, Zap, Users, type LucideIcon } from "lucide-react";
+import { Star, Shield, Swords, Zap, Users, type LucideIcon } from "lucide-react";
 import type { GamePlan, Stream } from "@/types/domain";
 import { GamePlanCard } from "@/components/gamePlans/GamePlanCard";
 
@@ -33,7 +32,6 @@ export function GamePlanListClient({ items }: { items: GamePlanListItem[] }) {
     return items.filter((it) => it.stream === filter);
   }, [items, filter]);
 
-  if (items.length === 0) return <EmptyState />;
 
   return (
     <div className="space-y-4">
@@ -84,34 +82,5 @@ function FilterChip({
     >
       {children}
     </button>
-  );
-}
-
-function EmptyState() {
-  return (
-    <div
-      className="rounded-2xl p-8 text-center"
-      style={{ border: "1px dashed rgba(255,255,255,0.12)" }}
-    >
-      <div
-        className="size-12 mx-auto rounded-full flex items-center justify-center mb-3"
-        style={{ border: "1px solid rgba(217,119,46,0.4)" }}
-      >
-        <ListOrdered size={20} color="#D9772E" />
-      </div>
-      <h3 className="text-base font-bold text-white mb-1">아직 게임플랜이 없습니다</h3>
-      <p className="text-sm font-normal mb-4" style={{ color: "#6B7280" }}>
-        스파링에서 시도하고 싶은 기술 조합을 정리해보세요.
-        <br />
-        위의 AI 추천으로 바로 시작할 수도 있어요.
-      </p>
-      <Link
-        href="/gameplans/new"
-        className="inline-flex items-center gap-1.5 h-10 px-4 rounded-xl text-white text-sm font-bold hover:brightness-110 active:scale-[0.97] transition-all duration-fast"
-        style={{ backgroundColor: "#D9772E" }}
-      >
-        <Plus size={16} strokeWidth={2.5} />첫 게임플랜 만들기
-      </Link>
-    </div>
   );
 }

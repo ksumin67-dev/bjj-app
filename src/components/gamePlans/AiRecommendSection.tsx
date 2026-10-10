@@ -31,7 +31,7 @@ const STEPS = [
 
 type Ok = Extract<RecommendResult, { ok: true }>;
 
-export function AiRecommendSection() {
+export function AiRecommendSection({ hasPlans = false }: { hasPlans?: boolean }) {
   const [phase, setPhase] = useState<"idle" | "analyzing" | "done" | "error">("idle");
   const [step, setStep] = useState(0);
   const [result, setResult] = useState<Ok | null>(null);
@@ -60,27 +60,39 @@ export function AiRecommendSection() {
   return (
     <section style={{ backgroundColor: SURFACE, borderRadius: 14, padding: 14 }}>
       <div className="flex items-center gap-1.5 mb-1">
-        <Sparkles size={16} color={BRAND} className="shrink-0" />
-        <h2 className="text-[14.5px] font-bold text-white">AI 추천 게임플랜</h2>
+        <Sparkles size={16} color="#FFD27A" className="shrink-0 ai-sparkle" />
+        <h2 className="text-[14.5px] font-bold ai-shine-text">AI 추천 게임플랜</h2>
       </div>
 
       {(phase === "idle" || phase === "error") && (
         <>
-          <p className="text-[11px] font-normal mb-3" style={{ color: MUTED }}>
-            내 수련 기록과 좋아요한 기술·선수를 분석해서 만들어볼 만한 조합을 추천해줘요.
+          <p className={`text-[11px] font-normal ${hasPlans ? "mb-2.5" : "mb-3"}`} style={{ color: MUTED }}>
+            {hasPlans
+              ? "내 수련 기록과 좋아요한 기술·선수를 분석해서 새 조합을 추천해줘요."
+              : "내 수련 기록과 좋아요한 기술·선수를 분석해서 첫 게임플랜을 추천해줘요."}
           </p>
           {phase === "error" && (
             <p className="text-[12px] mb-2 text-danger">{error}</p>
           )}
-          <button
-            type="button"
-            onClick={run}
-            className="w-full py-3 rounded-xl font-bold text-[14px] text-white hover:brightness-110 active:scale-[0.97] transition-all duration-fast inline-flex items-center justify-center gap-2"
-            style={{ backgroundColor: BRAND }}
-          >
-            <Sparkles size={16} />
-            AI로 게임플랜 추천받기
-          </button>
+          <div className="ai-shine-border">
+            <button
+              type="button"
+              onClick={run}
+              className="w-full h-11 rounded-[11px] font-bold text-[14px] active:scale-[0.98] transition-transform duration-fast inline-flex items-center justify-center gap-2"
+              style={{ backgroundColor: SURFACE }}
+            >
+              <Sparkles size={16} color="#FFD27A" className="ai-sparkle" />
+              <span className="ai-shine-text">AI로 게임플랜 추천받기</span>
+            </button>
+          </div>
+          {!hasPlans && (
+            <p className="text-center mt-3 text-[12px] font-normal" style={{ color: MUTED }}>
+              또는{" "}
+              <Link href="/gameplans/new" className="underline" style={{ color: BRAND }}>
+                직접 만들기
+              </Link>
+            </p>
+          )}
         </>
       )}
 
