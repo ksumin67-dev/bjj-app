@@ -13,6 +13,8 @@ import { getAllTechniques } from "@/lib/airtable/techniques";
 import { getAllPositions } from "@/lib/airtable/positions";
 import { getGamePlanFormData } from "@/lib/gamePlanFormData";
 import { roleLabel } from "@/lib/gamePlanRecommend";
+import { llmEnabled, pickWithLlm } from "@/lib/llm/comboAssist";
+import { setMyComboVote } from "@/lib/supabase/comboFeedback";
 
 export type CreateGamePlanFormState = {
   ok: boolean;
@@ -135,42 +137,94 @@ export async function updateGamePlanAction(
 
 export type RecommendationView = {
   id: string;
+  comboId: string;
   name: string;
   reason: string;
   /** 순서대로 표시할 단계 */
   steps: { name: string; role: string; trigger?: string }[];
   source: "combo";
+  grade: "검증됨" | "참고";
+  start: string;
+  end: string;
+  sources: { name: string; url: string }[];
+  /** 내가 남긴 피드백: 1 | -1 | 0(없음) */
+  myVote: 1 | -1 | 0;
 };
 
 export type RecommendResult =
   | {
       ok: true;
       personalized: boolean;
+      /** LLM이 후보 안에서 고르고 이유를 쓴 결과인지 */
+      aiAssisted: boolean;
       plans: RecommendationView[];
       signals: { sessionCount: number; trainedTechniqueCount: number; goalCount: number };
     }
   | { ok: false; error: string };
 
+const CANDIDATE_POOL = 8;
+const SHOW_COUNT = 4;
+
 /**
  * Server Action — "AI로 게임플랜 추천받기" 버튼 (2026-10-10).
  * 버튼을 눌렀을 때만 계산해서 목록 화면 로딩에는 영향이 없다.
- * 2단계에서 LLM 호출이 이 함수 안으로 들어올 예정.
+ * 규칙 엔진이 후보 콤보 8개를 고르고, ANTHROPIC_API_KEY가 있으면 LLM이 그 안에서
+ * 4개를 골라 이유를 쓴다. (실패하면 규칙 엔진 상위 4개 그대로)
  */
 export async function recommendGamePlansAction(): Promise<RecommendResult> {
   try {
-    const data = await getGamePlanFormData({ withRecommendations: true });
-    const nameById = new Map(data.stepTechniques.map((t) => [t.recordId, t.nameKo]));
+    const data = await getGamePlanFormData({ withRecommendations: true, recLimit: CANDIDATE_POOL });
+    const nameByRecordId = new Map(data.stepTechniques.map((t) => [t.recordId, t.nameKo]));
+    let plans = data.recommendations.plans;
+    let aiAssisted = false;
+
+    if (data.recommendations.personalized && llmEnabled()) {
+      const candidates = plans.map((p) => ({
+        id: p.comboId,
+        name: p.name,
+        steps: p.steps.map((s) => nameByRecordId.get(s.recordId) ?? ""),
+        baseReason: p.reason,
+      }));
+      const picks = await pickWithLlm(
+        candidates,
+        {
+          sessionCount: data.signals.sessionCount,
+          trainedNames: data.topTrainedIds.map((id) => nameByRecordId.get(id) ?? "").filter(Boolean),
+          likedNames: data.goalTechniqueIds.map((id) => nameByRecordId.get(id) ?? "").filter(Boolean).slice(0, 12),
+        },
+        SHOW_COUNT,
+      );
+      if (picks) {
+        const byCombo = new Map(plans.map((p) => [p.comboId, p]));
+        plans = picks
+          .map((pk) => {
+            const base = byCombo.get(pk.id);
+            return base ? { ...base, reason: pk.reason || base.reason } : null;
+          })
+          .filter((p): p is NonNullable<typeof p> => Boolean(p));
+        aiAssisted = true;
+      }
+    }
+    plans = plans.slice(0, SHOW_COUNT);
+
     return {
       ok: true,
       personalized: data.recommendations.personalized,
+      aiAssisted,
       signals: data.signals,
-      plans: data.recommendations.plans.map((p) => ({
+      plans: plans.map((p) => ({
         id: p.id,
+        comboId: p.comboId,
         name: p.name,
         reason: p.reason,
         source: p.source,
+        grade: p.grade,
+        start: p.start,
+        end: p.end,
+        sources: p.sources,
+        myVote: data.comboVotes.get(p.comboId) ?? 0,
         steps: p.steps.map((st) => ({
-          name: nameById.get(st.recordId) ?? "",
+          name: nameByRecordId.get(st.recordId) ?? "",
           role: roleLabel(st.role),
           trigger: st.trigger,
         })),
@@ -179,6 +233,18 @@ export async function recommendGamePlansAction(): Promise<RecommendResult> {
   } catch (e) {
     console.error("[recommendGamePlansAction] failed:", e);
     return { ok: false, error: "추천을 만들지 못했어요. 잠시 후 다시 시도해주세요." };
+  }
+}
+
+/** Server Action — 추천 카드 👍/👎 (vote 0이면 취소) */
+export async function submitComboFeedbackAction(comboId: string, vote: 1 | -1 | 0): Promise<{ ok: boolean }> {
+  try {
+    if (!comboId || ![1, -1, 0].includes(vote)) return { ok: false };
+    await setMyComboVote(comboId, vote);
+    return { ok: true };
+  } catch (e) {
+    console.error("[submitComboFeedbackAction] failed:", e);
+    return { ok: false };
   }
 }
 

@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import Link from "next/link";
-import { Sparkles, Loader2, Check, ArrowRight, RefreshCw } from "lucide-react";
+import { Sparkles, Loader2, Check, ArrowRight, RefreshCw, ThumbsUp, ThumbsDown, ChevronDown, ExternalLink } from "lucide-react";
 import {
   recommendGamePlansAction,
+  submitComboFeedbackAction,
   type RecommendResult,
+  type RecommendationView,
 } from "@/lib/actions/gamePlans";
 
 /**
@@ -127,43 +129,12 @@ export function AiRecommendSection({ hasPlans = false }: { hasPlans?: boolean })
             {result.personalized
               ? `수련 ${result.signals.sessionCount}회 · 수련한 기술 ${result.signals.trainedTechniqueCount}개 · 좋아요 ${result.signals.goalCount}개를 분석했어요.`
               : "아직 분석할 기록이 없어서 기본 추천을 보여드려요. 수련을 기록하거나 기술에 좋아요를 누르면 나만의 추천이 만들어져요."}
+            {result.aiAssisted && " AI가 이 중에서 지금 연습하기 좋은 조합을 골랐어요."}
           </p>
 
           <div className="space-y-2">
             {result.plans.map((plan) => (
-              <div
-                key={plan.id}
-                className="rounded-xl px-3.5 py-3"
-                style={{ backgroundColor: FIELD_BG, border: `1px solid ${FIELD_BORDER}` }}
-              >
-                <p className="text-[13px] font-semibold text-white">{plan.name}</p>
-                <ol className="mt-1.5 space-y-1">
-                  {plan.steps.map((st, i) => (
-                    <li key={i} className="text-[12px] font-normal" style={{ color: "#B4BCC8" }}>
-                      <span className="font-semibold" style={{ color: i === 0 ? BRAND : MUTED }}>
-                        {st.role}
-                      </span>{" "}
-                      {st.name}
-                      {st.trigger && (
-                        <span className="block text-[11px]" style={{ color: MUTED }}>
-                          {st.trigger}
-                        </span>
-                      )}
-                    </li>
-                  ))}
-                </ol>
-                <p className="text-[11px] font-normal mt-1.5" style={{ color: MUTED }}>
-                  {plan.reason}
-                </p>
-                <Link
-                  href={`/gameplans/new?rec=${encodeURIComponent(plan.id)}`}
-                  className="mt-2.5 inline-flex items-center gap-1 text-[12px] font-bold active:opacity-70 transition-opacity duration-fast"
-                  style={{ color: BRAND }}
-                >
-                  이 플랜으로 만들기
-                  <ArrowRight size={13} />
-                </Link>
-              </div>
+              <PlanCard key={plan.id} plan={plan} />
             ))}
           </div>
 
@@ -179,5 +150,147 @@ export function AiRecommendSection({ hasPlans = false }: { hasPlans?: boolean })
         </div>
       )}
     </section>
+  );
+}
+
+const GRADE_STYLE = {
+  검증됨: { color: "#34D399", bg: "rgba(52,211,153,0.12)", hint: "여러 출처에서 확인된 연계예요" },
+  참고: { color: "#FFD27A", bg: "rgba(255,210,122,0.12)", hint: "출처가 있는 연계예요. 내 수련 스타일에 맞게 응용해보세요" },
+} as const;
+
+function PlanCard({ plan }: { plan: RecommendationView }) {
+  const [open, setOpen] = useState(false);
+  const [vote, setVote] = useState<1 | -1 | 0>(plan.myVote);
+  const [, startTransition] = useTransition();
+  const g = GRADE_STYLE[plan.grade];
+
+  function sendVote(next: 1 | -1) {
+    const value = vote === next ? 0 : next; // 같은 버튼을 다시 누르면 취소
+    setVote(value);
+    startTransition(async () => {
+      const res = await submitComboFeedbackAction(plan.comboId, value);
+      if (!res.ok) setVote(vote); // 저장 실패 시 되돌림
+    });
+  }
+
+  return (
+    <div
+      className="rounded-xl px-3.5 py-3"
+      style={{ backgroundColor: FIELD_BG, border: `1px solid ${FIELD_BORDER}` }}
+    >
+      <div className="flex items-start justify-between gap-2">
+        <p className="text-[13px] font-semibold text-white">{plan.name}</p>
+        <span
+          className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded-md"
+          style={{ color: g.color, backgroundColor: g.bg }}
+        >
+          {plan.grade}
+        </span>
+      </div>
+
+      <ol className="mt-1.5 space-y-1">
+        {plan.steps.map((st, i) => (
+          <li key={i} className="text-[12px] font-normal" style={{ color: "#B4BCC8" }}>
+            <span className="font-semibold" style={{ color: i === 0 ? BRAND : MUTED }}>
+              {st.role}
+            </span>{" "}
+            {st.name}
+            {st.trigger && (
+              <span className="block text-[11px]" style={{ color: MUTED }}>
+                {st.trigger}
+              </span>
+            )}
+          </li>
+        ))}
+      </ol>
+
+      <p className="text-[11px] font-normal mt-1.5" style={{ color: MUTED }}>
+        {plan.reason}
+      </p>
+
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="mt-2 inline-flex items-center gap-1 text-[11px] font-semibold"
+        style={{ color: MUTED }}
+      >
+        근거와 자세히 보기
+        <ChevronDown size={12} className={open ? "rotate-180 transition-transform" : "transition-transform"} />
+      </button>
+
+      {open && (
+        <div className="mt-2 space-y-2 text-[11.5px] font-normal" style={{ color: "#B4BCC8" }}>
+          <p>
+            <span style={{ color: MUTED }}>상황 </span>
+            {plan.start}
+          </p>
+          <p>
+            <span style={{ color: MUTED }}>결과 </span>
+            {plan.end}
+          </p>
+          <p style={{ color: MUTED }}>{g.hint}</p>
+          {plan.sources.length > 0 && (
+            <ul className="space-y-1">
+              {plan.sources.map((src) => (
+                <li key={src.url}>
+                  <a
+                    href={src.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-start gap-1 underline underline-offset-2"
+                    style={{ color: "#B4BCC8" }}
+                  >
+                    <ExternalLink size={11} className="mt-0.5 shrink-0" />
+                    <span>{src.name}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+          <p className="text-[10.5px]" style={{ color: "#5C5C66" }}>
+            주짓수는 상대와 룰에 따라 달라져요. 기·노기, 대회 룰(레그락 제한 등)도 확인하세요.
+          </p>
+        </div>
+      )}
+
+      <div className="mt-2.5 flex items-center justify-between gap-2">
+        <Link
+          href={`/gameplans/new?rec=${encodeURIComponent(plan.id)}`}
+          className="inline-flex items-center gap-1 text-[12px] font-bold active:opacity-70 transition-opacity duration-fast"
+          style={{ color: BRAND }}
+        >
+          이 플랜으로 만들기
+          <ArrowRight size={13} />
+        </Link>
+        <div className="flex items-center gap-1" role="group" aria-label="이 추천이 도움이 됐나요?">
+          <button
+            type="button"
+            onClick={() => sendVote(1)}
+            aria-label="도움이 됐어요"
+            aria-pressed={vote === 1}
+            className="size-8 rounded-lg inline-flex items-center justify-center active:scale-95 transition-transform"
+            style={{ color: vote === 1 ? "#34D399" : MUTED, backgroundColor: vote === 1 ? "rgba(52,211,153,0.12)" : "transparent" }}
+          >
+            <ThumbsUp size={14} />
+          </button>
+          <button
+            type="button"
+            onClick={() => sendVote(-1)}
+            aria-label="별로예요. 다음부터 빼주세요"
+            aria-pressed={vote === -1}
+            className="size-8 rounded-lg inline-flex items-center justify-center active:scale-95 transition-transform"
+            style={{ color: vote === -1 ? "#F87171" : MUTED, backgroundColor: vote === -1 ? "rgba(248,113,113,0.12)" : "transparent" }}
+          >
+            <ThumbsDown size={14} />
+          </button>
+        </div>
+      </div>
+      {vote === -1 && (
+        <p className="mt-1 text-[10.5px]" style={{ color: MUTED }}>
+          알려주셔서 고마워요. 다음 추천부터 이 조합은 빼드릴게요.
+        </p>
+      )}
+    </div>
   );
 }

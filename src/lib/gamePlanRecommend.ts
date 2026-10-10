@@ -1,19 +1,19 @@
 import type { Technique, Athlete } from "@/types/domain";
-import { COMBO_LIBRARY, type Combo } from "@/data/comboLibrary";
+import { COMBO_LIBRARY, type Combo, type ComboSource } from "@/data/comboLibrary";
 
 /**
  * AI 추천 게임플랜 — 콤보 라이브러리 기반 추천 엔진 (2026-10-10)
  *
  * 기술도감의 기술을 단계별로 임의 조합하면 실전에서 안 쓰는 흐름이 나오므로,
  * 근거가 확인된 콤보(src/data/comboLibrary.ts)만 추천한다. 엔진은 콤보를 새로
- * 만들지 않고 "내게 맞는 콤보를 고르는" 역할만 한다.
+ * 만들지 않고 "내게 맞는 콤보를 고르는" 역할만 한다. (LLM도 이 후보 안에서만 고른다)
  *
  * 개인화 신호 (콤보 점수)
  *   1) 내 수련 기록       — 콤보에 든 기술을 수련한 횟수
  *   2) 좋아요(찜)한 기술   — 콤보에 든 기술당 +5
  *   3) 좋아요한 선수 스타일 — 찜한 기술에 연결된 선수의 시그니처 기술이 콤보에 있으면 +3
+ *   4) 내 피드백          — 👎 한 콤보는 제외
  * 신호가 전혀 없으면 근거 등급·기본 순서대로 기본 추천.
- * (2단계: LLM은 이 후보 안에서 고르고 이유를 설명하는 데만 사용 예정.)
  */
 
 export type RecommendedStep = {
@@ -23,7 +23,9 @@ export type RecommendedStep = {
 };
 
 export type RecommendedPlan = {
+  /** `combo-<콤보 id>` — 폼 미리 채우기 링크(?rec=)에 사용 */
   id: string;
+  comboId: string;
   name: string;
   /** 폼의 '설명' 칸에 채워질 문장 (상황 + 단계별 트리거) */
   note: string;
@@ -33,6 +35,10 @@ export type RecommendedPlan = {
   /** 카드에 표시되는 추천 이유 한 줄 */
   reason: string;
   source: "combo";
+  grade: Combo["grade"];
+  start: string;
+  end: string;
+  sources: ComboSource[];
 };
 
 export type Recommendations = {
@@ -54,6 +60,8 @@ export function roleLabel(role: RecommendedStep["role"]): string {
   return ROLE_LABEL[role];
 }
 
+export const COMBO_ID_PREFIX = "combo-";
+
 function buildNote(combo: Combo, nameOf: (shortId: string) => string): string {
   const lines = [`상황: ${combo.start}`];
   combo.steps.forEach((s, i) => {
@@ -64,27 +72,61 @@ function buildNote(combo: Combo, nameOf: (shortId: string) => string): string {
   return lines.join("\n");
 }
 
+function buildPlan(combo: Combo, byShortId: Map<string, Technique>, reason: string): RecommendedPlan | null {
+  const techs = combo.steps.map((s) => byShortId.get(s.tech));
+  if (techs.some((t) => !t)) return null; // 도감에서 사라진 기술이 있으면 콤보 제외
+  const nameOf = (shortId: string) => byShortId.get(shortId)?.nameKo ?? shortId;
+  return {
+    id: `${COMBO_ID_PREFIX}${combo.id}`,
+    comboId: combo.id,
+    name: combo.name,
+    note: buildNote(combo, nameOf),
+    techRecordIds: (techs as Technique[]).map((t) => t.recordId),
+    steps: combo.steps.map((st, i) => ({
+      recordId: (techs as Technique[])[i].recordId,
+      role: st.role,
+      trigger: st.trigger,
+    })),
+    reason,
+    source: "combo",
+    grade: combo.grade,
+    start: combo.start,
+    end: combo.end,
+    sources: combo.sources,
+  };
+}
+
+/** `?rec=combo-xxx` 로 넘어온 콤보를 폼 미리 채우기용 플랜으로 복원 */
+export function planForComboId(recId: string, techniques: Technique[]): RecommendedPlan | null {
+  if (!recId.startsWith(COMBO_ID_PREFIX)) return null;
+  const combo = COMBO_LIBRARY.find((c) => c.id === recId.slice(COMBO_ID_PREFIX.length));
+  if (!combo) return null;
+  return buildPlan(combo, new Map(techniques.map((t) => [t.id, t])), "");
+}
+
 export function recommendGamePlans(args: {
   techniques: Technique[];
   athletes: Athlete[];
   positionNameById: Record<string, string>;
   trainingCountMap: Record<string, number>;
   goals: GoalSignal[];
+  /** 👎 한 콤보 id (제외) */
+  dislikedComboIds?: Set<string>;
   limit?: number;
 }): Recommendations {
-  const { techniques, positionNameById, trainingCountMap, goals, limit = 4 } = args;
+  const { techniques, positionNameById, trainingCountMap, goals, dislikedComboIds, limit = 4 } = args;
 
   const byShortId = new Map(techniques.map((t) => [t.id, t]));
   const goalIdSet = new Set(goals.map((g) => g.techniqueRecordId));
   const likedAthletes = new Set(goals.map((g) => g.athleteRecordId).filter((x): x is string => Boolean(x)));
-  const nameOf = (shortId: string) => byShortId.get(shortId)?.nameKo ?? shortId;
 
   type Scored = { combo: Combo; score: number; trained: number; goalHits: Technique[]; styleHit: boolean; order: number };
   const scored: Scored[] = [];
 
   COMBO_LIBRARY.forEach((combo, order) => {
+    if (dislikedComboIds?.has(combo.id)) return;
     const techs = combo.steps.map((s) => byShortId.get(s.tech));
-    if (techs.some((t) => !t)) return; // 도감에서 사라진 기술이 있으면 콤보 제외
+    if (techs.some((t) => !t)) return;
     const list = techs as Technique[];
 
     const trained = list.reduce((sum, t) => sum + (trainingCountMap[t.recordId] ?? 0), 0);
@@ -104,46 +146,35 @@ export function recommendGamePlans(args: {
     return a.order - b.order;
   });
 
-  // 개인화 결과가 적으면 기본 추천으로 채워 화면이 비어 보이지 않게 한다
   let picked = ranked.slice(0, limit);
   if (!personalized) {
     // 기본 추천은 특정 포지션에 쏠리지 않게 포지션당 하나씩 고른다
     const seenPos = new Set<string>();
     picked = ranked.filter((s) => (seenPos.has(s.combo.position) ? false : (seenPos.add(s.combo.position), true))).slice(0, limit);
   }
-  if (personalized && picked.length < 3) {
+  // 개인화 결과가 적으면 기본 추천으로 채워 화면이 비어 보이지 않게 한다
+  if (personalized && picked.length < Math.min(3, limit)) {
     const have = new Set(picked.map((p) => p.combo.id));
     const fill = scored
       .filter((s) => !have.has(s.combo.id))
       .sort((a, b) => gradeRank(a.combo.grade) - gradeRank(b.combo.grade) || a.order - b.order);
     for (const f of fill) {
-      if (picked.length >= 3) break;
+      if (picked.length >= Math.min(3, limit)) break;
       picked.push(f);
     }
   }
 
-  const plans: RecommendedPlan[] = picked.map((s) => {
+  const plans: RecommendedPlan[] = [];
+  for (const s of picked) {
     const posName = positionNameById[s.combo.position] ?? "";
     const reasons: string[] = [];
     if (s.trained > 0) reasons.push(`이 콤보의 기술을 ${s.trained}번 수련했어요`);
     if (s.goalHits.length > 0) reasons.push(`배우고 싶은 '${s.goalHits[0].nameKo}' 포함`);
     if (s.styleHit) reasons.push("좋아요한 선수 스타일과 맞아요");
     if (reasons.length === 0) reasons.push(posName ? `${posName}에서 많이 쓰는 기본 연계예요` : "많이 쓰는 기본 연계예요");
-
-    return {
-      id: `combo-${s.combo.id}`,
-      name: s.combo.name,
-      note: buildNote(s.combo, nameOf),
-      techRecordIds: s.combo.steps.map((st) => byShortId.get(st.tech)!.recordId),
-      steps: s.combo.steps.map((st) => ({
-        recordId: byShortId.get(st.tech)!.recordId,
-        role: st.role,
-        trigger: st.trigger,
-      })),
-      reason: reasons.join(" · "),
-      source: "combo" as const,
-    };
-  });
+    const plan = buildPlan(s.combo, byShortId, reasons.join(" · "));
+    if (plan) plans.push(plan);
+  }
 
   return { plans, personalized };
 }

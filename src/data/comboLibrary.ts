@@ -11,6 +11,8 @@ export type ComboStep = {
   note?: string;
 };
 
+export type ComboSource = { name: string; url: string };
+
 export type Combo = {
   id: string;
   /** 포지션 코드 (예: CG) */
@@ -20,6 +22,8 @@ export type Combo = {
   end: string;
   grade: "검증됨" | "참고";
   steps: ComboStep[];
+  /** 근거 출처 (본문 확인된 것 우선, 최대 3개) */
+  sources: ComboSource[];
 };
 
 export const COMBO_LIBRARY: Combo[] = [
@@ -47,6 +51,12 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 양손을 목으로 올려 초크를 막아 팔꿈치가 벌어지면",
         "note": "벌어진 팔을 잡아 몸을 돌려 암바로 전환한다"
       }
+    ],
+    "sources": [
+      {
+        "name": "Gracie Barra - Transitioning From Back Control to Armlock (Jackson Alves 클래스)",
+        "url": "https://graciebarra.com/gb-learning/armlock"
+      }
     ]
   },
   {
@@ -72,6 +82,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "상대가 양손으로 초크 팔을 막아 RNC가 들어가지 않으면",
         "note": "깍지 대신 손바닥 맞잡는 그립으로 바꿔 아래팔로 목 앞쪽을 압박하고, 팔꿈치를 상대 어깨 뒤로 눌러 마무리한다"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Evolve MMA - What Is The Short Choke In BJJ?",
+        "url": "https://evolve-mma.com/blog/what-is-the-short-choke-in-bjj/"
+      },
+      {
+        "name": "Digitsu - Short Choke",
+        "url": "https://app.digitsu.com/t/short-choke"
       }
     ]
   },
@@ -99,6 +119,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 손으로 초크 팔을 잡고 턱을 숙여 막으면",
         "note": "방어하는 팔을 끌어내 암바로 전환한다"
       }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu - Body Triangle",
+        "url": "https://digitsu.com/t/body-triangle"
+      },
+      {
+        "name": "Bullshido 포럼 스레드",
+        "url": "https://forums.bullshido.net/t/problems-making-effective-use-of-rear-mount-w-hooks-or-body-triangle/47518"
+      }
     ]
   },
   {
@@ -125,6 +155,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 초크에서 머리를 빼내면",
         "note": "다리를 상대 어깨 위로 넘기며 암바(또는 손목기)로 전환한다"
       }
+    ],
+    "sources": [
+      {
+        "name": "JitsuIQ - Straight Jacket",
+        "url": "https://jitsuiq.com/grips/material-grips/straight-jacket.html"
+      },
+      {
+        "name": "Digitsu - Seat-Belt Control | Bow And Arrow | Wrist Lock (Kristina Barlaan)",
+        "url": "https://digitsu.com/v/seat-belt-control-bow-and-arrow-wrist-lock-kristina-barlaan"
+      }
     ]
   },
   {
@@ -144,6 +184,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "tech": "BC-03",
         "role": "then",
         "note": "기무라 컨트롤로 팔을 묶은 상태에서 다리로 상대 윗팔을 엮어 암바로 이어간다"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Evolve University - 4 Attack Options From The Back Mount",
+        "url": "https://evolve-university.com/blog/4-attack-options-from-the-back-mount/"
+      },
+      {
+        "name": "Grapplearts - Triangle chokes from the back: a users guide",
+        "url": "https://www.grapplearts.com/triangle-chokes-from-the-back-a-users-guide/"
       }
     ]
   },
@@ -171,6 +221,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 손으로 목을 단단히 보호해 RNC를 잠글 수 없으면",
         "note": "깃을 잡고 바지 그립을 더해 옆으로 몸을 돌려 보우 앤 애로우로 전환한다"
       }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu (Kristina Barlaan)",
+        "url": "https://digitsu.com/v/seat-belt-control-bow-and-arrow-kristina-barlaan"
+      },
+      {
+        "name": "BJJ Ee - Secrets to a more effective bow and arrow choke",
+        "url": "https://www.bjjee.com/articles/secrets-to-a-more-effective-bow-and-arrow-choke-in-bjj/"
+      }
     ]
   },
   {
@@ -190,6 +250,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "tech": "BC-11",
         "role": "then",
         "note": "한쪽 팔을 가둔 채 다리를 어깨 위로 넘기고 반대 다리를 걸어 백 트라이앵글을 만든다"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Evolve University",
+        "url": "https://evolve-university.com/blog/4-attack-options-from-the-back-mount/"
+      },
+      {
+        "name": "Grapplearts (Kesting 삼각 가이드)",
+        "url": "https://www.grapplearts.com/triangle-chokes-from-the-back-a-users-guide/"
+      },
+      {
+        "name": "Digitsu (백 트라이앵글)",
+        "url": "https://digitsu.com/t/rear-triangle"
       }
     ]
   },
@@ -217,6 +291,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대 방어가 너무 강해 RNC를 잠글 수 없으면",
         "note": "가둔 팔 쪽 어깨 위로 다리를 넘기고 반대 다리를 걸어 백 트라이앵글로 전환"
       }
+    ],
+    "sources": [
+      {
+        "name": "Evolve MMA",
+        "url": "https://evolve-mma.com/blog/3-types-of-triangle-chokes-in-bjj/"
+      },
+      {
+        "name": "Digitsu (백 트라이앵글)",
+        "url": "https://digitsu.com/t/rear-triangle"
+      }
     ]
   },
   {
@@ -236,6 +320,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "tech": "BC-03",
         "role": "then",
         "note": "초크가 들어가지 않거나 다른 마무리를 원하면 삼각을 유지한 채 가둔 팔을 공략해 암바로 이어간다"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu (백 트라이앵글)",
+        "url": "https://digitsu.com/t/rear-triangle"
+      },
+      {
+        "name": "Evolve MMA",
+        "url": "https://evolve-mma.com/blog/3-types-of-triangle-chokes-in-bjj/"
+      },
+      {
+        "name": "Grapplearts (Kesting 삼각 가이드)",
+        "url": "https://www.grapplearts.com/triangle-chokes-from-the-back-a-users-guide/"
       }
     ]
   },
@@ -258,6 +356,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 손을 바닥에 짚어 스윕을 막으면",
         "note": "짚은 팔을 잡아 팔을 고립하고 삼각 셋업으로 전환 (암바·오모플라타도 같은 반응에서 가능)"
       }
+    ],
+    "sources": [
+      {
+        "name": "Jitsu IQ - Butterfly Sweep",
+        "url": "https://jitsuiq.com/sweeps/butterfly-sweep.html"
+      },
+      {
+        "name": "Grapplearts (Stephan Kesting) - butterfly to X guard",
+        "url": "https://www.grapplearts.com/how-to-take-the-back-from-x-guard/"
+      },
+      {
+        "name": "Gracie Barra 블로그 (GB Technique: Butterfly Guard Setups)",
+        "url": "https://graciebarra.com/gb-news/gb-technique-butterfly-guard-setups"
+      }
     ]
   },
   {
@@ -279,6 +391,12 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 팔로 바닥을 짚고 엉덩이를 내려 스윕을 막으면",
         "note": "목을 아래로 눌러 올라타듯 길로틴 그립을 만들고 후크를 하프 가드 쪽으로 바꿔 마무리"
       }
+    ],
+    "sources": [
+      {
+        "name": "Evolve MMA (BJJEE 게재) - Marcelo Garcia 버터플라이 스윕과 길로틴 소개",
+        "url": "https://www.bjjee.com/?p=81912"
+      }
     ]
   },
   {
@@ -299,6 +417,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "상대가 넘어지지 않으려 손을 바닥에 짚어 팔이 머리 위로 뻗어지면",
         "note": "뻗은 팔 안으로 팔을 걸어 팔꿈치를 높게 유지하며 머리를 상대 머리 옆에 두고 후크를 차올려 반대편으로 스윕"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Evolve MMA (BJJEE 게재) - Gordon Ryan 숄더 크런치",
+        "url": "https://www.bjjee.com/?p=81912"
+      },
+      {
+        "name": "80/20 BJJ Coach 뉴스레터 (Enrique Iturriaga)",
+        "url": "https://bjjcoach.substack.com/p/week-3-shoulder-crunch-a-la-gordon"
+      },
+      {
+        "name": "JiuJitsu.com - Butterfly Guard Sweeps That Work in Live Rolls",
+        "url": "https://jiujitsu.com/blogs/jiujitsu/butterfly-guard-sweeps-live-rolls"
       }
     ]
   },
@@ -326,6 +458,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "then",
         "note": "X가드에서 스탠드업 스윕으로 일어나며 상대를 쓰러뜨려 탑 포지션 획득"
       }
+    ],
+    "sources": [
+      {
+        "name": "Grapplearts (Stephan Kesting) - Butterfly Guard to X Guard Standup Sweep",
+        "url": "https://www.grapplearts.com/butterfly-guard-to-x-guard-standup-sweep/"
+      },
+      {
+        "name": "Grapplearts (Stephan Kesting) - It's almost impossible to use the Butterfly Guard without X Guard",
+        "url": "https://www.grapplearts.com/how-to-take-the-back-from-x-guard/"
+      }
     ]
   },
   {
@@ -346,6 +488,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "상대가 뒤로 기대어(상체를 빼) 스윕을 피하면",
         "note": "다리를 잡은 채 한쪽 다리를 상대 다리 사이로 넣어 엉덩이를 아래로 파고들며 싱글 레그 X를 만듦"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Jitsu IQ - Butterfly Sweep",
+        "url": "https://jitsuiq.com/sweeps/butterfly-sweep.html"
+      },
+      {
+        "name": "Evolve MMA (BJJEE 게재) - Attacks and Transitions from Butterfly Guard",
+        "url": "https://www.bjjee.com/?p=81912"
+      },
+      {
+        "name": "Grapplearts (Stephan Kesting) - How to Leglock Someone in Butterfly Guard",
+        "url": "https://www.grapplearts.com/how-to-leglock-someone-in-butterfly-guard/"
       }
     ]
   },
@@ -374,6 +530,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 팔을 빼고 손을 짚어 버틸 때",
         "note": "잡은 팔을 놓지 않고 후크를 풀며 일어나 웨슬업으로 이어간다"
       }
+    ],
+    "sources": [
+      {
+        "name": "David Avellan - Robert Drysdale 버터플라이 암드래그 시리즈",
+        "url": "https://davidavellan.com/spy-cam-butterfly-arm-drag/"
+      },
+      {
+        "name": "JiuJitsu.com - Butterfly Guard Sweeps That Work in Live Rolls",
+        "url": "https://jiujitsu.com/blogs/jiujitsu/butterfly-guard-sweeps-live-rolls"
+      },
+      {
+        "name": "Jitsu IQ - Butterfly Sweep",
+        "url": "https://jitsuiq.com/sweeps/butterfly-sweep.html"
+      }
     ]
   },
   {
@@ -393,6 +563,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "tech": "BF-22",
         "role": "then",
         "note": "노출된 어깨 쪽으로 돌아 나와 백을 잡는다"
+      }
+    ],
+    "sources": [
+      {
+        "name": "David Avellan - Robert Drysdale 버터플라이 암드래그 시리즈",
+        "url": "https://davidavellan.com/spy-cam-butterfly-arm-drag/"
+      },
+      {
+        "name": "JiuJitsu.com - Butterfly Guard Sweeps That Work in Live Rolls",
+        "url": "https://jiujitsu.com/blogs/jiujitsu/butterfly-guard-sweeps-live-rolls"
+      },
+      {
+        "name": "Jitsu IQ - Butterfly Sweep",
+        "url": "https://jitsuiq.com/sweeps/butterfly-sweep.html"
       }
     ]
   },
@@ -414,6 +598,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "상대가 초크를 피해 몸을 옆으로 틀거나 팔로 내 이두를 밀어 막으면",
         "note": "드러난 가까운 쪽 팔을 잡아 암바로 전환"
+      }
+    ],
+    "sources": [
+      {
+        "name": "BJJEE (Renzo Gracie 클로즈드 가드 크로스 초크-암바 트랩 소개)",
+        "url": "https://www.bjjee.com/articles/renzo-gracies-cross-choke-armbar-trap-closed-guard/"
+      },
+      {
+        "name": "BJJEE (크로스 깃 초크에서 암바로)",
+        "url": "https://www.bjjee.com/?p=82920"
       }
     ]
   },
@@ -442,6 +636,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 껴안으며 앞으로 밀고 들어오면",
         "note": "드러난 목으로 길로틴"
       }
+    ],
+    "sources": [
+      {
+        "name": "Grapplearts (힙범프 스윕 설명)",
+        "url": "https://www.grapplearts.com/hip-bump-sweep-from-closed-guard"
+      },
+      {
+        "name": "JitsuIQ (Hip Bump Sweep)",
+        "url": "https://jitsuiq.com/sweeps/hip-bump-sweep.html"
+      }
     ]
   },
   {
@@ -469,6 +673,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 팔을 빼며 반대쪽 팔이 펴진 채 내 가슴을 밀면",
         "note": "빠진 팔 쪽으로 몸을 감아 클로즈드 가드 오모플라타"
       }
+    ],
+    "sources": [
+      {
+        "name": "jiujitsu.com (Closed Guard Armbar to Triangle)",
+        "url": "https://jiujitsu.com/blogs/techniques/closed-guard-armbar-to-triangle"
+      },
+      {
+        "name": "jiujitsu.com (Josh Griffiths, Armbar to Omoplata)",
+        "url": "https://jiujitsu.com/blogs/techniques/closed-guard-armbar-to-omoplata"
+      },
+      {
+        "name": "Evolve University",
+        "url": "https://evolve-university.com/blog/basic-bjj-combinations-triangle-choke-omoplata-and-armbar/"
+      }
     ]
   },
   {
@@ -495,6 +713,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 삼각을 막으려 팔을 빼거나 자세를 세우면",
         "note": "같은 진입에서 오모플라타로 전환"
       }
+    ],
+    "sources": [
+      {
+        "name": "Grapplearts (모든 삼각 진입은 오모플라타 진입이기도 함)",
+        "url": "https://www.grapplearts.com/every-triangle-choke-setup-is-also-an-omoplata-setup/"
+      },
+      {
+        "name": "Digitsu (Overhook Guard)",
+        "url": "https://digitsu.com/t/overhook-guard"
+      },
+      {
+        "name": "Elite Sports (오버훅 공격 5가지)",
+        "url": "https://www.elitesports.com/blogs/news/top-5-bjj-overhook-attacks-from-the-bjj-closed-guard"
+      }
     ]
   },
   {
@@ -515,6 +747,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "상대가 초크를 막으려 몸을 세우거나 손으로 짚어 버티면",
         "note": "같은 그립으로 시저 스윕"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Evolve University (Cross Choke And Scissor Sweep)",
+        "url": "https://evolve-university.com/blog/basic-bjj-combinations-cross-choke-and-scissor-sweep/"
+      },
+      {
+        "name": "BJJ Canvas (시저 스윕 공격 시퀀스)",
+        "url": "https://bjjcanvas.com/?p=6831"
       }
     ]
   },
@@ -537,6 +779,12 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 자유로운 손을 짚어 버티면",
         "note": "고립된 짚은 팔로 암바"
       }
+    ],
+    "sources": [
+      {
+        "name": "Evolve MMA (Pendulum Sweep 활용)",
+        "url": "https://evolve-mma.com/blog/heres-how-to-utilize-the-pendulum-sweep-in-bjj/"
+      }
     ]
   },
   {
@@ -557,6 +805,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "상대가 팔로 내 허벅지를 감싸 삼각이 조여지지 않으면",
         "note": "상대 팔꿈치를 잡고 다리를 풀어 180도 돌며 겨드랑이로 다리를 넘겨 오모플라타로 마무리"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Grapplearts (Stephan Kesting)",
+        "url": "https://www.grapplearts.com/technique-1-triangle-choke-to-omoplata/"
+      },
+      {
+        "name": "Evolve University",
+        "url": "https://evolve-university.com/blog/basic-bjj-combinations-triangle-choke-omoplata-and-armbar/"
+      },
+      {
+        "name": "Borderline BJJ (수련 일지)",
+        "url": "https://borderlinebjj.bearblog.dev/practice-log-arm-bartriangleomoplata-sequence"
       }
     ]
   },
@@ -579,6 +841,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "스윕이 끝까지 넘어가지 않고 상대 팔이 몸에서 떨어져 있으면",
         "note": "한쪽 팔과 목을 다리로 가두어 삼각으로 이어간다"
       }
+    ],
+    "sources": [
+      {
+        "name": "BJJEE (Craig Jones 시연)",
+        "url": "https://www.bjjee.com/articles/craig-jones-demonstrates-a-more-effective-hip-bump-sweep-variation/"
+      },
+      {
+        "name": "Atos BJJ OnDemand (Andre Galvao)",
+        "url": "https://live.atosbjjondemand.com/closed-guard/videos/hip-bump-sweep-to-triangle-back-take-submission-options"
+      },
+      {
+        "name": "Grapplearts (Jon Thomas 영상 소개)",
+        "url": "https://www.grapplearts.com/hip-bump-sweep-from-closed-guard"
+      }
     ]
   },
   {
@@ -599,6 +875,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "상대가 팔을 안쪽으로 가져와 기무라를 막으면",
         "note": "힙 이스케이프로 공간을 만들고 다리를 어깨 바깥으로 넘겨 삼각으로 전환"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu (Dan Covel 영상 설명)",
+        "url": "https://digitsu.com/v/double-attack-kimura-triangle-dan-covel"
+      },
+      {
+        "name": "Digitsu (기술 페이지)",
+        "url": "https://digitsu.com/t/kimura-from-guard"
       }
     ]
   },
@@ -626,6 +912,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 오모플라타를 피해 앞구르기로 빠져나가려 하면",
         "note": "소매 그립을 놓지 않고 그대로 암바로 전환해 팔을 잡는다"
       }
+    ],
+    "sources": [
+      {
+        "name": "Vicente Junior (Digitsu 'De La Riva Guard' 코스)",
+        "url": "https://digitsu.com/v/omoplata-vicente-junior"
+      },
+      {
+        "name": "Gianni Grippo (Digitsu 'NeXT GeN De La Riva' 코스)",
+        "url": "https://digitsu.com/v/dlr-to-omaplata-gianni-grippo"
+      },
+      {
+        "name": "Jitsu IQ - De La Riva",
+        "url": "https://jitsuiq.com/positions/guard/de-la-riva.html"
+      }
     ]
   },
   {
@@ -652,6 +952,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "then",
         "note": "웨이터로 들어올렸을 때 상대가 베이스를 버티면 스윕을 고집하지 말고 크랩 라이드로 등 뒤를 공략"
       }
+    ],
+    "sources": [
+      {
+        "name": "Vicente Junior (Digitsu 'Advanced De La Riva' 코스)",
+        "url": "https://digitsu.com/v/waiter-sweep-vicente-junior"
+      },
+      {
+        "name": "Andre Galvao (Atos BJJ OnDemand)",
+        "url": "https://live.atosbjjondemand.com/back-takes/videos/warm-ups-the-waiter-sweep-with-option-to-crab-ride-back-take-from-dlr-guard"
+      },
+      {
+        "name": "Atos BJJ OnDemand",
+        "url": "https://live.atosbjjondemand.com/de-la-riva-guard/videos/crab-ride-from-dlr-guard-to-back-take"
+      }
     ]
   },
   {
@@ -672,6 +986,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "상대가 훅 발을 밀어 내리려 하면",
         "note": "그립을 상대 다리 둘레로 바꿔 발목을 가슴에 붙이고, 다리 뒤에 훅을 넣은 채 양발을 올려 X가드로 이동해 스윕"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Lucas Lepri (Digitsu 'No-Gi Master Series')",
+        "url": "https://digitsu.com/v/underhook-de-la-riva-to-x-guard-sweep-lucas-lepri"
+      },
+      {
+        "name": "Jitsu IQ - De La Riva",
+        "url": "https://jitsuiq.com/positions/guard/de-la-riva.html"
       }
     ]
   },
@@ -694,6 +1018,12 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 DLR 훅을 빼고 다리를 눌러 내리면",
         "note": "DLR 훅을 빠르게 풀고 상대를 밀어 공간을 만든 뒤 매트에 발과 손을 짚고, 상대 다리 뒤로 팔을 넣어 다리를 종아리와 허벅지 사이로 조여 들어올려 스윕"
       }
+    ],
+    "sources": [
+      {
+        "name": "Vicente Junior (Digitsu 'De La Riva Guard' 코스)",
+        "url": "https://digitsu.com/v/low-single-vicente-junior"
+      }
     ]
   },
   {
@@ -714,6 +1044,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "스윕이 막히고 상대가 몸을 돌려 등이 노출되려 하면",
         "note": "상대 움직임을 이용해 그립을 바지로 바꾸고 인버트해 베림볼로로 등 뒤를 잡는다"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Vicente Junior (Digitsu 'Advanced De La Riva' 코스) - 발룬 스윕 베림볼로",
+        "url": "https://digitsu.com/v/de-la-riva-x-balloon-sweep-berimbolo-vicente-junior"
+      },
+      {
+        "name": "DLR 스윕 가이드 (검색 요약; 사이트 미특정)",
+        "url": "https://digitsu.com/t/de-la-riva-sweep"
+      },
+      {
+        "name": "Jason Scully 영상 소개 (Bullshido 포럼)",
+        "url": "https://forums.bullshido.net/t/5-defenses-to-the-step-back-pass-against-dlr-jason-scully-video-for-you/50006"
       }
     ]
   },
@@ -736,6 +1080,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 양손으로 바닥을 짚어 스윕을 버티면",
         "note": "DLR 훅을 상대 다리 바깥쪽으로 바꾸고 엉덩이를 돌려 반대 다리를 머리 위로 넘겨 암바. 팔은 기무라 그립이나 일반 암바 그립으로 고정"
       }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu(Vicente Junior)",
+        "url": "https://digitsu.com/v/overhead-sweep-armbar-vicente-junior"
+      },
+      {
+        "name": "Digitsu(Vicente Junior)",
+        "url": "https://digitsu.com/v/overhead-sweep-vicente-junior"
+      },
+      {
+        "name": "Digitsu(Danny Stolfi)",
+        "url": "https://digitsu.com/v/overhead-sweep-de-la-riva-danny-stolfi"
+      }
     ]
   },
   {
@@ -755,6 +1113,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "tech": "DLR-25",
         "role": "transition",
         "note": "상대가 DLR 훅을 넘어 밟거나 다리가 고립되면 정강이를 상대 정강이에 붙이고 뒤로 기대며 들어올려 싱글 레그 X로 이동. 엉덩이는 높게, 무릎은 모아 유지"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu(Gianni Grippo)",
+        "url": "https://digitsu.com/v/dlr-to-single-leg-x-guard-sweep-gianni-grippo"
+      },
+      {
+        "name": "Digitsu(Adam Benayoun)",
+        "url": "https://digitsu.com/v/entries-de-la-riva-adam-benayoun"
       }
     ]
   },
@@ -782,6 +1150,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "힐훅이 막혀 정체되면",
         "note": "엔탱글먼트를 이용해 힙으로 상대 다리를 들어 올리며 앉아서 스윕"
       }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu - 50-50 Guard (기술 설명)",
+        "url": "https://digitsu.com/t/50-50-guard"
+      },
+      {
+        "name": "Jitsu IQ - Fifty-Fifty Guard",
+        "url": "https://jitsuiq.com/positions/guard/fifty-fifty-guard.html"
+      },
+      {
+        "name": "Digitsu - Backside 50/50 Heel Hook (Jon Calestine)",
+        "url": "https://digitsu.com/v/backside-50-50-heel-hook-jon-calestine"
+      }
     ]
   },
   {
@@ -808,6 +1190,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 니바 방어로 무릎을 굽히거나 발을 빼려 하면",
         "note": "드러난 힐을 잡아 힐훅으로 전환"
       }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu - Heel Hook Dilemma (기술 설명)",
+        "url": "https://digitsu.com/t/heel-hook-dilemma"
+      },
+      {
+        "name": "Digitsu - 50-50 Guard (기술 설명)",
+        "url": "https://digitsu.com/t/50-50-guard"
+      },
+      {
+        "name": "Digitsu - Jon Calestine K Guard Kodex 코스 목록",
+        "url": "https://digitsu.com/v/50-50-attacks-finish-backside-5050-off-back-step-jon-calestine"
+      }
     ]
   },
   {
@@ -829,6 +1225,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "앵클락이 정체되고 상대 힙이 돌아가면",
         "note": "다리 그립을 유지한 채 상대 밑으로 회전해 백 노출 후 훅 삽입"
       }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu - 50-50 Guard (기술 설명)",
+        "url": "https://digitsu.com/t/50-50-guard"
+      },
+      {
+        "name": "Jitsu IQ - Fifty-Fifty Guard",
+        "url": "https://jitsuiq.com/positions/guard/fifty-fifty-guard.html"
+      },
+      {
+        "name": "BJJ More - Modern 50/50 Fundamentals Guard (Nick Salles / Danny Maira) 리뷰",
+        "url": "https://bjjmore.com/nick-salles-danny-maira-5050-guard/"
+      }
     ]
   },
   {
@@ -849,6 +1259,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "상대가 체중을 실어 스윕을 막고 몸이 돌아가면",
         "note": "상대 다리 컨트롤을 유지한 채 롤링하여 백 테이크"
+      }
+    ],
+    "sources": [
+      {
+        "name": "BJJ More - Modern 50/50 Fundamentals Guard 리뷰",
+        "url": "https://bjjmore.com/nick-salles-danny-maira-5050-guard/"
+      },
+      {
+        "name": "BJJ More - The Modern 50/50 Guard (Patrick Gaudio) 리뷰",
+        "url": "https://bjjmore.com/patrick-gaudio-modern-50-50-guard/"
+      },
+      {
+        "name": "Jitsu IQ - Fifty-Fifty Guard",
+        "url": "https://jitsuiq.com/positions/guard/fifty-fifty-guard.html"
       }
     ]
   },
@@ -876,6 +1300,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 압박을 풀려고 다리를 펴면",
         "note": "펴진 다리를 힙에 걸치고 니바로 전환"
       }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu - Calf Slicer (기술 설명)",
+        "url": "https://digitsu.com/t/calf-slicer"
+      },
+      {
+        "name": "Digitsu - Heel Hook Dilemma (기술 설명)",
+        "url": "https://digitsu.com/t/heel-hook-dilemma"
+      }
     ]
   },
   {
@@ -902,6 +1336,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "then",
         "note": "무릎을 상대 힙에 붙이고 백스텝하며 사이드 컨트롤로 정리"
       }
+    ],
+    "sources": [
+      {
+        "name": "Erin Herle (Digitsu) - Knee Slice Concepts",
+        "url": "https://digitsu.com/v/knee-slice-concepts-erin-herle"
+      },
+      {
+        "name": "Gianni Grippo (Digitsu) - Falling Leg Drag",
+        "url": "https://digitsu.com/v/falling-leg-drag-gianni-grippo"
+      }
     ]
   },
   {
@@ -923,6 +1367,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 힙을 빼 돌아서 터틀로 도망가려 하면",
         "note": "상대 등 방향으로 각도를 잡고 힙을 컨트롤해 백으로 이동"
       }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu - Leg Drag Pass (기술 설명)",
+        "url": "https://digitsu.com/t/leg-drag-pass"
+      },
+      {
+        "name": "Jitsu IQ - Leg Drag Pass",
+        "url": "https://jitsuiq.com/guard-passes/leg-drag-pass.html"
+      },
+      {
+        "name": "Edwin Najmi (Digitsu) - Double Knee Slide",
+        "url": "https://digitsu.com/v/pass-double-knee-slide-edwin-najmi"
+      }
     ]
   },
   {
@@ -943,6 +1401,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "상대가 밀거나 몸을 돌려 이쪽으로 파고들면(터틀 시작)",
         "note": "상대 머리 너머로 넘어가 손목 시트벨트로 백을 잡음"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Edwin Najmi (Digitsu) - Double Knee Slide",
+        "url": "https://digitsu.com/v/pass-double-knee-slide-edwin-najmi"
+      },
+      {
+        "name": "Digitsu - Knee Cut Pass (기술 설명)",
+        "url": "https://digitsu.com/t/knee-cut-pass"
       }
     ]
   },
@@ -970,6 +1438,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "then",
         "note": "가슴을 붙여 사이드 컨트롤로 안정화"
       }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu - Leg Drag Pass (기술 설명)",
+        "url": "https://digitsu.com/t/leg-drag-pass"
+      },
+      {
+        "name": "Jitsu IQ - Leg Drag Pass",
+        "url": "https://jitsuiq.com/guard-passes/leg-drag-pass.html"
+      },
+      {
+        "name": "Bruno Frazatto (Digitsu) - 패스 코스 목차",
+        "url": "https://digitsu.com/v/closed-guard-stack-pass-long-step-bruno-frazatto"
+      }
     ]
   },
   {
@@ -995,6 +1477,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "tech": "GP-20",
         "role": "then",
         "note": "다리를 접은 스테이플 자세에서 백스텝하거나 무릎 허그로 정리해 패스 완료"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Marcus Johnson (Digitsu) - Set Ups: From Torreando and X Pass",
+        "url": "https://digitsu.com/v/set-ups-from-torreando-and-x-pass-marcus-johnson"
+      },
+      {
+        "name": "Evolve MMA - Toreando Pass 해설",
+        "url": "https://evolve-mma.com/blog/what-is-the-toreando-pass-in-bjj/"
       }
     ]
   },
@@ -1022,6 +1514,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "then",
         "note": "다리를 눌러 평평하게 만들고 팔꿈치 컨트롤로 사이드 컨트롤 안정화"
       }
+    ],
+    "sources": [
+      {
+        "name": "Bruno Frazatto (Digitsu) - Closed Guard | Stack Pass | Long Step",
+        "url": "https://digitsu.com/v/closed-guard-stack-pass-long-step-bruno-frazatto"
+      },
+      {
+        "name": "Paul Schreiner (Digitsu) - Double Stack / 더블언더 방어 대응 영상",
+        "url": "https://digitsu.com/v/trouble-shooting-double-under-defenses-paul-schreiner"
+      }
     ]
   },
   {
@@ -1048,6 +1550,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "then",
         "note": "낮은 자세로 가슴 압박과 상체 컨트롤을 얹어 사이드 컨트롤로 정리"
       }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu - Leg Weave (포지션 설명)",
+        "url": "https://digitsu.com/t/leg-weave"
+      },
+      {
+        "name": "Digitsu - Leg Weave Pass (기술 설명)",
+        "url": "https://digitsu.com/t/leg-weave-pass"
+      },
+      {
+        "name": "Bruno Frazatto (Digitsu) - Leg Weave Pass 세미나",
+        "url": "https://digitsu.com/v/leg-weave-pass-bruno-frazatto"
+      }
     ]
   },
   {
@@ -1068,6 +1584,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "백스텝 중 상대가 패스를 피하려 등을 돌리면(터틀)",
         "note": "만들어진 각도를 이용해 따라붙어 백 컨트롤을 잡음"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Jitsu IQ - Backstep Pass",
+        "url": "https://jitsuiq.com/guard-passes/backstep-pass.html"
+      },
+      {
+        "name": "Digitsu - Back Step (기술 설명)",
+        "url": "https://digitsu.com/t/back-step"
+      },
+      {
+        "name": "Digitsu - Bodylock Pass (기술 설명)",
+        "url": "https://digitsu.com/t/bodylock-pass"
       }
     ]
   },
@@ -1095,6 +1625,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 한 손이나 다리를 넓게 짚어 스윕을 버티면",
         "note": "스윕을 막는 데 쏠린 틈에 언더훅과 힙 이스케이프로 돌아 백을 잡음"
       }
+    ],
+    "sources": [
+      {
+        "name": "Evolve MMA - 5 best sweeps from half guard",
+        "url": "https://evolve-mma.com/blog/the-5-best-sweeps-from-the-half-guard-in-bjj/"
+      },
+      {
+        "name": "Digitsu - Dogfight Position (포지션 가이드)",
+        "url": "https://digitsu.com/t/dogfight-position"
+      },
+      {
+        "name": "Jitsu IQ - Old School Sweep",
+        "url": "https://jitsuiq.com/sweeps/old-school-sweep.html"
+      }
     ]
   },
   {
@@ -1120,6 +1664,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "then",
         "note": "언더훅과 머리 위치를 유지한 채 상대 옆으로 돌아 백을 잡음"
       }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu - Dogfight Position",
+        "url": "https://digitsu.com/t/dogfight-position"
+      },
+      {
+        "name": "Evolve MMA - BJJ 101: Knee Shield Half Guard",
+        "url": "https://evolve-mma.com/blog/bjj-101-knee-shield-half-guard/"
+      }
     ]
   },
   {
@@ -1139,6 +1693,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "tech": "HG-25",
         "role": "then",
         "note": "그립을 상대 배에 밀어 공간을 만든 뒤 하프 가드를 풀며 다리를 크게 스윙해 백으로 돈다. 상대가 힙을 눌러 막으면 반대 다리로 버터플라이 훅을 넣어 틈을 만들고 다시 시도(HG-24 자세)"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Grapplearts (Stephan Kesting, 4단 블랙벨트)",
+        "url": "https://www.grapplearts.com/taking-the-back-from-half-guard-using-the-kimura-grip/"
+      },
+      {
+        "name": "Digitsu - Kimura Trap",
+        "url": "https://digitsu.com/t/kimura-trap"
       }
     ]
   },
@@ -1160,6 +1724,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "then",
         "note": "휩다운으로 록다운을 늘리고 상대 다리를 어깨에 올려 일렉트릭 체어 스윕으로 상위를 잡는다. 상대가 자유로운 손으로 짚으면 올드스쿨(HG-01)도 대안이라는 설명이 있음"
       }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu - Lockdown Sweep",
+        "url": "https://digitsu.com/t/lockdown-sweep"
+      },
+      {
+        "name": "BJJEE (10th Planet 블랙벨트 Zach Maslany/J-M Holland 기고) - 록다운 안전성 글",
+        "url": "https://www.bjjee.com/?p=58217"
+      }
     ]
   },
   {
@@ -1179,6 +1753,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "tech": "HG-02",
         "role": "then",
         "note": "상대 다리를 어깨에 얹고 균형을 뒤로 무너뜨려 위로 올라오는 웨이터 스윕"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu - Deep Half Entry",
+        "url": "https://digitsu.com/t/deep-half-entry"
+      },
+      {
+        "name": "Digitsu - Deep Half Guard Back Take",
+        "url": "https://digitsu.com/t/deep-half-guard-back-take"
+      },
+      {
+        "name": "검색 요약 (Upstream BJJ 코스 목차 / Atos 딥 하프 시리즈)",
+        "url": "https://live.atosbjjondemand.com/deep-half-guard"
       }
     ]
   },
@@ -1200,6 +1788,12 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "then",
         "note": "갇힌 다리를 퍼올려 일렉트릭 체어 자세로 전환해 스윕/압박"
       }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu - Dogfight Position",
+        "url": "https://digitsu.com/t/dogfight-position"
+      }
     ]
   },
   {
@@ -1219,6 +1813,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "tech": "HG-26",
         "role": "then",
         "note": "상대가 체중을 앞으로 실으면 허벅지 언더훅을 핸들로 힙 뒤로 돌아 시트벨트와 훅으로 백을 잡는다. 머리를 힙 가까이 유지"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu - Deep Half Entry",
+        "url": "https://digitsu.com/t/deep-half-entry"
+      },
+      {
+        "name": "Digitsu - Deep Half Guard Back Take",
+        "url": "https://digitsu.com/t/deep-half-guard-back-take"
       }
     ]
   },
@@ -1240,6 +1844,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "then",
         "note": "먼 다리를 스쿠프하며 인버트해 다리를 뒤로 넘기고 골반을 밑으로 돌려 등 뒤로 이동, 시트벨트와 훅 확보. 다리 장력을 먼저 풀지 말 것"
       }
+    ],
+    "sources": [
+      {
+        "name": "FloGrappling (Corey Stockton) - K-guard Technique Showcase",
+        "url": "https://www.flograppling.com/articles/6812215-crucial-details-from-the-best-k-guard-players-technique-showcase"
+      },
+      {
+        "name": "Jon Calestine (Digitsu 'The K Guard Kodex' 코스)",
+        "url": "https://digitsu.com/v/attacks-matrix-hook-calf-cutter-back-take-jon-calestine"
+      },
+      {
+        "name": "BJJ More - K Guard & Matrix System (Mikey Musumeci) 리뷰",
+        "url": "https://bjjmore.com/k-guard-matrix-system-mikey-musumeci/"
+      }
     ]
   },
   {
@@ -1260,6 +1878,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "다리를 쉽게 넘기지 못하면",
         "note": "그 다리 쪽 엉덩이를 들고 상대 허벅지 아래로 넣어 X가드로 전환. 허벅지 안쪽 발로 밀어 균형을 깨고 손이 바닥에 닿으면 올라오며 스윕"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Jon Calestine (Digitsu 'The K Guard Kodex' 코스) - X-Guard Attacks",
+        "url": "https://digitsu.com/v/x-guard-attacks-sweep-with-second-leg-jon-calestine"
+      },
+      {
+        "name": "FloGrappling (Corey Stockton) - K-guard Technique Showcase",
+        "url": "https://www.flograppling.com/articles/6812215-crucial-details-from-the-best-k-guard-players-technique-showcase"
       }
     ]
   },
@@ -1287,6 +1915,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "then",
         "note": "백사이드 50/50에서 발목을 잡고 피겨4로 잠근 뒤 발가락을 당겨 장력을 유지, 팔꿈치를 안으로 넣고 배를 아래로 향하며 아웃사이드 힐훅 마무리"
       }
+    ],
+    "sources": [
+      {
+        "name": "Jon Calestine (Digitsu 'The K Guard Kodex' 코스) - 50/50 Attacks",
+        "url": "https://digitsu.com/v/50-50-attacks-backside-to-break-down-finishes-jon-calestine"
+      },
+      {
+        "name": "FloGrappling (Corey Stockton) - K-guard Technique Showcase",
+        "url": "https://www.flograppling.com/articles/6812215-crucial-details-from-the-best-k-guard-players-technique-showcase"
+      },
+      {
+        "name": "Jon Calestine (Digitsu) - K Guard Rolling Commentary Roll 5",
+        "url": "https://digitsu.com/v/k-guard-rolling-commentary-roll-5-jon-calestine"
+      }
     ]
   },
   {
@@ -1306,6 +1948,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "tech": "KG-22",
         "role": "then",
         "note": "상대가 앞으로 누르면 아래로 끌어 균형을 깨고, 앞다리를 올려 발을 넘기며 옆으로 피벗해 싱글 레그 X로 이동. 그립은 손목이 아닌 팔꿈치 깊이까지"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Adam Benayoun (Digitsu 'SLX Evolution' 코스) - Entries: K Guard",
+        "url": "https://digitsu.com/v/entries-k-guard-adam-benayoun"
+      },
+      {
+        "name": "Jon Calestine (Digitsu) - X-Guard Attacks / K Guard Kodex 설명",
+        "url": "https://digitsu.com/v/x-guard-attacks-sweep-with-second-leg-jon-calestine"
       }
     ]
   },
@@ -1333,6 +1985,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 먼 다리를 빼고 거리를 유지해 스쿠프가 안 되면",
         "note": "크로스 칼라 그립에서 소매 그립으로 바꾸고 K훅 다리로 가위 스윕을 건다"
       }
+    ],
+    "sources": [
+      {
+        "name": "FloGrappling (Corey Stockton) - K-guard Technique Showcase",
+        "url": "https://www.flograppling.com/articles/6812215-crucial-details-from-the-best-k-guard-players-technique-showcase"
+      },
+      {
+        "name": "Digitsu K-Guard Sweep 기술 페이지",
+        "url": "https://digitsu.com/t/k-guard-sweep"
+      }
     ]
   },
   {
@@ -1358,6 +2020,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "카프 슬라이서가 안 걸리고 상대 다리를 정리할 수 있으면",
         "note": "다리를 치우고 인버트해 상대 등 뒤로 이동, 시트벨트와 훅 확보"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu(Jon Calestine)",
+        "url": "https://digitsu.com/v/attacks-matrix-hook-calf-cutter-back-take-jon-calestine"
+      },
+      {
+        "name": "Atos BJJ OnDemand",
+        "url": "https://live.atosbjjondemand.com/calf-slicer/videos/calf-slice-position-from-closed-guard-to-back-take-and-slicer"
       }
     ]
   },
@@ -1385,6 +2057,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "암바가 걸리지 않거나 상대가 팔을 빼 버티면",
         "note": "무릎을 상대 몸 반대편으로 넘겨 마운트를 잡음"
       }
+    ],
+    "sources": [
+      {
+        "name": "Gracie Barra - KOB sequence (Marcio Feitosa, 6단 블랙벨트)",
+        "url": "https://graciebarra.com/gb-news/gb-technique-knee-on-belly-sequence-with-prof-marcio-feitosa"
+      },
+      {
+        "name": "Evolve University - 5 Attacks From KOB",
+        "url": "https://evolve-university.com/blog/5-attacks-from-the-knee-on-belly-position/"
+      },
+      {
+        "name": "Digitsu - Knee on Belly",
+        "url": "https://digitsu.com/t/knee-on-belly"
+      }
     ]
   },
   {
@@ -1406,6 +2092,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 자기 도복이나 벨트를 잡아 팔을 숨기면",
         "note": "기무라 그립으로 바꿔 어깨를 공격"
       }
+    ],
+    "sources": [
+      {
+        "name": "Gracie Barra - KOB sequence (Marcio Feitosa)",
+        "url": "https://graciebarra.com/gb-news/gb-technique-knee-on-belly-sequence-with-prof-marcio-feitosa"
+      },
+      {
+        "name": "Grapplearts - A Powerful Choke from Knee on Belly",
+        "url": "https://www.grapplearts.com/powerful-choke-knee-on-belly/"
+      }
     ]
   },
   {
@@ -1425,6 +2121,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "tech": "KNB-11",
         "role": "transition",
         "note": "상대 등을 넘어 스텝오버하며 백 컨트롤을 잡음"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Jitsu IQ - Knee on Belly",
+        "url": "https://jitsuiq.com/positions/mount/knee-on-belly.html"
+      },
+      {
+        "name": "Digitsu - Knee on Belly",
+        "url": "https://digitsu.com/t/knee-on-belly"
       }
     ]
   },
@@ -1446,6 +2152,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "then",
         "note": "상대가 예상 못 한 사이 두 번째 그립을 잡아 크로스 초크 마무리"
       }
+    ],
+    "sources": [
+      {
+        "name": "Grapplearts (Stephan Kesting, Denis Kang 기술)",
+        "url": "https://www.grapplearts.com/powerful-choke-knee-on-belly/"
+      },
+      {
+        "name": "Jitsu IQ - Knee on Belly",
+        "url": "https://jitsuiq.com/positions/mount/knee-on-belly.html"
+      }
     ]
   },
   {
@@ -1466,6 +2182,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "then",
         "note": "손바닥 위/아래 그립으로 팔꿈치를 모으고 상대가 새우처럼 빠지면 무릎을 떨어뜨려 조임을 강화"
       }
+    ],
+    "sources": [
+      {
+        "name": "Evolve MMA - BJJ 101: Baseball Choke",
+        "url": "https://evolve-mma.com/blog/bjj-101-baseball-choke/"
+      },
+      {
+        "name": "Jitsu IQ - Knee on Belly",
+        "url": "https://jitsuiq.com/positions/mount/knee-on-belly.html"
+      }
     ]
   },
   {
@@ -1485,6 +2211,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "tech": "KNB-10",
         "role": "transition",
         "note": "아메리카나가 안 되면 상대의 반응을 이용해 무릎을 넘겨 마운트를 잡는다"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Evolve University",
+        "url": "https://evolve-university.com/blog/5-attacks-from-the-knee-on-belly-position/"
+      },
+      {
+        "name": "JitsuIQ (아메리카나)",
+        "url": "https://jitsuiq.com/submissions/locks/joint-locks/americana.html"
       }
     ]
   },
@@ -1507,6 +2243,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 무릎이 아니라 내 배/몸통을 밀면",
         "note": "팔 배치 때문에 암바는 어렵지만 팔을 상대 팔 아래로 넣어 머리를 잡고 다르스 초크"
       }
+    ],
+    "sources": [
+      {
+        "name": "Evolve University",
+        "url": "https://evolve-university.com/blog/5-attacks-from-the-knee-on-belly-position/"
+      },
+      {
+        "name": "Bernardo Faria Academy (Chris Lyon 다르스)",
+        "url": "https://bernardofariaacademy.com/?p=1110"
+      }
     ]
   },
   {
@@ -1527,6 +2273,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "상대가 상체를 세워 버티거나 먼 쪽 다리를 넓게 벌려 스윕이 막히면",
         "note": "라소를 풀고 다리를 어깨 위로 넘겨 가둔 팔 쪽 오모플라타로 전환(스윕이 안 돼도 회전 동작 자체가 상대를 넘기는 경우가 있음)"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu 기술 사전 - Lasso Sweep",
+        "url": "https://digitsu.com/t/lasso-sweep"
+      },
+      {
+        "name": "Evolve MMA - Sweeps From The Lasso Guard",
+        "url": "https://evolve-mma.com/blog/sweeps-from-the-lasso-guard-a-complete-beginners-guide/"
+      },
+      {
+        "name": "Digitsu - All About the Lasso Guard",
+        "url": "https://app.digitsu.com/a/all-about-the-lasso-guard"
       }
     ]
   },
@@ -1549,6 +2309,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 트라이앵글을 막으려고 손을 등 뒤로 숨기면",
         "note": "한 손으로 상대 목을 밀어내며 다리를 어깨 위로 넘겨 오모플라타로 전환"
       }
+    ],
+    "sources": [
+      {
+        "name": "Danny Stolfi (Digitsu, Open Guard Fundamentals) - Gu Triangle Omoplata Lasso",
+        "url": "https://digitsu.com/v/gu-triangle-omoplata-lasso-danny-stolfi"
+      },
+      {
+        "name": "Grapplearts (Stephan Kesting) - Lasso Spider Guard to Omoplata",
+        "url": "https://www.grapplearts.com/lasso-spider-guard-to-omoplata/"
+      },
+      {
+        "name": "Digitsu - All About the Lasso Guard",
+        "url": "https://app.digitsu.com/a/all-about-the-lasso-guard"
+      }
     ]
   },
   {
@@ -1569,6 +2343,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "상대가 일어서서 균형을 잡고 스윕이 안 걸리면",
         "note": "남은 발로 상대 먼 쪽 다리를 컨트롤하고 아래로 들어가 싱글 레그 X(또는 X가드) 컨트롤로 전환 후 다음 스윕/레그락 연결"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu - All About the Lasso Guard",
+        "url": "https://app.digitsu.com/a/all-about-the-lasso-guard"
+      },
+      {
+        "name": "Jitsu IQ - Lasso Guard",
+        "url": "https://jitsuiq.com/positions/guard/lasso-guard.html"
+      },
+      {
+        "name": "Digitsu 기술 사전 - Lasso Guard",
+        "url": "https://digitsu.com/t/lasso-guard"
       }
     ]
   },
@@ -1591,6 +2379,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 물러나 라소가 풀리거나 스윕이 안 걸리면",
         "note": "라소를 풀고 발을 상대 먼 쪽 다리 뒤로 넣어 데라히바 후크로 컨트롤 유지"
       }
+    ],
+    "sources": [
+      {
+        "name": "Jitsu IQ - Lasso Guard",
+        "url": "https://jitsuiq.com/positions/guard/lasso-guard.html"
+      },
+      {
+        "name": "Digitsu 기술 사전 - Lasso Guard",
+        "url": "https://digitsu.com/t/lasso-guard"
+      },
+      {
+        "name": "Digitsu - All About the Lasso Guard",
+        "url": "https://app.digitsu.com/a/all-about-the-lasso-guard"
+      }
     ]
   },
   {
@@ -1612,6 +2414,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 자세를 세우거나 라소를 풀고 물러나려 할 때",
         "note": "소매를 몸 쪽으로 당기며 힙을 빼 아래로 파고든 뒤 상대 반대편으로 나와 라소를 풀고 시트벨트를 잡는다"
       }
+    ],
+    "sources": [
+      {
+        "name": "BJJEE - Andre Galvao의 DLR 라소 가드 백 테이크",
+        "url": "https://www.bjjee.com/?p=69748"
+      },
+      {
+        "name": "Digitsu - Lasso Guard",
+        "url": "https://digitsu.com/t/lasso-guard"
+      },
+      {
+        "name": "Digitsu - Lasso Back Take",
+        "url": "https://digitsu.com/t/lasso-back-take"
+      }
     ]
   },
   {
@@ -1632,6 +2448,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "회전 중 상대가 자세를 세워 오모플라타가 어긋날 때",
         "note": "회전을 이어가며 엉덩이를 들어 라소 다리를 목 쪽으로 넘겨 트라이앵글로 바꾼다"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Grapplearts (Stephan Kesting) - Lasso Spider Guard to Omoplata",
+        "url": "https://www.grapplearts.com/lasso-spider-guard-to-omoplata/"
+      },
+      {
+        "name": "Danny Stolfi (Digitsu) - Invert To Gonzalez Triangle Omoplata - Lasso",
+        "url": "https://digitsu.com/v/invert-to-gonzalez-triangle-omoplata-lasso-danny-stolfi"
       }
     ]
   },
@@ -1659,6 +2485,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "then",
         "note": "팔꿈치를 몸에 붙여 고립한 뒤 다리를 머리 너머로 넘겨 암바로 마무리"
       }
+    ],
+    "sources": [
+      {
+        "name": "jiujitsu.com 기술 페이지",
+        "url": "https://jiujitsu.com/blogs/techniques/s-mount-armbar-setup-and-finish"
+      },
+      {
+        "name": "Evolve MMA 블로그",
+        "url": "https://evolve-mma.com/blog/how-to-perform-the-s-mount-in-bjj/"
+      },
+      {
+        "name": "Gracie Barra 기술 글",
+        "url": "https://graciebarra.com/gb-news/gb-technique-4-different-types-of-top-mount"
+      }
     ]
   },
   {
@@ -1680,6 +2520,12 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 초크 미끼에 반응해 팔을 잡고 업빠로 뒤집으려 하면",
         "note": "드러난 팔을 고립해 체중을 옮기며 암바"
       }
+    ],
+    "sources": [
+      {
+        "name": "Atos BJJ On Demand 입문 강좌",
+        "url": "https://live.atosbjjondemand.com/packages/intro-jiu-jitsu/videos/intro-day-4-techniques-1-3"
+      }
     ]
   },
   {
@@ -1699,6 +2545,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "tech": "BC-01",
         "role": "then",
         "note": "백 컨트롤에서 RNC로 마무리"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Evolve University 블로그",
+        "url": "https://evolve-university.com/blog/how-to-use-the-gift-wrap-to-improve-your-bjj/"
+      },
+      {
+        "name": "JitsuIQ 기프트랩 페이지",
+        "url": "https://jitsuiq.com/positions/side-control/gift-wrap.html"
+      },
+      {
+        "name": "BJJ Fanatics/Digitsu 태그 페이지",
+        "url": "https://digitsu.com/t/gift-wrap"
       }
     ]
   },
@@ -1721,6 +2581,12 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 그립을 끊고 팔을 펴거나 밀어내면",
         "note": "팔이 펴진 쪽을 잡아 암바로 전환"
       }
+    ],
+    "sources": [
+      {
+        "name": "JitsuIQ 기무라 페이지",
+        "url": "https://jitsuiq.com/submissions/locks/joint-locks/kimura.html"
+      }
     ]
   },
   {
@@ -1741,6 +2607,12 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "상대가 팔을 빼며 옆으로 돌아 등을 보이면",
         "note": "무릎을 등 밑으로 넣어 훅을 걸며 백을 잡는다"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Graciemag (Marcos Giusti)",
+        "url": "https://www.graciemag.com/overcome-the-armbar-defense-with-a-transition-to-the-back-with-marcos-giusti/"
       }
     ]
   },
@@ -1768,6 +2640,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "transition",
         "note": "가슴을 등에 붙인 채 따라가 훅을 넣어 백 컨트롤을 만든다"
       }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu (기술적 마운트)",
+        "url": "https://digitsu.com/t/technical-mount"
+      },
+      {
+        "name": "JitsuIQ (기술적 마운트)",
+        "url": "https://jitsuiq.com/positions/mount/technical-mount.html"
+      },
+      {
+        "name": "Evolve MMA",
+        "url": "https://evolve-mma.com/blog/the-technical-mount-in-bjj-explained/"
+      }
     ]
   },
   {
@@ -1788,6 +2674,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "상대가 암바를 막으려 팔을 빼 방어하면",
         "note": "다리를 목 아래로 넣고 반대 다리를 걸어 팔과 목을 함께 가두는 삼각초크로 전환"
+      }
+    ],
+    "sources": [
+      {
+        "name": "BJJEE (Andre Galvao 영상 소개)",
+        "url": "https://www.bjjee.com/articles/andre-galvaos-sneaky-s-mount-triangle-trap/"
+      },
+      {
+        "name": "JitsuIQ (마운트 삼각)",
+        "url": "https://jitsuiq.com/submissions/chokes/mounted-triangle.html"
       }
     ]
   },
@@ -1816,6 +2712,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 팔을 바깥으로 돌리거나 도복/벨트를 잡아 팔을 숨기면",
         "note": "기무라 그립으로 바꿔 어깨를 공격"
       }
+    ],
+    "sources": [
+      {
+        "name": "JitsuIQ (아메리카나)",
+        "url": "https://jitsuiq.com/submissions/locks/joint-locks/americana.html"
+      },
+      {
+        "name": "NAGA Fighter",
+        "url": "https://www.nagafighter.com/what-is-the-americana-in-bjj"
+      },
+      {
+        "name": "Digitsu (아메리카나 컨트롤)",
+        "url": "https://digitsu.com/t/americana-control"
+      }
     ]
   },
   {
@@ -1836,6 +2746,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "상대가 팔을 몸에 붙여 기무라가 안 되면",
         "note": "기무라 그립을 유지한 채 상대 반대편까지 이동해 암바 마무리"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Atos BJJ OnDemand - Intro Day 17 (Galvao 커리큘럼)",
+        "url": "https://live.atosbjjondemand.com/videos/intro-day-17-techniques-1-3"
+      },
+      {
+        "name": "Grapplearts (Stephan Kesting) - North South Kimura",
+        "url": "https://www.grapplearts.com/the-north-south-kimura-armlock/"
+      },
+      {
+        "name": "Jitsu IQ - North South",
+        "url": "https://jitsuiq.com/positions/mount/north-south.html"
       }
     ]
   },
@@ -1858,6 +2782,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 기무라 방어 그립을 풀지 않고 버티면",
         "note": "그립을 놓지 않은 채 상대 등 쪽으로 이동해 백을 잡음(이후 크로스 칼라 초크로 연결 가능)"
       }
+    ],
+    "sources": [
+      {
+        "name": "Graciemag - Roger Gracie, kimura에서 초크로 (Dojjo 레슨)",
+        "url": "https://www.graciemag.com/video-roger-gracie-teaches-a-choke-starting-from-the-kimura/"
+      },
+      {
+        "name": "Grapplearts (Stephan Kesting) - North South Kimura",
+        "url": "https://www.grapplearts.com/the-north-south-kimura-armlock/"
+      },
+      {
+        "name": "Digitsu - Kimura Trap",
+        "url": "https://digitsu.com/t/kimura-trap"
+      }
     ]
   },
   {
@@ -1879,6 +2817,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 초크를 피하려고 옆으로 돌아 등을 보이면",
         "note": "움직임을 따라가 훅을 넣고 백 컨트롤로 이동"
       }
+    ],
+    "sources": [
+      {
+        "name": "Jitsu IQ - North South",
+        "url": "https://jitsuiq.com/positions/mount/north-south.html"
+      },
+      {
+        "name": "Digitsu - North-South",
+        "url": "https://digitsu.com/t/north-south"
+      }
     ]
   },
   {
@@ -1898,6 +2846,12 @@ export const COMBO_LIBRARY: Combo[] = [
         "tech": "NS-21",
         "role": "then",
         "note": "다리로 상대 팔을 가두는 크루시픽스 컨트롤을 만들어 백을 노림"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Damien BJJ Online 코스 목차 (검색 요약)",
+        "url": "https://bjjdamienonline.teachable.com/courses/1864515/lectures/43108905"
       }
     ]
   },
@@ -1919,6 +2873,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "transition",
         "note": "무릎 하나를 상대 몸통 위로 넘겨 마운트를 잡음"
       }
+    ],
+    "sources": [
+      {
+        "name": "Jitsu IQ - North South",
+        "url": "https://jitsuiq.com/positions/mount/north-south.html"
+      },
+      {
+        "name": "Digitsu - North-South",
+        "url": "https://digitsu.com/t/north-south"
+      }
     ]
   },
   {
@@ -1938,6 +2902,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "tech": "RDLR-21",
         "role": "then",
         "note": "상대 무릎 뒤를 프레임하고 아래로 스핀해 반대편으로 빠져나온 뒤 두 번째 훅을 넣어 엉덩이를 당겨 등을 공략"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Mason Fowler (Digitsu 'Cold Blooded Half Guard' 코스)",
+        "url": "https://digitsu.com/v/reverse-de-la-riva-kiss-of-the-dragon-mason-fowler"
+      },
+      {
+        "name": "Grapplearts (Stephan Kesting 계열) - Arm Drag from Reverse de la Riva",
+        "url": "https://www.grapplearts.com/arm-drag-from-reverse-de-la-riva-guard-simple-and-effective/"
+      },
+      {
+        "name": "Jitsu IQ - Reverse De La Riva",
+        "url": "https://jitsuiq.com/positions/guard/reverse-de-la-riva.html"
       }
     ]
   },
@@ -1960,6 +2938,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 어깨를 아래로 돌려 암바를 피하면",
         "note": "즉시 오모플라타로 전환: 발을 포개 얼굴 쪽을 밀어 무너뜨리고 팔꿈치를 닫은 채 등을 통제"
       }
+    ],
+    "sources": [
+      {
+        "name": "Seph Smith (Digitsu 'Reverse De La Riva Almanac' 코스)",
+        "url": "https://digitsu.com/v/platform-arm-bar-omoplata-seph-smith"
+      },
+      {
+        "name": "Jitsu IQ - Reverse De La Riva",
+        "url": "https://jitsuiq.com/positions/guard/reverse-de-la-riva.html"
+      }
     ]
   },
   {
@@ -1979,6 +2967,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "tech": "RDLR-02",
         "role": "then",
         "note": "발을 골반에 걸고 엉덩이를 띄워 반대쪽 햄스트링을 당겨 리버스 X로 이동, 상대를 앉힌 뒤 아래 훅을 빼고 머리를 가슴에 박으며 올라와 레그 드래그 포지션 확보"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Jason Rau (Digitsu 'Reverse De La Riva' 코스) - Leg Drag",
+        "url": "https://digitsu.com/v/leg-drag-jason-rau"
+      },
+      {
+        "name": "Bruno Frazatto (Digitsu) - Reverse De la Riva Leg Circle Leg Drag",
+        "url": "https://digitsu.com/v/reverse-de-la-riva-leg-circle-leg-drag-bruno-frazatto"
       }
     ]
   },
@@ -2000,6 +2998,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "then",
         "note": "상대가 체중을 되돌리면 다시 들어올리고, 반응에 맞춰 팔/다리를 컨트롤한 채 스윕. 올라온 뒤 팔 컨트롤(기무라 그립)이나 패스로 연결"
       }
+    ],
+    "sources": [
+      {
+        "name": "Lucas Lepri (Digitsu 'No-Gi Master Series')",
+        "url": "https://digitsu.com/v/reverse-de-la-riva-backwards-sweep-lucas-lepri"
+      },
+      {
+        "name": "Seph Smith (Digitsu 'Reverse De La Riva Almanac' 코스) - Back Roll Sweep",
+        "url": "https://digitsu.com/v/reverse-de-la-riva-back-roll-sweep-kimura-seph-smith"
+      },
+      {
+        "name": "Jitsu IQ - Reverse De La Riva",
+        "url": "https://jitsuiq.com/positions/guard/reverse-de-la-riva.html"
+      }
     ]
   },
   {
@@ -2019,6 +3031,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "tech": "RDLR-22",
         "role": "then",
         "note": "상대 밑으로 스핀해 상대 다리를 반대 손으로 넘기고 벨트를 잡은 채 등 쪽으로 롤. 가슴을 등에 붙이고 시트벨트 후 양발 훅"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu(Gianni Grippo)",
+        "url": "https://digitsu.com/v/rdlr-to-berimbolo-gianni-grippo"
+      },
+      {
+        "name": "Jitsu IQ - Reverse De La Riva",
+        "url": "https://jitsuiq.com/positions/guard/reverse-de-la-riva.html"
       }
     ]
   },
@@ -2040,6 +3062,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "transition",
         "note": "RDLR 훅으로 가까운 다리를 들어 올려 상대 체중을 뒷다리로 보내고 반대 발을 다리 사이로 넣어 싱글 레그 X. 상대가 손을 짚으면 발목이 아니라 뒤꿈치를 잡아 겨드랑이로 끌어당긴다"
       }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu(Gianni Grippo)",
+        "url": "https://digitsu.com/v/slx-entry-from-rdlr-gianni-grippo"
+      },
+      {
+        "name": "Digitsu(Adam Benayoun)",
+        "url": "https://digitsu.com/v/entries-reverse-de-la-riva-adam-benayoun"
+      }
     ]
   },
   {
@@ -2059,6 +3091,12 @@ export const COMBO_LIBRARY: Combo[] = [
         "tech": "RDLR-04",
         "role": "then",
         "note": "상대 먼 팔을 솔기를 잡아 2-on-1 그립으로 바꾸고, 팔 안쪽 발을 스파이더 훅처럼 무릎에 걸어 발가락을 말아 쥔다. 다리 힘만 쓰지 말고 가슴을 바닥 쪽으로 돌리며 팔을 당겨 스윕하고, 올라올 때 상대 발뒤꿈치를 걸어 마운트로 올라간다"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu(Seph Smith)",
+        "url": "https://digitsu.com/v/reverse-de-la-riva-2-on-1-grip-scissor-sweep-seph-smith"
       }
     ]
   },
@@ -2081,6 +3119,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 기무라를 버텨 그립이 쉽게 끊기지 않고 굴러 도망가지도 않으면",
         "note": "그립을 유지한 채 다리를 상대 머리 위로 넘겨 암바로 전환"
       }
+    ],
+    "sources": [
+      {
+        "name": "Kristina Barlaan (Digitsu, 블랙벨트 강사)",
+        "url": "https://digitsu.com/v/kimura-arm-lock-kristina-barlaan"
+      },
+      {
+        "name": "Lachlan Giles (Awesome Jiu Jitsu 정리 글)",
+        "url": "https://awesomejiujitsu.com/2019/05/07/side-control-kimura-options-from-lachlan-giles/"
+      },
+      {
+        "name": "Grapplearts (Stephan Kesting)",
+        "url": "https://www.grapplearts.com/two-powerful-armbars-from-side-control/"
+      }
     ]
   },
   {
@@ -2100,6 +3152,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "tech": "SC-11",
         "role": "transition",
         "note": "그립이 풀리지 않도록 유지하며 상대의 등 쪽으로 이동해 백을 잡음"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Lachlan Giles (Awesome Jiu Jitsu 정리 글)",
+        "url": "https://awesomejiujitsu.com/2019/05/07/side-control-kimura-options-from-lachlan-giles/"
+      },
+      {
+        "name": "Grapplearts 기무라 포지션 체크리스트",
+        "url": "https://www.grapplearts.com/wp-content/uploads/2025/10/The-Kimura-Position-Cheatsheet.pdf"
       }
     ]
   },
@@ -2121,6 +3183,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "then",
         "note": "뻗은 팔을 고립한 뒤 무릎을 모아 돌며 팔 쪽으로 스텝오버해 암바 마무리"
       }
+    ],
+    "sources": [
+      {
+        "name": "Grapplearts (Stephan Kesting) - armbar attacks from side control",
+        "url": "https://www.grapplearts.com/ambar-attacks-from-side-control/"
+      },
+      {
+        "name": "Bernardo Faria Academy (Demian Maia 사이드 암바 교정)",
+        "url": "https://bernardofariaacademy.com/all-articles/fix-side-control-armbar-demian-maia/"
+      }
     ]
   },
   {
@@ -2140,6 +3212,12 @@ export const COMBO_LIBRARY: Combo[] = [
         "tech": "SC-02",
         "role": "then",
         "note": "윗다리를 상대 팔과 갈비뼈 사이로 넣고 옆으로 누워 다리 방향을 보며 암바 마무리"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Grapplearts (Stephan Kesting, Marcelo Garcia에게 배운 기술)",
+        "url": "https://www.grapplearts.com/two-powerful-armbars-from-side-control/"
       }
     ]
   },
@@ -2161,6 +3239,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "then",
         "note": "가둔 팔의 반대쪽으로 몸을 옮겨 각도를 만들고 천천히 체중을 실어 조름"
       }
+    ],
+    "sources": [
+      {
+        "name": "Jitsu IQ",
+        "url": "https://jitsuiq.com/submissions/chokes/arm-triangle.html"
+      },
+      {
+        "name": "BJJ Ee",
+        "url": "https://www.bjjee.com/?p=11098"
+      }
     ]
   },
   {
@@ -2181,6 +3269,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "then",
         "note": "시트벨트로 백을 확보한 뒤 리어 네이키드 초크로 마무리"
       }
+    ],
+    "sources": [
+      {
+        "name": "Rafael Gordinho (Graciemag, 블랙벨트)",
+        "url": "https://www.graciemag.com/rafael-gordinho-a-transition-from-side-control-to-the-rear-naked-choke/"
+      },
+      {
+        "name": "Kristina Barlaan (Digitsu) - Side Control Back Take",
+        "url": "https://digitsu.com/v/side-control-back-take-kristina-barlaan"
+      }
     ]
   },
   {
@@ -2200,6 +3298,12 @@ export const COMBO_LIBRARY: Combo[] = [
         "tech": "MT-05",
         "role": "then",
         "note": "초크 위협으로 반응을 유도하고 먼 쪽 팔을 고립해 S-마운트로 돌며 암바"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Josh Griffiths (Jiujitsu.com)",
+        "url": "https://jiujitsu.com/blogs/techniques/s-mount-armbar-setup-and-finish"
       }
     ]
   },
@@ -2228,6 +3332,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "암바 중 상대가 팔을 아래로 돌려 팔꿈치를 몸에 붙이면",
         "note": "그립을 바꿔 손 아래로 넣어 기무라로 전환"
       }
+    ],
+    "sources": [
+      {
+        "name": "Evolve University",
+        "url": "https://evolve-university.com/blog/basic-bjj-combinations-arm-trap-series-from-side-control/"
+      },
+      {
+        "name": "JitsuIQ (아메리카나)",
+        "url": "https://jitsuiq.com/submissions/locks/joint-locks/americana.html"
+      },
+      {
+        "name": "NAGA Fighter",
+        "url": "https://www.nagafighter.com/what-is-the-americana-in-bjj"
+      }
     ]
   },
   {
@@ -2248,6 +3366,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "상대가 팔을 몸 쪽으로 당겨 빼려 하면",
         "note": "손등을 매트에 두고 재빨리 그립을 바꿔 팔꿈치를 들어 아메리카나로 마무리"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu (Kristina Barlaan)",
+        "url": "https://digitsu.com/v/kimura-arm-lock-americana-kristina-barlaan"
+      },
+      {
+        "name": "NAGA Fighter",
+        "url": "https://www.nagafighter.com/what-is-the-americana-in-bjj"
+      },
+      {
+        "name": "Digitsu (아메리카나 컨트롤)",
+        "url": "https://digitsu.com/t/americana-control"
       }
     ]
   },
@@ -2275,6 +3407,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 힙을 돌려 무릎을 빼내며(니라인 클리어) 새들을 풀려 하면",
         "note": "새들을 고집하지 말고 몸을 돌려 백사이드 50/50으로 진입해 힐훅 공격을 이어감(새들→백사이드 50/50 진입 기술)"
       }
+    ],
+    "sources": [
+      {
+        "name": "Grapplearts (Stephan Kesting) - 411 포지션 힐훅 마스터클래스",
+        "url": "https://www.grapplearts.com/a-masterclass-on-finishing-the-heel-hook-from-the-411-position"
+      },
+      {
+        "name": "Dan Jonaher - 무수메시 레그락 분석 글",
+        "url": "https://danjonaher.substack.com/p/mikey-musumeci-and-the-art-of-leg-locks"
+      },
+      {
+        "name": "Digitsu - Saddle Defense (기술 설명)",
+        "url": "https://digitsu.com/t/saddle-defense"
+      }
     ]
   },
   {
@@ -2301,6 +3447,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 서 있거나 발을 숨겨 힐이 노출되지 않으면",
         "note": "엔탱글먼트를 유지한 채 스윕으로 탑을 확보"
       }
+    ],
+    "sources": [
+      {
+        "name": "Dan Jonaher - 무수메시 레그락 분석 글",
+        "url": "https://danjonaher.substack.com/p/mikey-musumeci-and-the-art-of-leg-locks"
+      },
+      {
+        "name": "Living As A Grappler (Robert Diggle 세미나 정리)",
+        "url": "https://livingasagrappler.substack.com/p/leg-lock-everyone-with-this-system"
+      }
     ]
   },
   {
@@ -2321,6 +3477,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "상대가 니바를 피하려 무릎을 굽히거나 발을 빼려 하면",
         "note": "드러난 힐을 양손으로 컵 그립해 인사이드 힐훅으로 전환"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu - Heel Hook Dilemma (기술 설명)",
+        "url": "https://digitsu.com/t/heel-hook-dilemma"
+      },
+      {
+        "name": "Digitsu - Cross Ashi Garami (기술 설명)",
+        "url": "https://digitsu.com/t/cross-ashi-garami"
       }
     ]
   },
@@ -2343,6 +3509,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 힐을 숨기려 몸 전체를 안쪽으로 돌려 등이 노출되면",
         "note": "위쪽 다리를 빼고 일어나 상대를 따라가 백을 잡음"
       }
+    ],
+    "sources": [
+      {
+        "name": "Living As A Grappler (Robert Diggle 세미나 정리)",
+        "url": "https://livingasagrappler.substack.com/p/leg-lock-everyone-with-this-system"
+      },
+      {
+        "name": "Digitsu - Saddle Defense (기술 설명)",
+        "url": "https://digitsu.com/t/saddle-defense"
+      }
     ]
   },
   {
@@ -2363,6 +3539,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "상대가 발의 방향을 바꾸거나 보조 다리 제어를 못 얻어 인사이드 마무리가 막히면",
         "note": "다리를 중심선 반대로 넘겨 아웃사이드 힐훅으로 전환"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Living As A Grappler (Robert Diggle 세미나 정리)",
+        "url": "https://livingasagrappler.substack.com/p/leg-lock-everyone-with-this-system"
+      },
+      {
+        "name": "Digitsu - Cross Ashi Garami (기술 설명)",
+        "url": "https://digitsu.com/t/cross-ashi-garami"
+      },
+      {
+        "name": "BJJ More - The Saddle by Lachlan Giles 리뷰",
+        "url": "https://bjjmore.com/the-saddle-lachlan-giles/"
       }
     ]
   },
@@ -2391,6 +3581,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 압박을 풀려고 다리를 펴면",
         "note": "펴진 다리를 그대로 니바로 전환"
       }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu - Calf Slicer (기술 설명)",
+        "url": "https://digitsu.com/t/calf-slicer"
+      },
+      {
+        "name": "Digitsu - Cross Ashi Garami (기술 설명)",
+        "url": "https://digitsu.com/t/cross-ashi-garami"
+      },
+      {
+        "name": "Dan Jonaher - 무수메시 레그락 분석 글",
+        "url": "https://danjonaher.substack.com/p/mikey-musumeci-and-the-art-of-leg-locks"
+      }
     ]
   },
   {
@@ -2410,6 +3614,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "tech": "SLX-10",
         "role": "then",
         "note": "스윕으로 상대가 쓰러지면 오버훅 팔뚝을 아킬레스건에 걸고 허리를 아치로 당겨 앵클락. 스윕이 막혀 서 있으면 상대의 밀어붙이는 힘을 따라 몸을 돌려 배로 엎드린 앵클락 변형(IBJJF 금지인 니 리핑 포함)"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Evolve MMA - 3 Attacks From Single Leg X-Guard",
+        "url": "https://evolve-mma.com/blog/3-attacks-from-single-leg-x-guard-you-need-to-know/"
+      },
+      {
+        "name": "Digitsu - SLX Sweep",
+        "url": "https://digitsu.com/t/slx-sweep"
+      },
+      {
+        "name": "Jitsu IQ - Single-Leg X Guard",
+        "url": "https://jitsuiq.com/positions/guard/single-leg-x-guard.html"
       }
     ]
   },
@@ -2432,6 +3650,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 토홀드를 피해 굴러 빠져나가려 할 때",
         "note": "아래쪽 다리를 재빨리 빼서 풀고 상대 다리를 눌러 뒤꿈치를 잡아 니바로 전환"
       }
+    ],
+    "sources": [
+      {
+        "name": "BJJEE - This Single Leg X to Kneebar Setup (Victor Hugo)",
+        "url": "https://www.bjjee.com/articles/this-single-leg-x-to-kneebar-setup-works-every-time/"
+      },
+      {
+        "name": "Jitsu IQ - Single-Leg X Guard",
+        "url": "https://jitsuiq.com/positions/guard/single-leg-x-guard.html"
+      }
     ]
   },
   {
@@ -2451,6 +3679,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "tech": "SLX-11",
         "role": "then",
         "note": "무릎 라인을 제어하고 뒤꿈치를 잡아 아웃사이드 힐훅 (SLX 계열 기술이라 같은 포지션 연계로 취급)"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Jitsu IQ - Single-Leg X Guard",
+        "url": "https://jitsuiq.com/positions/guard/single-leg-x-guard.html"
+      },
+      {
+        "name": "Digitsu - Single Leg X",
+        "url": "https://digitsu.com/t/single-leg-x"
       }
     ]
   },
@@ -2473,6 +3711,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 베이스가 강해 스윕이 안 넘어가면",
         "note": "한 다리로 공간을 만들고 반대 발을 상대 종아리에 걸어 뒷문으로 빠져나가며 손으로 상대 옆구리를 앵커 삼아 엉덩이를 매트에 앉히고, 시트벨트를 먼저 잡은 뒤 훅을 넣는다"
       }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu(Gianni Grippo)",
+        "url": "https://digitsu.com/v/waiter-sweep-to-back-gianni-grippo"
+      },
+      {
+        "name": "Digitsu(Adam Benayoun)",
+        "url": "https://digitsu.com/v/short-hook-waiter-sweep-to-back-attack-adam-benayoun"
+      },
+      {
+        "name": "Jitsu IQ",
+        "url": "https://jitsuiq.com/positions/guard/single-leg-x-guard.html"
+      }
     ]
   },
   {
@@ -2492,6 +3744,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "tech": "SLX-25",
         "role": "transition",
         "note": "발을 먼저 보내 X 모양을 만들고, 살짝 차내며 상대 무릎 뒤를 잡아당겨 언더훅으로 X가드 확보. 그 뒤 스탠드업 스윕 등으로 이어간다"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu(Gianni Grippo)",
+        "url": "https://digitsu.com/v/slx-x-guard-drill-gianni-grippo"
+      },
+      {
+        "name": "Digitsu(Danny Stolfi)",
+        "url": "https://digitsu.com/v/connection-to-x-guard-technical-standup-standard-ashi-danny-stolfi"
       }
     ]
   },
@@ -2520,6 +3782,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 상체를 세워 트라이앵글을 버티면",
         "note": "소매 그립을 유지한 채 고립된 팔을 암바로 전환"
       }
+    ],
+    "sources": [
+      {
+        "name": "Evolve (Evolve Vacation 블로그) - 4 BJJ Submissions From Spider Guard",
+        "url": "https://evolve-vacation.com/blog/4-bjj-submissions-from-spider-guard/"
+      },
+      {
+        "name": "Digitsu 기술 사전 - Triangle From Spider Guard",
+        "url": "https://digitsu.com/t/triangle-from-spider-guard"
+      },
+      {
+        "name": "Graciemag - Gabriel Arges (Gracie Barra 블랙벨트) spider guard sweep to armbar",
+        "url": "https://www.graciemag.com/irvine-open-standout-gabriel-arges-teaches-a-spider-guard-sweep-that-leads-to-an-armbar/"
+      }
     ]
   },
   {
@@ -2541,6 +3817,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 스윕을 막으려 일어나 앉거나 몸을 세우면",
         "note": "그 순간 소매를 당겨 팔을 고립하고 다리를 머리 위로 넘겨 암바"
       }
+    ],
+    "sources": [
+      {
+        "name": "Graciemag - Gabriel Arges (Gracie Barra 블랙벨트)",
+        "url": "https://www.graciemag.com/irvine-open-standout-gabriel-arges-teaches-a-spider-guard-sweep-that-leads-to-an-armbar/"
+      },
+      {
+        "name": "Evolve (Evolve Vacation 블로그) - 4 BJJ Submissions From Spider Guard",
+        "url": "https://evolve-vacation.com/blog/4-bjj-submissions-from-spider-guard/"
+      }
     ]
   },
   {
@@ -2560,6 +3846,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "tech": "SP-11",
         "role": "then",
         "note": "힙을 빼 각도를 만들고 라소 다리를 어깨 위로 넘긴 뒤 반대 발은 이두에서 떼어 몸을 회전, 곧바로 일어나 앉아 상대 허리/벨트를 잡아 앞구르기를 막고 마무리"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Grapplearts (Stephan Kesting, 4단 블랙벨트) - Lasso Spider Guard to Omoplata",
+        "url": "https://www.grapplearts.com/lasso-spider-guard-to-omoplata/"
+      },
+      {
+        "name": "Gracie Barra - Prof. Draculino omoplata from spider guard",
+        "url": "https://graciebarra.com/gb-learning/offensive-game-friday-omaplata-from-the-spider-guard"
+      },
+      {
+        "name": "Digitsu 기술 사전 - Spider Guard Omoplata",
+        "url": "https://digitsu.com/t/spider-guard-omoplata"
       }
     ]
   },
@@ -2581,6 +3881,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "상대가 스윕을 피하려고 일어서면",
         "note": "기존 소매 그립을 유지한 채 남은 다리를 상대 다리 사이로 넣어 X계열 가드로 전환하고 스파이더/X 하이브리드로 스윕"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Gracie Barra - Spider Guard Sweeps with Prof. Marcio Feitosa",
+        "url": "https://graciebarra.com/gb-news/gb-technique-spider-guard-sweeps-with-prof-marcio-feitosa"
+      },
+      {
+        "name": "Erin Herle (Digitsu 코스) - X-Guard Back Roll",
+        "url": "https://digitsu.com/v/x-guard-back-roll-erin-herle"
+      },
+      {
+        "name": "Jitsu IQ - Tripod Sweep",
+        "url": "https://jitsuiq.com/sweeps/tripod-sweep.html"
       }
     ]
   },
@@ -2609,6 +3923,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "시클도 막혀 상대가 손으로 바닥을 짚을 때",
         "note": "소매를 유지한 채 아래로 파고들어 X가드를 만든다"
       }
+    ],
+    "sources": [
+      {
+        "name": "Jitsu IQ - Tripod Sweep",
+        "url": "https://jitsuiq.com/sweeps/tripod-sweep.html"
+      },
+      {
+        "name": "Jitsu IQ - Sickle Sweep",
+        "url": "https://jitsuiq.com/sweeps/sickle-sweep.html"
+      },
+      {
+        "name": "Gracie Barra - Spider Guard Sweeps with Prof. Marcio Feitosa",
+        "url": "https://graciebarra.com/gb-news/gb-technique-spider-guard-sweeps-with-prof-marcio-feitosa"
+      }
     ]
   },
   {
@@ -2629,6 +3957,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "상대가 다리를 짚어 스윕을 막을 때",
         "note": "상대 다리 아래로 돌아 들어가며 그 다리를 안아 니바를 건다"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Evolve (Evolve Vacation 블로그) - 4 BJJ Submissions From Spider Guard",
+        "url": "https://evolve-vacation.com/blog/4-bjj-submissions-from-spider-guard/"
+      },
+      {
+        "name": "Erin Herle (Digitsu 코스) - Kneebar",
+        "url": "https://digitsu.com/v/kneebar-erin-herle"
       }
     ]
   },
@@ -2651,6 +3989,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대가 균형을 유지하며 두 다리를 다시 모으거나 나를 향해 몸을 실을 때",
         "note": "다리를 늘린 뒤 상대가 먼 다리를 다시 가져오는 순간 그 발목을 잡고 다시 다리를 뻗어 무릎을 꺾어 넘김"
       }
+    ],
+    "sources": [
+      {
+        "name": "Grapplearts (Stephan Kesting) - My Favorite One-Two Sweeping Combo from X Guard",
+        "url": "https://www.grapplearts.com/my-favorite-one-two-sweeping-combo-from-x-guard/"
+      },
+      {
+        "name": "NAGA Fighter - What is the X Guard Sweep in BJJ?",
+        "url": "https://www.nagafighter.com/?p=2486"
+      },
+      {
+        "name": "Evolve MMA (BJJEE 게재) - 3 Attacks From X-Guard",
+        "url": "https://www.bjjee.com/articles/3-attacks-from-x-guard-you-need-to-know/"
+      }
     ]
   },
   {
@@ -2671,6 +4023,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "상대가 두 다리를 최대한 모아 앞으로 못 넘어지게 막으면",
         "note": "무릎 뒤의 발을 발목 뒤로 내리고 위쪽 발로 상대 골반을 차 뒤로 쓰러뜨림"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Evolve MMA (BJJEE 게재) - 3 Attacks From X-Guard",
+        "url": "https://www.bjjee.com/articles/3-attacks-from-x-guard-you-need-to-know/"
+      },
+      {
+        "name": "Grapplearts (Stephan Kesting) - Favorite One-Two Sweeping Combo",
+        "url": "https://www.grapplearts.com/my-favorite-one-two-sweeping-combo-from-x-guard/"
       }
     ]
   },
@@ -2693,6 +4055,20 @@ export const COMBO_LIBRARY: Combo[] = [
         "trigger": "상대 기반이 너무 강해 스윕이 안 되고 한쪽 다리에 체중을 실을 때",
         "note": "스윕을 포기하고 상대 아래로 돌아 들어가 다리를 넘겨 백을 잡는다(도감 XG-22와 이름·세부가 같다고 확정되지 않은 X가드 백 테이크)"
       }
+    ],
+    "sources": [
+      {
+        "name": "Grapplearts (Stephan Kesting) - How to Take the Back from X Guard",
+        "url": "https://www.grapplearts.com/how-to-take-the-back-from-x-guard/"
+      },
+      {
+        "name": "NAGA Fighter - What is the X Guard Sweep in BJJ?",
+        "url": "https://www.nagafighter.com/?p=2486"
+      },
+      {
+        "name": "Digitsu(Gianni Grippo)",
+        "url": "https://digitsu.com/v/x-guard-back-take-gianni-grippo"
+      }
     ]
   },
   {
@@ -2713,6 +4089,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "상대가 발이나 손을 넓게 짚어 첫 스윕이 막히면",
         "note": "엉덩이를 당겨 각도를 다시 잡고 후크를 바꿔 싱글 레그 X로 전환하여 공격 지속"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Digitsu - X-guard Sweep (기술 해설)",
+        "url": "https://digitsu.com/t/x-guard-sweep"
+      },
+      {
+        "name": "Jitsu IQ - X Guard",
+        "url": "https://jitsuiq.com/positions/guard/x-guard.html"
       }
     ]
   },
@@ -2740,6 +4126,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "then",
         "note": "발목을 양손으로 잡고 엉덩이를 앞으로 밀어 스트레이트 앵클락"
       }
+    ],
+    "sources": [
+      {
+        "name": "Evolve MMA (BJJEE 게재) - 3 Attacks From X-Guard",
+        "url": "https://www.bjjee.com/articles/3-attacks-from-x-guard-you-need-to-know/"
+      },
+      {
+        "name": "NAGA Fighter - What is the X Guard Sweep in BJJ?",
+        "url": "https://www.nagafighter.com/?p=2486"
+      }
     ]
   },
   {
@@ -2766,6 +4162,16 @@ export const COMBO_LIBRARY: Combo[] = [
         "role": "if_blocked",
         "trigger": "노크백도 막혀 상대가 균형을 되찾고 서 있으면",
         "note": "위쪽 발을 먼 골반에서 가까운 골반으로 옮기고 아래 다리를 언더훅한 다리 둘레로 돌려 뒤꿈치를 엉덩이 쪽에 붙인 뒤, 엉덩이를 무릎 위로 밀며 뒤꿈치를 당겨 니바"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Evolve MMA(bjjee 재게재 동일 글)",
+        "url": "https://evolve-mma.com/blog/3-attacks-from-x-guard-worth-adding-to-your-bjj-game/"
+      },
+      {
+        "name": "Digitsu(Johnny Tama)",
+        "url": "https://digitsu.com/v/waiter-position-x-guard-knee-bar-johnny-tama"
       }
     ]
   }

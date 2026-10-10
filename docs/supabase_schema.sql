@@ -135,3 +135,32 @@ create policy "본인 목표만 생성" on public.technique_goals
 
 create policy "본인 목표만 삭제" on public.technique_goals
   for delete using (auth.uid() = user_id);
+
+-- ============================================
+-- 5. combo_feedback — AI 추천 게임플랜 👍/👎 (2026-10-10, 마이그레이션 combo_feedback_and_llm_cache)
+-- 6. recommend_llm_cache — LLM 보조 결과 하루 캐시 (같은 입력은 재호출 안 함)
+-- ============================================
+create table if not exists public.combo_feedback (
+  user_id uuid not null references auth.users(id) on delete cascade,
+  combo_id text not null,
+  vote smallint not null check (vote in (-1, 1)),
+  updated_at timestamptz not null default now(),
+  primary key (user_id, combo_id)
+);
+alter table public.combo_feedback enable row level security;
+create policy "own feedback select" on public.combo_feedback for select using (auth.uid() = user_id);
+create policy "own feedback insert" on public.combo_feedback for insert with check (auth.uid() = user_id);
+create policy "own feedback update" on public.combo_feedback for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+create policy "own feedback delete" on public.combo_feedback for delete using (auth.uid() = user_id);
+
+create table if not exists public.recommend_llm_cache (
+  user_id uuid not null references auth.users(id) on delete cascade,
+  cache_key text not null,
+  payload jsonb not null,
+  created_at timestamptz not null default now(),
+  primary key (user_id, cache_key)
+);
+alter table public.recommend_llm_cache enable row level security;
+create policy "own cache select" on public.recommend_llm_cache for select using (auth.uid() = user_id);
+create policy "own cache insert" on public.recommend_llm_cache for insert with check (auth.uid() = user_id);
+create policy "own cache delete" on public.recommend_llm_cache for delete using (auth.uid() = user_id);

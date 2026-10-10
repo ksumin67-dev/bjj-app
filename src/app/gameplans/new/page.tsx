@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { getGamePlanFormData } from "@/lib/gamePlanFormData";
+import { planForComboId } from "@/lib/gamePlanRecommend";
 import { GamePlanForm } from "@/components/gamePlans/GamePlanForm";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 
@@ -13,9 +14,9 @@ export default async function NewGamePlanPage({
   searchParams: { rec?: string };
 }) {
   const rec = searchParams.rec;
-  const { stepTechniques, positionNameById, goalTechniqueIds, recentTechniqueIds, recommendations } =
-    await getGamePlanFormData({ withRecommendations: Boolean(rec) });
-  const prefill = rec ? recommendations.plans.find((p) => p.id === rec) : undefined;
+  const { stepTechniques, positionNameById, goalTechniqueIds, recentTechniqueIds } =
+    await getGamePlanFormData();
+  const prefill = rec ? planForComboId(rec, stepTechniques) ?? undefined : undefined;
 
   return (
     <PageWrapper>

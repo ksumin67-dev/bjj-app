@@ -6,19 +6,23 @@ import { getMyTechniqueGoals } from "@/lib/supabase/techniqueGoals";
 import { getAllAthletes } from "@/lib/airtable/athletes";
 import { buildTrainingCountMap, type Technique } from "@/types/domain";
 import { recommendGamePlans, type Recommendations } from "@/lib/gamePlanRecommend";
+import { getMyComboVotes } from "@/lib/supabase/comboFeedback";
 
 /**
  * 게임플랜 작성/수정 폼에 필요한 데이터 한 번에 준비 (2026-09-20).
  * 새 게임플랜과 수정 페이지에서 공통 사용.
  */
-export async function getGamePlanFormData(opts: { withRecommendations?: boolean } = {}) {
-  const [positions, techniques, sessions, goals, athletes] = await Promise.all([
+export async function getGamePlanFormData(
+  opts: { withRecommendations?: boolean; recLimit?: number } = {},
+) {
+  const [positions, techniques, sessions, goals, athletes, votes] = await Promise.all([
     getAllPositions(),
     getAllTechniques(),
     getAllTrainingSessions(),
     getMyTechniqueGoals(),
     // 추천은 새 게임플랜 화면에서만 필요 — 수정 화면에서는 Airtable 호출 생략
     opts.withRecommendations ? getAllAthletes().catch(() => []) : Promise.resolve([]),
+    opts.withRecommendations ? getMyComboVotes() : Promise.resolve(new Map<string, 1 | -1>()),
   ]);
 
   // 포지션(부모) 레코드는 게임플랜 단계로 직접 선택하지 않음 — 구체적 자식 기술만 선택 대상
@@ -61,6 +65,8 @@ export async function getGamePlanFormData(opts: { withRecommendations?: boolean 
         techniqueRecordId: g.techniqueRecordId,
         athleteRecordId: g.athleteRecordId,
       })),
+      dislikedComboIds: new Set([...votes].filter(([, v]) => v === -1).map(([id]) => id)),
+      limit: opts.recLimit,
     });
   }
 
@@ -78,5 +84,11 @@ export async function getGamePlanFormData(opts: { withRecommendations?: boolean 
     recentTechniqueIds,
     recommendations,
     signals,
+    /** 수련 횟수 많은 순 상위 기술 recordId (LLM 보조 입력용) */
+    topTrainedIds: Object.entries(trainingCountMap)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 8)
+      .map(([id]) => id),
+    comboVotes: votes,
   };
 }
