@@ -2,11 +2,14 @@ import type { Technique, Athlete, TechniqueType } from "@/types/domain";
 import { GAME_PLAN_TEMPLATES } from "@/lib/gamePlanTemplates";
 
 /**
- * AI 추천 게임플랜 — 1단계: 규칙 기반 추천 엔진 (2026-10-10)
+ * AI 추천 게임플랜 — 규칙 기반 추천 엔진 (2026-10-10)
  *
- * 내 수련 기록·찜한 기술을 바탕으로 "컨트롤 → 전환(스윕/패스) → 피니시" 흐름의
- * 기술 체인을 조립한다. 기록이 없으면 대표 선수 시그니처 기반 추천을 보여준다.
- * 기술도감에 실제로 있는 기술(recordId)만 조합하므로 존재하지 않는 기술이 나올 수 없다.
+ * 세 가지 신호를 하나로 합쳐 추천한다 (탭 구분 없음).
+ *   1) 내 수련 기록       — 많이 수련한 포지션
+ *   2) 좋아요(찜)한 기술   — 배우고 싶은 기술이 속한 포지션
+ *   3) 좋아요한 선수 스타일 — 찜한 기술에 연결된 대표 선수(athleteRecordId)
+ * 신호가 없으면 기본 큐레이션 템플릿을 보여준다.
+ * 기술도감에 실제 있는 기술(recordId)만 조합하므로 존재하지 않는 기술이 나올 수 없다.
  * (2단계에서 LLM이 이름·설명만 다듬는 구조로 확장 예정.)
  */
 
@@ -19,8 +22,16 @@ export type RecommendedPlan = {
   techRecordIds: string[];
   /** 카드에 표시되는 추천 이유 한 줄 */
   reason: string;
-  source: "mine" | "athlete" | "curated";
+  source: "position" | "athlete" | "curated";
 };
+
+export type Recommendations = {
+  plans: RecommendedPlan[];
+  /** true면 내 기록/좋아요 기반, false면 기본 템플릿 */
+  personalized: boolean;
+};
+
+export type GoalSignal = { techniqueRecordId: string; athleteRecordId: string | null };
 
 // 흐름 단계: 0 = 컨트롤/세팅, 1 = 전환(스윕·패스·이탈 등), 2 = 피니시
 const FINISH_TYPES: TechniqueType[] = [
@@ -61,7 +72,7 @@ function buildChain(candidates: Technique[], ctx: Ctx): Technique[] | null {
     ...byStage[1].slice(0, 2),
     ...byStage[2].slice(0, 2),
   ];
-  // 단계가 비어 3개가 안 되면 남은 후보로 채움 (최대 5개)
+  // 단계가 비어 3개가 안 되면 남은 후보로 채움
   if (chain.length < 3) {
     const used = new Set(chain.map((t) => t.recordId));
     const rest = candidates.filter((t) => !used.has(t.recordId)).sort((a, b) => rank(a, b, ctx));
@@ -73,94 +84,8 @@ function buildChain(candidates: Technique[], ctx: Ctx): Technique[] | null {
   return chain.length >= 3 ? chain : null;
 }
 
-/** 내 수련 기반 추천 — 수련·찜 기록이 없으면 빈 배열 */
-export function recommendFromMyTraining(args: {
-  techniques: Technique[];
-  positionNameById: Record<string, string>;
-  trainingCountMap: Record<string, number>;
-  goalTechniqueIds: string[];
-  limit?: number;
-}): RecommendedPlan[] {
-  const { techniques, positionNameById, trainingCountMap, goalTechniqueIds, limit = 3 } = args;
-  const ctx: Ctx = { trainingCountMap, goalIdSet: new Set(goalTechniqueIds) };
-
-  // 포지션별 점수 = 수련 횟수 합 + 찜한 기술당 5점
-  const score = new Map<string, number>();
-  const trainedInPos = new Map<string, number>();
-  for (const t of techniques) {
-    if (!t.parentId) continue;
-    const c = trainingCountMap[t.recordId] ?? 0;
-    const g = ctx.goalIdSet.has(t.recordId) ? 5 : 0;
-    if (c + g > 0) score.set(t.parentId, (score.get(t.parentId) ?? 0) + c + g);
-    if (c > 0) trainedInPos.set(t.parentId, (trainedInPos.get(t.parentId) ?? 0) + c);
-  }
-
-  const topPositions = [...score.entries()].sort((a, b) => b[1] - a[1]).map(([id]) => id);
-  const results: RecommendedPlan[] = [];
-
-  for (const posId of topPositions) {
-    if (results.length >= limit) break;
-    const candidates = techniques.filter((t) => t.parentId === posId);
-    const chain = buildChain(candidates, ctx);
-    if (!chain) continue;
-
-    const posName = positionNameById[posId] ?? posId;
-    const first = chain.find((t) => stageOf(t) === 1) ?? chain[1];
-    const last = chain[chain.length - 1];
-    const goalIn = chain.filter((t) => ctx.goalIdSet.has(t.recordId));
-    const untrained = chain.filter((t) => (trainingCountMap[t.recordId] ?? 0) === 0);
-    const reps = trainedInPos.get(posId) ?? 0;
-
-    const reasonParts: string[] = [];
-    if (reps > 0) reasonParts.push(`${posName} 기술을 ${reps}번 수련했어요`);
-    if (goalIn.length > 0) reasonParts.push(`배우고 싶은 '${goalIn[0].nameKo}' 포함`);
-    else if (untrained.length > 0) reasonParts.push(`안 해본 기술 ${untrained.length}개로 확장`);
-
-    results.push({
-      id: `mine-${posId}`,
-      name: `${posName} 연계 플랜`,
-      note: `${posName}에서 ${first.nameKo}(으)로 시작해 ${last.nameKo}까지 이어가는 흐름이에요.`,
-      techRecordIds: chain.map((t) => t.recordId),
-      reason: reasonParts.join(" · ") || `${posName} 중심으로 구성했어요`,
-      source: "mine",
-    });
-  }
-  return results;
-}
-
-/** 유명 선수 스타일 추천 — 대표 선수의 시그니처 기술로 조합. 선수 순서는 입력 순서 유지 */
-export function recommendFromAthletes(args: {
-  techniques: Technique[];
-  athletes: Athlete[];
-  trainingCountMap: Record<string, number>;
-  goalTechniqueIds: string[];
-  limit?: number;
-}): RecommendedPlan[] {
-  const { techniques, athletes, trainingCountMap, goalTechniqueIds, limit = 4 } = args;
-  const ctx: Ctx = { trainingCountMap, goalIdSet: new Set(goalTechniqueIds) };
-  const results: RecommendedPlan[] = [];
-
-  for (const a of athletes) {
-    if (results.length >= limit) break;
-    const candidates = techniques.filter((t) => t.athleteRecordIds.includes(a.recordId));
-    const chain = buildChain(candidates, ctx);
-    if (!chain) continue;
-
-    const tags = a.styleTags.slice(0, 2).join(" · ");
-    results.push({
-      id: `athlete-${a.recordId}`,
-      name: `${a.nameKo} 스타일`,
-      note: `${a.nameKo}의 시그니처 기술로 구성한 조합이에요.${a.signatureSystem ? ` (${a.signatureSystem})` : ""}`,
-      techRecordIds: chain.map((t) => t.recordId),
-      reason: tags ? `${tags} · 시그니처 기술 ${chain.length}개` : `시그니처 기술 ${chain.length}개`,
-      source: "athlete",
-    });
-  }
-  return results;
-}
-
-/** 선수 데이터가 부족할 때의 기본 큐레이션 (기존 템플릿을 같은 형태로 변환) */
-export function curatedFallback(techniques: Technique[]): RecommendedPlan[] {
+/** 기본 큐레이션 템플릿을 같은 형태로 변환 */
+function curatedPlans(techniques: Technique[]): RecommendedPlan[] {
   return GAME_PLAN_TEMPLATES.flatMap((tpl) => {
     const ids = tpl.techShortIds
       .map((sid) => techniques.find((t) => t.id === sid)?.recordId)
@@ -177,4 +102,119 @@ export function curatedFallback(techniques: Technique[]): RecommendedPlan[] {
       },
     ];
   });
+}
+
+/**
+ * 통합 추천. 개인화 결과가 하나도 없으면 기본 템플릿만,
+ * 있어도 3개 미만이면 기본 템플릿으로 채워 화면이 비어 보이지 않게 한다.
+ */
+export function recommendGamePlans(args: {
+  techniques: Technique[];
+  athletes: Athlete[];
+  positionNameById: Record<string, string>;
+  trainingCountMap: Record<string, number>;
+  goals: GoalSignal[];
+  limit?: number;
+}): Recommendations {
+  const { techniques, athletes, positionNameById, trainingCountMap, goals, limit = 4 } = args;
+  const ctx: Ctx = {
+    trainingCountMap,
+    goalIdSet: new Set(goals.map((g) => g.techniqueRecordId)),
+  };
+
+  const scored: { plan: RecommendedPlan; score: number }[] = [];
+
+  // ── 1) 포지션 기반: 수련 횟수 합 + 찜한 기술당 5점 ─────────────────────────
+  const posScore = new Map<string, number>();
+  const posTrained = new Map<string, number>();
+  for (const t of techniques) {
+    if (!t.parentId) continue;
+    const c = trainingCountMap[t.recordId] ?? 0;
+    const g = ctx.goalIdSet.has(t.recordId) ? 5 : 0;
+    if (c + g > 0) posScore.set(t.parentId, (posScore.get(t.parentId) ?? 0) + c + g);
+    if (c > 0) posTrained.set(t.parentId, (posTrained.get(t.parentId) ?? 0) + c);
+  }
+
+  for (const [posId, score] of posScore) {
+    const candidates = techniques.filter((t) => t.parentId === posId);
+    const chain = buildChain(candidates, ctx);
+    if (!chain) continue;
+
+    const posName = positionNameById[posId] ?? posId;
+    const mid = chain.find((t) => stageOf(t) === 1) ?? chain[1];
+    const last = chain[chain.length - 1];
+    const goalIn = chain.filter((t) => ctx.goalIdSet.has(t.recordId));
+    const untrained = chain.filter((t) => (trainingCountMap[t.recordId] ?? 0) === 0);
+    const reps = posTrained.get(posId) ?? 0;
+
+    const reasons: string[] = [];
+    if (reps > 0) reasons.push(`${posName} 기술을 ${reps}번 수련했어요`);
+    if (goalIn.length > 0) reasons.push(`배우고 싶은 '${goalIn[0].nameKo}' 포함`);
+    else if (untrained.length > 0) reasons.push(`안 해본 기술 ${untrained.length}개로 확장`);
+
+    scored.push({
+      score,
+      plan: {
+        id: `position-${posId}`,
+        name: `${posName} 연계 플랜`,
+        note: `${posName}에서 ${mid.nameKo}(으)로 시작해 ${last.nameKo}까지 이어가는 흐름이에요.`,
+        techRecordIds: chain.map((t) => t.recordId),
+        reason: reasons.join(" · ") || `${posName} 중심으로 구성했어요`,
+        source: "position",
+      },
+    });
+  }
+
+  // ── 2) 선수 스타일 기반: 좋아요한 기술의 대표 선수 + 시그니처 기술 수련량 ──
+  const athleteLikes = new Map<string, number>();
+  for (const g of goals) {
+    if (g.athleteRecordId) {
+      athleteLikes.set(g.athleteRecordId, (athleteLikes.get(g.athleteRecordId) ?? 0) + 1);
+    }
+  }
+
+  for (const a of athletes) {
+    const signature = techniques.filter((t) => t.athleteRecordIds.includes(a.recordId));
+    const trained = signature.reduce((s, t) => s + (trainingCountMap[t.recordId] ?? 0), 0);
+    const likes = athleteLikes.get(a.recordId) ?? 0;
+    const score = likes * 5 + trained;
+    if (score <= 0) continue;
+
+    const chain = buildChain(signature, ctx);
+    if (!chain) continue;
+
+    const reasons: string[] = [];
+    if (likes > 0) reasons.push(`좋아요한 ${a.nameKo} 기술 ${likes}개`);
+    if (trained > 0) reasons.push(`시그니처 기술을 ${trained}번 수련했어요`);
+    const tags = a.styleTags.slice(0, 2).join(" · ");
+    if (reasons.length === 0 && tags) reasons.push(tags);
+
+    scored.push({
+      score,
+      plan: {
+        id: `athlete-${a.recordId}`,
+        name: `${a.nameKo} 스타일`,
+        note: `${a.nameKo}의 시그니처 기술로 구성한 조합이에요.${a.signatureSystem ? ` (${a.signatureSystem})` : ""}`,
+        techRecordIds: chain.map((t) => t.recordId),
+        reason: reasons.join(" · "),
+        source: "athlete",
+      },
+    });
+  }
+
+  const personal = scored
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map((s) => s.plan);
+
+  const curated = curatedPlans(techniques);
+  if (personal.length === 0) return { plans: curated, personalized: false };
+
+  // 개인화 결과가 3개 미만이면 기본 템플릿으로 채움
+  const plans = [...personal];
+  for (const c of curated) {
+    if (plans.length >= 3) break;
+    plans.push(c);
+  }
+  return { plans, personalized: true };
 }

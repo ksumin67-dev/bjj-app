@@ -5,12 +5,7 @@ import { getAllTrainingSessions } from "@/lib/supabase/trainingSessions";
 import { getMyTechniqueGoals } from "@/lib/supabase/techniqueGoals";
 import { getAllAthletes } from "@/lib/airtable/athletes";
 import { buildTrainingCountMap, type Technique } from "@/types/domain";
-import {
-  recommendFromMyTraining,
-  recommendFromAthletes,
-  curatedFallback,
-  type RecommendedPlan,
-} from "@/lib/gamePlanRecommend";
+import { recommendGamePlans, type Recommendations } from "@/lib/gamePlanRecommend";
 
 /**
  * 게임플랜 작성/수정 폼에 필요한 데이터 한 번에 준비 (2026-09-20).
@@ -49,27 +44,19 @@ export async function getGamePlanFormData(opts: { withRecommendations?: boolean 
     if (recentTechniqueIds.length >= 16) break;
   }
 
-  // AI 추천 게임플랜 (2026-10-10) — 규칙 기반 1단계
-  let recommendations: { mine: RecommendedPlan[]; athletes: RecommendedPlan[] } = {
-    mine: [],
-    athletes: [],
-  };
+  // AI 추천 게임플랜 (2026-10-10) — 수련 기록 + 좋아요한 기술/선수 통합, 신호 없으면 기본 템플릿
+  let recommendations: Recommendations = { plans: [], personalized: false };
   if (opts.withRecommendations) {
-    const trainingCountMap = buildTrainingCountMap(sessions);
-    const mine = recommendFromMyTraining({
-      techniques: stepTechniques,
-      positionNameById,
-      trainingCountMap,
-      goalTechniqueIds,
-    });
-    let athletePlans = recommendFromAthletes({
+    recommendations = recommendGamePlans({
       techniques: stepTechniques,
       athletes,
-      trainingCountMap,
-      goalTechniqueIds,
+      positionNameById,
+      trainingCountMap: buildTrainingCountMap(sessions),
+      goals: goals.map((g) => ({
+        techniqueRecordId: g.techniqueRecordId,
+        athleteRecordId: g.athleteRecordId,
+      })),
     });
-    if (athletePlans.length === 0) athletePlans = curatedFallback(stepTechniques);
-    recommendations = { mine, athletes: athletePlans };
   }
 
   return {

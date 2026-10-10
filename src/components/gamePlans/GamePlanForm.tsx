@@ -11,7 +11,7 @@ import {
   updateGamePlanAction,
   type CreateGamePlanFormState,
 } from "@/lib/actions/gamePlans";
-import type { RecommendedPlan } from "@/lib/gamePlanRecommend";
+import type { RecommendedPlan, Recommendations } from "@/lib/gamePlanRecommend";
 import type { Technique, GamePlan } from "@/types/domain";
 import { cn, normalizeKorean } from "@/lib/utils";
 
@@ -60,7 +60,7 @@ export function GamePlanForm({
   mode?: "create" | "edit";
   initial?: GamePlan;
   /** AI 추천 게임플랜 — 새로 만들 때만 전달 */
-  recommendations?: { mine: RecommendedPlan[]; athletes: RecommendedPlan[] };
+  recommendations?: Recommendations;
   techniques: Technique[];
   /** 포지션 짧은 ID(예: "CG") → 한글 이름. 기술 선택창의 그룹 제목에 사용 */
   positionNameById: Record<string, string>;
@@ -89,10 +89,6 @@ export function GamePlanForm({
   const [searchQuery, setSearchQuery] = useState("");
   const [techPickerOpen, setTechPickerOpen] = useState(false);
   const [appliedTemplate, setAppliedTemplate] = useState<string | null>(null);
-  // 수련 기록 기반 추천이 있으면 그 탭이 먼저, 없으면 유명 선수 스타일
-  const [recTab, setRecTab] = useState<"mine" | "athletes">(
-    recommendations && recommendations.mine.length > 0 ? "mine" : "athletes",
-  );
 
   const techByRecordId = useMemo(() => {
     const m = new Map<string, Technique>();
@@ -165,10 +161,6 @@ export function GamePlanForm({
     setAppliedTemplate(plan.id);
   }
 
-  const recList = recommendations
-    ? recTab === "mine" ? recommendations.mine : recommendations.athletes
-    : [];
-
   return (
     <form action={formAction} className="space-y-3">
       {isEdit && initial && <input type="hidden" name="planId" value={initial.recordId} />}
@@ -179,98 +171,52 @@ export function GamePlanForm({
         </div>
       )}
 
-      {/* AI 추천 게임플랜 — 새로 만들 때만 */}
-      {!isEdit && recommendations && (
+      {/* AI 추천 게임플랜 — 새로 만들 때만. 수련 기록·좋아요한 기술/선수 기반, 없으면 기본 템플릿 */}
+      {!isEdit && recommendations && recommendations.plans.length > 0 && (
         <SectionCard
           icon={Sparkles}
           title="AI 추천 게임플랜"
           hint={
-            recTab === "mine"
-              ? "내 수련 기록과 배우고 싶은 기술을 바탕으로 만들었어요. 고르면 아래에 채워져요."
-              : "대표 선수들의 시그니처 기술로 만든 조합이에요. 고르면 아래에 채워져요."
+            recommendations.personalized
+              ? "내 수련 기록과 좋아요한 기술·선수를 바탕으로 만들었어요. 고르면 아래에 채워져요."
+              : "기본 추천이에요. 수련을 기록하거나 기술·선수에 좋아요를 누르면 나만의 추천이 만들어져요."
           }
         >
-          <div className="flex gap-1.5 mb-3">
-            {(
-              [
-                { key: "mine", label: "내 수련 기반", count: recommendations.mine.length },
-                { key: "athletes", label: "유명 선수 스타일", count: recommendations.athletes.length },
-              ] as const
-            ).map((tab) => {
-              const on = recTab === tab.key;
+          <div className="space-y-2">
+            {recommendations.plans.map((plan) => {
+              const active = appliedTemplate === plan.id;
+              const names = plan.techRecordIds
+                .map((id) => techByRecordId.get(id)?.nameKo)
+                .filter((n): n is string => Boolean(n));
               return (
                 <button
-                  key={tab.key}
+                  key={plan.id}
                   type="button"
-                  onClick={() => setRecTab(tab.key)}
-                  className="h-8 px-3 rounded-full text-[12px] font-semibold transition-colors duration-fast"
-                  style={
-                    on
-                      ? { backgroundColor: "#D9772E", color: "#fff" }
-                      : { backgroundColor: FIELD_BG, color: MUTED, border: `1px solid ${FIELD_BORDER}` }
-                  }
+                  onClick={() => applyRecommendation(plan)}
+                  className="w-full text-left rounded-xl px-3.5 py-3 transition-colors duration-fast active:scale-[0.98]"
+                  style={{
+                    backgroundColor: FIELD_BG,
+                    border: active ? "1px solid rgba(217,119,46,0.6)" : `1px solid ${FIELD_BORDER}`,
+                  }}
                 >
-                  {tab.label}
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="text-[13px] font-semibold text-white">{plan.name}</p>
+                    {active && (
+                      <span className="text-[11px] font-semibold shrink-0" style={{ color: "#D9772E" }}>
+                        적용됨
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[12px] font-normal mt-1" style={{ color: "#B4BCC8" }}>
+                    {names.join(" → ")}
+                  </p>
+                  <p className="text-[11px] font-normal mt-1.5" style={{ color: MUTED }}>
+                    {plan.reason}
+                  </p>
                 </button>
               );
             })}
           </div>
-
-          {recList.length === 0 ? (
-            <div
-              className="rounded-xl px-4 py-5 text-center"
-              style={{ backgroundColor: FIELD_BG, border: `1px dashed ${FIELD_BORDER}` }}
-            >
-              <p className="text-[13px] font-semibold text-white">아직 추천할 수련 기록이 없어요</p>
-              <p className="text-[11px] font-normal mt-1" style={{ color: MUTED }}>
-                수련을 기록하거나 배우고 싶은 기술을 찜하면 맞춤 추천이 만들어져요.
-              </p>
-              <button
-                type="button"
-                onClick={() => setRecTab("athletes")}
-                className="mt-3 text-[12px] font-semibold"
-                style={{ color: "#D9772E" }}
-              >
-                유명 선수 스타일 보기
-              </button>
-            </div>
-          ) : (
-            <div className="space-y-2">
-              {recList.map((plan) => {
-                const active = appliedTemplate === plan.id;
-                const names = plan.techRecordIds
-                  .map((id) => techByRecordId.get(id)?.nameKo)
-                  .filter((n): n is string => Boolean(n));
-                return (
-                  <button
-                    key={plan.id}
-                    type="button"
-                    onClick={() => applyRecommendation(plan)}
-                    className="w-full text-left rounded-xl px-3.5 py-3 transition-colors duration-fast active:scale-[0.98]"
-                    style={{
-                      backgroundColor: FIELD_BG,
-                      border: active ? "1px solid rgba(217,119,46,0.6)" : `1px solid ${FIELD_BORDER}`,
-                    }}
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <p className="text-[13px] font-semibold text-white">{plan.name}</p>
-                      {active && (
-                        <span className="text-[11px] font-semibold shrink-0" style={{ color: "#D9772E" }}>
-                          적용됨
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-[12px] font-normal mt-1" style={{ color: "#B4BCC8" }}>
-                      {names.join(" → ")}
-                    </p>
-                    <p className="text-[11px] font-normal mt-1.5" style={{ color: MUTED }}>
-                      {plan.reason}
-                    </p>
-                  </button>
-                );
-              })}
-            </div>
-          )}
         </SectionCard>
       )}
 
