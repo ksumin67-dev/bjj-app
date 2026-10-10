@@ -11,6 +11,7 @@ import {
 } from "@/lib/supabase/gamePlans";
 import { getAllTechniques } from "@/lib/airtable/techniques";
 import { getAllPositions } from "@/lib/airtable/positions";
+import { getGamePlanFormData } from "@/lib/gamePlanFormData";
 
 export type CreateGamePlanFormState = {
   ok: boolean;
@@ -129,6 +130,53 @@ export async function updateGamePlanAction(
   revalidatePath("/gameplans");
   revalidatePath(`/gameplans/${planId}`);
   redirect(`/gameplans/${planId}`);
+}
+
+export type RecommendationView = {
+  id: string;
+  name: string;
+  reason: string;
+  /** 순서대로 표시할 기술 이름 */
+  techNames: string[];
+  source: "position" | "athlete" | "curated";
+};
+
+export type RecommendResult =
+  | {
+      ok: true;
+      personalized: boolean;
+      plans: RecommendationView[];
+      signals: { sessionCount: number; trainedTechniqueCount: number; goalCount: number };
+    }
+  | { ok: false; error: string };
+
+/**
+ * Server Action — "AI로 게임플랜 추천받기" 버튼 (2026-10-10).
+ * 버튼을 눌렀을 때만 계산해서 목록 화면 로딩에는 영향이 없다.
+ * 2단계에서 LLM 호출이 이 함수 안으로 들어올 예정.
+ */
+export async function recommendGamePlansAction(): Promise<RecommendResult> {
+  try {
+    const data = await getGamePlanFormData({ withRecommendations: true });
+    const nameById = new Map(data.stepTechniques.map((t) => [t.recordId, t.nameKo]));
+    return {
+      ok: true,
+      personalized: data.recommendations.personalized,
+      signals: data.signals,
+      plans: data.recommendations.plans.map((p) => ({
+        id: p.id,
+        name: p.name,
+        reason: p.reason,
+        source: p.source,
+        techNames: p.techRecordIds
+          .map((id) => nameById.get(id))
+          .filter((n): n is string => Boolean(n)),
+      })),
+    };
+  } catch (e) {
+    console.error("[recommendGamePlansAction] failed:", e);
+    return { ok: false, error: "추천을 만들지 못했어요. 잠시 후 다시 시도해주세요." };
+  }
 }
 
 /**

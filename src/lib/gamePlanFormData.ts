@@ -45,13 +45,14 @@ export async function getGamePlanFormData(opts: { withRecommendations?: boolean 
   }
 
   // AI 추천 게임플랜 (2026-10-10) — 수련 기록 + 좋아요한 기술/선수 통합, 신호 없으면 기본 템플릿
+  const trainingCountMap = buildTrainingCountMap(sessions);
   let recommendations: Recommendations = { plans: [], personalized: false };
   if (opts.withRecommendations) {
     recommendations = recommendGamePlans({
       techniques: stepTechniques,
       athletes,
       positionNameById,
-      trainingCountMap: buildTrainingCountMap(sessions),
+      trainingCountMap,
       goals: goals.map((g) => ({
         techniqueRecordId: g.techniqueRecordId,
         athleteRecordId: g.athleteRecordId,
@@ -59,11 +60,19 @@ export async function getGamePlanFormData(opts: { withRecommendations?: boolean 
     });
   }
 
+  // "무엇을 분석했는지" 안내용 실제 수치 (추천 버튼의 분석 결과 문구에 사용)
+  const signals = {
+    sessionCount: sessions.length,
+    trainedTechniqueCount: Object.keys(trainingCountMap).length,
+    goalCount: goals.length,
+  };
+
   return {
     stepTechniques,
     positionNameById,
     goalTechniqueIds,
     recentTechniqueIds,
     recommendations,
+    signals,
   };
 }

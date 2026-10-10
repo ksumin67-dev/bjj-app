@@ -7,9 +7,15 @@ import { PageWrapper } from "@/components/layout/PageWrapper";
 export const metadata = { title: "새 게임플랜" };
 export const dynamic = "force-dynamic";
 
-export default async function NewGamePlanPage() {
+export default async function NewGamePlanPage({
+  searchParams,
+}: {
+  searchParams: { rec?: string };
+}) {
+  const rec = searchParams.rec;
   const { stepTechniques, positionNameById, goalTechniqueIds, recentTechniqueIds, recommendations } =
-    await getGamePlanFormData({ withRecommendations: true });
+    await getGamePlanFormData({ withRecommendations: Boolean(rec) });
+  const prefill = rec ? recommendations.plans.find((p) => p.id === rec) : undefined;
 
   return (
     <PageWrapper>
@@ -30,12 +36,13 @@ export default async function NewGamePlanPage() {
         </header>
 
         <GamePlanForm
+          key={prefill?.id ?? "blank"}
           mode="create"
           techniques={stepTechniques}
           positionNameById={positionNameById}
           goalTechniqueIds={goalTechniqueIds}
           recentTechniqueIds={recentTechniqueIds}
-          recommendations={recommendations}
+          prefill={prefill}
         />
       </div>
     </PageWrapper>

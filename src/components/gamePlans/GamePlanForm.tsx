@@ -4,14 +4,14 @@ import { useFormState, useFormStatus } from "react-dom";
 import { useState, useMemo } from "react";
 import {
   Search, X, ChevronDown, ArrowUp, ArrowDown, Star, Plus, Heart, History,
-  Sparkles, Pencil, ListOrdered, FileText, SlidersHorizontal, type LucideIcon,
+  Pencil, ListOrdered, FileText, SlidersHorizontal, type LucideIcon,
 } from "lucide-react";
 import {
   createGamePlanAction,
   updateGamePlanAction,
   type CreateGamePlanFormState,
 } from "@/lib/actions/gamePlans";
-import type { RecommendedPlan, Recommendations } from "@/lib/gamePlanRecommend";
+import type { RecommendedPlan } from "@/lib/gamePlanRecommend";
 import type { Technique, GamePlan } from "@/types/domain";
 import { cn, normalizeKorean } from "@/lib/utils";
 
@@ -55,12 +55,12 @@ export function GamePlanForm({
   positionNameById,
   goalTechniqueIds = [],
   recentTechniqueIds = [],
-  recommendations,
+  prefill,
 }: {
   mode?: "create" | "edit";
   initial?: GamePlan;
-  /** AI 추천 게임플랜 — 새로 만들 때만 전달 */
-  recommendations?: Recommendations;
+  /** AI 추천 플랜에서 넘어온 초기값 — 새로 만들 때만 전달 */
+  prefill?: RecommendedPlan;
   techniques: Technique[];
   /** 포지션 짧은 ID(예: "CG") → 한글 이름. 기술 선택창의 그룹 제목에 사용 */
   positionNameById: Record<string, string>;
@@ -75,10 +75,10 @@ export function GamePlanForm({
     { ok: true },
   );
 
-  const [planName, setPlanName] = useState(initial?.planName ?? "");
-  const [stepsText, setStepsText] = useState(initial?.stepsText ?? "");
+  const [planName, setPlanName] = useState(initial?.planName ?? prefill?.name ?? "");
+  const [stepsText, setStepsText] = useState(initial?.stepsText ?? prefill?.note ?? "");
   const [selectedTechniques, setSelectedTechniques] = useState<string[]>(
-    initial?.techniquesUsedRecordIds ?? [],
+    initial?.techniquesUsedRecordIds ?? prefill?.techRecordIds ?? [],
   );
   const [isPrimary, setIsPrimary] = useState(initial?.isPrimary ?? false);
   const [hasBranch, setHasBranch] = useState(initial?.hasBranch ?? false);
@@ -88,7 +88,6 @@ export function GamePlanForm({
   );
   const [searchQuery, setSearchQuery] = useState("");
   const [techPickerOpen, setTechPickerOpen] = useState(false);
-  const [appliedTemplate, setAppliedTemplate] = useState<string | null>(null);
 
   const techByRecordId = useMemo(() => {
     const m = new Map<string, Technique>();
@@ -154,13 +153,6 @@ export function GamePlanForm({
     });
   }
 
-  function applyRecommendation(plan: RecommendedPlan) {
-    setPlanName(plan.name);
-    setStepsText(plan.note);
-    setSelectedTechniques(plan.techRecordIds);
-    setAppliedTemplate(plan.id);
-  }
-
   return (
     <form action={formAction} className="space-y-3">
       {isEdit && initial && <input type="hidden" name="planId" value={initial.recordId} />}
@@ -169,55 +161,6 @@ export function GamePlanForm({
         <div className="rounded-xl bg-danger/10 border border-danger/30 p-3 text-[13px] text-danger">
           {state.error}
         </div>
-      )}
-
-      {/* AI 추천 게임플랜 — 새로 만들 때만. 수련 기록·좋아요한 기술/선수 기반, 없으면 기본 템플릿 */}
-      {!isEdit && recommendations && recommendations.plans.length > 0 && (
-        <SectionCard
-          icon={Sparkles}
-          title="AI 추천 게임플랜"
-          hint={
-            recommendations.personalized
-              ? "내 수련 기록과 좋아요한 기술·선수를 바탕으로 만들었어요. 고르면 아래에 채워져요."
-              : "기본 추천이에요. 수련을 기록하거나 기술·선수에 좋아요를 누르면 나만의 추천이 만들어져요."
-          }
-        >
-          <div className="space-y-2">
-            {recommendations.plans.map((plan) => {
-              const active = appliedTemplate === plan.id;
-              const names = plan.techRecordIds
-                .map((id) => techByRecordId.get(id)?.nameKo)
-                .filter((n): n is string => Boolean(n));
-              return (
-                <button
-                  key={plan.id}
-                  type="button"
-                  onClick={() => applyRecommendation(plan)}
-                  className="w-full text-left rounded-xl px-3.5 py-3 transition-colors duration-fast active:scale-[0.98]"
-                  style={{
-                    backgroundColor: FIELD_BG,
-                    border: active ? "1px solid rgba(217,119,46,0.6)" : `1px solid ${FIELD_BORDER}`,
-                  }}
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <p className="text-[13px] font-semibold text-white">{plan.name}</p>
-                    {active && (
-                      <span className="text-[11px] font-semibold shrink-0" style={{ color: "#D9772E" }}>
-                        적용됨
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-[12px] font-normal mt-1" style={{ color: "#B4BCC8" }}>
-                    {names.join(" → ")}
-                  </p>
-                  <p className="text-[11px] font-normal mt-1.5" style={{ color: MUTED }}>
-                    {plan.reason}
-                  </p>
-                </button>
-              );
-            })}
-          </div>
-        </SectionCard>
       )}
 
       {/* 게임플랜 이름 */}

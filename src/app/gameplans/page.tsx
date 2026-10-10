@@ -7,6 +7,7 @@ import { getAllTechniques } from "@/lib/airtable/techniques";
 import { buildTrainingCountMap } from "@/types/domain";
 import type { Technique } from "@/types/domain";
 import { PageWrapper } from "@/components/layout/PageWrapper";
+import { AiRecommendSection } from "@/components/gamePlans/AiRecommendSection";
 import { GamePlanListClient, type GamePlanListItem } from "@/components/gamePlans/GamePlanListClient";
 
 export const metadata = { title: "나의 게임플랜" };
@@ -66,6 +67,8 @@ export default async function GamePlansPage() {
             새 게임플랜
           </Link>
         </header>
+
+        <AiRecommendSection />
 
         <GamePlanListClient items={items} />
       </div>

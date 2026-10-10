@@ -103,7 +103,7 @@ function EmptyState() {
       <p className="text-sm font-normal mb-4" style={{ color: "#6B7280" }}>
         스파링에서 시도하고 싶은 기술 조합을 정리해보세요.
         <br />
-        추천 템플릿으로 바로 시작할 수도 있어요.
+        위의 AI 추천으로 바로 시작할 수도 있어요.
       </p>
       <Link
         href="/gameplans/new"
