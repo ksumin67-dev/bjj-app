@@ -137,9 +137,21 @@ export function AiRecommendSection({ hasPlans = false }: { hasPlans?: boolean })
                 style={{ backgroundColor: FIELD_BG, border: `1px solid ${FIELD_BORDER}` }}
               >
                 <p className="text-[13px] font-semibold text-white">{plan.name}</p>
-                <p className="text-[12px] font-normal mt-1" style={{ color: "#B4BCC8" }}>
-                  {plan.techNames.join(" → ")}
-                </p>
+                <ol className="mt-1.5 space-y-1">
+                  {plan.steps.map((st, i) => (
+                    <li key={i} className="text-[12px] font-normal" style={{ color: "#B4BCC8" }}>
+                      <span className="font-semibold" style={{ color: i === 0 ? BRAND : MUTED }}>
+                        {st.role}
+                      </span>{" "}
+                      {st.name}
+                      {st.trigger && (
+                        <span className="block text-[11px]" style={{ color: MUTED }}>
+                          {st.trigger}
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ol>
                 <p className="text-[11px] font-normal mt-1.5" style={{ color: MUTED }}>
                   {plan.reason}
                 </p>

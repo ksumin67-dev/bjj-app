@@ -12,6 +12,7 @@ import {
 import { getAllTechniques } from "@/lib/airtable/techniques";
 import { getAllPositions } from "@/lib/airtable/positions";
 import { getGamePlanFormData } from "@/lib/gamePlanFormData";
+import { roleLabel } from "@/lib/gamePlanRecommend";
 
 export type CreateGamePlanFormState = {
   ok: boolean;
@@ -136,9 +137,9 @@ export type RecommendationView = {
   id: string;
   name: string;
   reason: string;
-  /** 순서대로 표시할 기술 이름 */
-  techNames: string[];
-  source: "position" | "athlete" | "curated";
+  /** 순서대로 표시할 단계 */
+  steps: { name: string; role: string; trigger?: string }[];
+  source: "combo";
 };
 
 export type RecommendResult =
@@ -168,9 +169,11 @@ export async function recommendGamePlansAction(): Promise<RecommendResult> {
         name: p.name,
         reason: p.reason,
         source: p.source,
-        techNames: p.techRecordIds
-          .map((id) => nameById.get(id))
-          .filter((n): n is string => Boolean(n)),
+        steps: p.steps.map((st) => ({
+          name: nameById.get(st.recordId) ?? "",
+          role: roleLabel(st.role),
+          trigger: st.trigger,
+        })),
       })),
     };
   } catch (e) {
