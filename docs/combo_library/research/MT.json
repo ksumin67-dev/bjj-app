@@ -1,0 +1,239 @@
+[
+  {
+    "id": "mt-highmount-smount-armbar",
+    "position": "MT",
+    "name": "하이 마운트 · S-마운트 · 암바 연계",
+    "start": "마운트 탑에서 상대가 팔꿈치와 손으로 밀어내며 빠지려 할 때",
+    "steps": [
+      {
+        "tech": "MT-21",
+        "role": "main",
+        "note": "무릎을 겨드랑이 쪽으로 올려 하이 마운트로 체중을 가슴에 실어 상대 팔을 노출시킨다"
+      },
+      {
+        "tech": "MT-05",
+        "role": "then",
+        "trigger": "상대가 팔로 밀어 막거나 팔을 가슴 앞에 세우면",
+        "note": "가까운 쪽 무릎을 머리 쪽으로 올리고 반대 다리를 팔 위로 감아 S자를 만든다"
+      },
+      {
+        "tech": "MT-01",
+        "role": "then",
+        "note": "팔꿈치를 몸에 붙여 고립한 뒤 다리를 머리 너머로 넘겨 암바로 마무리"
+      }
+    ],
+    "end": "암바 서브미션",
+    "level": "중급",
+    "evidence": [
+      {
+        "source": "jiujitsu.com 기술 페이지",
+        "url": "https://jiujitsu.com/blogs/techniques/s-mount-armbar-setup-and-finish",
+        "supports": "S-마운트 암바를 칼라/팔 컨트롤로 셋업하고 다리를 넘겨 마무리하는 순서를 설명",
+        "basis": "snippet"
+      },
+      {
+        "source": "Evolve MMA 블로그",
+        "url": "https://evolve-mma.com/blog/how-to-perform-the-s-mount-in-bjj/",
+        "supports": "상대가 팔로 밀어내며 빠지려 할 때 S-마운트로 전환해 암바로 이어가는 흐름",
+        "basis": "snippet"
+      },
+      {
+        "source": "Gracie Barra 기술 글",
+        "url": "https://graciebarra.com/gb-news/gb-technique-4-different-types-of-top-mount",
+        "supports": "대부분의 마운트 암바는 높은 S-마운트의 컨트롤에서 나온다는 설명",
+        "basis": "snippet"
+      }
+    ],
+    "grade": "참고",
+    "issues": "검색 요약 기반으로 근거를 확인함(페이지 본문 전체 미열람). 하이 마운트->S-마운트 전환을 한 문서가 순서대로 다루지는 않고 출처별로 일부씩 뒷받침. 기 사용 시 칼라 그립 변형 있음. [2026-10-10 규칙 강화: 페이지 본문 확인된 독립 출처 2곳 미만이라 등급 조정. 2차 확인 라운드에서 재평가]"
+  },
+  {
+    "id": "mt-crosschoke-armbar",
+    "position": "MT",
+    "name": "크로스 초크 미끼 · 암바 연계",
+    "start": "기(도복) 마운트 탑에서 상대가 아직 팔을 몸에 붙이고 방어할 때",
+    "steps": [
+      {
+        "tech": "MT-02",
+        "role": "main",
+        "note": "깊은 칼라 그립으로 크로스 초크를 위협해 상대 반응을 유도"
+      },
+      {
+        "tech": "MT-01",
+        "role": "if_blocked",
+        "trigger": "상대가 손으로 초크를 막거나 팔을 뻗어 밀어내거나 업빠로 뒤집으려 팔을 잡으면",
+        "note": "드러난 팔을 고립해 체중을 옮기며 암바"
+      }
+    ],
+    "end": "암바 서브미션",
+    "level": "기본",
+    "evidence": [
+      {
+        "source": "Atos BJJ On Demand 입문 강좌",
+        "url": "https://live.atosbjjondemand.com/packages/intro-jiu-jitsu/videos/intro-day-4-techniques-1-3",
+        "supports": "크로스 초크로 미끼를 던져 상대가 업빠로 반응할 때 팔을 고립해 마운트 암바를 거는 연계",
+        "basis": "snippet"
+      },
+      {
+        "source": "BJJ More (로저 그레이시 마운트 시스템 리뷰)",
+        "url": "https://bjjmore.com/roger-gracie-mount-system-review/",
+        "supports": "로저 그레이시의 마운트 공격이 크로스 칼라 초크 중심이며 암바와 함께 다뤄진다는 설명(연계 직접 서술은 약함)",
+        "basis": "snippet"
+      }
+    ],
+    "grade": "참고",
+    "issues": "두 번째 출처는 연계를 직접 설명하지 않아 1곳 근거로 판단. 검색 요약에 나온 '초크 위협이 팔을 노출시킨다'는 설명은 출처 URL을 정확히 특정하지 못해 인용하지 않음. 기(도복) 전용 기술."
+  },
+  {
+    "id": "mt-giftwrap-back-rnc",
+    "position": "MT",
+    "name": "기프트랩 · 백 테이크 · RNC 연계",
+    "start": "마운트 탑에서 상대가 옆으로 몸을 돌리며 압박을 피하려 할 때",
+    "steps": [
+      {
+        "tech": "MT-11",
+        "role": "main",
+        "note": "상대 위쪽 팔을 목 뒤로 감아 손목을 잡고 기프트랩으로 고정한 뒤 돌아가는 방향을 따라 훅을 넣고 백을 잡는다"
+      },
+      {
+        "tech": "BC-01",
+        "role": "then",
+        "note": "백 컨트롤에서 RNC로 마무리"
+      }
+    ],
+    "end": "RNC 서브미션 (백 컨트롤)",
+    "level": "중급",
+    "evidence": [
+      {
+        "source": "Evolve University 블로그",
+        "url": "https://evolve-university.com/blog/how-to-use-the-gift-wrap-to-improve-your-bjj/",
+        "supports": "마운트에서 팔을 감아 기프트랩을 만들고 상대가 돌면 따라가 백을 잡는 흐름",
+        "basis": "snippet"
+      },
+      {
+        "source": "JitsuIQ 기프트랩 페이지",
+        "url": "https://jitsuiq.com/positions/side-control/gift-wrap.html",
+        "supports": "기프트랩에서 상대가 돌아가면 백 컨트롤이나 크루시픽스로 이어가는 방법",
+        "basis": "snippet"
+      },
+      {
+        "source": "BJJ Fanatics/Digitsu 태그 페이지",
+        "url": "https://digitsu.com/t/gift-wrap",
+        "supports": "마운트에서 상대가 옆으로 돌 때 손목을 목 뒤로 감는 기프트랩 셋업",
+        "basis": "snippet"
+      }
+    ],
+    "grade": "참고",
+    "issues": "BC-01은 다른 포지션(백 컨트롤) 기술이므로 크로스 포지션 콤보. MT-11이 이미 백테이크를 포함한 전환 기술이라 MT-11 안에 훅 넣는 동작이 들어 있음. RNC 마무리는 RNC 일반 설명(백에서 RNC)에 근거. 기프트랩 자체는 사이드 컨트롤에서도 쓰임. [2026-10-10 규칙 강화: 페이지 본문 확인된 독립 출처 2곳 미만이라 등급 조정. 2차 확인 라운드에서 재평가]"
+  },
+  {
+    "id": "mt-kimura-armbar",
+    "position": "MT",
+    "name": "마운트 기무라 · 암바 전환 연계",
+    "start": "마운트 탑에서 상대가 두 팔을 가슴 앞이나 매트에 붙이고 버틸 때",
+    "steps": [
+      {
+        "tech": "MT-03",
+        "role": "main",
+        "note": "팔을 매트 쪽으로 눌러 피겨포 그립을 만들고 기무라를 시도"
+      },
+      {
+        "tech": "MT-01",
+        "role": "if_blocked",
+        "trigger": "상대가 그립을 끊고 팔을 펴거나 밀어내면",
+        "note": "팔이 펴진 쪽을 잡아 암바로 전환"
+      }
+    ],
+    "end": "암바 또는 기무라 서브미션",
+    "level": "중급",
+    "evidence": [
+      {
+        "source": "JitsuIQ 기무라 페이지",
+        "url": "https://jitsuiq.com/submissions/locks/joint-locks/kimura.html",
+        "supports": "기무라가 막히면 암바나 삼각 같은 다른 서브미션으로 전환할 준비를 하라는 설명",
+        "basis": "snippet"
+      }
+    ],
+    "grade": "참고",
+    "issues": "출처 1곳이며 마운트 특정 서술이 아니라 일반 기무라 설명. 마운트에서의 기무라->암바 순서는 추가 근거 필요. 도감에 아메리카나가 없어 MT-03(기무라)로만 표기."
+  },
+  {
+    "id": "mt-kimura-armtriangle",
+    "position": "MT",
+    "name": "기무라 · 암 트라이앵글 짝 연계",
+    "start": "마운트 탑에서 상대가 한 팔을 머리 옆으로 올려 막을 때",
+    "steps": [
+      {
+        "tech": "MT-03",
+        "role": "main",
+        "note": "눌러놓은 팔에 기무라 그립"
+      },
+      {
+        "tech": "MT-04",
+        "role": "if_blocked",
+        "trigger": "상대가 기무라를 막으려 팔을 목 쪽으로 가져오면",
+        "note": "그 팔과 머리를 함께 조여 암 트라이앵글"
+      }
+    ],
+    "end": "암 트라이앵글 또는 기무라 서브미션",
+    "level": "중급",
+    "evidence": [],
+    "grade": "초안",
+    "issues": "검색(영/한)에서 마운트 기무라와 암 트라이앵글을 짝으로 다룬 신뢰 가능한 출처를 찾지 못함(포럼 일화 수준만 확인). 다음 라운드에서 마운트 시스템 교본/Grapplearts 직접 탐색 필요."
+  },
+  {
+    "id": "mt-armbar-defended-backtake",
+    "position": "MT",
+    "name": "암바 방어 시 백 테이크 연계",
+    "start": "마운트 암바를 시도했는데 상대가 팔꿈치를 굽혀 팔을 빼려 할 때",
+    "steps": [
+      {
+        "tech": "MT-01",
+        "role": "main",
+        "note": "S-마운트나 마운트에서 암바 시도"
+      },
+      {
+        "tech": "MT-10",
+        "role": "if_blocked",
+        "trigger": "상대가 팔을 빼며 옆으로 돌아 등을 보이면",
+        "note": "무릎을 등 밑으로 넣어 훅을 걸며 백을 잡는다"
+      }
+    ],
+    "end": "백 컨트롤 (포지션 전환)",
+    "level": "중급",
+    "evidence": [],
+    "grade": "초안",
+    "issues": "'마운트에서 팔 바깥으로 나가면 암 트라이앵글이나 백 테이크'라는 일반 조언만 포럼 수준에서 확인. 암바 방어 후 백 테이크를 직접 다룬 강사 자료는 찾지 못함. MT-10은 백 포지션 전환이라 마지막 단계로 배치."
+  },
+  {
+    "id": "mt-basic-control-technical-mount",
+    "position": "MT",
+    "name": "브릿지 대응 기술적 마운트 전환 연계",
+    "start": "마운트 기본 컨트롤에서 상대가 강하게 브릿지하며 돌아누우려 할 때",
+    "steps": [
+      {
+        "tech": "MT-20",
+        "role": "main",
+        "note": "머리와 팔을 앞으로 보내 힙을 낮추고 브릿지 방향을 막는다"
+      },
+      {
+        "tech": "MT-05",
+        "role": "if_blocked",
+        "trigger": "상대가 브릿지를 반복하며 몸이 옆으로 돌면",
+        "note": "기술적 마운트/S-마운트 자세로 옮겨 위를 유지하며 팔 공격 준비"
+      }
+    ],
+    "end": "탑 유지 후 암바 시도",
+    "level": "기본",
+    "evidence": [
+      {
+        "source": "Evolve MMA 기술적 마운트 설명",
+        "url": "https://evolve-mma.com/blog/the-technical-mount-in-bjj-explained/",
+        "supports": "상대가 강하게 브릿지해 돌 때 기술적 마운트로 옮겨 탑을 유지하고 암바 등을 노린다는 설명",
+        "basis": "snippet"
+      }
+    ],
+    "grade": "초안",
+    "issues": "근거는 검색 요약 수준 1곳이며 연계 방향(기술적 마운트 = MT-05?)이 불확실해 등급을 초안으로 유지. 도감에 '기술적 마운트' ID가 없어 MT-05(S-마운트)로 대체했으나 일부 출처는 두 자세를 다른 것으로 구분함."
+  }
+]

@@ -1,0 +1,286 @@
+[
+  {
+    "id": "sc-kimura-armbar",
+    "position": "SC",
+    "name": "기무라 · 암바 연계 (팔을 펴고 버틸 때)",
+    "start": "사이드 컨트롤 탑에서 상대의 팔을 기무라 그립으로 잡았을 때",
+    "steps": [
+      {
+        "tech": "SC-01",
+        "role": "main",
+        "note": "손목을 엉덩이 쪽으로 누르고 팔꿈치를 들어 올려 기무라 그립을 단단히 확보"
+      },
+      {
+        "tech": "SC-02",
+        "role": "if_blocked",
+        "trigger": "상대가 팔을 펴서 버티며 굴러 도망가지 않으면",
+        "note": "그립을 유지한 채 다리를 상대 머리 위로 넘겨 암바로 전환"
+      }
+    ],
+    "end": "암바 서브미션",
+    "level": "중급",
+    "evidence": [
+      {
+        "source": "Kristina Barlaan (Digitsu, 블랙벨트 강사)",
+        "url": "https://digitsu.com/v/kimura-arm-lock-kristina-barlaan",
+        "supports": "기무라에서 상대가 팔을 펴면 그립을 유지하며 체중을 옮겨 암바로 이어가고, 팔을 당겨 빼면 아메리카나로 바꾼다고 설명",
+        "basis": "snippet"
+      },
+      {
+        "source": "Lachlan Giles (Awesome Jiu Jitsu 정리 글)",
+        "url": "https://awesomejiujitsu.com/2019/05/07/side-control-kimura-options-from-lachlan-giles/",
+        "supports": "가까운 쪽 팔 기무라 그립을 팔꿈치를 위로 든 채 제어하면 일어나서 다리를 넘겨 암바로 연결하기 쉽다고 소개(상대가 굴러 도망가지 않을 때)",
+        "basis": "snippet"
+      },
+      {
+        "source": "Grapplearts (Stephan Kesting)",
+        "url": "https://www.grapplearts.com/two-powerful-armbars-from-side-control/",
+        "supports": "가까운 쪽 기무라 컨트롤을 유지한 채 윗다리를 상대 머리 너머로 스윙해 암바로 피니시하는 순서를 단계별로 제시",
+        "basis": "snippet"
+      }
+    ],
+    "grade": "참고",
+    "issues": "상대가 팔을 당겨 빼면 아메리카나로 가는 갈래가 소스에 나오지만 도감에 아메리카나 ID가 없어 넣지 못함. 트리거 문구('굴러 도망가지 않으면')는 Giles 설명을 바탕으로 한 정리. 노기/노기 모두 가능(그립 비의존). [2026-10-10 규칙 강화: 페이지 본문 확인된 독립 출처 2곳 미만이라 등급 조정. 2차 확인 라운드에서 재평가]"
+  },
+  {
+    "id": "sc-kimura-backtake",
+    "position": "SC",
+    "name": "기무라 그립 · 백 테이크",
+    "start": "사이드 컨트롤 탑에서 가까운 쪽 팔 기무라 그립을 잡은 상태",
+    "steps": [
+      {
+        "tech": "SC-01",
+        "role": "main",
+        "note": "팔꿈치를 들어 올려 기무라 그립으로 상대 움직임을 제한"
+      },
+      {
+        "tech": "SC-11",
+        "role": "transition",
+        "note": "그립이 풀리지 않도록 유지하며 상대의 등 쪽으로 이동해 백을 잡음"
+      }
+    ],
+    "end": "백 포지션 (이후 BC-01 등으로 연계 가능)",
+    "level": "고급",
+    "evidence": [
+      {
+        "source": "Lachlan Giles (Awesome Jiu Jitsu 정리 글)",
+        "url": "https://awesomejiujitsu.com/2019/05/07/side-control-kimura-options-from-lachlan-giles/",
+        "supports": "가까운 쪽 기무라 그립에서 그립을 유지한 채 백 테이크로 연결하는 방법이 암바와 함께 소개됨",
+        "basis": "snippet"
+      },
+      {
+        "source": "Grapplearts 기무라 포지션 체크리스트",
+        "url": "https://www.grapplearts.com/wp-content/uploads/2025/10/The-Kimura-Position-Cheatsheet.pdf",
+        "supports": "검색 요약상 사이드 컨트롤 기무라에서 T-기무라 포지션으로 넘어가 뒤쪽에서 공격하는 흐름이 언급됨(원문 PDF는 직접 열람하지 못함)",
+        "basis": "snippet"
+      }
+    ],
+    "grade": "참고",
+    "issues": "두 번째 출처는 검색 요약으로만 확인(원문 미열람)이라 독립 2출처로 인정하지 않음. 상세 백 테이크 동작은 Giles 영상 확인 필요. 이 콤보의 백 테이크가 SC-11과 정확히 같은 동작인지 불확실."
+  },
+  {
+    "id": "sc-frame-spinning-armbar",
+    "position": "SC",
+    "name": "프레임 방어를 이용한 스피닝 암바",
+    "start": "사이드 컨트롤 탑에서 상대가 팔로 엉덩이/목을 밀며 프레임을 만들 때",
+    "steps": [
+      {
+        "tech": "SC-20",
+        "role": "main",
+        "note": "가슴 밀착, 무릎을 상대 엉덩이 가까이 두고 압박 유지"
+      },
+      {
+        "tech": "SC-05",
+        "role": "then",
+        "note": "뻗은 팔을 고립한 뒤 무릎을 모아 돌며 팔 쪽으로 스텝오버해 암바 마무리"
+      }
+    ],
+    "end": "암바 서브미션",
+    "level": "중급",
+    "evidence": [
+      {
+        "source": "Grapplearts (Stephan Kesting) - armbar attacks from side control",
+        "url": "https://www.grapplearts.com/ambar-attacks-from-side-control/",
+        "supports": "상대가 프레임으로 팔을 뻗으면 그것이 암바 기회가 되며, 뒤로 눕지 말고 무릎을 붙여 스텝오버하라고 설명(검색 요약 기준)",
+        "basis": "snippet"
+      },
+      {
+        "source": "Bernardo Faria Academy (Demian Maia 사이드 암바 교정)",
+        "url": "https://bernardofariaacademy.com/all-articles/fix-side-control-armbar-demian-maia/",
+        "supports": "상대 엉덩이뼈에 체중을 유지하고 손목을 먼저 제어한 뒤 스텝오버해야 팔을 못 빼고 암바가 걸린다는 포인트(검색 요약 기준)",
+        "basis": "snippet"
+      }
+    ],
+    "grade": "참고",
+    "issues": "두 출처 모두 검색 결과 요약으로만 확인했고 페이지 본문을 직접 열람하지 못해 '검증됨'으로 올리지 않음. 도감의 '스피닝 암바(SC-05)'가 소스의 near-arm step-over armbar와 같은 기술인지 확인 필요(far-arm 스피닝 암바와 구분)."
+  },
+  {
+    "id": "sc-underhook-marcelo-armbar",
+    "position": "SC",
+    "name": "먼 쪽 언더훅 마르셀로 암바",
+    "start": "사이드 컨트롤 탑에서 상대의 먼 쪽 팔에 언더훅을 얻었을 때",
+    "steps": [
+      {
+        "tech": "SC-20",
+        "role": "main",
+        "note": "먼 쪽 팔 언더훅을 확보하고 상대를 옆으로 당겨 팔꿈치로 배 앞을 막아 고정"
+      },
+      {
+        "tech": "SC-02",
+        "role": "then",
+        "note": "윗다리를 상대 팔과 갈비뼈 사이로 넣고 옆으로 누워 다리 방향을 보며 암바 마무리"
+      }
+    ],
+    "end": "암바 서브미션",
+    "level": "고급",
+    "evidence": [
+      {
+        "source": "Grapplearts (Stephan Kesting, Marcelo Garcia에게 배운 기술)",
+        "url": "https://www.grapplearts.com/two-powerful-armbars-from-side-control/",
+        "supports": "먼 쪽 언더훅에서 상대를 옆으로 세워 고정한 뒤 다리를 팔 아래로 넣어 암바하는 4단계를 설명",
+        "basis": "snippet"
+      }
+    ],
+    "grade": "참고",
+    "issues": "출처 1곳. 이름 '마르셀로 암바'는 Kesting의 표현이며 도감 SC-02와 동일 기술의 변형으로 취급."
+  },
+  {
+    "id": "sc-arm-triangle",
+    "position": "SC",
+    "name": "사이드 컨트롤 암 트라이앵글",
+    "start": "사이드 컨트롤 탑에서 상대 팔이 얼굴/목 쪽으로 올라와 있을 때",
+    "steps": [
+      {
+        "tech": "SC-20",
+        "role": "main",
+        "note": "상대 팔을 얼굴 쪽으로 밀어 넘기고 체중을 실어 고정"
+      },
+      {
+        "tech": "SC-04",
+        "role": "then",
+        "note": "가둔 팔의 반대쪽으로 몸을 옮겨 각도를 만들고 천천히 체중을 실어 조름"
+      }
+    ],
+    "end": "초크 서브미션",
+    "level": "중급",
+    "evidence": [
+      {
+        "source": "Jitsu IQ",
+        "url": "https://jitsuiq.com/submissions/chokes/arm-triangle.html",
+        "supports": "사이드 컨트롤은 암 트라이앵글의 대표적 진입 포지션이며, 가둔 팔 반대쪽으로 이동해 체중으로 마무리하라고 설명",
+        "basis": "snippet"
+      },
+      {
+        "source": "BJJ Ee",
+        "url": "https://www.bjjee.com/?p=11098",
+        "supports": "사이드 컨트롤에서 암 트라이앵글이 이상적인 마무리이며 자리를 바꿀 때도 무겁게 눌러 유지해야 한다고 언급(검색 요약 기준)",
+        "basis": "snippet"
+      }
+    ],
+    "grade": "참고",
+    "issues": "두 출처 모두 일반 설명이며 상대 반응별 연계(트리거)를 제시하지 않아 '검증됨' 보류. 블랙벨트 강사 직접 출처 추가 필요(예: Lucas Lepri Digitsu는 시트벨트 기반이라 사이드 컨트롤과 직접 대응 안 됨)."
+  },
+  {
+    "id": "sc-darce-anaconda",
+    "position": "SC",
+    "name": "다르세 · 아나콘다 연계",
+    "start": "사이드 컨트롤 탑에서 상대가 안쪽으로 돌아 들어오며 언더훅/탈출을 시도할 때",
+    "steps": [
+      {
+        "tech": "SC-03",
+        "role": "main",
+        "note": "목 아래로 깊게 팔을 넣어 다르세 그립을 만들고 다리를 뒤로 뻗어 상대를 눌러 납작하게 만듦"
+      },
+      {
+        "tech": "SC-06",
+        "role": "if_blocked",
+        "trigger": "상대가 팔을 빼거나 고개를 반대로 돌려 다르세가 막히면",
+        "note": "반대쪽에서 팔을 넣어 아나콘다 그립으로 전환"
+      }
+    ],
+    "end": "초크 서브미션",
+    "level": "고급",
+    "evidence": [
+      {
+        "source": "Jitsu IQ",
+        "url": "https://jitsuiq.com/submissions/chokes/darce-choke.html",
+        "supports": "상대가 안쪽으로 돌아 탈출하려 할 때 사이드 컨트롤에서 다르세 그립을 끼워 넣을 수 있다고 설명(다르세 단독, 아나콘다 전환은 언급 없음)",
+        "basis": "snippet"
+      }
+    ],
+    "grade": "초안",
+    "issues": "다르세와 아나콘다는 거울상 관계라는 설명은 있으나, 사이드 컨트롤에서 다르세->아나콘다로 바꾸는 연계를 직접 다룬 신뢰 출처를 찾지 못함. 아나콘다는 주로 프런트 헤드락에서 설명됨. 앱 노출 금지, 다음 라운드 재조사."
+  },
+  {
+    "id": "sc-backtake-rnc",
+    "position": "SC",
+    "name": "사이드 컨트롤 백 테이크 · 리어 네이키드 초크",
+    "start": "사이드 컨트롤 탑에서 상대가 등을 돌려 탈출하려 할 때",
+    "steps": [
+      {
+        "tech": "SC-11",
+        "role": "transition",
+        "note": "엉덩이 움직임을 팔꿈치로 제한하고 뒤쪽에서 압박해 상대를 앉히며 백으로 이동"
+      },
+      {
+        "tech": "BC-01",
+        "role": "then",
+        "note": "시트벨트로 백을 확보한 뒤 리어 네이키드 초크로 마무리"
+      }
+    ],
+    "end": "RNC 서브미션",
+    "level": "중급",
+    "evidence": [
+      {
+        "source": "Rafael Gordinho (Graciemag, 블랙벨트)",
+        "url": "https://www.graciemag.com/rafael-gordinho-a-transition-from-side-control-to-the-rear-naked-choke/",
+        "supports": "사이드 컨트롤에서 반대쪽으로 돌아 도망가는 상대의 엉덩이를 팔꿈치로 막고 뒤에서 압박해 앉힌 뒤 RNC로 연결",
+        "basis": "snippet"
+      },
+      {
+        "source": "Kristina Barlaan (Digitsu) - Side Control Back Take",
+        "url": "https://digitsu.com/v/side-control-back-take-kristina-barlaan",
+        "supports": "상대가 안쪽으로 돌아 등이 떠오를 때 큰 스텝오버로 무릎을 등 중앙에 두고 가슴을 붙여 백을 잡는 방법(검색 요약 기준)",
+        "basis": "snippet"
+      }
+    ],
+    "grade": "참고",
+    "issues": "타 포지션(BC-01)이 포함된 교차 포지션 콤보: SC-11은 전환이므로 마지막 전환 규칙의 예외 형태(전환 후 후속 기술). 두 출처의 백 테이크 디테일(상대가 도는 방향)이 서로 다름. Digitsu는 요약만 확인. [2026-10-10 규칙 강화: 페이지 본문 확인된 독립 출처 2곳 미만이라 등급 조정. 2차 확인 라운드에서 재평가]"
+  },
+  {
+    "id": "sc-mount-smount-armbar",
+    "position": "SC",
+    "name": "사이드 컨트롤 · 마운트 · S-마운트 암바",
+    "start": "사이드 컨트롤 탑에서 상대 엉덩이를 돌려 마운트 진입이 가능할 때",
+    "steps": [
+      {
+        "tech": "SC-10",
+        "role": "transition",
+        "note": "엉덩이로 상대 엉덩이를 누르다 상대가 밀어내는 순간 마운트로 진입, 높은 마운트로 마무리"
+      },
+      {
+        "tech": "MT-05",
+        "role": "then",
+        "note": "초크 위협으로 반응을 유도하고 먼 쪽 팔을 고립해 S-마운트로 돌며 암바"
+      }
+    ],
+    "end": "암바 서브미션",
+    "level": "중급",
+    "evidence": [
+      {
+        "source": "Pedro Sauer 계열 설명 (Mauricio Gomes BJJ 라이브러리/관련 요약)",
+        "url": "https://mauriciogomesbjj.com/library/transitioning-from-side-control-to-mount",
+        "supports": "사이드에서 엉덩이 압박 후 상대가 밀어내는 반응을 마운트 진입 타이밍으로 삼는다는 설명(검색 요약 기준)",
+        "basis": "snippet"
+      },
+      {
+        "source": "Josh Griffiths (Jiujitsu.com)",
+        "url": "https://jiujitsu.com/blogs/techniques/s-mount-armbar-setup-and-finish",
+        "supports": "마운트에서 칼라 그립 초크 위협으로 상대 방어를 유도한 뒤 먼 쪽 팔을 고립해 S-마운트 암바로 회전(검색 요약 기준)",
+        "basis": "snippet"
+      }
+    ],
+    "grade": "참고",
+    "issues": "두 출처가 각각 전환과 암바를 따로 다루며 하나의 연계로 소개한 곳은 못 찾음. 도감 사이드 컨트롤 ID로 시작하나 후속 MT-05는 교차 포지션. 두 출처 모두 요약 기준이라 원문 확인 필요. 칼라 그립 기반(기)이므로 노기에서는 변형 필요."
+  }
+]
