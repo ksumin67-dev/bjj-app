@@ -1,0 +1,218 @@
+[
+  {
+    "recordId": "recSJkC9XReSOkgaX",
+    "id": "CG-19",
+    "nameKo": "클로즈드 가드 트라이앵글",
+    "parent": "CG"
+  },
+  {
+    "recordId": "recTjIQjLmIa177c7",
+    "id": "CG-22",
+    "nameKo": "클로즈드 가드 오모플라타",
+    "parent": "CG"
+  },
+  {
+    "recordId": "recHtGU068lLClCnI",
+    "id": "BF-25",
+    "nameKo": "암드래그 (버터플라이)",
+    "parent": "BF"
+  },
+  {
+    "recordId": "recg8WtiwHdvsUwZq",
+    "id": "BF-26",
+    "nameKo": "버터플라이 웨슬업",
+    "parent": "BF"
+  },
+  {
+    "recordId": "recUXn3gFScD6uUYu",
+    "id": "DLR-11",
+    "nameKo": "암바 (데라리바)",
+    "parent": "DLR"
+  },
+  {
+    "recordId": "recjRBcYYfxRf1Syw",
+    "id": "DLR-24",
+    "nameKo": "크랩 라이드 백 테이크",
+    "parent": "DLR"
+  },
+  {
+    "recordId": "recD1gX8ruqwCapUY",
+    "id": "DLR-05",
+    "nameKo": "DLR 오버헤드 스윕",
+    "parent": "DLR"
+  },
+  {
+    "recordId": "rec8pBTUR9C1f7oey",
+    "id": "DLR-25",
+    "nameKo": "DLR → SLX 전환",
+    "parent": "DLR"
+  },
+  {
+    "recordId": "recPkrYks2xThESmd",
+    "id": "RDLR-13",
+    "nameKo": "플랫폼 암바 (RDLR)",
+    "parent": "RDLR"
+  },
+  {
+    "recordId": "reczcZkPWS6EmNr2d",
+    "id": "RDLR-04",
+    "nameKo": "RDLR 시저 스윕",
+    "parent": "RDLR"
+  },
+  {
+    "recordId": "receDfjrjkNdzy487",
+    "id": "RDLR-25",
+    "nameKo": "RDLR → SLX 전환",
+    "parent": "RDLR"
+  },
+  {
+    "recordId": "recujzef23fScV1u7",
+    "id": "KG-03",
+    "nameKo": "K가드 시저 스윕",
+    "parent": "KG"
+  },
+  {
+    "recordId": "rec4BWEbf07YoomOO",
+    "id": "KG-14",
+    "nameKo": "카프 커터 (K가드)",
+    "parent": "KG"
+  },
+  {
+    "recordId": "rechwXd6h4eX1dPeu",
+    "id": "KG-25",
+    "nameKo": "백사이드 50/50 진입 (K가드)",
+    "parent": "KG"
+  },
+  {
+    "recordId": "recdYc2kVx9WyatAq",
+    "id": "KNB-13",
+    "nameKo": "아메리카나 (니 온 벨리)",
+    "parent": "KNB"
+  },
+  {
+    "recordId": "reckKYGfSwuv7cHCm",
+    "id": "KNB-14",
+    "nameKo": "다르스 초크 (니 온 벨리)",
+    "parent": "KNB"
+  },
+  {
+    "recordId": "recfNFm1K2Ic1nnFK",
+    "id": "MT-12",
+    "nameKo": "아메리카나 (마운트)",
+    "parent": "MT"
+  },
+  {
+    "recordId": "rectYqNGEssvzYKbS",
+    "id": "MT-22",
+    "nameKo": "기술적 마운트",
+    "parent": "MT"
+  },
+  {
+    "recordId": "recqsxV3TkAnQRdRf",
+    "id": "MT-13",
+    "nameKo": "마운트 삼각초크",
+    "parent": "MT"
+  },
+  {
+    "recordId": "recK9VZbMGRUtd8UP",
+    "id": "SC-12",
+    "nameKo": "아메리카나 (사이드 컨트롤)",
+    "parent": "SC"
+  },
+  {
+    "recordId": "recCYZ9gYwmcvPAeF",
+    "id": "SG-14",
+    "nameKo": "새들 카프 슬라이서",
+    "parent": "SG"
+  },
+  {
+    "recordId": "rec9pYFAWeYjniG0L",
+    "id": "SG-24",
+    "nameKo": "백사이드 50/50 진입 (새들)",
+    "parent": "SG"
+  },
+  {
+    "recordId": "recvy4q1tNpSZ1rVn",
+    "id": "SLX-25",
+    "nameKo": "SLX → X가드 전환",
+    "parent": "SLX"
+  },
+  {
+    "recordId": "reccTg54Hmhyiz4Ej",
+    "id": "SLX-05",
+    "nameKo": "SLX 웨이터 스윕",
+    "parent": "SLX"
+  },
+  {
+    "recordId": "recWMjOLKweEJfXwD",
+    "id": "XG-10",
+    "nameKo": "X가드 니바",
+    "parent": "XG"
+  },
+  {
+    "recordId": "recWcX3NHLeFBlsnD",
+    "id": "HG-25",
+    "nameKo": "하프 가드 기무라 백 테이크",
+    "parent": "HG"
+  },
+  {
+    "recordId": "rec1DDPzluo2LQnp4",
+    "id": "HG-26",
+    "nameKo": "딥 하프 백 테이크",
+    "parent": "HG"
+  },
+  {
+    "recordId": "recQDQMunMkSMdEpg",
+    "id": "HG-06",
+    "nameKo": "락다운 스윕",
+    "parent": "HG"
+  },
+  {
+    "recordId": "reczvHBhsU1rB2dMv",
+    "id": "LS-24",
+    "nameKo": "라소 백 테이크",
+    "parent": "LS"
+  },
+  {
+    "recordId": "recgw1j742JBGYWjO",
+    "id": "LS-13",
+    "nameKo": "라소 엘보우 풀 오모플라타",
+    "parent": "LS"
+  },
+  {
+    "recordId": "recM2naAKYHigaAuB",
+    "id": "LS-14",
+    "nameKo": "라소 스피닝 오모플라타",
+    "parent": "LS"
+  },
+  {
+    "recordId": "recRn8vhI5BoVfVrB",
+    "id": "SP-06",
+    "nameKo": "시클 스윕",
+    "parent": "SP"
+  },
+  {
+    "recordId": "rech47DCGmcaAlvGy",
+    "id": "SP-13",
+    "nameKo": "스파이더 니바",
+    "parent": "SP"
+  },
+  {
+    "recordId": "recmkVp2XSFHRzbeu",
+    "id": "GP-02",
+    "nameKo": "백스텝 패스",
+    "parent": "GP"
+  },
+  {
+    "recordId": "recUEilz37AOAmF2U",
+    "id": "GP-03",
+    "nameKo": "레그 위브 패스",
+    "parent": "GP"
+  },
+  {
+    "recordId": "recL6GXo3rqug2Rj6",
+    "id": "BC-11",
+    "nameKo": "트라이앵글 (백 컨트롤)",
+    "parent": "BC"
+  }
+]
