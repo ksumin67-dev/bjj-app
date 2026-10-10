@@ -155,7 +155,7 @@
       }
     ],
     "grade": "참고",
-    "issues": "[본문 확인 2026-10-10] JitsuIQ(위키성) 1곳만 본문 확인, 일반 기무라 설명이며 마운트 특정 연계 서술은 아님. 마운트에서의 기무라 -> 암바 순서는 추가 근거 필요. 도감에 아메리카나가 없어 MT-03(기무라)로만 표기."
+    "issues": "[본문 확인 2026-10-10] JitsuIQ(위키성) 1곳만 본문 확인, 일반 기무라 설명이며 마운트 특정 연계 서술은 아님. 마운트에서의 기무라 -> 암바 순서는 추가 근거 필요.  [3라운드] 도감에 MT-12(아메리카나)가 추가됨. 아메리카나 시작 연계는 mt-americana-armbar 콤보에서 다룸. 이 콤보의 기무라 -> 암바 근거는 여전히 JitsuIQ 1곳이라 참고 유지."
   },
   {
     "id": "mt-kimura-armtriangle",
@@ -179,7 +179,7 @@
     "level": "중급",
     "evidence": [],
     "grade": "초안",
-    "issues": "검색(영/한)에서 마운트 기무라와 암 트라이앵글을 짝으로 다룬 신뢰 가능한 출처를 찾지 못함(포럼 일화 수준만 확인). 다음 라운드에서 마운트 시스템 교본/Grapplearts 직접 탐색 필요."
+    "issues": "검색(영/한)에서 마운트 기무라와 암 트라이앵글을 짝으로 다룬 신뢰 가능한 출처를 찾지 못함(포럼 일화 수준만 확인). 다음 라운드에서 마운트 시스템 교본/Grapplearts 직접 탐색 필요. [3라운드 재시도] \"americana/kimura mount arm triangle\" 재검색에서도 마운트에서 기무라와 암 트라이앵글을 짝으로 다룬 출처 못 찾음. 초안 유지."
   },
   {
     "id": "mt-armbar-defended-backtake",
@@ -201,39 +201,149 @@
     ],
     "end": "백 컨트롤 (포지션 전환)",
     "level": "중급",
-    "evidence": [],
-    "grade": "초안",
-    "issues": "'마운트에서 팔 바깥으로 나가면 암 트라이앵글이나 백 테이크'라는 일반 조언만 포럼 수준에서 확인. 암바 방어 후 백 테이크를 직접 다룬 강사 자료는 찾지 못함. MT-10은 백 포지션 전환이라 마지막 단계로 배치."
+    "evidence": [
+      {
+        "source": "Graciemag (Marcos Giusti)",
+        "url": "https://www.graciemag.com/overcome-the-armbar-defense-with-a-transition-to-the-back-with-marcos-giusti/",
+        "supports": "암바가 막혀 끝내지 못할 때 그립을 바꾸고 한쪽 다리를 풀어 상대가 일어나려는 순간 머리를 당기며 훅을 넣어 백을 잡는 플랜B(포지션은 명시 안 됨)",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "참고",
+    "issues": "[3라운드 재시도] Graciemag Giusti 글 본문 확인: 막힌 암바 -> 백 테이크 연계는 1곳 page-read로 확인되나 글이 마운트 암바인지 명시하지 않고(영상에만 상세) 마운트의 MT-01/MT-10과 동일한지 사람 검수 필요. 독립 page-read 1곳이라 참고. 마운트에서 상대가 돌 때 암바와 백 중 선택한다는 Evolve 글은 검색 요약만 보고 본문 확인 못함."
   },
   {
     "id": "mt-basic-control-technical-mount",
     "position": "MT",
-    "name": "브릿지 대응 기술적 마운트 전환 연계",
-    "start": "마운트 기본 컨트롤에서 상대가 강하게 브릿지하며 돌아누우려 할 때",
+    "name": "마운트 압박 · 기술적 마운트 · 백 테이크 연계",
+    "start": "마운트 기본 컨트롤에서 상대가 브릿지로 몸을 옆으로 돌리려 할 때",
     "steps": [
       {
         "tech": "MT-20",
         "role": "main",
-        "note": "머리와 팔을 앞으로 보내 힙을 낮추고 브릿지 방향을 막는다"
+        "note": "머리와 팔을 앞으로 보내 힙을 낮추고 체중을 가슴에 실어 브릿지를 막는다"
       },
       {
-        "tech": "MT-05",
+        "tech": "MT-22",
         "role": "if_blocked",
-        "trigger": "상대가 브릿지를 반복하며 몸이 옆으로 돌면",
-        "note": "기술적 마운트/S-마운트 자세로 옮겨 위를 유지하며 팔 공격 준비"
+        "trigger": "상대가 브릿지나 새우로 몸을 옆으로 돌리면",
+        "note": "머리 쪽 무릎을 어깨에 붙이고 반대 발을 골반 옆에 짚어 기술적 마운트로 전환"
+      },
+      {
+        "tech": "MT-10",
+        "role": "transition",
+        "note": "가슴을 등에 붙인 채 따라가 훅을 넣어 백 컨트롤을 만든다"
       }
     ],
-    "end": "탑 유지 후 암바 시도",
-    "level": "기본",
+    "end": "백 컨트롤",
+    "level": "중급",
     "evidence": [
       {
-        "source": "Evolve MMA 기술적 마운트 설명",
+        "source": "Digitsu (기술적 마운트)",
+        "url": "https://digitsu.com/t/technical-mount",
+        "supports": "마운트에서 상대가 옆으로 돌면 무릎을 어깨에 붙이고 반대 발을 짚는 기술적 마운트로 옮기고, 이어서 백 테이크를 위협하거나 방어하면 암락으로 연결한다는 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "JitsuIQ (기술적 마운트)",
+        "url": "https://jitsuiq.com/positions/mount/technical-mount.html",
+        "supports": "상대가 돌아 도망가면 가슴을 등에 붙인 채 훅을 넣어 백 컨트롤로 이동하며, 암바/기무라/삼각도 가능한 위치라는 설명(위키성 사이트)",
+        "basis": "page-read"
+      },
+      {
+        "source": "Evolve MMA",
         "url": "https://evolve-mma.com/blog/the-technical-mount-in-bjj-explained/",
         "supports": "상대가 강하게 브릿지해 돌 때 기술적 마운트로 옮겨 탑을 유지하고 암바 등을 노린다는 설명",
         "basis": "snippet"
       }
     ],
-    "grade": "초안",
-    "issues": "근거는 검색 요약 수준 1곳이며 연계 방향(기술적 마운트 = MT-05?)이 불확실해 등급을 초안으로 유지. 도감에 '기술적 마운트' ID가 없어 MT-05(S-마운트)로 대체했으나 일부 출처는 두 자세를 다른 것으로 구분함."
+    "grade": "검증됨",
+    "issues": "[3라운드] 이전 라운드에서 기술적 마운트를 S-마운트(MT-05)로 대체했으나 도감에 MT-22(기술적 마운트)가 추가되어 교체하고, 근거가 뒷받침하는 백 테이크(MT-10)를 마지막 전환 단계로 구성. Digitsu와 JitsuIQ 2곳 page-read로 검증됨(JitsuIQ는 위키성). 브릿지 자체에 대한 대응(MT-20 단계)은 출처가 일반 원칙 수준. 기술적 마운트에서 암바로 가는 갈래는 이 콤보에 넣지 않음."
+  },
+  {
+    "id": "mt-armbar-mountedtriangle",
+    "position": "MT",
+    "name": "S-마운트 암바 · 마운트 삼각초크 연계",
+    "start": "마운트에서 S-마운트로 팔을 고립해 암바를 시도할 때",
+    "steps": [
+      {
+        "tech": "MT-05",
+        "role": "main",
+        "note": "S-마운트에서 먼 쪽 팔을 고립하고 암바를 시도"
+      },
+      {
+        "tech": "MT-13",
+        "role": "if_blocked",
+        "trigger": "상대가 암바를 막으려 팔을 빼 방어하면",
+        "note": "다리를 목 아래로 넣고 반대 다리를 걸어 팔과 목을 함께 가두는 삼각초크로 전환"
+      }
+    ],
+    "end": "마운트 삼각초크",
+    "level": "중급",
+    "evidence": [
+      {
+        "source": "BJJEE (Andre Galvao 영상 소개)",
+        "url": "https://www.bjjee.com/articles/andre-galvaos-sneaky-s-mount-triangle-trap/",
+        "supports": "Galvao가 S-마운트 암바를 먼저 공격한 뒤 마운트 삼각초크로 넘어가는 영리한 셋업을 시연하는 영상 소개(글에는 상세 동작 없음)",
+        "basis": "page-read"
+      },
+      {
+        "source": "JitsuIQ (마운트 삼각)",
+        "url": "https://jitsuiq.com/submissions/chokes/mounted-triangle.html",
+        "supports": "마운트/S-마운트에서 암바를 시도하면 목과 한 팔이 드러나 상대가 암바를 막을 때 곧바로 삼각으로 이어질 수 있다는 설명(위키성 사이트)",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "검증됨",
+    "issues": "[3라운드 신규] MT-13 사용. 독립 page-read 2곳이나 BJJEE는 영상 소개 글이고 JitsuIQ는 위키성이라 강사 직접 서술은 영상에만 있음. 기 사용 시 칼라 그립 변형 가능."
+  },
+  {
+    "id": "mt-americana-armbar",
+    "position": "MT",
+    "name": "아메리카나 · 암바 · 기무라 연계 (마운트)",
+    "start": "마운트 탑에서 상대가 가슴을 밀거나 팔로 프레임을 만들 때",
+    "steps": [
+      {
+        "tech": "MT-12",
+        "role": "main",
+        "note": "먼 쪽 손목을 매트에 누르고 팔 아래로 팔을 넣어 피겨포를 만든 뒤 아메리카나"
+      },
+      {
+        "tech": "MT-01",
+        "role": "if_blocked",
+        "trigger": "상대가 아메리카나를 막으려 팔을 곧게 펴면",
+        "note": "손목과 팔꿈치 컨트롤을 유지한 채 팔을 따라가 마운트 암바로 전환"
+      },
+      {
+        "tech": "MT-03",
+        "role": "if_blocked",
+        "trigger": "상대가 팔을 바깥으로 돌리거나 도복/벨트를 잡아 팔을 숨기면",
+        "note": "기무라 그립으로 바꿔 어깨를 공격"
+      }
+    ],
+    "end": "아메리카나/암바/기무라 서브미션",
+    "level": "기본",
+    "evidence": [
+      {
+        "source": "JitsuIQ (아메리카나)",
+        "url": "https://jitsuiq.com/submissions/locks/joint-locks/americana.html",
+        "supports": "마운트에서 상대가 가슴을 밀거나 프레임을 만들 때 팔을 고립하는 진입과, 팔을 펴 막으면 기무라나 암바로 전환하라는 팁(위키성 사이트)",
+        "basis": "page-read"
+      },
+      {
+        "source": "NAGA Fighter",
+        "url": "https://www.nagafighter.com/what-is-the-americana-in-bjj",
+        "supports": "마운트/사이드에서 팔을 펴 저항하면 암바로, 팔이 바깥으로 돌면 기무라로 바꾸는 체인 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Digitsu (아메리카나 컨트롤)",
+        "url": "https://digitsu.com/t/americana-control",
+        "supports": "마운트/사이드의 아메리카나 컨트롤에서 팔을 펴면 암바로, 도복/벨트를 잡으면 기무라로 전환하는 판단 기준",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "검증됨",
+    "issues": "[3라운드 신규] MT-12 사용. 3곳 모두 마운트와 사이드를 묶어 서술(마운트 전용 근거는 JitsuIQ 진입 항목). 기무라 갈래의 트리거는 NAGA(\"바깥으로 돌림\")와 Digitsu(\"벨트/도복을 잡음\")를 합쳐 서술."
   }
 ]

@@ -5,16 +5,44 @@
     "name": "무릎 밀기 반응 · 암바 · 마운트 전환",
     "start": "니 온 벨리 탑에서 상대가 내 무릎을 손으로 밀어 압박을 풀려고 할 때",
     "steps": [
-      { "tech": "KNB-20", "role": "main", "note": "넓은 베이스와 칼라/하리 그립으로 압박 유지, 상대 반응을 유도" },
-      { "tech": "KNB-01", "role": "then", "note": "밀어낸 팔의 틈으로 손을 넣어 팔꿈치를 붙이고 다리를 넘겨 암바" },
-      { "tech": "KNB-10", "role": "if_blocked", "trigger": "암바가 걸리지 않거나 상대가 팔을 빼 버티면", "note": "무릎을 상대 몸 반대편으로 넘겨 마운트를 잡음" }
+      {
+        "tech": "KNB-20",
+        "role": "main",
+        "note": "넓은 베이스와 칼라/하리 그립으로 압박 유지, 상대 반응을 유도"
+      },
+      {
+        "tech": "KNB-01",
+        "role": "then",
+        "note": "밀어낸 팔의 틈으로 손을 넣어 팔꿈치를 붙이고 다리를 넘겨 암바"
+      },
+      {
+        "tech": "KNB-10",
+        "role": "if_blocked",
+        "trigger": "암바가 걸리지 않거나 상대가 팔을 빼 버티면",
+        "note": "무릎을 상대 몸 반대편으로 넘겨 마운트를 잡음"
+      }
     ],
     "end": "암바 서브미션 또는 마운트",
     "level": "중급",
     "evidence": [
-      { "source": "Gracie Barra - KOB sequence (Marcio Feitosa, 6단 블랙벨트)", "url": "https://graciebarra.com/gb-news/gb-technique-knee-on-belly-sequence-with-prof-marcio-feitosa", "supports": "상대가 무릎을 밀어 압박을 풀려 하면 팔이 노출되어 암바 공격이 가능하다고 설명하고, 상대 반응에 따라 공격을 바꾼다고 안내", "basis": "page-read" },
-      { "source": "Evolve University - 5 Attacks From KOB", "url": "https://evolve-university.com/blog/5-attacks-from-the-knee-on-belly-position/", "supports": "상대가 무릎을 밀면 틈으로 손을 넣어 먼 쪽 암바를 걸고, 공격이 안 되면 바로 마운트로 가거나 다시 KOB로 돌아가면 된다고 설명", "basis": "page-read" },
-      { "source": "Digitsu - Knee on Belly", "url": "https://digitsu.com/t/knee-on-belly", "supports": "무릎을 밀거나 돌아오는 반응을 마운트 이동, 암바, 백 테이크의 신호로 삼으라는 원칙 정리", "basis": "page-read" }
+      {
+        "source": "Gracie Barra - KOB sequence (Marcio Feitosa, 6단 블랙벨트)",
+        "url": "https://graciebarra.com/gb-news/gb-technique-knee-on-belly-sequence-with-prof-marcio-feitosa",
+        "supports": "상대가 무릎을 밀어 압박을 풀려 하면 팔이 노출되어 암바 공격이 가능하다고 설명하고, 상대 반응에 따라 공격을 바꾼다고 안내",
+        "basis": "page-read"
+      },
+      {
+        "source": "Evolve University - 5 Attacks From KOB",
+        "url": "https://evolve-university.com/blog/5-attacks-from-the-knee-on-belly-position/",
+        "supports": "상대가 무릎을 밀면 틈으로 손을 넣어 먼 쪽 암바를 걸고, 공격이 안 되면 바로 마운트로 가거나 다시 KOB로 돌아가면 된다고 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Digitsu - Knee on Belly",
+        "url": "https://digitsu.com/t/knee-on-belly",
+        "supports": "무릎을 밀거나 돌아오는 반응을 마운트 이동, 암바, 백 테이크의 신호로 삼으라는 원칙 정리",
+        "basis": "page-read"
+      }
     ],
     "grade": "검증됨",
     "issues": "KNB-01이 Evolve의 far-side armbar인지 Feitosa의 180도 암바(KNB-05 스피닝 암바와 유사 가능)인지 구분 필요. 마운트 전환(KNB-10)은 마지막 단계로 배치. 칼라 그립 언급이 있어 기/노기 모두 가능하나 그립 디테일은 기 기준."
@@ -25,17 +53,36 @@
     "name": "암바 시도 · 기무라 전환 (팔을 자기 몸에 붙여 방어할 때)",
     "start": "니 온 벨리 탑에서 상대의 팔을 공격하는 상황",
     "steps": [
-      { "tech": "KNB-01", "role": "main", "note": "밀어낸 팔을 노려 암바 시도" },
-      { "tech": "KNB-02", "role": "if_blocked", "trigger": "상대가 자기 도복이나 벨트를 잡아 팔을 숨기면", "note": "기무라 그립으로 바꿔 어깨를 공격" }
+      {
+        "tech": "KNB-01",
+        "role": "main",
+        "note": "밀어낸 팔을 노려 암바 시도"
+      },
+      {
+        "tech": "KNB-02",
+        "role": "if_blocked",
+        "trigger": "상대가 자기 도복이나 벨트를 잡아 팔을 숨기면",
+        "note": "기무라 그립으로 바꿔 어깨를 공격"
+      }
     ],
     "end": "기무라 서브미션",
     "level": "중급",
     "evidence": [
-      { "source": "Gracie Barra - KOB sequence (Marcio Feitosa)", "url": "https://graciebarra.com/gb-news/gb-technique-knee-on-belly-sequence-with-prof-marcio-feitosa", "supports": "상대가 자기 도복/벨트를 잡아 팔을 지키면 기무라 그립으로 바꾸고 공격을 전환", "basis": "page-read" },
-      { "source": "Grapplearts - A Powerful Choke from Knee on Belly", "url": "https://www.grapplearts.com/powerful-choke-knee-on-belly/", "supports": "니 온 벨리 바텀의 상대는 보통 암바, 기무라, 크로스 칼라 초크에 노출된다고 언급(전환 순서는 설명하지 않음)", "basis": "page-read" }
+      {
+        "source": "Gracie Barra - KOB sequence (Marcio Feitosa)",
+        "url": "https://graciebarra.com/gb-news/gb-technique-knee-on-belly-sequence-with-prof-marcio-feitosa",
+        "supports": "상대가 자기 도복/벨트를 잡아 팔을 지키면 기무라 그립으로 바꾸고 공격을 전환",
+        "basis": "page-read"
+      },
+      {
+        "source": "Grapplearts - A Powerful Choke from Knee on Belly",
+        "url": "https://www.grapplearts.com/powerful-choke-knee-on-belly/",
+        "supports": "니 온 벨리 바텀의 상대는 보통 암바, 기무라, 크로스 칼라 초크에 노출된다고 언급(전환 순서는 설명하지 않음)",
+        "basis": "page-read"
+      }
     ],
     "grade": "참고",
-    "issues": "'암바 -> 기무라' 전환 트리거는 Gracie Barra 1곳만 직접 지지. Evolve는 아메리카나를 소개하지만 DB에 KOB 아메리카나가 없어 제외 -> 추가 제안: 아메리카나 (니 온 벨리). 기(도복) 전제."
+    "issues": "'암바 -> 기무라' 전환 트리거는 Gracie Barra 1곳만 직접 지지. Evolve는 아메리카나를 소개하지만 DB에 KOB 아메리카나가 없어 제외 ->  기(도복) 전제. [3라운드] 도감에 KNB-13(아메리카나)이 추가됨. 아메리카나는 knb-americana-mount 콤보에서 다룸."
   },
   {
     "id": "knb-turn-backtake",
@@ -43,14 +90,32 @@
     "name": "니 온 벨리 · 돌아 도망가는 상대 백 테이크",
     "start": "니 온 벨리 탑에서 상대가 옆으로 돌아 도망가려 할 때",
     "steps": [
-      { "tech": "KNB-20", "role": "main", "note": "압박을 유지하며 상대의 돌아가는 방향을 읽음" },
-      { "tech": "KNB-11", "role": "transition", "note": "상대 등을 넘어 스텝오버하며 백 컨트롤을 잡음" }
+      {
+        "tech": "KNB-20",
+        "role": "main",
+        "note": "압박을 유지하며 상대의 돌아가는 방향을 읽음"
+      },
+      {
+        "tech": "KNB-11",
+        "role": "transition",
+        "note": "상대 등을 넘어 스텝오버하며 백 컨트롤을 잡음"
+      }
     ],
     "end": "백 컨트롤",
     "level": "중급",
     "evidence": [
-      { "source": "Jitsu IQ - Knee on Belly", "url": "https://jitsuiq.com/positions/mount/knee-on-belly.html", "supports": "상대가 옆으로 돌아 도망가면 등 너머로 스텝오버해 백 컨트롤을 잡는다고 설명", "basis": "page-read" },
-      { "source": "Digitsu - Knee on Belly", "url": "https://digitsu.com/t/knee-on-belly", "supports": "상대가 돌아 들어오는 반응을 백 테이크 등 전환 신호로 보고, 못 잡으면 사이드 컨트롤로 백스텝하거나 반대편 KOB로 재설정하라고 안내", "basis": "page-read" }
+      {
+        "source": "Jitsu IQ - Knee on Belly",
+        "url": "https://jitsuiq.com/positions/mount/knee-on-belly.html",
+        "supports": "상대가 옆으로 돌아 도망가면 등 너머로 스텝오버해 백 컨트롤을 잡는다고 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Digitsu - Knee on Belly",
+        "url": "https://digitsu.com/t/knee-on-belly",
+        "supports": "상대가 돌아 들어오는 반응을 백 테이크 등 전환 신호로 보고, 못 잡으면 사이드 컨트롤로 백스텝하거나 반대편 KOB로 재설정하라고 안내",
+        "basis": "page-read"
+      }
     ],
     "grade": "검증됨",
     "issues": "두 출처 모두 포지션 개요 페이지(일반 원칙 수준)로 세부 스텝오버 메커니즘은 약함. 강사 영상 출처를 추가하면 신뢰도 상승. 전환(KNB-11)은 마지막 단계."
@@ -61,14 +126,32 @@
     "name": "먼 쪽 칼라 그립 선행 · 크로스 칼라 초크",
     "start": "니 온 벨리를 잡기 전 또는 직후, 상대가 암바와 기무라를 모두 막아내는 단단한 타입일 때",
     "steps": [
-      { "tech": "KNB-20", "role": "main", "note": "먼 쪽 칼라를 먼저 깊게 잡은 상태로 무릎을 올리고 반대편으로 옮겨 앉음" },
-      { "tech": "KNB-03", "role": "then", "note": "상대가 예상 못 한 사이 두 번째 그립을 잡아 크로스 초크 마무리" }
+      {
+        "tech": "KNB-20",
+        "role": "main",
+        "note": "먼 쪽 칼라를 먼저 깊게 잡은 상태로 무릎을 올리고 반대편으로 옮겨 앉음"
+      },
+      {
+        "tech": "KNB-03",
+        "role": "then",
+        "note": "상대가 예상 못 한 사이 두 번째 그립을 잡아 크로스 초크 마무리"
+      }
     ],
     "end": "초크 서브미션",
     "level": "중급",
     "evidence": [
-      { "source": "Grapplearts (Stephan Kesting, Denis Kang 기술)", "url": "https://www.grapplearts.com/powerful-choke-knee-on-belly/", "supports": "마지막 그립(먼 쪽 칼라)을 먼저 잡고 니 마운트 후 반대편으로 건너가 두 번째 그립으로 초크하는 거꾸로 세팅을 소개", "basis": "page-read" },
-      { "source": "Jitsu IQ - Knee on Belly", "url": "https://jitsuiq.com/positions/mount/knee-on-belly.html", "supports": "니 온 벨리에서 접근 가능한 서브미션으로 크로스 칼라 초크를 나열(연계 설명은 없음)", "basis": "page-read" }
+      {
+        "source": "Grapplearts (Stephan Kesting, Denis Kang 기술)",
+        "url": "https://www.grapplearts.com/powerful-choke-knee-on-belly/",
+        "supports": "마지막 그립(먼 쪽 칼라)을 먼저 잡고 니 마운트 후 반대편으로 건너가 두 번째 그립으로 초크하는 거꾸로 세팅을 소개",
+        "basis": "page-read"
+      },
+      {
+        "source": "Jitsu IQ - Knee on Belly",
+        "url": "https://jitsuiq.com/positions/mount/knee-on-belly.html",
+        "supports": "니 온 벨리에서 접근 가능한 서브미션으로 크로스 칼라 초크를 나열(연계 설명은 없음)",
+        "basis": "page-read"
+      }
     ],
     "grade": "참고",
     "issues": "Jitsu IQ는 목록 수준이라 사실상 Grapplearts 1곳. 기 전용 기술. 상대 반응에 따른 if_blocked 갈래 없음."
@@ -79,16 +162,107 @@
     "name": "니 온 벨리 베이스볼 배트 초크 (상대가 팔을 잡을 때)",
     "start": "니 온 벨리 탑에서 양손 칼라 그립을 잡을 수 있을 때",
     "steps": [
-      { "tech": "KNB-20", "role": "main", "note": "무릎 압박을 유지하며 칼라 그립 준비" },
-      { "tech": "KNB-04", "role": "then", "note": "손바닥 위/아래 그립으로 팔꿈치를 모으고 상대가 새우처럼 빠지면 무릎을 떨어뜨려 조임을 강화" }
+      {
+        "tech": "KNB-20",
+        "role": "main",
+        "note": "무릎 압박을 유지하며 칼라 그립 준비"
+      },
+      {
+        "tech": "KNB-04",
+        "role": "then",
+        "note": "손바닥 위/아래 그립으로 팔꿈치를 모으고 상대가 새우처럼 빠지면 무릎을 떨어뜨려 조임을 강화"
+      }
     ],
     "end": "초크 서브미션",
     "level": "중급",
     "evidence": [
-      { "source": "Evolve MMA - BJJ 101: Baseball Choke", "url": "https://evolve-mma.com/blog/bjj-101-baseball-choke/", "supports": "니 온 벨리에서 베이스볼 초크 그립을 만들고 상대가 팔을 잡으면 당기며 무릎을 더 눌러 조이고, 새우처럼 빠지면 무릎을 떨어뜨려 마무리한다고 설명", "basis": "page-read" },
-      { "source": "Jitsu IQ - Knee on Belly", "url": "https://jitsuiq.com/positions/mount/knee-on-belly.html", "supports": "니 온 벨리에서 접근 가능한 서브미션 중 하나로 베이스볼 초크를 나열", "basis": "page-read" }
+      {
+        "source": "Evolve MMA - BJJ 101: Baseball Choke",
+        "url": "https://evolve-mma.com/blog/bjj-101-baseball-choke/",
+        "supports": "니 온 벨리에서 베이스볼 초크 그립을 만들고 상대가 팔을 잡으면 당기며 무릎을 더 눌러 조이고, 새우처럼 빠지면 무릎을 떨어뜨려 마무리한다고 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Jitsu IQ - Knee on Belly",
+        "url": "https://jitsuiq.com/positions/mount/knee-on-belly.html",
+        "supports": "니 온 벨리에서 접근 가능한 서브미션 중 하나로 베이스볼 초크를 나열",
+        "basis": "page-read"
+      }
     ],
     "grade": "참고",
     "issues": "두 번째 출처는 목록 수준이라 독립적 연계 근거로 약함. 베이스볼 초크 실패 시 백 테이크로 가는 연결은 어떤 출처도 직접 다루지 않음. 기 전용."
+  },
+  {
+    "id": "knb-americana-mount",
+    "position": "KNB",
+    "name": "니 온 벨리 아메리카나 · 마운트 전환",
+    "start": "니 온 벨리 탑에서 크로스 라펠 그립으로 상대 반응을 유도할 때",
+    "steps": [
+      {
+        "tech": "KNB-13",
+        "role": "main",
+        "note": "크로스 라펠을 잡아 상대가 내 공격하는 팔을 잡으면 다른 팔을 삼두 아래로 넣어 피겨포로 아메리카나"
+      },
+      {
+        "tech": "KNB-10",
+        "role": "transition",
+        "note": "아메리카나가 안 되면 상대의 반응을 이용해 무릎을 넘겨 마운트를 잡는다"
+      }
+    ],
+    "end": "마운트 또는 아메리카나 서브미션",
+    "level": "기본",
+    "evidence": [
+      {
+        "source": "Evolve University",
+        "url": "https://evolve-university.com/blog/5-attacks-from-the-knee-on-belly-position/",
+        "supports": "니 온 벨리에서 크로스 라펠로 반응을 유도하고 상대가 팔을 잡으면 삼두 아래로 팔을 넣어 아메리카나, 안 되면 그 반응으로 마운트로 간다고 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "JitsuIQ (아메리카나)",
+        "url": "https://jitsuiq.com/submissions/locks/joint-locks/americana.html",
+        "supports": "니 온 벨리에서 무릎 압박으로 방어 반응을 만들고 드러난 팔을 고립해 아메리카나로 연결한다는 설명(위키성 사이트)",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "참고",
+    "issues": "[3라운드 신규] KNB-13 사용. 아메리카나 진입은 2곳이 확인하나 실패 시 마운트 전환은 Evolve 1곳이라 참고. 기(도복) 라펠 그립 의존."
+  },
+  {
+    "id": "knb-armbar-darce",
+    "position": "KNB",
+    "name": "니 온 벨리 암바 · 다르스 초크 (밀기 반응에 따라)",
+    "start": "니 온 벨리 탑에서 상대가 압박을 풀려고 밀어낼 때",
+    "steps": [
+      {
+        "tech": "KNB-01",
+        "role": "main",
+        "note": "상대가 내 무릎을 밀면 생긴 틈으로 손을 넣어 먼 쪽 암바"
+      },
+      {
+        "tech": "KNB-14",
+        "role": "if_blocked",
+        "trigger": "상대가 무릎이 아니라 내 배/몸통을 밀면",
+        "note": "팔 배치 때문에 암바는 어렵지만 팔을 상대 팔 아래로 넣어 머리를 잡고 다르스 초크"
+      }
+    ],
+    "end": "암바 또는 다르스 초크",
+    "level": "중급",
+    "evidence": [
+      {
+        "source": "Evolve University",
+        "url": "https://evolve-university.com/blog/5-attacks-from-the-knee-on-belly-position/",
+        "supports": "무릎을 밀면 먼 쪽 암바, 몸통을 밀면 다르스 초크라는 반응별 선택을 같은 영상에서 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Bernardo Faria Academy (Chris Lyon 다르스)",
+        "url": "https://bernardofariaacademy.com/?p=1110",
+        "supports": "발을 들어 압박하면 상대가 안쪽으로 돌고 그때 팔을 깊게 넣고 머리를 밀어 다르스를 마무리하는 요약(검색 결과 요약만 확인, 현재 페이지는 홈으로 연결되어 본문 열람 불가)",
+        "basis": "snippet"
+      }
+    ],
+    "grade": "참고",
+    "issues": "[3라운드 신규] KNB-14 사용. 반응별 트리거는 Evolve 1곳이 page-read로 확인, Faria는 snippet이라 참고. 기/노기 모두 가능하나 Evolve 영상은 도복 기준."
   }
 ]

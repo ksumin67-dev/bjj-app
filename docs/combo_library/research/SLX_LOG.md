@@ -7,3 +7,11 @@
 - 한계: SLX 포지션은 위키형 요약(jitsuiq, digitsu)이 많아 '조건→다음 기술' 형태의 트리거를 담은 출처가 드묾. 검증됨 후보는 2차 라운드에서 Lachlan Giles/Grapplearts SLX 마스터클래스 등 강사 본인 자료로 재시도.
 - 도감 누락 제안: SLX → X가드 전환(SLX to X-Guard), SLX 웨이터 스윕, 스탠드업 스윕 변형(오버훅 SLX), 아킬레스/앵클락 변형(배로 엎드린 앵클락), 힐훅 이전 단계의 '힐 슬립'류.
 - 룰 메모: 스트레이트 앵클락은 IBJJF 전 벨트 허용, 니 리핑(리프)은 IBJJF 금지, 토홀드/니바는 상위 벨트 위주, 힐훅은 기 대회 전반 금지(노기 상위 부문 제외, 출처 간 상이). 앱 노출 시 룰 경고 필요.
+
+## 라운드 3 (2026-10-10)
+- 결과: 5개 (검증됨 1 / 참고 4 / 초안 0). 신규 ID 반영: SLX-25(SLX→X가드), SLX-05(SLX 웨이터 스윕).
+- 초안이던 slx-sweep-crabride-backtake는 근거 없던 SLX-01 트리거를 폐기하고 'SLX-05 웨이터 스윕 불발 → SLX-24 백 테이크'(Grippo SLX 코스 + Benayoun SLX Evolution page-read)로 재작성, 참고. 두 강사는 크랩 라이드라는 용어를 쓰지 않아 SLX-24 대응은 검수 필요.
+- 신규 검증됨: slx-to-xguard (Grippo SLX-X가드 드릴 + Stolfi 스탠다드 아시→X가드 연결 page-read).
+- 유효한 출처: Digitsu SLX 코스(Grippo, Benayoun SLX Evolution, Stolfi Open Guard Fundamentals) 영상 설명. 스탠다드 아시 = SLX로 읽음.
+- 미해결: SLX→아웃사이드 아시→힐훅 강사 직접 설명(여전히 참고), SLX-01→앵클락은 Evolve 1곳. Stolfi 앵클락 페이지는 '백워드 오프밸런스 후 앵클락'이라 스윕 실패 연계 근거가 아님.
+- 룰: SLX 진입 후 리핑은 IBJJF 금지, 힐훅/토홀드/니바는 벨트·대회별 확인.

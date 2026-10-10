@@ -5,18 +5,42 @@
     "name": "스탠드업 스윕 · 원거리 발목(다리 꺾기) 스윕",
     "start": "X가드를 만든 직후, 상대 다리를 어깨에 올린 상태",
     "steps": [
-      { "tech": "XG-01", "role": "main", "note": "다리를 뻗어 상대를 늘려 놓고 테크니컬 스탠드업으로 일어나며 상대 다리를 어깨에 얹은 채 스윕" },
-      { "tech": "XG-03", "role": "if_blocked", "trigger": "상대가 균형을 유지하며 두 다리를 다시 모으거나 나를 향해 몸을 실을 때", "note": "다리를 늘린 뒤 상대가 먼 다리를 다시 가져오는 순간 그 발목을 잡고 다시 다리를 뻗어 무릎을 꺾어 넘김" }
+      {
+        "tech": "XG-01",
+        "role": "main",
+        "note": "다리를 뻗어 상대를 늘려 놓고 테크니컬 스탠드업으로 일어나며 상대 다리를 어깨에 얹은 채 스윕"
+      },
+      {
+        "tech": "XG-03",
+        "role": "if_blocked",
+        "trigger": "상대가 균형을 유지하며 두 다리를 다시 모으거나 나를 향해 몸을 실을 때",
+        "note": "다리를 늘린 뒤 상대가 먼 다리를 다시 가져오는 순간 그 발목을 잡고 다시 다리를 뻗어 무릎을 꺾어 넘김"
+      }
     ],
     "end": "탑 포지션 (상대 오픈 가드 위에서 패스 준비)",
     "level": "중급",
     "evidence": [
-      { "source": "Grapplearts (Stephan Kesting) - My Favorite One-Two Sweeping Combo from X Guard", "url": "https://www.grapplearts.com/my-favorite-one-two-sweeping-combo-from-x-guard/", "supports": "스탠드업 스윕이 막혀 상대가 다리를 모으면 먼 다리를 다시 들여오게 한 뒤 발목을 잡고 다시 뻗어 다리를 꺾는 '먼 다리 버클 스윕'으로 이어가는 1-2 콤보", "basis": "page-read" },
-      { "source": "NAGA Fighter - What is the X Guard Sweep in BJJ?", "url": "https://www.nagafighter.com/?p=2486", "supports": "상대가 나를 향해 밀고 들어오면 먼 쪽 발목을 잡고 엉덩이를 뻗어 다리를 꺾고, 멀리 보낼 때는 테크니컬 스탠드업 스윕을 쓴다는 방향별 스윕 설명", "basis": "page-read" },
-      { "source": "Evolve MMA (BJJEE 게재) - 3 Attacks From X-Guard", "url": "https://www.bjjee.com/articles/3-attacks-from-x-guard-you-need-to-know/", "supports": "스탠드업 스윕을 탐색용 잽으로 쓰고, 상대가 다리를 모아 막으면 다른 스윕으로 이어가는 구조를 설명 (이 출처의 후속 기술은 노크백 스윕)", "basis": "page-read" }
+      {
+        "source": "Grapplearts (Stephan Kesting) - My Favorite One-Two Sweeping Combo from X Guard",
+        "url": "https://www.grapplearts.com/my-favorite-one-two-sweeping-combo-from-x-guard/",
+        "supports": "스탠드업 스윕이 막혀 상대가 다리를 모으면 먼 다리를 다시 들여오게 한 뒤 발목을 잡고 다시 뻗어 다리를 꺾는 '먼 다리 버클 스윕'으로 이어가는 1-2 콤보",
+        "basis": "page-read"
+      },
+      {
+        "source": "NAGA Fighter - What is the X Guard Sweep in BJJ?",
+        "url": "https://www.nagafighter.com/?p=2486",
+        "supports": "상대가 나를 향해 밀고 들어오면 먼 쪽 발목을 잡고 엉덩이를 뻗어 다리를 꺾고, 멀리 보낼 때는 테크니컬 스탠드업 스윕을 쓴다는 방향별 스윕 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Evolve MMA (BJJEE 게재) - 3 Attacks From X-Guard",
+        "url": "https://www.bjjee.com/articles/3-attacks-from-x-guard-you-need-to-know/",
+        "supports": "스탠드업 스윕을 탐색용 잽으로 쓰고, 상대가 다리를 모아 막으면 다른 스윕으로 이어가는 구조를 설명 (이 출처의 후속 기술은 노크백 스윕)",
+        "basis": "page-read"
+      }
     ],
     "grade": "검증됨",
-    "issues": "도감 XG-03 '원거리 발목 스윕'이 Kesting의 'far leg buckle sweep'과 같은 기술이라는 가정(이름이 정확히 같지 않음) — 검수에서 확인 필요. 노기/기 모두 가능(발목 그립 중심). 세 번째 출처는 후속 기술이 다르므로 XG-05 콤보(xg-standup-knockback)와 함께 참고."
+    "issues": "라운드3 판단: 도감 XG-03 '원거리 발목 스윕(Far Ankle Sweep)'은 Kesting의 far leg buckle(먼 쪽 발목을 잡고 다리를 뻗어 무릎을 꺾어 넘김)과 NAGA의 먼 발목 잡기 스윕 설명에 부합하므로 같은 기술로 인정(영문명이 완전히 같지는 않음). 노기/기 모두 가능(발목 그립 중심). 세 번째 출처(bjjee/Evolve)는 후속 기술이 노크백이라 XG-05 콤보와 함께 참고."
   },
   {
     "id": "xg-standup-knockback",
@@ -24,17 +48,36 @@
     "name": "스탠드업 스윕 · 노크백 스윕 (상대가 다리를 모을 때)",
     "start": "X가드에서 상대를 늘려 스탠드업 스윕을 시도한 직후",
     "steps": [
-      { "tech": "XG-01", "role": "main", "note": "다리를 뻗어 무릎을 밖으로 밀어 균형을 무너뜨리고 일어나며 스윕 시도 (탐색용 잽 역할)" },
-      { "tech": "XG-05", "role": "if_blocked", "trigger": "상대가 두 다리를 최대한 모아 앞으로 못 넘어지게 막으면", "note": "무릎 뒤의 발을 발목 뒤로 내리고 위쪽 발로 상대 골반을 차 뒤로 쓰러뜨림" }
+      {
+        "tech": "XG-01",
+        "role": "main",
+        "note": "다리를 뻗어 무릎을 밖으로 밀어 균형을 무너뜨리고 일어나며 스윕 시도 (탐색용 잽 역할)"
+      },
+      {
+        "tech": "XG-05",
+        "role": "if_blocked",
+        "trigger": "상대가 두 다리를 최대한 모아 앞으로 못 넘어지게 막으면",
+        "note": "무릎 뒤의 발을 발목 뒤로 내리고 위쪽 발로 상대 골반을 차 뒤로 쓰러뜨림"
+      }
     ],
     "end": "탑 포지션 (상대 오픈 가드 위)",
     "level": "중급",
     "evidence": [
-      { "source": "Evolve MMA (BJJEE 게재) - 3 Attacks From X-Guard", "url": "https://www.bjjee.com/articles/3-attacks-from-x-guard-you-need-to-know/", "supports": "스탠드업 스윕이 막히며 상대가 다리를 모으면 뒤쪽 균형이 약해지므로 발목 뒤로 후크를 옮겨 골반을 차는 노크백 스윕을 쓴다고 설명", "basis": "page-read" },
-      { "source": "Grapplearts (Stephan Kesting) - Favorite One-Two Sweeping Combo", "url": "https://www.grapplearts.com/my-favorite-one-two-sweeping-combo-from-x-guard/", "supports": "스탠드업 스윕이 막히면 상대가 다리를 모으는 반응이 예측 가능한 트리거가 된다고 설명 (후속 기술은 먼 다리 버클이라 노크백과는 다름)", "basis": "page-read" }
+      {
+        "source": "Evolve MMA (BJJEE 게재) - 3 Attacks From X-Guard",
+        "url": "https://www.bjjee.com/articles/3-attacks-from-x-guard-you-need-to-know/",
+        "supports": "스탠드업 스윕이 막히며 상대가 다리를 모으면 뒤쪽 균형이 약해지므로 발목 뒤로 후크를 옮겨 골반을 차는 노크백 스윕을 쓴다고 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Grapplearts (Stephan Kesting) - Favorite One-Two Sweeping Combo",
+        "url": "https://www.grapplearts.com/my-favorite-one-two-sweeping-combo-from-x-guard/",
+        "supports": "스탠드업 스윕이 막히면 상대가 다리를 모으는 반응이 예측 가능한 트리거가 된다고 설명 (후속 기술은 먼 다리 버클이라 노크백과는 다름)",
+        "basis": "page-read"
+      }
     ],
     "grade": "참고",
-    "issues": "노크백 스윕을 직접 연결한 page-read 출처는 Evolve 1곳이며 Kesting은 같은 트리거에 다른 후속 기술을 제시 → 방향이 조금 다른 지지. 같은 트리거(다리를 모음)에 XG-03 콤보와 갈래가 겹치므로 앱에서는 한 카드의 두 갈래로 합치는 것도 검토. 도감 XG-05 '노크백 스윕'과 Evolve 'Knock Back Sweep' 동일 기술로 가정."
+    "issues": "라운드3 판단: 도감 XG-05 '노크백 스윕'은 Evolve 글의 Knock Back Sweep(무릎 뒤 훅을 발목 뒤로 내리고 위쪽 발로 골반을 차 뒤로 넘김)과 영문명·설명이 일치해 동일 기술로 인정. 단 노크백을 직접 연결한 출처는 Evolve/bjjee(같은 글의 재게재) 1곳이며 Kesting은 같은 트리거에 다른 후속(버클)을 제시해 방향이 다름 → 참고 유지. 같은 트리거(다리를 모음)에 XG-03 콤보와 갈래가 겹치므로 앱에서는 한 카드의 두 갈래로 합치는 것도 검토."
   },
   {
     "id": "xg-strongbase-backtake",
@@ -42,17 +85,42 @@
     "name": "X가드 스윕 · 백 테이크 (기반이 강한 상대)",
     "start": "X가드에서 상대가 키가 크거나 기반이 단단해 스윕이 잘 안 될 때",
     "steps": [
-      { "tech": "XG-01", "role": "main", "note": "스탠드업 스윕을 먼저 시도해 상대 반응을 확인" },
-      { "tech": "XG-22", "role": "if_blocked", "trigger": "상대 기반이 너무 강해 스윕이 안 되고 한쪽 다리에 체중을 실을 때", "note": "스윕을 포기하고 상대 아래로 돌아 들어가 다리를 넘겨 백을 잡음" }
+      {
+        "tech": "XG-01",
+        "role": "main",
+        "note": "스탠드업 스윕을 먼저 시도해 상대 반응을 확인"
+      },
+      {
+        "tech": "XG-22",
+        "role": "if_blocked",
+        "trigger": "상대 기반이 너무 강해 스윕이 안 되고 한쪽 다리에 체중을 실을 때",
+        "note": "스윕을 포기하고 상대 아래로 돌아 들어가 다리를 넘겨 백을 잡는다(도감 XG-22와 이름·세부가 같다고 확정되지 않은 X가드 백 테이크)"
+      }
     ],
     "end": "백 포지션 (리어 마운트)",
     "level": "고급",
     "evidence": [
-      { "source": "Grapplearts (Stephan Kesting) - How to Take the Back from X Guard", "url": "https://www.grapplearts.com/how-to-take-the-back-from-x-guard/", "supports": "X가드에서 스탠드업 스윕+다리 버클을 먼저 쓰고, 기반이 매우 강한 상대에게는 스윕을 버리고 아래로 돌아 들어가 곧바로 백을 잡는 선택지를 설명", "basis": "page-read" },
-      { "source": "NAGA Fighter - What is the X Guard Sweep in BJJ?", "url": "https://www.nagafighter.com/?p=2486", "supports": "상대가 가까운 다리에 체중을 크게 실을 때 발목을 잡고 반대 다리를 밀어 올려 몸을 내 위로 띄운 뒤 칼라를 잡고 백을 잡는 'X가드 백 테이크'를 설명", "basis": "page-read" }
+      {
+        "source": "Grapplearts (Stephan Kesting) - How to Take the Back from X Guard",
+        "url": "https://www.grapplearts.com/how-to-take-the-back-from-x-guard/",
+        "supports": "X가드에서 스탠드업 스윕+다리 버클을 먼저 쓰고, 기반이 매우 강한 상대에게는 스윕을 버리고 아래로 돌아 들어가 곧바로 백을 잡는 선택지를 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "NAGA Fighter - What is the X Guard Sweep in BJJ?",
+        "url": "https://www.nagafighter.com/?p=2486",
+        "supports": "상대가 가까운 다리에 체중을 크게 실을 때 발목을 잡고 반대 다리를 밀어 올려 몸을 내 위로 띄운 뒤 칼라를 잡고 백을 잡는 'X가드 백 테이크'를 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Digitsu(Gianni Grippo)",
+        "url": "https://digitsu.com/v/x-guard-back-take-gianni-grippo",
+        "supports": "Gianni Grippo(SLX 코스): X가드에서 다리를 뻗어 상대 베이스를 넓히고 체중을 한 다리에 싣게 한 뒤 언더훅한 다리를 머리 위로 넘기고 상대 무릎 뒤에 발을 놓아 시트벨트로 백을 잡는 X가드 백 테이크 설명",
+        "basis": "page-read"
+      }
     ],
     "grade": "참고",
-    "issues": "NAGA는 스탠드업 스윕이 막혔을 때 백 테이크로 가라는 순서 연결이 아니라 독립 옵션으로 나열 → 방향 근거 약함. 도감 XG-22 '크로스 사이드 X 백 테이크'가 Kesting의 '아래로 돌아 백 테이크'와 동일한지 불확실(검수 필요). 트리거 문구는 Kesting 설명(기반이 강한 상대)에 근거."
+    "issues": "라운드3 판단: 도감 XG-22 '크로스 사이드 X 백 테이크'는 어떤 출처에도 '크로스 사이드'라는 이름으로 나오지 않음. Kesting은 아래로 돌아 들어가 백을 잡는 방식, Grippo는 언더훅한 다리를 머리 위로 넘겨 백을 잡는 방식으로 서로 세부가 다르지만 모두 'X가드 → 백 테이크'이므로 개념상 가장 가까운 도감 기술로 XG-22를 유지하되 이름 일치는 미확정 → 검수 필요, 참고 유지. NAGA는 스탠드업 스윕이 막혔을 때의 순서가 아니라 독립 옵션으로 나열. 트리거 문구는 Kesting의 '기반이 강한 상대'에 근거."
   },
   {
     "id": "xg-sweep-blocked-to-slx",
@@ -60,14 +128,33 @@
     "name": "X가드 사이드 스윕 · 싱글 레그 X 전환 (상대가 넓게 짚을 때)",
     "start": "X가드에서 상대를 옆으로 넘기는 스윕을 시도할 때",
     "steps": [
-      { "tech": "XG-06", "role": "main", "note": "발목 그립을 유지한 채 후크로 다리를 들어 올리고 옆 방향으로 넘김" },
-      { "tech": "XG-21", "role": "if_blocked", "trigger": "상대가 발이나 손을 넓게 짚어 첫 스윕이 막히면", "note": "엉덩이를 당겨 각도를 다시 잡고 후크를 바꿔 싱글 레그 X로 전환하여 공격 지속" }
+      {
+        "tech": "XG-06",
+        "role": "main",
+        "note": "발목 그립을 유지한 채 후크로 다리를 들어 올리고 옆 방향으로 넘김"
+      },
+      {
+        "tech": "XG-21",
+        "role": "if_blocked",
+        "trigger": "상대가 발이나 손을 넓게 짚어 첫 스윕이 막히면",
+        "note": "엉덩이를 당겨 각도를 다시 잡고 후크를 바꿔 싱글 레그 X로 전환하여 공격 지속"
+      }
     ],
     "end": "싱글 레그 X가드 (이후 SLX 콤보 참고)",
     "level": "중급",
     "evidence": [
-      { "source": "Digitsu - X-guard Sweep (기술 해설)", "url": "https://digitsu.com/t/x-guard-sweep", "supports": "넓은 짚기로 스윕이 막히면 엉덩이를 빼 다시 각을 잡고 반대 방향 스윕이나 테크니컬 스탠드업으로 이어가고, 싱글 레그 X로 전환할 수도 있다고 설명", "basis": "page-read" },
-      { "source": "Jitsu IQ - X Guard", "url": "https://jitsuiq.com/positions/guard/x-guard.html", "supports": "상대의 방어에 맞춰 X가드와 싱글 레그 X 사이를 유연하게 오가라는 팁과 X가드→싱글 레그 X 전환 방법을 설명", "basis": "page-read" }
+      {
+        "source": "Digitsu - X-guard Sweep (기술 해설)",
+        "url": "https://digitsu.com/t/x-guard-sweep",
+        "supports": "넓은 짚기로 스윕이 막히면 엉덩이를 빼 다시 각을 잡고 반대 방향 스윕이나 테크니컬 스탠드업으로 이어가고, 싱글 레그 X로 전환할 수도 있다고 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Jitsu IQ - X Guard",
+        "url": "https://jitsuiq.com/positions/guard/x-guard.html",
+        "supports": "상대의 방어에 맞춰 X가드와 싱글 레그 X 사이를 유연하게 오가라는 팁과 X가드→싱글 레그 X 전환 방법을 설명",
+        "basis": "page-read"
+      }
     ],
     "grade": "참고",
     "issues": "두 출처 모두 일반 해설이며 XG-06(크로스 사이드 X 스윕)만 특정한 근거는 없음 — 시작 스윕 ID는 임의 선택이 아니라 '옆 방향 스윕'이라는 설명에 맞춘 것이므로 검수 필요. Jitsu IQ는 위키형 요약 페이지. 기/노기 모두 가능."
@@ -78,17 +165,83 @@
     "name": "X가드 스윕 후 · 싱글 레그 X · 발목 꺾기 (레그락 연계)",
     "start": "X가드 스윕이 방어되었지만 상대가 균형을 유지한 채 서 있을 때",
     "steps": [
-      { "tech": "XG-01", "role": "main", "note": "먼저 스윕 시도로 상대 균형과 반응을 흔듦" },
-      { "tech": "XG-21", "role": "if_blocked", "trigger": "스윕은 막혔으나 상대가 한쪽 다리를 내게 맡긴 채 서 있을 때", "note": "싱글 레그 X로 전환해 발목 그립을 유지하며 다리를 고립" },
-      { "tech": "SLX-10", "role": "then", "note": "발목을 양손으로 잡고 엉덩이를 앞으로 밀어 스트레이트 앵클락" }
+      {
+        "tech": "XG-01",
+        "role": "main",
+        "note": "먼저 스윕 시도로 상대 균형과 반응을 흔듦"
+      },
+      {
+        "tech": "XG-21",
+        "role": "if_blocked",
+        "trigger": "스윕은 막혔으나 상대가 한쪽 다리를 내게 맡긴 채 서 있을 때",
+        "note": "싱글 레그 X로 전환해 발목 그립을 유지하며 다리를 고립"
+      },
+      {
+        "tech": "SLX-10",
+        "role": "then",
+        "note": "발목을 양손으로 잡고 엉덩이를 앞으로 밀어 스트레이트 앵클락"
+      }
     ],
     "end": "스트레이트 앵클락 서브미션",
     "level": "고급",
     "evidence": [
-      { "source": "Evolve MMA (BJJEE 게재) - 3 Attacks From X-Guard", "url": "https://www.bjjee.com/articles/3-attacks-from-x-guard-you-need-to-know/", "supports": "X가드 레그락은 스윕이 막힌 뒤 후속으로 쓸 때 성공률이 높다고 설명하고, 실패한 노크백 스윕 직후 니바로 이어가는 예를 제시 (앵클락 아님)", "basis": "page-read" },
-      { "source": "NAGA Fighter - What is the X Guard Sweep in BJJ?", "url": "https://www.nagafighter.com/?p=2486", "supports": "싱글 레그 X가 X가드에서 하체 공격(앵클락, 니바, 토홀드, 힐훅)을 연결하는 핵심 포지션이라고 설명", "basis": "page-read" }
+      {
+        "source": "Evolve MMA (BJJEE 게재) - 3 Attacks From X-Guard",
+        "url": "https://www.bjjee.com/articles/3-attacks-from-x-guard-you-need-to-know/",
+        "supports": "X가드 레그락은 스윕이 막힌 뒤 후속으로 쓸 때 성공률이 높다고 설명하고, 실패한 노크백 스윕 직후 니바로 이어가는 예를 제시 (앵클락 아님)",
+        "basis": "page-read"
+      },
+      {
+        "source": "NAGA Fighter - What is the X Guard Sweep in BJJ?",
+        "url": "https://www.nagafighter.com/?p=2486",
+        "supports": "싱글 레그 X가 X가드에서 하체 공격(앵클락, 니바, 토홀드, 힐훅)을 연결하는 핵심 포지션이라고 설명",
+        "basis": "page-read"
+      }
     ],
     "grade": "참고",
-    "issues": "'스윕 실패 → SLX 전환 → 앵클락'이라는 구체적 3단계 순서를 설명한 출처는 없고 각 단계를 다른 출처가 따로 지지 → 조합은 추정. 도감에 'X가드 니바'가 없어 Evolve의 니바 후속은 넣지 못함(누락 기술: X가드 니바 / Knee Bar from X Guard). 레그락 룰: 스트레이트 앵클락은 IBJJF 전 벨트 허용(다만 무릎을 비틀지 않는 방향 규정 있음), 니바·토홀드·힐훅은 벨트·노기 여부에 따라 제한되므로 대회 룰 확인 필요. 노기에서 더 일반적."
+    "issues": "'스윕 실패 → SLX 전환 → 앵클락'이라는 구체적 3단계 순서를 설명한 출처는 없고 각 단계를 다른 출처가 따로 지지 → 조합은 추정. 라운드3: X가드 니바(XG-10)가 도감에 추가되어 니바 후속은 별도 콤보 xg-knockback-kneebar로 분리. 레그락 룰: 스트레이트 앵클락은 IBJJF 전 벨트 허용(다만 무릎을 비틀지 않는 방향 규정 있음), 니바·토홀드·힐훅은 벨트·노기 여부에 따라 제한되므로 대회 룰 확인 필요. 노기에서 더 일반적."
+  },
+  {
+    "id": "xg-knockback-kneebar",
+    "position": "XG",
+    "name": "스탠드업·노크백 스윕이 막히면 · X가드 니바",
+    "start": "X가드에서 스탠드업 스윕을 시도해 상대 반응을 본 직후",
+    "steps": [
+      {
+        "tech": "XG-01",
+        "role": "main",
+        "note": "다리를 뻗어 상대를 늘려 놓고 테크니컬 스탠드업으로 일어나며 스윕 시도"
+      },
+      {
+        "tech": "XG-05",
+        "role": "if_blocked",
+        "trigger": "상대가 두 다리를 모아 앞으로 넘어가지 않게 버티면",
+        "note": "무릎 뒤 훅을 발목 뒤로 내리고 위쪽 발로 상대 골반을 차 뒤로 넘기는 노크백 스윕"
+      },
+      {
+        "tech": "XG-10",
+        "role": "if_blocked",
+        "trigger": "노크백도 막혀 상대가 균형을 되찾고 서 있으면",
+        "note": "위쪽 발을 먼 골반에서 가까운 골반으로 옮기고 아래 다리를 언더훅한 다리 둘레로 돌려 뒤꿈치를 엉덩이 쪽에 붙인 뒤, 엉덩이를 무릎 위로 밀며 뒤꿈치를 당겨 니바"
+      }
+    ],
+    "end": "탑 포지션(스윕) 또는 니바 서브미션",
+    "level": "고급",
+    "evidence": [
+      {
+        "source": "Evolve MMA(bjjee 재게재 동일 글)",
+        "url": "https://evolve-mma.com/blog/3-attacks-from-x-guard-worth-adding-to-your-bjj-game/",
+        "supports": "Evolve MMA: 스윕으로 균형이 흔들렸으나 상대가 베이스를 지키고 있을 때, 예를 들어 노크백 스윕이 실패하면 바로 니바로 들어가라고 하고 진입 동작(발 위치 이동, 아래 다리 감기, 엉덩이로 무릎 압박)을 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Digitsu(Johnny Tama)",
+        "url": "https://digitsu.com/v/waiter-position-x-guard-knee-bar-johnny-tama",
+        "supports": "Johnny Tama: 스윕 하는 척 상대를 뒤로 물러나게 한 뒤 한 발은 골반에, 다른 다리로 뒤꿈치를 컨트롤해 배를 아래로 한 니바로 가는 흐름과 상대가 돌면 토홀드로 바꾸는 선택 설명(트리거가 스윕 실패가 아니라 스윕 페이크)",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "참고",
+    "issues": "신규 XG-10 사용. Evolve가 직접 연결(스윕 실패 → 니바)을 설명하나 Tama와는 트리거가 달라(페이크 후 물러남) 독립 2곳의 동일 연계로 보기 어려워 참고. bjjee 사본은 같은 글이라 독립 출처로 세지 않음. 룰: 니바는 IBJJF에서 벨트별 제한(하위 벨트 금지, 상위 벨트 허용), 노기 대회는 별도. 무릎 부상 위험 경고 필요."
   }
 ]

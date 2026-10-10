@@ -27,3 +27,9 @@ Evolve 계열 블로그, JitsuIQ 기술 페이지, Gracie Barra 기술 글, Atos
 - 마운트 기무라와 암 트라이앵글을 짝으로 쓰는 강사 자료 (Gordon Ryan 마운트 컨트롤, Grapplearts 등).
 - 암바 방어 후 백 테이크를 직접 다루는 강사 자료.
 - 하이 마운트 → S-마운트 전환을 다룬 강사 본인 영상.
+
+## 라운드 3 (2026-10-10)
+- 신규: mt-armbar-mountedtriangle(검증됨: BJJEE Galvao 소개 + JitsuIQ 마운트 삼각; MT-05 -> MT-13), mt-americana-armbar(검증됨: JitsuIQ + NAGA + Digitsu; MT-12 -> MT-01 / MT-03).
+- 교체: mt-basic-control-technical-mount를 MT-20 -> MT-22 -> MT-10(백 테이크)으로 재구성, 초안 -> 검증됨(Digitsu + JitsuIQ 기술적 마운트 페이지). 이전의 MT-05 대체 제거.
+- 재시도: mt-armbar-defended-backtake 초안 -> 참고(Graciemag Giusti: 막힌 암바 -> 백 테이크, 마운트 명시는 없음). mt-kimura-armtriangle은 근거 못 찾아 초안 유지.
+- 유효했던 검색어: "mount armbar defended mounted triangle transition BJJ", "technical mount BJJ opponent bridges turns to side back take armbar transition".

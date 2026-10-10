@@ -19,3 +19,10 @@
 - 강사 직접 채널(Marcelo, Roger Gracie 등) 근거 보강 필요: 현재 대부분 교육 사이트 요약.
 - BJJEE는 영상 소개 사이트라 독립 출처 계산 기준 논의 필요.
 - 기무라 오버훅(CG-18), 펀치 초크(CG-15), 기본 컨트롤(CG-20) 콤보는 미조사.
+
+## 라운드 3 (2026-10-10)
+- 변경: cg-armbar-triangle-omoplata의 CG-16/CG-17 -> CG-19(클로즈드 가드 삼각)/CG-22(클로즈드 가드 오모플라타)로 교체(근거는 일반 삼각/오모플라타를 다루므로 유지, 검증됨 유지). cg-overhook-triangle-omoplata는 오버훅 변형이 맞아 유지.
+- 신규: cg-triangle-omoplata(검증됨: Grapplearts + Evolve University), cg-hipbump-triangle(검증됨: BJJEE Craig Jones, Atos Galvao 설명, Grapplearts; 반응 트리거는 해석), cg-kimura-triangle(참고: Digitsu 2페이지가 같은 사이트).
+- 재시도: cg-overhook-armdrag-backtake 초안 유지(Atos에 클로즈드 가드 암드래그 백 테이크 강의 존재만 확인, 오버훅 연계 근거 없음).
+- 유효했던 검색어: "closed guard triangle choke defended switch to omoplata when opponent pulls arm out", "closed guard hip bump sweep defended triangle choke or kimura combination", "kimura closed guard ... switch to triangle". Grapplearts/Digitsu 코스 설명이 트리거를 비교적 분명히 적음.
+- 한계: Atos 영상은 설명문만 열람 가능. Bernardo Faria Academy 글 URL은 홈으로 리다이렉트됨.

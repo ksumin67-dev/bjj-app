@@ -201,7 +201,7 @@
       }
     ],
     "grade": "검증됨",
-    "issues": "노기 가능. [본문 확인 완료 2026-10-10] Evolve University와 Grapplearts(글 + Kimura Cheatsheet PDF) 본문 확인. 두 출처 모두 기무라 컨트롤 -> 암바를 \"선택지\"로 서술할 뿐 \"기무라가 풀리거나 팔이 펴질 때\"라는 트리거는 근거가 없어 BC-03을 if_blocked에서 then으로 바꾸고 트리거를 삭제함. Grapplearts는 기무라 -> 삼각(도감에 BC 코드 없음)을 중심으로 서술하고 암바는 삼각 경유 또는 일반 서술. Graciemag 로저 그레이시 영상(기무라가 막히면 칼라 초크)은 이번에 읽지 않음, 미반영."
+    "issues": "노기 가능. [본문 확인 완료 2026-10-10] Evolve University와 Grapplearts(글 + Kimura Cheatsheet PDF) 본문 확인. 두 출처 모두 기무라 컨트롤 -> 암바를 \"선택지\"로 서술할 뿐 \"기무라가 풀리거나 팔이 펴질 때\"라는 트리거는 근거가 없어 BC-03을 if_blocked에서 then으로 바꾸고 트리거를 삭제함. Grapplearts는 기무라 -> 삼각(도감에 BC 코드 없음)을 중심으로 서술하고 암바는 삼각 경유 또는 일반 서술. Graciemag 로저 그레이시 영상(기무라가 막히면 칼라 초크)은 이번에 읽지 않음, 미반영. [3라운드] BC-11(백 트라이앵글)이 도감에 추가되어 기무라 -> 삼각 연계는 bc-kimura-triangle 콤보로 분리."
   },
   {
     "id": "bc-rnc-bowarrow-gi",
@@ -222,7 +222,7 @@
       {
         "tech": "BC-02",
         "role": "if_blocked",
-        "trigger": "상대가 맨손 목 방어를 단단히 하면",
+        "trigger": "상대가 손으로 목을 단단히 보호해 RNC를 잠글 수 없으면",
         "note": "깃을 잡고 바지 그립을 더해 옆으로 몸을 돌려 보우 앤 애로우로 전환한다"
       }
     ],
@@ -230,14 +230,20 @@
     "level": "중급",
     "evidence": [
       {
+        "source": "Digitsu (Kristina Barlaan)",
+        "url": "https://digitsu.com/v/seat-belt-control-bow-and-arrow-kristina-barlaan",
+        "supports": "상위 레벨에서는 상대가 목을 보호해 RNC가 어렵기 때문에 바로 RNC를 고집하지 말고 칼라 초크, 특히 보우 앤 애로우를 선택하라는 설명과 시트벨트에서 옆으로 몸을 돌리는 방법",
+        "basis": "page-read"
+      },
+      {
         "source": "BJJ Ee - Secrets to a more effective bow and arrow choke",
         "url": "https://www.bjjee.com/articles/secrets-to-a-more-effective-bow-and-arrow-choke-in-bjj/",
         "supports": "시트벨트 백 컨트롤에서 깃 그립으로 보우 앤 애로우로 이어가는 방법을 설명한다(RNC 방어 직접 연결은 미확인)",
         "basis": "snippet"
       }
     ],
-    "grade": "초안",
-    "issues": "RNC가 막혔을 때 보우 앤 애로우로 가는 직접 연계를 설명하는 출처는 못 찾음. 보우 앤 애로우 자체 방법만 확인. 도복 필수."
+    "grade": "참고",
+    "issues": "[3라운드 재시도] Digitsu Barlaan 설명 본문 확인으로 \"RNC보다 보우 앤 애로우가 낫다\"는 방향의 근거 1곳 확보 -> 참고로 승격. 단 RNC를 먼저 시도하고 막히면 전환한다는 순서까지는 서술하지 않음. BJJEE 글은 여전히 검색 요약(snippet). 독립 page-read 1곳. 도복 필수."
   },
   {
     "id": "bc-system-choke-short",
@@ -261,7 +267,7 @@
     "level": "고급",
     "evidence": [],
     "grade": "초안",
-    "issues": "BC-05(백 시스템 초크 콤보)의 구체적 내용이 정의된 출처를 찾지 못함. 도감 기술 설명을 먼저 확인한 뒤 재시도. 내용 불명확해 앱 노출 금지."
+    "issues": "BC-05(백 시스템 초크 콤보)의 구체적 내용이 정의된 출처를 찾지 못함. 도감 기술 설명을 먼저 확인한 뒤 재시도. 내용 불명확해 앱 노출 금지. [3라운드] 재시도하지 못함(BC-05의 구체적 내용이 정의된 출처가 없어 초안 유지)."
   },
   {
     "id": "bc-armbar-mount-exit",
@@ -284,6 +290,132 @@
     "level": "중급",
     "evidence": [],
     "grade": "초안",
-    "issues": "백 암바 실패 후 마운트로 가는 연계 출처 못 찾음. BC-10은 마지막 단계로만 배치함."
+    "issues": "백 암바 실패 후 마운트로 가는 연계 출처 못 찾음. BC-10은 마지막 단계로만 배치함. [3라운드 재시도] \"armbar from back fails transition to mount\" 재검색: 백을 잃은 뒤 마운트로 가는 글(BJJEE)만 나오고 백 암바 실패 -> 마운트 연계 근거 없음. 초안 유지."
+  },
+  {
+    "id": "bc-kimura-triangle",
+    "position": "BC",
+    "name": "백 기무라 컨트롤 · 백 트라이앵글 연계",
+    "start": "백 컨트롤에서 상대가 목을 철저히 보호하며 팔을 모으고 있을 때",
+    "steps": [
+      {
+        "tech": "BC-04",
+        "role": "main",
+        "note": "기무라 그립으로 팔을 잡아 머리를 들어올리고 상대의 탈출 회전을 막는다"
+      },
+      {
+        "tech": "BC-11",
+        "role": "then",
+        "note": "한쪽 팔을 가둔 채 다리를 어깨 위로 넘기고 반대 다리를 걸어 백 트라이앵글을 만든다"
+      }
+    ],
+    "end": "백 트라이앵글(초크 또는 암락)",
+    "level": "고급",
+    "evidence": [
+      {
+        "source": "Evolve University",
+        "url": "https://evolve-university.com/blog/4-attack-options-from-the-back-mount/",
+        "supports": "기무라 트랩에서 삼각, 암바, 기무라 피니시로 이어갈 수 있다고 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Grapplearts (Kesting 삼각 가이드)",
+        "url": "https://www.grapplearts.com/triangle-chokes-from-the-back-a-users-guide/",
+        "supports": "백에서 기무라 컨트롤이 머리를 들어 탈출을 막고 삼각 등 공격의 출발점이 된다는 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Digitsu (백 트라이앵글)",
+        "url": "https://digitsu.com/t/rear-triangle",
+        "supports": "사이드 컨트롤 기무라 -> 백 컨트롤 -> 백 트라이앵글로 이어지는 체인을 흔히 가르치는 경로로 표시하고, 백 트라이앵글 설명(한 팔을 중심선 너머로 보내 가두고 다리를 어깨 위로)",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "검증됨",
+    "issues": "[3라운드 신규] BC-11 사용. Evolve University와 Grapplearts는 이전 라운드에서 본문 확인한 근거를 재사용(기존 bc-kimura-control-armbar와 동일 출처), Digitsu는 이번에 새로 본문 확인. 노기 가능."
+  },
+  {
+    "id": "bc-rnc-backtriangle",
+    "position": "BC",
+    "name": "RNC 방어 시 백 트라이앵글 전환",
+    "start": "백 컨트롤에서 RNC를 시도했는데 상대 방어가 강하고 한쪽 손이 다리 사이에 있을 때",
+    "steps": [
+      {
+        "tech": "BC-20",
+        "role": "main",
+        "note": "백을 안정시키고 상대 한 팔을 중심선 너머로 보낸다"
+      },
+      {
+        "tech": "BC-01",
+        "role": "then",
+        "note": "RNC를 시도한다"
+      },
+      {
+        "tech": "BC-11",
+        "role": "if_blocked",
+        "trigger": "상대 방어가 너무 강해 RNC를 잠글 수 없으면",
+        "note": "가둔 팔 쪽 어깨 위로 다리를 넘기고 반대 다리를 걸어 백 트라이앵글로 전환"
+      }
+    ],
+    "end": "백 트라이앵글(초크 또는 암락)",
+    "level": "고급",
+    "evidence": [
+      {
+        "source": "Evolve MMA",
+        "url": "https://evolve-mma.com/blog/3-types-of-triangle-chokes-in-bjj/",
+        "supports": "백에서 RNC를 찾다 상대 손을 다리로 가두게 될 때가 많고, 방어가 너무 강해 RNC가 안 잠기면 그때가 백 트라이앵글을 쓸 때라고 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Digitsu (백 트라이앵글)",
+        "url": "https://digitsu.com/t/rear-triangle",
+        "supports": "백 컨트롤에서 한 팔을 가두고 삼각을 잠그는 순서와, 완성 후 RNC/삼각 초크/암바/보우 앤 애로우로 이어지는 옵션 설명(RNC 방어 트리거는 서술 안 함)",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "참고",
+    "issues": "[3라운드 신규] RNC가 막혔을 때 백 트라이앵글로 가는 트리거는 Evolve 1곳이 직접 서술, Digitsu는 포지션 설명이라 참고. 백 트라이앵글은 다리 길이/유연성에 영향. 노기 가능."
+  },
+  {
+    "id": "bc-backtriangle-armbar",
+    "position": "BC",
+    "name": "백 트라이앵글 · 암락 마무리",
+    "start": "백 컨트롤에서 한 팔을 가둔 채 백 트라이앵글을 잠갔을 때",
+    "steps": [
+      {
+        "tech": "BC-11",
+        "role": "main",
+        "note": "가둔 팔과 목을 삼각으로 묶고 무릎을 모아 손목을 컨트롤한다"
+      },
+      {
+        "tech": "BC-03",
+        "role": "then",
+        "note": "초크가 들어가지 않거나 다른 마무리를 원하면 삼각을 유지한 채 가둔 팔을 공략해 암바로 이어간다"
+      }
+    ],
+    "end": "암바 서브미션",
+    "level": "고급",
+    "evidence": [
+      {
+        "source": "Digitsu (백 트라이앵글)",
+        "url": "https://digitsu.com/t/rear-triangle",
+        "supports": "백 트라이앵글에서 삼각 초크, 암바, 보우 앤 애로우 그립으로 이어갈 수 있다는 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Evolve MMA",
+        "url": "https://evolve-mma.com/blog/3-types-of-triangle-chokes-in-bjj/",
+        "supports": "백 트라이앵글로 한 팔이 몸에서 벌어져 기무라, 스트레이트 암락, 손목락에 취약해지며 마무리는 선택이라는 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Grapplearts (Kesting 삼각 가이드)",
+        "url": "https://www.grapplearts.com/triangle-chokes-from-the-back-a-users-guide/",
+        "supports": "삼각 상태에서 손목을 잡고 브릿지해 암바로 이어갈 수 있다는 설명",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "검증됨",
+    "issues": "[3라운드 신규] 세 곳 모두 \"삼각 완성 후 선택지로 암락\"을 서술하며 반응 트리거(어떨 때 암바로 가는지)는 명시하지 않아 role을 then으로 둠. Evolve는 암락 중 기무라/스트레이트/손목락을 나열하며 암바(BC-03)와 정확히 같은 동작인지 사람 검수 필요."
   }
 ]

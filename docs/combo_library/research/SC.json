@@ -40,7 +40,7 @@
       }
     ],
     "grade": "검증됨",
-    "issues": "[본문 확인 완료 2026-10-10] 3개 사이트 본문 확인. 트리거 문구는 Giles(\"굴러 도망가지 않을 때\")와 Barlaan(\"방어되면 암바\")을 합쳐 수정(기존 \"팔을 펴서 버티며\"는 근거 없음). 기존에 적은 \"상대가 팔을 당겨 빼면 아메리카나\" 갈래는 Barlaan 페이지 본문에서 확인되지 않아 근거로 쓰지 않음(도감에 아메리카나 ID도 없음). 노기/기 모두 가능(그립 비의존)."
+    "issues": "[본문 확인 완료 2026-10-10] 3개 사이트 본문 확인. 트리거 문구는 Giles(\"굴러 도망가지 않을 때\")와 Barlaan(\"방어되면 암바\")을 합쳐 수정(기존 \"팔을 펴서 버티며\"는 근거 없음). 기존에 적은 \"상대가 팔을 당겨 빼면 아메리카나\" 갈래는 Barlaan 페이지 본문에서 확인되지 않아 근거로 쓰지 않음. 노기/기 모두 가능(그립 비의존). [3라운드] 도감에 SC-12(아메리카나)가 추가됨. 상대가 팔을 당겨 빼는 경우의 아메리카나 갈래는 별도 콤보(sc-kimura-americana)로 분리(분기 2개 제한)."
   },
   {
     "id": "sc-kimura-backtake",
@@ -209,7 +209,7 @@
       }
     ],
     "grade": "초안",
-    "issues": "다르세와 아나콘다는 거울상 관계라는 설명은 있으나, 사이드 컨트롤에서 다르세->아나콘다로 바꾸는 연계를 직접 다룬 신뢰 출처를 찾지 못함. 아나콘다는 주로 프런트 헤드락에서 설명됨. 앱 노출 금지, 다음 라운드 재조사."
+    "issues": "다르세와 아나콘다는 거울상 관계라는 설명은 있으나, 사이드 컨트롤에서 다르세->아나콘다로 바꾸는 연계를 직접 다룬 신뢰 출처를 찾지 못함. 아나콘다는 주로 프런트 헤드락에서 설명됨. 앱 노출 금지, 다음 라운드 재조사. [3라운드 재시도] \"darce to anaconda switch when defends\" 재검색: 터틀/스프롤 상황에서 다르세<->아나콘다 전환만 확인되고(Joseph Capizzi Digitsu 설명 요약) 사이드 컨트롤 전환은 근거 없음. 초안 유지."
   },
   {
     "id": "sc-backtake-rnc",
@@ -282,5 +282,103 @@
     ],
     "grade": "참고",
     "issues": "[본문 확인 2026-10-10] 암바 부분(MT-05 이후)은 jiujitsu.com 본문으로 확인. 사이드 -> 마운트 전환 부분은 Mauricio Gomes 본문에 트리거 서술이 없어 unverified. 두 출처가 각각 전환과 암바를 따로 다루며 하나의 연계로 소개한 곳은 없음. 도감 사이드 컨트롤 ID로 시작하나 후속 MT-05는 교차 포지션. 칼라 그립 기반(기)이므로 노기에서는 변형 필요."
+  },
+  {
+    "id": "sc-americana-armbar",
+    "position": "SC",
+    "name": "아메리카나 · 암바 · 기무라 연계 (팔 트랩 시리즈)",
+    "start": "사이드 컨트롤 탑에서 먼 쪽 팔의 손목을 매트에 눌러 고정했을 때",
+    "steps": [
+      {
+        "tech": "SC-12",
+        "role": "main",
+        "note": "손목을 매트에 누르고 팔꿈치 아래로 팔을 넣어 피겨포를 만든 뒤 아메리카나"
+      },
+      {
+        "tech": "SC-02",
+        "role": "if_blocked",
+        "trigger": "상대가 아메리카나를 막으며 팔을 곧게 펴면",
+        "note": "피겨포를 풀고 이두를 잡아 팔을 따라가 암바로 전환"
+      },
+      {
+        "tech": "SC-01",
+        "role": "if_blocked",
+        "trigger": "암바 중 상대가 팔을 아래로 돌려 팔꿈치를 몸에 붙이면",
+        "note": "그립을 바꿔 손 아래로 넣어 기무라로 전환"
+      }
+    ],
+    "end": "아메리카나/암바/기무라 서브미션",
+    "level": "기본",
+    "evidence": [
+      {
+        "source": "Evolve University",
+        "url": "https://evolve-university.com/blog/basic-bjj-combinations-arm-trap-series-from-side-control/",
+        "supports": "사이드 컨트롤 팔 트랩 시리즈: 아메리카나 -> 상대가 팔을 펴면 암바 -> 팔을 아래로 돌리면 기무라 순서를 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "JitsuIQ (아메리카나)",
+        "url": "https://jitsuiq.com/submissions/locks/joint-locks/americana.html",
+        "supports": "상대가 팔을 펴 막으면 기무라나 암바로 전환할 준비를 하라는 팁(위키성 사이트)",
+        "basis": "page-read"
+      },
+      {
+        "source": "NAGA Fighter",
+        "url": "https://www.nagafighter.com/what-is-the-americana-in-bjj",
+        "supports": "마운트/사이드에서 상대가 팔을 펴면 암바로, 팔이 바깥으로 돌면 기무라로 바꾸는 체인 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Digitsu (아메리카나 컨트롤)",
+        "url": "https://digitsu.com/t/americana-control",
+        "supports": "아메리카나 컨트롤에서 팔을 펴면 암바, 도복/벨트를 잡아 팔을 숨기면 기무라나 기프트랩으로 전환하라는 정리",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "검증됨",
+    "issues": "[3라운드 신규] SC-12 사용. Evolve University가 사이드 컨트롤 기준으로 3단 순서를 직접 서술, 나머지 3곳은 마운트/사이드 공통 서술. 기무라 갈래의 트리거는 Evolve(\"암바 중 팔을 아래로 돌림\")와 Digitsu(\"도복/벨트를 잡아 팔을 숨김\")가 표현이 달라 Evolve 기준으로 서술함."
+  },
+  {
+    "id": "sc-kimura-americana",
+    "position": "SC",
+    "name": "기무라 · 아메리카나 전환 (상대가 팔을 당길 때)",
+    "start": "사이드 컨트롤 탑에서 상대 팔을 기무라로 컨트롤할 때",
+    "steps": [
+      {
+        "tech": "SC-01",
+        "role": "main",
+        "note": "손목을 컨트롤하고 체중을 실어 팔꿈치를 들어 기무라 시도"
+      },
+      {
+        "tech": "SC-12",
+        "role": "if_blocked",
+        "trigger": "상대가 팔을 몸 쪽으로 당겨 빼려 하면",
+        "note": "손등을 매트에 두고 재빨리 그립을 바꿔 팔꿈치를 들어 아메리카나로 마무리"
+      }
+    ],
+    "end": "아메리카나 서브미션",
+    "level": "기본",
+    "evidence": [
+      {
+        "source": "Digitsu (Kristina Barlaan)",
+        "url": "https://digitsu.com/v/kimura-arm-lock-americana-kristina-barlaan",
+        "supports": "사이드 컨트롤에서 기무라를 하다 상대가 팔을 거두면 아메리카나로, 팔을 펴면 암바로 바꾸는 3지선다와 팔을 꼭 껴안는 컨트롤 요령",
+        "basis": "page-read"
+      },
+      {
+        "source": "NAGA Fighter",
+        "url": "https://www.nagafighter.com/what-is-the-americana-in-bjj",
+        "supports": "아메리카나와 기무라는 상대 팔 위치에 따라 고르며 한 공격이 막히면 다른 어깨 락으로 연계한다는 설명(방향은 아메리카나 -> 기무라가 주)",
+        "basis": "page-read"
+      },
+      {
+        "source": "Digitsu (아메리카나 컨트롤)",
+        "url": "https://digitsu.com/t/americana-control",
+        "supports": "아메리카나 컨트롤에서 기무라로 오가는 전환을 언급(방향 반대)",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "참고",
+    "issues": "[3라운드 신규] 기무라 -> 아메리카나 방향은 Barlaan 1곳만 직접 서술하고 나머지는 반대 방향(아메리카나 -> 기무라)이라 참고. 강사 직접 출처 추가 필요."
   }
 ]

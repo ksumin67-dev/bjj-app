@@ -5,15 +5,38 @@
     "name": "싱글 레그 X 힙범프(싯업) 스윕 · 앵클락",
     "start": "싱글 레그 X가드를 만들고 상대 발목을 겨드랑이/가슴에 끼운 상태",
     "steps": [
-      { "tech": "SLX-01", "role": "main", "note": "발목을 몸에 고정하고 다리를 모아 엉덩이를 최대한 띄운 뒤 상대 무릎 쪽으로 돌려 넘기고 일어남" },
-      { "tech": "SLX-10", "role": "then", "note": "스윕으로 상대가 쓰러지면 오버훅 팔뚝을 아킬레스건에 걸고 허리를 아치로 당겨 앵클락. 스윕이 막혀 서 있으면 상대의 밀어붙이는 힘을 따라 몸을 돌려 배로 엎드린 앵클락 변형(IBJJF 금지인 니 리핑 포함)" }
+      {
+        "tech": "SLX-01",
+        "role": "main",
+        "note": "발목을 몸에 고정하고 다리를 모아 엉덩이를 최대한 띄운 뒤 상대 무릎 쪽으로 돌려 넘기고 일어남"
+      },
+      {
+        "tech": "SLX-10",
+        "role": "then",
+        "note": "스윕으로 상대가 쓰러지면 오버훅 팔뚝을 아킬레스건에 걸고 허리를 아치로 당겨 앵클락. 스윕이 막혀 서 있으면 상대의 밀어붙이는 힘을 따라 몸을 돌려 배로 엎드린 앵클락 변형(IBJJF 금지인 니 리핑 포함)"
+      }
     ],
     "end": "스트레이트 앵클락 서브미션 (또는 스윕 성공 시 탑 포지션)",
     "level": "중급",
     "evidence": [
-      { "source": "Evolve MMA - 3 Attacks From Single Leg X-Guard", "url": "https://evolve-mma.com/blog/3-attacks-from-single-leg-x-guard-you-need-to-know/", "supports": "싯업(힙범프) 스윕으로 시작하고, 스윕 성공 시 앵클락으로 바로 연결, 실패해 상대가 서 있으면 몸을 돌려 엎드린 앵클락 변형으로 이어가는 두 갈래를 설명 (엎드린 변형은 니 리핑이라 IBJJF 불허)", "basis": "page-read" },
-      { "source": "Digitsu - SLX Sweep", "url": "https://digitsu.com/t/slx-sweep", "supports": "SLX 스윕은 보통 탑 포지션이나 상대가 버틸 때 레그락 진입으로 이어진다고 설명 (앵클락을 특정하진 않음)", "basis": "page-read" },
-      { "source": "Jitsu IQ - Single-Leg X Guard", "url": "https://jitsuiq.com/positions/guard/single-leg-x-guard.html", "supports": "SLX에서 스윕과 스트레이트 앵클락(발목을 양손으로 잡고 엉덩이를 앞으로 압박)을 모두 가능한 선택지로 나열 (순서 연결은 아님)", "basis": "page-read" }
+      {
+        "source": "Evolve MMA - 3 Attacks From Single Leg X-Guard",
+        "url": "https://evolve-mma.com/blog/3-attacks-from-single-leg-x-guard-you-need-to-know/",
+        "supports": "싯업(힙범프) 스윕으로 시작하고, 스윕 성공 시 앵클락으로 바로 연결, 실패해 상대가 서 있으면 몸을 돌려 엎드린 앵클락 변형으로 이어가는 두 갈래를 설명 (엎드린 변형은 니 리핑이라 IBJJF 불허)",
+        "basis": "page-read"
+      },
+      {
+        "source": "Digitsu - SLX Sweep",
+        "url": "https://digitsu.com/t/slx-sweep",
+        "supports": "SLX 스윕은 보통 탑 포지션이나 상대가 버틸 때 레그락 진입으로 이어진다고 설명 (앵클락을 특정하진 않음)",
+        "basis": "page-read"
+      },
+      {
+        "source": "Jitsu IQ - Single-Leg X Guard",
+        "url": "https://jitsuiq.com/positions/guard/single-leg-x-guard.html",
+        "supports": "SLX에서 스윕과 스트레이트 앵클락(발목을 양손으로 잡고 엉덩이를 앞으로 압박)을 모두 가능한 선택지로 나열 (순서 연결은 아님)",
+        "basis": "page-read"
+      }
     ],
     "grade": "참고",
     "issues": "앵클락 구체 연결은 Evolve 1곳이 직접 설명하고 Digitsu/Jitsu IQ는 일반 설명 → 검증됨 보류. 도감 SLX-01은 '힙범프 스윕(테크니컬 스탠드업)'이며 Evolve의 'Sit Up Sweep'과 같은 기술로 가정. 룰: 스트레이트 앵클락은 IBJJF 전 벨트 허용, 니 리핑(엎드린 변형에서 무릎을 돌리는 동작)은 IBJJF 불허. 기/노기 모두 가능."
@@ -24,14 +47,33 @@
     "name": "싱글 레그 X 토홀드 · 니바 (상대가 굴러 빠질 때)",
     "start": "싱글 레그 X가드에서 상대 칼라를 당겨 자세를 무너뜨린 상태",
     "steps": [
-      { "tech": "SLX-13", "role": "main", "note": "상대 발을 잡고 토홀드를 시도" },
-      { "tech": "SLX-14", "role": "if_blocked", "trigger": "상대가 토홀드를 피해 굴러 빠져나가려 할 때", "note": "아래쪽 다리를 재빨리 빼서 풀고 상대 다리를 눌러 뒤꿈치를 잡아 니바로 전환" }
+      {
+        "tech": "SLX-13",
+        "role": "main",
+        "note": "상대 발을 잡고 토홀드를 시도"
+      },
+      {
+        "tech": "SLX-14",
+        "role": "if_blocked",
+        "trigger": "상대가 토홀드를 피해 굴러 빠져나가려 할 때",
+        "note": "아래쪽 다리를 재빨리 빼서 풀고 상대 다리를 눌러 뒤꿈치를 잡아 니바로 전환"
+      }
     ],
     "end": "니바 서브미션",
     "level": "고급",
     "evidence": [
-      { "source": "BJJEE - This Single Leg X to Kneebar Setup (Victor Hugo)", "url": "https://www.bjjee.com/articles/this-single-leg-x-to-kneebar-setup-works-every-time/", "supports": "SLX에서 토홀드를 걸다 상대가 굴러 나가려 하면 아래쪽 다리를 즉시 풀고 뒤꿈치를 잡은 채 니바로 전환하는 빅터 우고(Victor Hugo)의 셋업을 설명", "basis": "page-read" },
-      { "source": "Jitsu IQ - Single-Leg X Guard", "url": "https://jitsuiq.com/positions/guard/single-leg-x-guard.html", "supports": "SLX에서 니바와 토홀드가 모두 선택지로 가능하다고만 나열 (연계 방향은 아님)", "basis": "page-read" }
+      {
+        "source": "BJJEE - This Single Leg X to Kneebar Setup (Victor Hugo)",
+        "url": "https://www.bjjee.com/articles/this-single-leg-x-to-kneebar-setup-works-every-time/",
+        "supports": "SLX에서 토홀드를 걸다 상대가 굴러 나가려 하면 아래쪽 다리를 즉시 풀고 뒤꿈치를 잡은 채 니바로 전환하는 빅터 우고(Victor Hugo)의 셋업을 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Jitsu IQ - Single-Leg X Guard",
+        "url": "https://jitsuiq.com/positions/guard/single-leg-x-guard.html",
+        "supports": "SLX에서 니바와 토홀드가 모두 선택지로 가능하다고만 나열 (연계 방향은 아님)",
+        "basis": "page-read"
+      }
     ],
     "grade": "참고",
     "issues": "연계 방향을 직접 다룬 page-read 출처가 1곳(재게재 기사)이라 검증됨 보류. 룰: 토홀드·니바는 IBJJF에서 하위 벨트(화이트~퍼플)와 일부 기 부문에서 제한됨(출처마다 설명 차이, 대회 규정 확인 필수). 노기에서 일반적."
@@ -42,14 +84,32 @@
     "name": "싱글 레그 X · 아웃사이드 아시 · 힐훅 (노기 레그락)",
     "start": "싱글 레그 X가드에서 상대 다리를 고립해 레그락 포지션을 잡으려 할 때",
     "steps": [
-      { "tech": "SLX-21", "role": "main", "note": "엉덩이 각도를 바깥쪽으로 돌려 아웃사이드 아시 가라미로 전환해 다리를 고립" },
-      { "tech": "SLX-11", "role": "then", "note": "무릎 라인을 제어하고 뒤꿈치를 잡아 아웃사이드 힐훅 (SLX 계열 기술이라 같은 포지션 연계로 취급)" }
+      {
+        "tech": "SLX-21",
+        "role": "main",
+        "note": "엉덩이 각도를 바깥쪽으로 돌려 아웃사이드 아시 가라미로 전환해 다리를 고립"
+      },
+      {
+        "tech": "SLX-11",
+        "role": "then",
+        "note": "무릎 라인을 제어하고 뒤꿈치를 잡아 아웃사이드 힐훅 (SLX 계열 기술이라 같은 포지션 연계로 취급)"
+      }
     ],
     "end": "힐훅 서브미션",
     "level": "고급",
     "evidence": [
-      { "source": "Jitsu IQ - Single-Leg X Guard", "url": "https://jitsuiq.com/positions/guard/single-leg-x-guard.html", "supports": "SLX에서 레그락 포지션으로 전환(스트레이트 앵클락·힐훅 셋업)하고 다리를 고립해 무릎을 제어한 뒤 힐훅을 건다고 설명", "basis": "page-read" },
-      { "source": "Digitsu - Single Leg X", "url": "https://digitsu.com/t/single-leg-x", "supports": "SLX에서 아시 가라미로의 전환과 힐훅, 니바 등을 아래쪽 공격 선택지로 나열", "basis": "page-read" }
+      {
+        "source": "Jitsu IQ - Single-Leg X Guard",
+        "url": "https://jitsuiq.com/positions/guard/single-leg-x-guard.html",
+        "supports": "SLX에서 레그락 포지션으로 전환(스트레이트 앵클락·힐훅 셋업)하고 다리를 고립해 무릎을 제어한 뒤 힐훅을 건다고 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Digitsu - Single Leg X",
+        "url": "https://digitsu.com/t/single-leg-x",
+        "supports": "SLX에서 아시 가라미로의 전환과 힐훅, 니바 등을 아래쪽 공격 선택지로 나열",
+        "basis": "page-read"
+      }
     ],
     "grade": "참고",
     "issues": "두 출처 모두 선택지를 나열할 뿐 'SLX → 아웃사이드 아시 → 힐훅' 순서의 구체 설명이 아님 → 조합은 추정이라 참고 등급. 룰: 힐훅은 IBJJF 기(도복) 대회에서 전반적으로 금지, 노기 상위 부문에서만 허용(출처 간 차이 있음, 대회별 확인 필수). 부상 위험이 가장 높은 기술 — 앱 노출 시 주의 문구 필요. 이번 라운드에서 아웃사이드 아시 전환 전용 강사 자료는 페이월로 열람 못 함."
@@ -57,19 +117,80 @@
   {
     "id": "slx-sweep-crabride-backtake",
     "position": "SLX",
-    "name": "싱글 레그 X 스윕 · 크랩 라이드 백 테이크 (상대가 몸을 돌릴 때)",
-    "start": "싱글 레그 X가드에서 상대가 발목을 빼려 등을 돌리거나 백스텝할 때",
+    "name": "웨이터 스윕이 안 될 때 · 백 테이크",
+    "start": "싱글 레그 X에서 상대 다리를 어깨에 올려 웨이터(펜들럼) 스윕을 시도할 때",
     "steps": [
-      { "tech": "SLX-01", "role": "main", "note": "엉덩이를 띄워 스윕을 시도해 상대 반응을 유도" },
-      { "tech": "SLX-24", "role": "if_blocked", "trigger": "상대가 다리를 빼려 몸을 돌려 등이 노출될 때", "note": "엉덩이를 붙여 따라가며 크랩 라이드 후크를 걸어 등으로 이동" }
+      {
+        "tech": "SLX-05",
+        "role": "main",
+        "note": "상대 무릎을 당겨 발을 매트에서 띄우고 다리를 어깨 위로 스쿠프, 머리와 어깨로 조이며 무릎을 모아 웨이터 스윕 시도"
+      },
+      {
+        "tech": "SLX-24",
+        "role": "if_blocked",
+        "trigger": "상대가 베이스가 강해 스윕이 안 넘어가면",
+        "note": "한 다리로 공간을 만들고 반대 발을 상대 종아리에 걸어 뒷문으로 빠져나가며 손으로 상대 옆구리를 앵커 삼아 엉덩이를 매트에 앉히고, 시트벨트를 먼저 잡은 뒤 훅을 넣는다"
+      }
     ],
-    "end": "백 컨트롤 (후속은 BC 포지션 참고)",
+    "end": "탑 포지션 또는 백 컨트롤",
     "level": "고급",
     "evidence": [
-      { "source": "Jitsu IQ - Single-Leg X Guard", "url": "https://jitsuiq.com/positions/guard/single-leg-x-guard.html", "supports": "SLX에서 상대 등이 노출되도록 스윕한 뒤 서서 백 컨트롤로 올라가는 '백 테이크 전환' 항목을 나열 (크랩 라이드나 트리거는 언급 없음)", "basis": "page-read" },
-      { "source": "Digitsu - Single Leg X", "url": "https://digitsu.com/t/single-leg-x", "supports": "SLX에서의 SLX 백 테이크 전환과 'SLX 웨이터 스윕 → 백' 연계 경로가 존재함을 나열", "basis": "page-read" }
+      {
+        "source": "Digitsu(Gianni Grippo)",
+        "url": "https://digitsu.com/v/waiter-sweep-to-back-gianni-grippo",
+        "supports": "Gianni Grippo(SLX 코스): 상대 베이스가 강해 펜들럼(웨이터) 스윕이 안 되면 스윕 대신 뒷문으로 나가 시트벨트를 잡고 백을 잡는 순서 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Digitsu(Adam Benayoun)",
+        "url": "https://digitsu.com/v/short-hook-waiter-sweep-to-back-attack-adam-benayoun",
+        "supports": "Adam Benayoun(SLX Evolution): 짧은 훅 X가드에서 상대 균형을 두 대각선 사이로 흔들다 상대가 손을 짚으면 시트벨트를 잡고 백으로 넘어가는 웨이터 스윕→백 어택 설명(SLX가 아닌 숏 훅 X가드 맥락)",
+        "basis": "page-read"
+      },
+      {
+        "source": "Jitsu IQ",
+        "url": "https://jitsuiq.com/positions/guard/single-leg-x-guard.html",
+        "supports": "SLX에서 상대 등이 드러나게 스윕한 뒤 백 컨트롤로 가는 '백 테이크 전환'이 선택지로 있다고 정리(일반 개요)",
+        "basis": "page-read"
+      }
     ],
-    "grade": "초안",
-    "issues": "트리거('상대가 몸을 돌릴 때')와 크랩 라이드 연결은 검색 요약(BJJEE/Atos)만 보고 정리한 것이라 page-read로 확인하지 못함. 위 두 page-read 출처는 '백 테이크 전환이 있다'는 목록 수준이라 연계를 뒷받침한다고 보기 어려워 초안으로 유지. 앱 노출 금지, 다음 라운드 재조사 대상."
+    "grade": "참고",
+    "issues": "라운드3: 기존 초안(SLX-01 → 크랩 라이드)은 트리거 근거가 없어 폐기하고 Grippo 페이지의 실제 흐름(웨이터 스윕 불발 → 백 테이크)으로 재작성. Grippo는 SLX에서 직접 설명, Benayoun은 숏 훅 X가드 맥락이라 방향이 조금 다름 → 참고. 도감 SLX-24 '크랩 라이드 백테이크'와 두 강사가 쓰는 '뒷문으로 나가 시트벨트' 흐름이 같은 기술인지는 이름 불일치(크랩 라이드 용어 미사용)로 검수 필요. 기/노기 공통(Benayoun은 기에서 라펠 그립, 노기에서는 힙/다리/어깨 그립)."
+  },
+  {
+    "id": "slx-to-xguard",
+    "position": "SLX",
+    "name": "싱글 레그 X ↔ X가드 전환",
+    "start": "싱글 레그 X에서 상대 체중이 한쪽 다리에 실려 있을 때",
+    "steps": [
+      {
+        "tech": "SLX-20",
+        "role": "main",
+        "note": "엉덩이를 높게, 무릎은 모으고 발로 상대 햄스트링과 골반을 붙여 컨트롤. 상대를 앞으로 흔들어 체중을 먼 다리로 옮긴다"
+      },
+      {
+        "tech": "SLX-25",
+        "role": "transition",
+        "note": "발을 먼저 보내 X 모양을 만들고, 살짝 차내며 상대 무릎 뒤를 잡아당겨 언더훅으로 X가드 확보. 그 뒤 스탠드업 스윕 등으로 이어간다"
+      }
+    ],
+    "end": "X가드 포지션 (스탠드업 스윕 등은 XG 콤보 참고)",
+    "level": "중급",
+    "evidence": [
+      {
+        "source": "Digitsu(Gianni Grippo)",
+        "url": "https://digitsu.com/v/slx-x-guard-drill-gianni-grippo",
+        "supports": "Gianni Grippo(SLX 코스): 발을 먼저 보내 X를 만들고 무릎 뒤를 당겨 언더훅으로 X가드로 가는 전환과 다시 SLX로 돌아오는 드릴 설명(엉덩이를 높게 유지)",
+        "basis": "page-read"
+      },
+      {
+        "source": "Digitsu(Danny Stolfi)",
+        "url": "https://digitsu.com/v/connection-to-x-guard-technical-standup-standard-ashi-danny-stolfi",
+        "supports": "Danny Stolfi(Open Guard Fundamentals): 스탠다드 아시(SLX)에서 상대를 앞으로 흔들어 체중을 먼 다리에 싣고, 그림자 훅과 무릎 컨트롤로 X가드로 연결해 테크니컬 스탠드업 스윕으로 간다고 설명",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "검증됨",
+    "issues": "라운드3 신규 SLX-25 사용. 두 강사 모두 기(gi)/노기 공통으로 가능한 발·무릎 컨트롤 중심. 규칙: SLX·X가드 자체는 제한 없음, 이후 리핑·레그락은 IBJJF 벨트별 제한. 트리거(상대 반응)에 따른 갈래는 소스에 없어 단일 흐름. [출처는 같은 플랫폼(Digitsu)이지만 서로 다른 강사의 본문이라 독립으로 인정]"
   }
 ]

@@ -17,3 +17,11 @@
 - 올드스쿨 -> 백 테이크의 정확한 트리거(상대가 짚을 때) 강사 영상 확인.
 - 도그파이트에서 일렉트릭 체어 방어 시 토홀드/앵클락(HG-16/HG-14) 연결 근거.
 - DB 추가 제안: 하프 가드 기무라 백 테이크(스윙), 딥 하프 백 테이크, 록다운 스윕, 도그파이트 포지션 전용 기술.
+
+## 라운드 3 (2026-10-10)
+- 신규 page-read: Grapplearts 스윙 기무라 백 테이크(본문 재확인), BJJEE 록다운 글(휩업-휩다운-일렉트릭 체어). Evolve 딥 하프 입문 글은 읽었으나 일반론이라 근거로 안 씀.
+- HG-25 반영: hg-kimura-trap-backtake를 HG-10 -> HG-25 2단계로 정리, 검증됨(Grapplearts + Digitsu). 힙 클램프 해법(HG-24 자세)은 note로 이동.
+- HG-06 반영: hg-lockdown-electricchair를 HG-23 -> HG-06으로 교체, 검증됨(Digitsu + BJJEE). 도감 HG-04와 HG-06이 사실상 같은 기술이라 DB 정리 필요.
+- HG-26 반영: hg-deephalf-entry-backtake 신규(참고; 두 page-read가 모두 Digitsu).
+- HG-11/HG-13 결론: 근거 페이지(Najmi 길로틴->다르스, Grapplearts 다르스 vs 하프 가드, Capizzi 스매시 길로틴) 모두 탑 플레이어 시점. 바텀 시점 출처는 재검색에서도 없음. hg-guillotine-darce의 start를 탑 시점으로 고치고 초안 유지(노출 금지).
+- 실패: Digitsu 페이지 다수가 세션 캐시로 "이미 읽음" 응답을 주거나 동적 페이지라 재열람 불가(lasso-back-take 등). 웨이터 스윕 본문 출처 여전히 없음.

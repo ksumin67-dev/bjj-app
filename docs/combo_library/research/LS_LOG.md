@@ -24,3 +24,10 @@
 
 ## DB 누락 제안
 - 라소 백 테이크(Lasso Back Take), 엘보 풀 오모플라타(Elbow-Pull Omoplata from Lasso), 스피닝 오모플라타/스피닝 트라이앵글(라소), 라소 틸트 스윕.
+
+## 라운드 3 (2026-10-10)
+- 신규 page-read: Grapplearts 라소->오모플라타(스피닝/엘보우 풀/스피닝 트라이앵글 재확인), BJJEE Galvao DLR 라소 백 테이크.
+- LS-24: ls-sweep-backtake 신규(참고). Digitsu 라소 백 테이크 본문은 못 읽어 snippet 처리.
+- LS-14: ls-spin-omoplata-triangle 신규(참고). LS-13(엘보우 풀)은 "같은 오모플라타로 가는 또 하나의 진입"이라는 서술뿐이라 트리거를 줄 수 없어 콤보 미작성.
+- LS-22 매핑 점검: 이름과 Digitsu 드릴 서술이 일치하나 일어서는 상대 -> X가드/SLX 구분은 불명확해 참고 유지.
+- 초안 재시도: ls-triangle-armbar는 라소 맥락 본문 출처 없음, 초안 유지.

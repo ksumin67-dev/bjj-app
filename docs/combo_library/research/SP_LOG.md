@@ -20,3 +20,9 @@
 
 ## DB 누락 제안
 - 시클 스윕(Sickle Sweep), 스파이더 니바(Spider to Knee Bar, Braulio Estima 스타일), 스파이더 오버헤드 스윕, 스파이더 스피닝 트라이앵글.
+
+## 라운드 3 (2026-10-10)
+- 신규 page-read: NAGA Fighter 시클 스윕(시클 -> 트라이포드 조합), Evolve Vacation 스파이더 니바 항목 재확인.
+- SP-06: sp-tripod-x를 SP-03 -> SP-06 -> SP-22 3단계로 재구성(참고 유지; Jitsu IQ와 NAGA의 방향이 반대).
+- SP-13: sp-sweep-kneebar 신규(참고; page-read 1곳 + Herle snippet). 벨트 제한/부상 주의.
+- SP-22 매핑: Herle 스파이더->X가드와 일치, Feitosa 싱글 레그 X는 변형.

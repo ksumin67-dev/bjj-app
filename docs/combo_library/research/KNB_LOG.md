@@ -15,3 +15,9 @@
 열린 질문
 - KNB-05 스피닝 암바와 연결되는 상대 반응(예: 상대가 몸을 돌려 엎드릴 때)의 직접 출처.
 - 기/노기 구분(칼라 그립 의존: KNB-03, KNB-04).
+
+## 라운드 3 (2026-10-10)
+- 신규: knb-americana-mount(참고: Evolve University + JitsuIQ, 실패 시 마운트 전환은 Evolve 1곳), knb-armbar-darce(참고: Evolve University page-read + Faria 요약 snippet; KNB-14 트리거는 몸통 밀기 반응).
+- knb-armbar-kimura-gripdefense: 아메리카나 제안 문구 정리, 신규 콤보로 분리.
+- 유효했던 검색어: "knee on belly americana OR darce choke when opponent turns BJJ knee on belly attacks". Evolve University 5 Attacks 글이 반응별 선택을 가장 분명히 서술.
+- 한계: Bernardo Faria Academy의 Chris Lyon 다르스 글은 URL이 홈으로 연결되어 본문 확인 불가.

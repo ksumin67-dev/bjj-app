@@ -26,3 +26,10 @@
 2. 아메리카나 ID가 도감에 없음(기무라 방어 시 가장 흔한 분기).
 3. 다르세/아나콘다 쌍 연계의 신뢰 출처 재탐색(Danaher/Gordon Ryan 교본, BJJ Fanatics 설명 등).
 4. 암 트라이앵글에서 마운트 전환 연계(소스 미확보), 한국어 출처 확보.
+
+## 라운드 3 (2026-10-10)
+- 신규: sc-americana-armbar(검증됨: Evolve University 팔 트랩 시리즈 + JitsuIQ + NAGA + Digitsu 아메리카나 컨트롤; SC-12 -> SC-02 -> SC-01), sc-kimura-americana(참고: 기무라 -> 아메리카나 방향은 Digitsu Barlaan 1곳).
+- sc-kimura-armbar: 이전 이슈의 "아메리카나 ID 없음" 문구 정리, 아메리카나 갈래는 별도 콤보로 분리.
+- 재시도: sc-darce-anaconda 초안 유지(다르세<->아나콘다 전환은 터틀/스프롤 맥락만 확인). sc-arm-triangle, sc-underhook-marcelo-armbar, sc-mount-smount-armbar는 새 근거 못 찾아 변경 없음.
+- 유효했던 검색어: "side control kimura americana switch when opponent pulls arm back BJJ", "americana from mount opponent straightens arm transition to armbar OR kimura".
+- 참고: 아메리카나 -> 암 트라이앵글 연계는 어떤 출처에서도 확인 못 함.

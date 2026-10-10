@@ -5,15 +5,39 @@
     "name": "버터플라이 스윕 · 삼각 셋업 연계 (손을 짚을 때)",
     "start": "버터플라이 가드에서 상대를 앞으로 끌어당겨 스윕을 걸었을 때",
     "steps": [
-      { "tech": "BF-01", "role": "main", "note": "언더훅과 상체 그립으로 상대를 앞으로 당기고 후크로 들어 올려 기본 스윕 시도" },
-      { "tech": "BF-11", "role": "if_blocked", "trigger": "상대가 손을 바닥에 짚어 스윕을 막으면", "note": "짚은 팔을 잡아 팔을 고립하고 삼각 셋업으로 전환 (암바·오모플라타도 같은 반응에서 가능)" }
+      {
+        "tech": "BF-01",
+        "role": "main",
+        "note": "언더훅과 상체 그립으로 상대를 앞으로 당기고 후크로 들어 올려 기본 스윕 시도"
+      },
+      {
+        "tech": "BF-11",
+        "role": "if_blocked",
+        "trigger": "상대가 손을 바닥에 짚어 스윕을 막으면",
+        "note": "짚은 팔을 잡아 팔을 고립하고 삼각 셋업으로 전환 (암바·오모플라타도 같은 반응에서 가능)"
+      }
     ],
     "end": "삼각 초크 셋업(서브미션 시도) 또는 스윕 성공 시 탑 포지션",
     "level": "중급",
     "evidence": [
-      { "source": "Jitsu IQ - Butterfly Sweep", "url": "https://jitsuiq.com/sweeps/butterfly-sweep.html", "supports": "상대가 손을 짚어 스윕을 막으면 삼각이나 암바 같은 서브미션으로 전환하라고 '조정 방법' 항목에서 안내", "basis": "page-read" },
-      { "source": "Grapplearts (Stephan Kesting) - butterfly to X guard", "url": "https://www.grapplearts.com/how-to-take-the-back-from-x-guard/", "supports": "버터플라이에서 상대가 손을 짚거나 팔이 어긋나면 암바·삼각·오모플라타 기회가 열린다고 설명", "basis": "page-read" },
-      { "source": "Gracie Barra 블로그 (GB Technique: Butterfly Guard Setups)", "url": "https://graciebarra.com/gb-news/gb-technique-butterfly-guard-setups", "supports": "버터플라이 스윕과 결합한 삼각 셋업을 GB 블랙벨트 강사들이 가르치는 연계 중 하나로 소개 (영상 목록 형태의 간단한 설명)", "basis": "page-read" }
+      {
+        "source": "Jitsu IQ - Butterfly Sweep",
+        "url": "https://jitsuiq.com/sweeps/butterfly-sweep.html",
+        "supports": "상대가 손을 짚어 스윕을 막으면 삼각이나 암바 같은 서브미션으로 전환하라고 '조정 방법' 항목에서 안내",
+        "basis": "page-read"
+      },
+      {
+        "source": "Grapplearts (Stephan Kesting) - butterfly to X guard",
+        "url": "https://www.grapplearts.com/how-to-take-the-back-from-x-guard/",
+        "supports": "버터플라이에서 상대가 손을 짚거나 팔이 어긋나면 암바·삼각·오모플라타 기회가 열린다고 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Gracie Barra 블로그 (GB Technique: Butterfly Guard Setups)",
+        "url": "https://graciebarra.com/gb-news/gb-technique-butterfly-guard-setups",
+        "supports": "버터플라이 스윕과 결합한 삼각 셋업을 GB 블랙벨트 강사들이 가르치는 연계 중 하나로 소개 (영상 목록 형태의 간단한 설명)",
+        "basis": "page-read"
+      }
     ],
     "grade": "검증됨",
     "issues": "도감 BF-11은 '삼각 셋업'이므로 초크 완성 단계(일반 삼각 초크)는 DB에 없음(삼각 초크 일반 ID 없음, 보강 후보). 세 번째 출처(GB)는 영상 제목 수준의 짧은 설명이라 방향 근거가 약함. 기/노기 모두 가능하나 노기에서는 손목·삼두 그립 위주."
@@ -24,35 +48,30 @@
     "name": "버터플라이 스윕 · 길로틴 트랩 연계 (상대가 팔로 버티고 엉덩이를 낮출 때)",
     "start": "버터플라이 가드에서 컬러 타이와 삼두 컨트롤로 기본 스윕을 시도할 때",
     "steps": [
-      { "tech": "BF-01", "role": "main", "note": "한 손은 목 뒤(칼라 타이), 다른 손은 삼두를 잡고 옆으로 쓰러지며 후크로 스윕" },
-      { "tech": "BF-10", "role": "if_blocked", "trigger": "상대가 팔로 바닥을 짚고 엉덩이를 내려 스윕을 막으면", "note": "목을 아래로 눌러 올라타듯 길로틴 그립을 만들고 후크를 하프 가드 쪽으로 바꿔 마무리" }
+      {
+        "tech": "BF-01",
+        "role": "main",
+        "note": "한 손은 목 뒤(칼라 타이), 다른 손은 삼두를 잡고 옆으로 쓰러지며 후크로 스윕"
+      },
+      {
+        "tech": "BF-10",
+        "role": "if_blocked",
+        "trigger": "상대가 팔로 바닥을 짚고 엉덩이를 내려 스윕을 막으면",
+        "note": "목을 아래로 눌러 올라타듯 길로틴 그립을 만들고 후크를 하프 가드 쪽으로 바꿔 마무리"
+      }
     ],
     "end": "길로틴 초크 서브미션 또는 스윕 성공 시 하프 가드 탑",
     "level": "중급",
     "evidence": [
-      { "source": "Evolve MMA (BJJEE 게재) - Marcelo Garcia 버터플라이 스윕과 길로틴 소개", "url": "https://www.bjjee.com/?p=81912", "supports": "상대가 팔로 기반을 만들고 엉덩이를 낮춰 스윕을 막을 때 마르셀로 가르시아가 목을 눌러 길로틴으로 전환한다고 설명", "basis": "page-read" }
+      {
+        "source": "Evolve MMA (BJJEE 게재) - Marcelo Garcia 버터플라이 스윕과 길로틴 소개",
+        "url": "https://www.bjjee.com/?p=81912",
+        "supports": "상대가 팔로 기반을 만들고 엉덩이를 낮춰 스윕을 막을 때 마르셀로 가르시아가 목을 눌러 길로틴으로 전환한다고 설명",
+        "basis": "page-read"
+      }
     ],
     "grade": "참고",
     "issues": "독립된 page-read 출처가 1곳뿐. 마르셀로의 영상 설명을 요약한 제3자 글이라 강사 본인 페이지를 추가로 확인해야 함. 길로틴 그립이 노기 기준이며 기에서는 칼라 그립이 다른 방어에 막힐 수 있음. 도감 BF-10은 '길로틴 트랩'이라 정확한 피니시 동작은 별도 확인 필요."
-  },
-  {
-    "id": "bf-armdrag-elevator-backtake",
-    "position": "BF",
-    "name": "암드래그 · 엘리베이터 스윕 · 백 테이크",
-    "start": "버터플라이 가드에서 상대의 팔을 잡을 수 있을 때 (노기 수업 등)",
-    "steps": [
-      { "tech": "BF-04", "role": "main", "note": "암드래그로 어깨를 끌어당기며 엉덩이를 붙여 상대 체중을 내 위로 실은 뒤 엘리베이터로 끌어당긴 팔 쪽으로 스윕" },
-      { "tech": "BF-22", "role": "if_blocked", "trigger": "상대가 몸을 뒤로 빼며 체중을 뒤에 두어 올라오지 않으면", "note": "후크를 모두 풀고 끌어당긴 팔 쪽으로 무릎을 돌려 탑 터틀(등)로 이동하는 백 테이크" }
-    ],
-    "end": "탑 포지션 또는 백 컨트롤로 이어지는 터틀 포지션",
-    "level": "중급",
-    "evidence": [
-      { "source": "David Avellan - Robert Drysdale 버터플라이 암드래그 시리즈", "url": "https://davidavellan.com/spy-cam-butterfly-arm-drag/", "supports": "암드래그 후 상대가 앞으로 쏠리면 엘리베이터 스윕, 체중을 뒤로 빼면 후크를 풀고 탑 터틀로 이동, 정면으로 마주하면 더블 레그로 이어가는 3갈래를 설명", "basis": "page-read" },
-      { "source": "JiuJitsu.com - Butterfly Guard Sweeps That Work in Live Rolls", "url": "https://jiujitsu.com/blogs/jiujitsu/butterfly-guard-sweeps-live-rolls", "supports": "암드래그 후 어깨가 노출되면 백, 상대가 다시 정면으로 돌아오며 체중이 앞으로 실리면 기본 버터플라이 스윕, 팔을 빼고 짚으면 싱글 레그 식 웨슬 업으로 이어진다고 설명", "basis": "page-read" },
-      { "source": "Jitsu IQ - Butterfly Sweep", "url": "https://jitsuiq.com/sweeps/butterfly-sweep.html", "supports": "암드래그와 백 테이크 스윕을 버터플라이 스윕과 결합하는 응용으로 언급하고, 암드래그가 실패해도 버터플라이 스윕으로 이어갈 수 있다고 안내", "basis": "page-read" }
-    ],
-    "grade": "검증됨",
-    "issues": "도감에는 독립된 '암드래그' 기술이 없고 BF-22(암 드래그 → 백 테이크, 전환)에 포함됨. 암드래그 단독 진입 기술 ID 추가 필요(보강 후보). BF-04는 '싱글 언더훅 엘리베이터'이며 Drysdale 시리즈의 암드래그 엘리베이터와 정확히 같은 그립은 아님. Drysdale 설명의 백 테이크는 시트벨트 백이 아닌 탑 터틀 도달까지임. 노기에서 효과적(손목 그립), 기에서는 소매 그립으로 대체."
   },
   {
     "id": "bf-shoulder-crunch",
@@ -60,18 +79,42 @@
     "name": "버터플라이 스윕 · 숄더 크런치 수미가에시 (손을 짚을 때)",
     "start": "버터플라이 가드에서 상대를 앞으로 끌어 스윕 위협을 줄 때",
     "steps": [
-      { "tech": "BF-01", "role": "main", "note": "암드래그나 후크로 끌어당겨 상대가 앞으로 쏠리게 함 (스윕 위협)" },
-      { "tech": "BF-02", "role": "if_blocked", "trigger": "상대가 넘어지지 않으려 손을 바닥에 짚어 팔이 머리 위로 뻗어지면", "note": "뻗은 팔 안으로 팔을 걸어 팔꿈치를 높게 유지하며 머리를 상대 머리 옆에 두고 후크를 차올려 반대편으로 스윕" }
+      {
+        "tech": "BF-25",
+        "role": "main",
+        "note": "가짜 암드래그나 같은 쪽으로 끌기로 상대 팔을 머리 위로 뻗게 만든다"
+      },
+      {
+        "tech": "BF-02",
+        "role": "if_blocked",
+        "trigger": "상대가 넘어지지 않으려 손을 바닥에 짚어 팔이 머리 위로 뻗어지면",
+        "note": "뻗은 팔 안으로 팔을 걸어 팔꿈치를 높게 유지하며 머리를 상대 머리 옆에 두고 후크를 차올려 반대편으로 스윕"
+      }
     ],
     "end": "마운트 또는 탑 패싱 포지션",
     "level": "고급",
     "evidence": [
-      { "source": "Evolve MMA (BJJEE 게재) - Gordon Ryan 숄더 크런치", "url": "https://www.bjjee.com/?p=81912", "supports": "고든 라이언이 암드래그와 후크로 끌어당긴 뒤 상대가 손을 짚는 반응을 보이면 숄더 크런치를 걸어 ADCC 2019에서 스윕했다고 설명", "basis": "page-read" },
-      { "source": "80/20 BJJ Coach 뉴스레터 (Enrique Iturriaga)", "url": "https://bjjcoach.substack.com/p/week-3-shoulder-crunch-a-la-gordon", "supports": "숄더 크런치의 전제는 상대 팔이 내 머리 위로 뻗어 있고 머리가 상대 머리 옆에 있는 것이며, 가짜 암드래그로 만들 수 있다고 설명", "basis": "page-read" },
-      { "source": "JiuJitsu.com - Butterfly Guard Sweeps That Work in Live Rolls", "url": "https://jiujitsu.com/blogs/jiujitsu/butterfly-guard-sweeps-live-rolls", "supports": "상대가 강하게 압박해 올 때 오버훅·숄더 크런치가 언더훅보다 낫고 상대의 짚는 손을 막는 데 유리하다고 설명", "basis": "page-read" }
+      {
+        "source": "Evolve MMA (BJJEE 게재) - Gordon Ryan 숄더 크런치",
+        "url": "https://www.bjjee.com/?p=81912",
+        "supports": "고든 라이언이 암드래그와 후크로 끌어당긴 뒤 상대가 손을 짚는 반응을 보이면 숄더 크런치를 걸어 ADCC 2019에서 스윕했다고 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "80/20 BJJ Coach 뉴스레터 (Enrique Iturriaga)",
+        "url": "https://bjjcoach.substack.com/p/week-3-shoulder-crunch-a-la-gordon",
+        "supports": "숄더 크런치의 전제는 상대 팔이 내 머리 위로 뻗어 있고 머리가 상대 머리 옆에 있는 것이며, 가짜 암드래그로 만들 수 있다고 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "JiuJitsu.com - Butterfly Guard Sweeps That Work in Live Rolls",
+        "url": "https://jiujitsu.com/blogs/jiujitsu/butterfly-guard-sweeps-live-rolls",
+        "supports": "상대가 강하게 압박해 올 때 오버훅·숄더 크런치가 언더훅보다 낫고 상대의 짚는 손을 막는 데 유리하다고 설명",
+        "basis": "page-read"
+      }
     ],
     "grade": "검증됨",
-    "issues": "도감 BF-02는 '숄더 크런치 수미가에시'로 이름이 일치하나 앞 단계 BF-01은 이 연계에서 '스윕 위협/암드래그 풀'로 느슨하게 해석(암드래그 단독 ID 없음). 노기 위주 기술이며 기에서는 소매·칼라 그립으로 변형. 난이도가 높아 level 고급."
+    "issues": "3라운드: 앞 단계를 BF-01(스윕 위협)에서 BF-25(암드래그)로 교체. Gordon Ryan 사례는 암드래그와 후크로 끌어당긴 뒤 상대가 손을 짚을 때 숄더 크런치를 걸었다는 설명이라 BF-25와 더 잘 맞음. 노기 위주 기술이며 기에서는 소매·칼라 그립으로 변형. 난이도가 높아 level 고급."
   },
   {
     "id": "bf-sweep-xguard-standup",
@@ -79,15 +122,38 @@
     "name": "버터플라이 스윕 · X가드 전환 · 스탠드업 스윕",
     "start": "버터플라이 가드에서 한 손은 칼라, 다른 손은 무릎 바지를 잡고 스윕을 시도할 때",
     "steps": [
-      { "tech": "BF-01", "role": "main", "note": "상대를 앞으로 당기며 기본 스윕 시도" },
-      { "tech": "BF-20", "role": "if_blocked", "trigger": "상대가 발을 뒤로 딛거나 밀어내며 스윕을 막을 때", "note": "앉듯이 후크를 상대 다리 안쪽에 넣고 상대 무게중심 밑으로 파고들어 한쪽 다리를 상대 다리 사이로 뻗어 X가드를 만듦" },
-      { "tech": "XG-01", "role": "then", "note": "X가드에서 스탠드업 스윕으로 일어나며 상대를 쓰러뜨려 탑 포지션 획득" }
+      {
+        "tech": "BF-01",
+        "role": "main",
+        "note": "상대를 앞으로 당기며 기본 스윕 시도"
+      },
+      {
+        "tech": "BF-20",
+        "role": "if_blocked",
+        "trigger": "상대가 발을 뒤로 딛거나 밀어내며 스윕을 막을 때",
+        "note": "앉듯이 후크를 상대 다리 안쪽에 넣고 상대 무게중심 밑으로 파고들어 한쪽 다리를 상대 다리 사이로 뻗어 X가드를 만듦"
+      },
+      {
+        "tech": "XG-01",
+        "role": "then",
+        "note": "X가드에서 스탠드업 스윕으로 일어나며 상대를 쓰러뜨려 탑 포지션 획득"
+      }
     ],
     "end": "탑 포지션 (스윕 성공) — X가드 이후 단계는 XG 포지션 콤보 참고",
     "level": "중급",
     "evidence": [
-      { "source": "Grapplearts (Stephan Kesting) - Butterfly Guard to X Guard Standup Sweep", "url": "https://www.grapplearts.com/butterfly-guard-to-x-guard-standup-sweep/", "supports": "버터플라이에서 스윕을 시도하다 상대가 밀고 들어오면 앉아 X가드로 파고들어 스탠드업 스윕으로 일어난다는 16단계 사진 설명 (기/노기 모두 가능)", "basis": "page-read" },
-      { "source": "Grapplearts (Stephan Kesting) - It's almost impossible to use the Butterfly Guard without X Guard", "url": "https://www.grapplearts.com/how-to-take-the-back-from-x-guard/", "supports": "상대가 손이 아닌 발을 짚어 막을 때가 X가드로 들어가는 좋은 기회이며, 많은 최상위 버터플라이 선수와 마르셀로 가르시아가 즐겨 쓰는 전환이라고 설명", "basis": "page-read" }
+      {
+        "source": "Grapplearts (Stephan Kesting) - Butterfly Guard to X Guard Standup Sweep",
+        "url": "https://www.grapplearts.com/butterfly-guard-to-x-guard-standup-sweep/",
+        "supports": "버터플라이에서 스윕을 시도하다 상대가 밀고 들어오면 앉아 X가드로 파고들어 스탠드업 스윕으로 일어난다는 16단계 사진 설명 (기/노기 모두 가능)",
+        "basis": "page-read"
+      },
+      {
+        "source": "Grapplearts (Stephan Kesting) - It's almost impossible to use the Butterfly Guard without X Guard",
+        "url": "https://www.grapplearts.com/how-to-take-the-back-from-x-guard/",
+        "supports": "상대가 손이 아닌 발을 짚어 막을 때가 X가드로 들어가는 좋은 기회이며, 많은 최상위 버터플라이 선수와 마르셀로 가르시아가 즐겨 쓰는 전환이라고 설명",
+        "basis": "page-read"
+      }
     ],
     "grade": "참고",
     "issues": "두 page-read 출처가 모두 Kesting(Grapplearts)이라 독립된 출처로 볼 수 없어 '검증됨'으로 올리지 않음. 다른 강사(예: Lucas Lepri, Digitsu)는 검색 요약으로만 확인. BF-20이 전환이라 원래 마지막 단계여야 하나 XG-01(교차 포지션)을 후속 단계로 붙임 — 검수에서 분리 여부 판단 필요. 노기/기 모두 가능."
@@ -98,17 +164,132 @@
     "name": "버터플라이 스윕 · 싱글 레그 X 전환 (상대가 뒤로 기댈 때)",
     "start": "버터플라이 가드에서 스윕을 시도할 때",
     "steps": [
-      { "tech": "BF-01", "role": "main", "note": "상대를 당겨 기본 스윕 시도" },
-      { "tech": "BF-21", "role": "if_blocked", "trigger": "상대가 뒤로 기대어(상체를 빼) 스윕을 피하면", "note": "다리를 잡은 채 한쪽 다리를 상대 다리 사이로 넣어 엉덩이를 아래로 파고들며 싱글 레그 X를 만듦" }
+      {
+        "tech": "BF-01",
+        "role": "main",
+        "note": "상대를 당겨 기본 스윕 시도"
+      },
+      {
+        "tech": "BF-21",
+        "role": "if_blocked",
+        "trigger": "상대가 뒤로 기대어(상체를 빼) 스윕을 피하면",
+        "note": "다리를 잡은 채 한쪽 다리를 상대 다리 사이로 넣어 엉덩이를 아래로 파고들며 싱글 레그 X를 만듦"
+      }
     ],
     "end": "싱글 레그 X가드 (이후 SLX 포지션 콤보 참고)",
     "level": "중급",
     "evidence": [
-      { "source": "Jitsu IQ - Butterfly Sweep", "url": "https://jitsuiq.com/sweeps/butterfly-sweep.html", "supports": "상대가 뒤로 기대어 스윕을 피하면 다른 가드 공격이나 싱글 레그 X로 전환하라고 '조정 방법'에서 안내", "basis": "page-read" },
-      { "source": "Evolve MMA (BJJEE 게재) - Attacks and Transitions from Butterfly Guard", "url": "https://www.bjjee.com/?p=81912", "supports": "버터플라이에서 앉은 자세에서 눕는 자세로 끌어당겨 싱글 레그 X로 들어가는 3가지 진입 영상(Aaron Benzrihem)을 소개 (구체 트리거 설명은 없음)", "basis": "page-read" },
-      { "source": "Grapplearts (Stephan Kesting) - How to Leglock Someone in Butterfly Guard", "url": "https://www.grapplearts.com/how-to-leglock-someone-in-butterfly-guard/", "supports": "버터플라이 가드 플레이어는 안쪽 라인을 이용해 한쪽 다리를 밀어 넣어 지배적인 레그 엔탱글먼트를 만들 수 있다고 설명 (상대가 기대는 트리거는 아님)", "basis": "page-read" }
+      {
+        "source": "Jitsu IQ - Butterfly Sweep",
+        "url": "https://jitsuiq.com/sweeps/butterfly-sweep.html",
+        "supports": "상대가 뒤로 기대어 스윕을 피하면 다른 가드 공격이나 싱글 레그 X로 전환하라고 '조정 방법'에서 안내",
+        "basis": "page-read"
+      },
+      {
+        "source": "Evolve MMA (BJJEE 게재) - Attacks and Transitions from Butterfly Guard",
+        "url": "https://www.bjjee.com/?p=81912",
+        "supports": "버터플라이에서 앉은 자세에서 눕는 자세로 끌어당겨 싱글 레그 X로 들어가는 3가지 진입 영상(Aaron Benzrihem)을 소개 (구체 트리거 설명은 없음)",
+        "basis": "page-read"
+      },
+      {
+        "source": "Grapplearts (Stephan Kesting) - How to Leglock Someone in Butterfly Guard",
+        "url": "https://www.grapplearts.com/how-to-leglock-someone-in-butterfly-guard/",
+        "supports": "버터플라이 가드 플레이어는 안쪽 라인을 이용해 한쪽 다리를 밀어 넣어 지배적인 레그 엔탱글먼트를 만들 수 있다고 설명 (상대가 기대는 트리거는 아님)",
+        "basis": "page-read"
+      }
     ],
     "grade": "참고",
     "issues": "'뒤로 기댈 때' 트리거는 Jitsu IQ 한 곳만 직접 명시하고 나머지 출처는 BF→SLX 전환 가능성만 다룸 → 방향이 조금 다른 지지로 판단해 검증됨 보류. 다리 잡기(SLX 진입)는 레그락 룰 영향: 기 대회(IBJJF)에서는 레그락 허용 범위가 벨트별로 다르므로 노기/하위 벨트에서는 SLX 이후 공격이 제한될 수 있음."
+  },
+  {
+    "id": "bf-armdrag-elevator-wrestleup",
+    "position": "BF",
+    "name": "암드래그 · 엘리베이터 스윕 · 웨슬업",
+    "start": "버터플라이 가드에서 상대의 팔을 잡을 수 있을 때 (노기 수업 등)",
+    "steps": [
+      {
+        "tech": "BF-25",
+        "role": "main",
+        "note": "손목을 잡아 반대편으로 끌어 상대 어깨와 체중을 틀어 놓는다"
+      },
+      {
+        "tech": "BF-04",
+        "role": "if_blocked",
+        "trigger": "상대가 다시 정면으로 돌아오며 체중을 앞으로 실을 때",
+        "note": "엉덩이를 당겨 들어가며 끌어당긴 팔 쪽으로 엘리베이터 스윕"
+      },
+      {
+        "tech": "BF-26",
+        "role": "if_blocked",
+        "trigger": "상대가 팔을 빼고 손을 짚어 버틸 때",
+        "note": "잡은 팔을 놓지 않고 후크를 풀며 일어나 웨슬업으로 이어간다"
+      }
+    ],
+    "end": "탑 포지션 또는 스탠딩 레슬링 우위",
+    "level": "중급",
+    "evidence": [
+      {
+        "source": "David Avellan - Robert Drysdale 버터플라이 암드래그 시리즈",
+        "url": "https://davidavellan.com/spy-cam-butterfly-arm-drag/",
+        "supports": "암드래그 후 상대가 앞으로 쏠리면 엘리베이터 스윕, 체중을 뒤로 빼면 후크를 풀고 탑 터틀로 이동, 정면으로 마주하면 더블 레그로 이어가는 3갈래를 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "JiuJitsu.com - Butterfly Guard Sweeps That Work in Live Rolls",
+        "url": "https://jiujitsu.com/blogs/jiujitsu/butterfly-guard-sweeps-live-rolls",
+        "supports": "암드래그 후 어깨가 노출되면 백, 상대가 다시 정면으로 돌아오며 체중이 앞으로 실리면 기본 버터플라이 스윕, 팔을 빼고 짚으면 싱글 레그 식 웨슬 업으로 이어진다고 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Jitsu IQ - Butterfly Sweep",
+        "url": "https://jitsuiq.com/sweeps/butterfly-sweep.html",
+        "supports": "암드래그와 백 테이크 스윕을 버터플라이 스윕과 결합하는 응용으로 언급하고, 암드래그가 실패해도 버터플라이 스윕으로 이어갈 수 있다고 안내",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "참고",
+    "issues": "3라운드: BF-25(암드래그)와 BF-26(웨슬업)이 도감에 생겨 교체하고 기존 백 테이크 갈래는 bf-armdrag-backtake로 분리. 웨슬업 갈래는 jiujitsu.com 1곳만 직접 서술하고 재검색에서도 웨슬업 전용 본문 출처를 못 찾아 참고로 하향. BF-04는 '싱글 언더훅 엘리베이터'라 Drysdale의 암드래그 엘리베이터와 그립이 다름. 노기에서 효과적(손목 그립), 기에서는 소매 그립으로 대체. BF-26은 포지션을 떠나는 전환이라 마지막에 배치."
+  },
+  {
+    "id": "bf-armdrag-backtake",
+    "position": "BF",
+    "name": "암드래그 · 백 테이크 (어깨가 노출될 때)",
+    "start": "버터플라이 가드에서 상대의 손목을 잡고 끌어 어깨가 틀어질 때",
+    "steps": [
+      {
+        "tech": "BF-25",
+        "role": "main",
+        "note": "손목 그립으로 팔을 끌어 상대 어깨를 노출시킨다"
+      },
+      {
+        "tech": "BF-22",
+        "role": "then",
+        "note": "노출된 어깨 쪽으로 돌아 나와 백을 잡는다"
+      }
+    ],
+    "end": "백 또는 탑 터틀",
+    "level": "중급",
+    "evidence": [
+      {
+        "source": "David Avellan - Robert Drysdale 버터플라이 암드래그 시리즈",
+        "url": "https://davidavellan.com/spy-cam-butterfly-arm-drag/",
+        "supports": "암드래그 후 상대가 앞으로 쏠리면 엘리베이터 스윕, 체중을 뒤로 빼면 후크를 풀고 탑 터틀로 이동, 정면으로 마주하면 더블 레그로 이어가는 3갈래를 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "JiuJitsu.com - Butterfly Guard Sweeps That Work in Live Rolls",
+        "url": "https://jiujitsu.com/blogs/jiujitsu/butterfly-guard-sweeps-live-rolls",
+        "supports": "암드래그 후 어깨가 노출되면 백, 상대가 다시 정면으로 돌아오며 체중이 앞으로 실리면 기본 버터플라이 스윕, 팔을 빼고 짚으면 싱글 레그 식 웨슬 업으로 이어진다고 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Jitsu IQ - Butterfly Sweep",
+        "url": "https://jitsuiq.com/sweeps/butterfly-sweep.html",
+        "supports": "암드래그와 백 테이크 스윕을 버터플라이 스윕과 결합하는 응용으로 언급하고, 암드래그가 실패해도 버터플라이 스윕으로 이어갈 수 있다고 안내",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "검증됨",
+    "issues": "Drysdale 설명의 백 테이크는 체중을 뒤로 빼는 상대에게 후크를 풀고 탑 터틀에 도달하는 변형이고 jiujitsu.com은 어깨가 노출되면 백이라고 설명해 최종 위치가 조금 다름. 도감 BF-22는 암드래그를 포함한 전환이라 BF-25와 일부 중복. 노기에서 효과적(손목 그립), 기에서는 소매 그립으로 대체."
   }
 ]
