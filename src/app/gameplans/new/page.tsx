@@ -8,8 +8,8 @@ export const metadata = { title: "새 게임플랜" };
 export const dynamic = "force-dynamic";
 
 export default async function NewGamePlanPage() {
-  const { stepTechniques, positionNameById, goalTechniqueIds, recentTechniqueIds } =
-    await getGamePlanFormData();
+  const { stepTechniques, positionNameById, goalTechniqueIds, recentTechniqueIds, recommendations } =
+    await getGamePlanFormData({ withRecommendations: true });
 
   return (
     <PageWrapper>
@@ -35,6 +35,7 @@ export default async function NewGamePlanPage() {
           positionNameById={positionNameById}
           goalTechniqueIds={goalTechniqueIds}
           recentTechniqueIds={recentTechniqueIds}
+          recommendations={recommendations}
         />
       </div>
     </PageWrapper>
