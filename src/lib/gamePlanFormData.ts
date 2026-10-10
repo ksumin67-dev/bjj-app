@@ -27,6 +27,10 @@ export async function getGamePlanFormData(opts: { withRecommendations?: boolean 
   // 포지션 짧은 ID → 한글 이름 (기술 선택창 그룹 제목)
   const positionNameById: Record<string, string> = {};
   for (const p of positions) positionNameById[p.id] = p.nameKo;
+  // 포지션 타입이 아닌 상위 레코드(예: GP, BF)도 이름을 찾을 수 있게 — ID에 "-"가 없으면 상위 레코드
+  for (const t of techniques) {
+    if (!t.id.includes("-") && !positionNameById[t.id]) positionNameById[t.id] = t.nameKo;
+  }
 
   const goalTechniqueIds = goals.map((g) => g.techniqueRecordId);
 

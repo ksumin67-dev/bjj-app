@@ -84,6 +84,21 @@ function buildChain(candidates: Technique[], ctx: Ctx): Technique[] | null {
   return chain.length >= 3 ? chain : null;
 }
 
+/** 포지션 기반 플랜의 직관적·유머러스한 제목 (포지션 ID로 고정 선택 → 같은 추천은 항상 같은 제목) */
+const TITLE_TEMPLATES: ((n: string, f: string) => string)[] = [
+  (n, f) => `${n} 입장 → ${f} 퇴장`,
+  (n, f) => `${n} 장인의 ${f} 코스`,
+  (n, f) => `${n}에서 ${f}까지, 안 놓아줌`,
+  (n, f) => `${n} 오면 ${f}로 정리해드림`,
+  (n, f) => `${n} 한 번 잡으면 ${f}까지`,
+];
+
+function funTitle(posId: string, posName: string, finisher: string): string {
+  let h = 0;
+  for (const ch of posId) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return TITLE_TEMPLATES[h % TITLE_TEMPLATES.length](posName, finisher);
+}
+
 /** 기본 큐레이션 템플릿을 같은 형태로 변환 */
 function curatedPlans(techniques: Technique[]): RecommendedPlan[] {
   return GAME_PLAN_TEMPLATES.flatMap((tpl) => {
@@ -143,6 +158,7 @@ export function recommendGamePlans(args: {
     const posName = positionNameById[posId] ?? posId;
     const mid = chain.find((t) => stageOf(t) === 1) ?? chain[1];
     const last = chain[chain.length - 1];
+    const finisher = [...chain].reverse().find((t) => stageOf(t) === 2) ?? last;
     const goalIn = chain.filter((t) => ctx.goalIdSet.has(t.recordId));
     const untrained = chain.filter((t) => (trainingCountMap[t.recordId] ?? 0) === 0);
     const reps = posTrained.get(posId) ?? 0;
@@ -156,7 +172,7 @@ export function recommendGamePlans(args: {
       score,
       plan: {
         id: `position-${posId}`,
-        name: `${posName} 연계 플랜`,
+        name: funTitle(posId, posName, finisher.nameKo),
         note: `${posName}에서 ${mid.nameKo}(으)로 시작해 ${last.nameKo}까지 이어가는 흐름이에요.`,
         techRecordIds: chain.map((t) => t.recordId),
         reason: reasons.join(" · ") || `${posName} 중심으로 구성했어요`,
