@@ -105,7 +105,12 @@ export function recommendGamePlans(args: {
   });
 
   // 개인화 결과가 적으면 기본 추천으로 채워 화면이 비어 보이지 않게 한다
-  const picked = ranked.slice(0, limit);
+  let picked = ranked.slice(0, limit);
+  if (!personalized) {
+    // 기본 추천은 특정 포지션에 쏠리지 않게 포지션당 하나씩 고른다
+    const seenPos = new Set<string>();
+    picked = ranked.filter((s) => (seenPos.has(s.combo.position) ? false : (seenPos.add(s.combo.position), true))).slice(0, limit);
+  }
   if (personalized && picked.length < 3) {
     const have = new Set(picked.map((p) => p.combo.id));
     const fill = scored

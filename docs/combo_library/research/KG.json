@@ -1,0 +1,94 @@
+[
+  {
+    "id": "kg-matrix-backtake",
+    "position": "KG",
+    "name": "K가드 · 매트릭스 백 테이크",
+    "start": "K가드에서 상대가 상체를 세우고 서 있어 먼 다리를 스쿠프할 수 있을 때",
+    "steps": [
+      { "tech": "KG-20", "role": "main", "note": "무릎을 상대 무릎 안쪽에 둔 K훅을 세팅하고, 상대 먼 다리를 스쿠프할 준비. 삼각 같은 상체 위협으로 상대가 자세를 높게 유지하게 유도" },
+      { "tech": "KG-21", "role": "then", "note": "먼 다리를 스쿠프하며 인버트해 다리를 뒤로 넘기고 골반을 밑으로 돌려 등 뒤로 이동, 시트벨트와 훅 확보. 다리 장력을 먼저 풀지 말 것" }
+    ],
+    "end": "백 포지션",
+    "level": "고급",
+    "evidence": [
+      { "source": "FloGrappling (Corey Stockton) - K-guard Technique Showcase", "url": "https://www.flograppling.com/articles/6812215-crucial-details-from-the-best-k-guard-players-technique-showcase", "supports": "대회 영상 사례: 삼각 위협으로 상대가 자세를 높이면 K훅 후 먼 다리를 스쿠프하고 인버트해 매트릭스 백 테이크로 가는 흐름을 소개(기사 본문 일부만 공개)", "basis": "page-read" },
+      { "source": "Jon Calestine (Digitsu 'The K Guard Kodex' 코스)", "url": "https://digitsu.com/v/attacks-matrix-hook-calf-cutter-back-take-jon-calestine", "supports": "얕은 매트릭스 훅을 세우고 상대가 마주보거나 다리를 빼려 하면 발을 뻗어 연결을 유지하며, 카프 커터가 안 되면 다리를 치워 백 테이크로 가는 방법을 설명", "basis": "page-read" },
+      { "source": "BJJ More - K Guard & Matrix System (Mikey Musumeci) 리뷰", "url": "https://bjjmore.com/k-guard-matrix-system-mikey-musumeci/", "supports": "K가드를 매트릭스 백 테이크로 가는 통로로 가르치는 8권짜리 노기 교본이라고 소개(리뷰 글, 기술 단계 설명은 없음)", "basis": "page-read" }
+    ],
+    "grade": "검증됨",
+    "issues": "노기 중심 기술(다리/발 그립 위주), 기에서도 가능하나 칼라/소매 그립 변형. 삼각 위협은 도감 KG에 없어 note에만 표기. 무릎 부담이 큰 기술이므로 얕은 훅은 반대 다리로 보강하라는 Calestine 안전 포인트 유의. BJJ More는 리뷰 글이라 독립 근거로는 약함(검증됨은 Flo + Calestine 기준)."
+  },
+  {
+    "id": "kg-matrix-xguard-sweep",
+    "position": "KG",
+    "name": "백사이드가 안 될 때 · X가드 전환 스윕",
+    "start": "K가드에서 다리를 넘겨 백사이드 포지션으로 가려 하지만 넘기기 어려울 때",
+    "steps": [
+      { "tech": "KG-21", "role": "main", "note": "다리를 초핑하듯 넘겨 백사이드/매트릭스 진입 시도" },
+      { "tech": "KG-02", "role": "if_blocked", "trigger": "다리를 쉽게 넘기지 못하면", "note": "그 다리 쪽 엉덩이를 들고 상대 허벅지 아래로 넣어 X가드로 전환. 허벅지 안쪽 발로 밀어 균형을 깨고 손이 바닥에 닿으면 올라오며 스윕" }
+    ],
+    "end": "X가드 스윕 후 탑 포지션. X가드는 타 포지션 단계",
+    "level": "고급",
+    "evidence": [
+      { "source": "Jon Calestine (Digitsu 'The K Guard Kodex' 코스) - X-Guard Attacks", "url": "https://digitsu.com/v/x-guard-attacks-sweep-with-second-leg-jon-calestine", "supports": "K가드에서 다리를 넘겨 백사이드로 가지 못하면 두 번째 다리로 X가드에 들어가 상대를 밀어 손을 바닥에 짚게 하고 스윕하는 순서를 설명", "basis": "page-read" },
+      { "source": "FloGrappling (Corey Stockton) - K-guard Technique Showcase", "url": "https://www.flograppling.com/articles/6812215-crucial-details-from-the-best-k-guard-players-technique-showcase", "supports": "K가드가 매트릭스 외에도 스윕 등 여러 공격 옵션을 가진다고 소개하나 X가드 전환은 직접 다루지 않음", "basis": "page-read" }
+    ],
+    "grade": "참고",
+    "issues": "X가드 전환 연계는 Calestine 1곳만 확인(Flo는 방향이 다름). 도감 KG-02 'X가드 전환 스윕'과 소스의 K가드->X가드 스윕이 같은 기술인지 확인 필요. 노기 설명."
+  },
+  {
+    "id": "kg-backside-heelhook",
+    "position": "KG",
+    "name": "K가드에서 백사이드 50-50 · 힐훅",
+    "start": "K가드에서 상대가 내 발을 눌러 내리거나 다리 얽힘이 가능한 상황",
+    "steps": [
+      { "tech": "KG-20", "role": "main", "note": "팔꿈치를 무릎 안쪽에 두어 연결을 유지하고, 상대가 발을 눌러 내리면 한 발을 넘기고 다른 발은 골반 위로 보내 각도를 자름" },
+      { "tech": "KG-10", "role": "then", "note": "백사이드 50-50으로 발목을 잡고 피겨4로 잠근 뒤 발가락을 당기며 장력을 유지, 팔꿈치를 안으로 넣어 배를 아래로 하며 아웃사이드 힐훅 마무리" }
+    ],
+    "end": "아웃사이드 힐훅 서브미션",
+    "level": "고급",
+    "evidence": [
+      { "source": "Jon Calestine (Digitsu 'The K Guard Kodex' 코스) - 50/50 Attacks", "url": "https://digitsu.com/v/50-50-attacks-backside-to-break-down-finishes-jon-calestine", "supports": "K가드에서 상대가 발을 눌러 내릴 때 백사이드 50-50으로 넘어가 발목 그립과 피겨4를 만들고 힐훅 피니시 그립 두 가지로 마무리하는 방법 설명", "basis": "page-read" },
+      { "source": "FloGrappling (Corey Stockton) - K-guard Technique Showcase", "url": "https://www.flograppling.com/articles/6812215-crucial-details-from-the-best-k-guard-players-technique-showcase", "supports": "ADCC 사례: 라클란 자일스가 K가드 변형에서 인버트해 50-50으로 들어가 힐훅으로 서브미션 승리(힐훅 종류는 미명시)", "basis": "page-read" },
+      { "source": "Jon Calestine (Digitsu) - K Guard Rolling Commentary Roll 5", "url": "https://digitsu.com/v/k-guard-rolling-commentary-roll-5-jon-calestine", "supports": "K가드에서 아웃사이드 아시 가라미로 전환하고 발을 바꾼 뒤 무릎을 내회전시켜 아웃사이드 힐훅을 거는 설명(같은 강사)", "basis": "page-read" }
+    ],
+    "grade": "참고",
+    "issues": "Flo 사례는 힐훅 종류(인사이드/아웃사이드) 미명시이고 Calestine 두 페이지는 같은 강사라 독립 2곳으로 보기 어려워 '검증됨' 보류. 백사이드 50-50 진입 자체는 도감에 없음(누락 기술: 백사이드 50-50 / 아웃사이드 아시 가라미 진입). 룰 제한: 힐훅은 노기·벨트·대회 룰(IBJJF, ADCC 등)에 따라 허용 여부가 다르므로 사전 확인 필요. 기(gi)에서도 가능하다고 Flo가 언급(무수메시 사례)."
+  },
+  {
+    "id": "kg-to-slx",
+    "position": "KG",
+    "name": "상대가 앞으로 눌러올 때 · SLX 진입",
+    "start": "K가드에서 상대를 움직여 균형을 파악하고 상대가 앞으로 압박해 올 때",
+    "steps": [
+      { "tech": "KG-20", "role": "main", "note": "손을 위로 올려 거리를 관리하며 근접/먼 쪽 다리 중 공략할 쪽 선택, 상대를 코너로 몰아 균형이 약한 쪽을 찾는다" },
+      { "tech": "KG-22", "role": "then", "note": "상대가 앞으로 누르면 아래로 끌어 균형을 깨고, 앞다리를 올려 발을 넘기며 옆으로 피벗해 싱글 레그 X로 이동. 그립은 손목이 아닌 팔꿈치 깊이까지" }
+    ],
+    "end": "싱글 레그 X(SLX) 포지션. 타 포지션 단계",
+    "level": "고급",
+    "evidence": [
+      { "source": "Adam Benayoun (Digitsu 'SLX Evolution' 코스) - Entries: K Guard", "url": "https://digitsu.com/v/entries-k-guard-adam-benayoun", "supports": "K가드에서 상대가 앞으로 압박할 때 끌어 균형을 깨고 앞다리를 올려 피벗해 싱글 레그 X로 들어가는 단계를 설명", "basis": "page-read" },
+      { "source": "Jon Calestine (Digitsu) - X-Guard Attacks / K Guard Kodex 설명", "url": "https://digitsu.com/v/x-guard-attacks-sweep-with-second-leg-jon-calestine", "supports": "K가드에서 다음 포지션(X가드)으로 갈 때 엉덩이를 들고 다리를 상대 허벅지 아래에 넣는 진입 원리를 설명(SLX가 아니라 X가드 직접 근거)", "basis": "page-read" }
+    ],
+    "grade": "참고",
+    "issues": "SLX 진입은 Benayoun 1곳. Calestine 페이지는 X가드라 방향이 다름. 도감 KG-22 'SLX 전환'이 소스 기술과 일치하는지 확인 필요. 이후 SLX에서의 스윕/레그락은 별도 포지션(SLX) 콤보로. 노기 중심."
+  },
+  {
+    "id": "kg-tilt-sweep",
+    "position": "KG",
+    "name": "K훅 · 기본 K가드 스윕 (다리 스쿠프 후 밀어 올리기)",
+    "start": "K가드에서 상대의 먼 다리를 스쿠프할 수 있을 때",
+    "steps": [
+      { "tech": "KG-20", "role": "main", "note": "K훅이 패스를 막는 벽 역할을 하도록 무릎을 안쪽에 두고, 상대 먼 다리 아래로 파고들어 스쿠프 그립 확보" },
+      { "tech": "KG-01", "role": "then", "note": "스쿠프한 다리를 들어올리며 K훅을 밀어 상대를 기울여 넘기는 틸트 스윕" }
+    ],
+    "end": "탑 포지션",
+    "level": "중급",
+    "evidence": [
+      { "source": "FloGrappling (Corey Stockton) - K-guard Technique Showcase", "url": "https://www.flograppling.com/articles/6812215-crucial-details-from-the-best-k-guard-players-technique-showcase", "supports": "토미 랑가커가 다리를 스쿠프하며 아래로 스윙한 뒤 K훅을 밀어 상대를 기울여 넘기는 단순한 틸트 스윕을 소개. 상대가 거리를 유지하면 시저 스윕으로 바꾸는 사례도 언급", "basis": "page-read" },
+      { "source": "Digitsu K-Guard Sweep 기술 페이지", "url": "https://digitsu.com/t/k-guard-sweep", "supports": "K가드 스윕을 정강이 프레임과 먼 다리 훅으로 상대를 들어올려 넘기는 기술로 요약(강사 미표기 일반 설명이라 근거로 약함)", "basis": "snippet" }
+    ],
+    "grade": "참고",
+    "issues": "강사 1곳(Flo 기사 속 랑가커 사례)만 page-read. Digitsu 기술 페이지는 강사 미표기이며 'K 형태' 설명이 Flo/Calestine의 K훅 정의와 달라 신뢰하지 않음. 상대가 다리를 빼고 거리를 유지할 때의 시저 스윕은 도감에 없어 넣지 못함(누락 기술: 시저 스윕(K가드에서))."
+  }
+]

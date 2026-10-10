@@ -1,0 +1,93 @@
+[
+  {
+    "id": "ns-kimura-armbar",
+    "position": "NS",
+    "name": "노스-사우스 기무라 · 암바 전환",
+    "start": "노스-사우스 탑에서 상대 팔을 기무라 그립으로 잡았는데 피니시가 안 될 때",
+    "steps": [
+      { "tech": "NS-02", "role": "main", "note": "상대가 팔을 두르면 가두고 노스-사우스로 이동해 어깨뼈 쪽으로 낮게 끌어 기무라" },
+      { "tech": "NS-03", "role": "if_blocked", "trigger": "상대가 팔을 몸에 붙여 기무라가 안 되면", "note": "기무라 그립을 유지한 채 상대 반대편까지 이동해 암바 마무리" }
+    ],
+    "end": "암바 서브미션",
+    "level": "중급",
+    "evidence": [
+      { "source": "Atos BJJ OnDemand - Intro Day 17 (Galvao 커리큘럼)", "url": "https://live.atosbjjondemand.com/videos/intro-day-17-techniques-1-3", "supports": "노스-사우스 기무라가 암바로 이어지며, 기무라 그립을 유지한 채 상대 반대편으로 완전히 이동해 암바를 마무리한다고 설명", "basis": "page-read" },
+      { "source": "Grapplearts (Stephan Kesting) - North South Kimura", "url": "https://www.grapplearts.com/the-north-south-kimura-armlock/", "supports": "노스-사우스 기무라가 첫 공격이며, 저항을 만나면 백 테이크, 레그락, 암바로 이어지는 허브 포지션이라고 설명", "basis": "page-read" },
+      { "source": "Jitsu IQ - North South", "url": "https://jitsuiq.com/positions/mount/north-south.html", "supports": "노스-사우스에서 기무라와 암바를 주요 서브미션으로 나열(연계 설명은 없음)", "basis": "page-read" }
+    ],
+    "grade": "검증됨",
+    "issues": "Kesting 글은 허브 개념 수준이고 암바 연결을 직접 설명하는 것은 Atos 쪽. 정확한 트리거('팔을 몸에 붙임')는 일반 저항 반응의 해석. NS-03의 방식(업라이트 90도/스텝오버)이 Atos와 같은지 확인 필요. 노기/기 모두 가능."
+  },
+  {
+    "id": "ns-kimura-backtake",
+    "position": "NS",
+    "name": "노스-사우스 기무라 · 백 테이크 (기무라 방어가 강할 때)",
+    "start": "노스-사우스 탑에서 기무라를 걸었는데 상대가 그립을 끊고 강하게 버틸 때",
+    "steps": [
+      { "tech": "NS-02", "role": "main", "note": "기무라 그립을 고정해 상대를 노스-사우스에서 묶음" },
+      { "tech": "NS-12", "role": "if_blocked", "trigger": "상대가 기무라 방어 그립을 풀지 않고 버티면", "note": "그립을 놓지 않은 채 상대 등 쪽으로 이동해 백을 잡음(이후 크로스 칼라 초크로 연결 가능)" }
+    ],
+    "end": "백 컨트롤 (이후 초크)",
+    "level": "고급",
+    "evidence": [
+      { "source": "Graciemag - Roger Gracie, kimura에서 초크로 (Dojjo 레슨)", "url": "https://www.graciemag.com/video-roger-gracie-teaches-a-choke-starting-from-the-kimura/", "supports": "기무라 방어가 강해 그립이 안 풀리면 노스-사우스에서 그립을 유지한 채 상대 등 쪽으로 넘어가 크로스 칼라 초크로 전환", "basis": "page-read" },
+      { "source": "Grapplearts (Stephan Kesting) - North South Kimura", "url": "https://www.grapplearts.com/the-north-south-kimura-armlock/", "supports": "기무라에서 저항을 만나면 같은 그립으로 백 테이크를 할 수 있다고 소개하고 별도 영상(Brandon Mullins)으로 연결", "basis": "page-read" },
+      { "source": "Digitsu - Kimura Trap", "url": "https://digitsu.com/t/kimura-trap", "supports": "상대가 벨트를 잡는 등 정적 방어를 하면 서브미션을 고집하지 말고 같은 그립으로 백 테이크/스윕으로 전환하라고 정리", "basis": "page-read" }
+    ],
+    "grade": "검증됨",
+    "issues": "Roger Gracie의 마무리는 기(도복) 크로스 칼라 초크로 DB에 백 컨트롤의 크로스 초크가 없어 이어지는 단계를 넣지 못함 -> 추가 제안: 크로스 칼라 초크 (백 컨트롤). 노기에서는 RNC(BC-01)로 대체. NS-12는 전환이라 마지막 단계에 배치."
+  },
+  {
+    "id": "ns-choke-turn-backtake",
+    "position": "NS",
+    "name": "노스-사우스 초크 · 돌아 도망가는 상대 백 테이크",
+    "start": "노스-사우스 탑에서 초크를 시도하는데 상대가 몸을 돌려 피할 때",
+    "steps": [
+      { "tech": "NS-01", "role": "main", "note": "어깨와 팔로 목을 감싸고 상체에 체중을 실어 초크 시도" },
+      { "tech": "NS-12", "role": "if_blocked", "trigger": "상대가 초크를 피하려고 옆으로 돌아 등을 보이면", "note": "움직임을 따라가 훅을 넣고 백 컨트롤로 이동" }
+    ],
+    "end": "백 컨트롤",
+    "level": "중급",
+    "evidence": [
+      { "source": "Jitsu IQ - North South", "url": "https://jitsuiq.com/positions/mount/north-south.html", "supports": "상대가 도망가려 돌면 움직임을 따라가 백 컨트롤을 잡는다고 설명(초크 시도 직후라는 맥락은 없음)", "basis": "page-read" },
+      { "source": "Digitsu - North-South", "url": "https://digitsu.com/t/north-south", "supports": "노스-사우스에서 백, 마운트, 사이드 컨트롤로의 전환을 상대 반응에 따라 선택한다고 정리하고 노스-사우스 초크는 덜 흔한 선택으로 표기", "basis": "page-read" }
+    ],
+    "grade": "참고",
+    "issues": "두 출처 모두 포지션 개요이며 초크 -> 백 테이크 연계를 직접 다룬 글은 못 찾음(검색 결과에서 포럼 글은 초크를 피해 돌 때 스프롤/길로틴/다르스로 전환을 제안). 한 곳이 초크를 덜 흔하다고 표기. 2차 라운드에서 직접 연계 출처 필요."
+  },
+  {
+    "id": "ns-tkimura-crucifix-back",
+    "position": "NS",
+    "name": "T-기무라 · 크루시픽스로 백 테이크",
+    "start": "노스-사우스 탑에서 기무라 그립으로 상대 팔을 제어한 상태",
+    "steps": [
+      { "tech": "NS-02", "role": "main", "note": "기무라 그립 유지로 팔을 고립" },
+      { "tech": "NS-21", "role": "then", "note": "다리로 상대 팔을 가두는 크루시픽스 컨트롤을 만들어 백을 노림" }
+    ],
+    "end": "크루시픽스 컨트롤 또는 백 컨트롤",
+    "level": "고급",
+    "evidence": [
+      { "source": "Damien BJJ Online 코스 목차 (검색 요약)", "url": "https://bjjdamienonline.teachable.com/courses/1864515/lectures/43108905", "supports": "T-기무라 섹션에 크루시픽스로 백을 잡는 레슨이 있다는 목차 수준 정보", "basis": "snippet" }
+    ],
+    "grade": "참고",
+    "issues": "코스 목차만 확인(기술 설명 미열람). 노스-사우스에서 크루시픽스로 가는 디테일 불명. 공신력 있는 설명 출처 추가 필요. 앱 노출 보류 권장."
+  },
+  {
+    "id": "ns-control-mount",
+    "position": "NS",
+    "name": "노스-사우스 컨트롤 · 마운트 전환",
+    "start": "노스-사우스 컨트롤에서 상대를 눌러 움직임을 제한했을 때",
+    "steps": [
+      { "tech": "NS-20", "role": "main", "note": "다리를 뒤로 뻗고 체중을 가슴에 실어 상대 팔과 엉덩이를 제한" },
+      { "tech": "NS-11", "role": "transition", "note": "무릎 하나를 상대 몸통 위로 넘겨 마운트를 잡음" }
+    ],
+    "end": "마운트",
+    "level": "기본",
+    "evidence": [
+      { "source": "Jitsu IQ - North South", "url": "https://jitsuiq.com/positions/mount/north-south.html", "supports": "노스-사우스에서 무릎을 상대 몸통 위로 밀어 넣어 마운트로 가는 전환을 설명", "basis": "page-read" },
+      { "source": "Digitsu - North-South", "url": "https://digitsu.com/t/north-south", "supports": "노스-사우스에서 마운트로 가는 전환을 탑 선택지로 나열", "basis": "page-read" }
+    ],
+    "grade": "참고",
+    "issues": "상대 반응 트리거가 없는 단순 전환 목록이라 앱 추천 콤보로는 약함(참고). 두 출처 모두 개요 페이지."
+  }
+]

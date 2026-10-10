@@ -29,18 +29,18 @@
       {
         "source": "BJJ Canvas (클로즈드 가드 공격 간 플로우)",
         "url": "https://www.bjjcanvas.com/?p=5871",
-        "supports": "상대가 크로스 초크를 피해 몸을 옮기면 가까운 쪽 팔 공격 기회가 열린다고 설명",
-        "basis": "snippet"
+        "supports": "크로스 초크를 피해 상대가 몸을 옮기면 가까운 쪽 팔 공격 기회가 열린다고 서술(본문에 암바 명시 없음, 영상으로만 제시)",
+        "basis": "unverified"
       },
       {
         "source": "BJJEE (크로스 깃 초크에서 암바로)",
         "url": "https://www.bjjee.com/?p=82920",
-        "supports": "초크 실패 시 상대가 이두를 밀어 막는 순간 암바가 열리고 깊은 깃 그립이 전제라는 점",
-        "basis": "snippet"
+        "supports": "크로스 칼라 초크 때 상대가 이두를 밀어 막으면 그 팔을 당겨 자세를 무너뜨리고 소매 그립과 발 골반 고정으로 암바에 들어가는 Stambowsky 셋업",
+        "basis": "page-read"
       }
     ],
     "grade": "참고",
-    "issues": "검색 요약 기반으로 확인, 원문 전체 정독은 미실시. BJJEE는 여러 강사 영상을 소개하는 사이트라 첫 출처(Renzo)와 BJJ Canvas를 독립 2곳으로 계산. 깃(기) 그립 의존 - 노기 부적합. [2026-10-10 규칙 강화: 페이지 본문 확인된 독립 출처 2곳 미만이라 등급 조정. 2차 확인 라운드에서 재평가]"
+    "issues": "깃(기) 그립 의존 - 노기 부적합. [본문 확인 2026-10-10] BJJEE 2페이지(Renzo, Stambowsky)는 본문을 읽어 확인했으나 같은 사이트라 1곳으로 계산. BJJ Canvas 본문은 \"초크를 피해 몸을 옮기면 가까운 쪽 팔 공격이 열린다\"까지만 쓰고 암바를 명시하지 않아 unverified. 독립 page-read 출처 1곳이라 참고 유지."
   },
   {
     "id": "cg-hipbump-kimura-guillotine",
@@ -72,18 +72,18 @@
       {
         "source": "Grapplearts (힙범프 스윕 설명)",
         "url": "https://www.grapplearts.com/hip-bump-sweep-from-closed-guard",
-        "supports": "힙범프의 타이밍과 이후 트라이앵글/기무라로 이어지는 선택지를 다룸",
-        "basis": "snippet"
+        "supports": "힙범프의 타이밍, 삼각으로의 연결, 전방 압박(forward drive)에 대한 기무라/오버훅 캡처를 챕터로 다루는 Jon Thomas 영상 소개",
+        "basis": "page-read"
       },
       {
         "source": "JitsuIQ (Hip Bump Sweep)",
         "url": "https://jitsuiq.com/sweeps/hip-bump-sweep.html",
-        "supports": "상대가 팔을 빼면 기무라, 앞으로 밀고 오면 길로틴으로 연결하는 반응별 분기 소개",
-        "basis": "snippet"
+        "supports": "상대가 팔을 빼면 기무라, 앞으로 숙여 방어하면 길로틴으로 전환한다는 변형 설명(위키성 사이트)",
+        "basis": "page-read"
       }
     ],
     "grade": "참고",
-    "issues": "길로틴 분기는 약하게만 확인됨(상대가 앞으로 밀 때 목 노출). JitsuIQ는 위키성 사이트라 강사 직접 출처 추가 필요. 팔을 짚는 경우는 기무라/트라이앵글로 소개되는 출처가 많음. 힙범프 후 마운트는 MT-20 transition으로 추가 가능하나 이번엔 미포함."
+    "issues": "[본문 확인 2026-10-10] 기무라 트리거가 출처마다 다름: JitsuIQ는 \"팔을 뺄 때\", Grapplearts는 \"전방 압박에 대한 기무라\"로 서술. 길로틴 분기는 JitsuIQ(위키성)에서만 확인됨. 독립 page-read는 2곳이나 트리거가 일치하지 않고 한 곳이 위키성이라 참고 유지. 강사 직접 출처 추가 필요. 힙범프 후 마운트는 MT-20 transition으로 추가 가능하나 미포함."
   },
   {
     "id": "cg-armbar-triangle-omoplata",
@@ -99,13 +99,13 @@
       {
         "tech": "CG-16",
         "role": "if_blocked",
-        "trigger": "상대가 팔을 빼며 머리를 숙이고 몸을 돌리면",
+        "trigger": "상대가 팔을 빼며 반대쪽 팔이 굽어 팔꿈치가 상대 배 근처에 있으면",
         "note": "삼두를 잡고 다리를 목에 걸어 삼각으로 전환"
       },
       {
         "tech": "CG-17",
         "role": "if_blocked",
-        "trigger": "상대가 팔을 빼고 자세를 세우며 반대로 빠지면",
+        "trigger": "상대가 팔을 빼며 반대쪽 팔이 펴진 채 내 가슴을 밀면",
         "note": "빠진 팔 쪽으로 몸을 감아 오모플라타"
       }
     ],
@@ -121,24 +121,24 @@
       {
         "source": "jiujitsu.com (Josh Griffiths, Armbar to Omoplata)",
         "url": "https://jiujitsu.com/blogs/techniques/closed-guard-armbar-to-omoplata",
-        "supports": "공격하던 팔을 빼면 즉시 그쪽으로 감아 오모플라타로 가는 큐",
-        "basis": "snippet"
+        "supports": "공격하던 팔을 상대가 빼면 즉시 그쪽으로 감아 오모플라타로 가는 Josh Griffiths 설명",
+        "basis": "page-read"
       },
       {
         "source": "Atos BJJ On Demand",
         "url": "https://live.atosbjjondemand.com/omoplata/videos/arm-bar-from-closed-guard-triangle-and-omoplata-transitions",
-        "supports": "클로즈드 가드 암바에서 삼각과 오모플라타로 전환하는 수업",
-        "basis": "snippet"
+        "supports": "유료 영상 페이지라 제목과 태그(암바, 삼각, 오모플라타 전환)만 확인되고 트리거 설명 본문은 없음",
+        "basis": "unverified"
       },
       {
         "source": "Evolve University",
         "url": "https://evolve-university.com/blog/basic-bjj-combinations-triangle-choke-omoplata-and-armbar/",
-        "supports": "삼각-오모플라타-암바 세 기술을 기본 콤비네이션으로 연결",
-        "basis": "snippet"
+        "supports": "클로즈드 가드 암바에서 상대가 팔을 빼면, 남은 팔이 펴져 있으면 오모플라타, 굽어 있으면 삼각으로 가고 서로 다시 암바/오모플라타로 순환하는 플로우 드릴",
+        "basis": "page-read"
       }
     ],
-    "grade": "참고",
-    "issues": "DB의 CG-16/CG-17은 '오버훅' 변형 이름이라 일반 삼각/오모플라타와 이름이 다름 - 도감에 일반 삼각(클로즈드 가드)이 있으면 교체 검토. 두 분기의 트리거(머리 숙임 vs 자세 세움)는 출처 취지를 요약한 것이라 사람 검수 필요. [2026-10-10 규칙 강화: 페이지 본문 확인된 독립 출처 2곳 미만이라 등급 조정. 2차 확인 라운드에서 재평가]"
+    "grade": "검증됨",
+    "issues": "DB의 CG-16/CG-17은 \"오버훅\" 변형 이름이라 일반 삼각/오모플라타와 이름이 다름 - 도감에 일반 삼각(클로즈드 가드)이 있으면 교체 검토. [본문 확인 완료 2026-10-10] jiujitsu.com 2페이지(같은 사이트 1곳)와 Evolve University 본문 확인. 두 분기 트리거는 Evolve의 \"남은 팔이 펴짐=오모플라타, 굽음=삼각\" 기준으로 수정함(기존 \"머리 숙임 vs 자세 세움\"은 본문 근거 없음). Atos 영상 페이지는 유료라 본문 미확인(unverified)."
   },
   {
     "id": "cg-overhook-triangle-omoplata",
@@ -169,24 +169,30 @@
       {
         "source": "Grapplearts (모든 삼각 진입은 오모플라타 진입이기도 함)",
         "url": "https://www.grapplearts.com/every-triangle-choke-setup-is-also-an-omoplata-setup/",
-        "supports": "삼각과 오모플라타는 팔을 몸에서 떼고 다리를 겨드랑이에 넣는 진입이 같아 서로 전환 가능",
-        "basis": "snippet"
+        "supports": "삼각과 오모플라타는 팔을 몸에서 떼고 다리를 겨드랑이에 넣는 진입이 같아 서로 전환 가능하고, 한쪽을 다른 쪽의 후속으로 쓸 수도 있다는 설명",
+        "basis": "page-read"
       },
       {
         "source": "Digitsu (Overhook Guard)",
         "url": "https://digitsu.com/t/overhook-guard",
-        "supports": "오버훅 가드가 삼각, 암바, 오모플라타, 스윕 등으로 상대 반응에 따라 이어지는 허브라는 설명",
-        "basis": "snippet"
+        "supports": "오버훅 가드에서 상대 반응에 따라 삼각, 암바, 오모플라타, 스윕, 백 테이크로 연결하는 허브 포지션 설명",
+        "basis": "page-read"
       },
       {
         "source": "Elite Sports (오버훅 공격 5가지)",
         "url": "https://www.elitesports.com/blogs/news/top-5-bjj-overhook-attacks-from-the-bjj-closed-guard",
-        "supports": "오버훅에서 삼각 등 여러 공격을 소개",
-        "basis": "snippet"
+        "supports": "오버훅에서 크로스 초크, 삼각, 암바, 오모플라타를 각각의 공격 옵션으로 소개(삼각에서 오모플라타로 바꾸는 순서 연계는 아님)",
+        "basis": "page-read"
+      },
+      {
+        "source": "Evolve University",
+        "url": "https://evolve-university.com/blog/basic-bjj-combinations-triangle-choke-omoplata-and-armbar/",
+        "supports": "삼각, 오모플라타, 암바가 서로 이어지는 콤비네이션이며 삼각 상태에서 암바나 오모플라타로 바꿀 수 있다는 설명",
+        "basis": "page-read"
       }
     ],
-    "grade": "참고",
-    "issues": "오버훅 허브 개념은 일치하나 삼각 -> 오모플라타 순서의 직접 연계 설명은 Grapplearts 1곳. 블로그/위키성 출처가 많아 강사 직접 출처 보강 필요. 기무라(CG-18)는 분기 2개 제한 때문에 별도 콤보 후보."
+    "grade": "검증됨",
+    "issues": "[본문 확인 완료 2026-10-10] 삼각-오모플라타 연계는 Grapplearts와 Evolve University(신규 추가 증거) 본문에서 확인, 오버훅 허브 개념은 Digitsu 본문으로 확인. 단 Evolve는 \"오모플라타를 막으면 삼각\" 방향도 함께 서술하며 삼각이 막힌 뒤 오모플라타로 가는 방향은 Grapplearts가 별도 글 링크로만 언급. Elite Sports는 허브 목록 수준. 기무라(CG-18)는 분기 2개 제한 때문에 별도 콤보 후보."
   },
   {
     "id": "cg-crosschoke-scissor",
@@ -212,18 +218,18 @@
       {
         "source": "Evolve University (Cross Choke And Scissor Sweep)",
         "url": "https://evolve-university.com/blog/basic-bjj-combinations-cross-choke-and-scissor-sweep/",
-        "supports": "크로스 초크와 시저 스윕을 같은 그립으로 잇는 기본 2단 콤비네이션 설명",
-        "basis": "snippet"
+        "supports": "크로스 초크에서 상대가 크게 방어하면 처음 칼라 그립을 놓지 않은 채 시저 스윕으로 전환하는 클래식 2단 콤비네이션",
+        "basis": "page-read"
       },
       {
         "source": "BJJ Canvas (시저 스윕 공격 시퀀스)",
         "url": "https://bjjcanvas.com/?p=6831",
-        "supports": "시저 스윕을 중심으로 한 클로즈드 가드 공격 연속 흐름 소개(초크 연계는 미확인)",
-        "basis": "snippet"
+        "supports": "시저 스윕 시도 중 상대가 손으로 짚으면 이미 잡은 칼라 그립 덕에 루프 초크로 이어진다는 Kenneth Brown 설명(방향은 스윕에서 초크로 반대)",
+        "basis": "page-read"
       }
     ],
     "grade": "참고",
-    "issues": "두 번째 출처가 초크와의 직접 연계를 확인해 주지 못함. 깃 그립 의존(노기 부적합). 스윕 성공 후 마운트 전환(MT-20)은 확인 안 해 미포함."
+    "issues": "깃 그립 의존(노기 부적합). [본문 확인 2026-10-10] Evolve가 초크 -> 시저 방향을 직접 서술(1곳). BJJ Canvas는 반대 방향(스윕 -> 루프 초크)이라 같은 연계의 독립 확인으로 보지 않음. 스윕 성공 후 마운트 전환(MT-20)은 확인 안 해 미포함."
   },
   {
     "id": "cg-pendulum-armbar",
@@ -249,12 +255,12 @@
       {
         "source": "Evolve MMA (Pendulum Sweep 활용)",
         "url": "https://evolve-mma.com/blog/heres-how-to-utilize-the-pendulum-sweep-in-bjj/",
-        "supports": "펜듈럼 세팅에서 상대가 손을 짚으면 암바나 삼각으로 이어갈 수 있다고 설명",
-        "basis": "snippet"
+        "supports": "펜듈럼 스윕을 시도할 때 상대가 팔을 매트에 짚으면 곧바로 그 팔을 걸어 암바로 가는 Fabio Da Mata 시연 설명",
+        "basis": "page-read"
       }
     ],
     "grade": "참고",
-    "issues": "출처 1곳, 암바 세부 동작은 해당 글에 없음. 강사 직접 출처 필요. 플라워 스윕(CG-04)과 펜듈럼은 같은 기술로 취급되는 출처 있음 - 도감 중복 여부 확인."
+    "issues": "[본문 확인 2026-10-10] Evolve 본문에서 펜듈럼 -> 암바 연계와 짚은 팔 트리거를 확인(상세 동작도 본문에 있음, 기존 이슈 문구 정정). 삼각 연계는 이번에 확인하지 않음. 출처 1곳이라 참고 유지, 강사 직접 출처 필요. 플라워 스윕(CG-04)과 펜듈럼은 같은 기술로 취급되는 출처 있음 - 도감 중복 여부 확인."
   },
   {
     "id": "cg-overhook-armdrag-backtake",

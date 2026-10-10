@@ -1,11 +1,12 @@
 import json,glob,csv
 names={r[1]:r[2] for r in csv.reader(open('../audit/techniques.tsv'),delimiter='\t')}
-pn={'CG':'클로즈드 가드','SC':'사이드 컨트롤','MT':'마운트','BC':'백 컨트롤'}
+pn={r[1]:r[2] for r in csv.reader(open('../audit/techniques.tsv'),delimiter='\t') if '-' not in r[1]}
+import os
 ROLE={'main':'먼저','if_blocked':'막히면','then':'이어서','transition':'이동'}
-out=['# 콤보 라이브러리 검수표 (1차 라운드)\n','아래 콤보 중 **수련에서 안 쓰거나 어색하게 느껴지는 것**만 번호로 알려 주세요. 제가 등급을 내리거나 삭제합니다.',
-'- 등급 `참고`: 출처가 있으나 본문 확인이 부족해 아직 앱 노출 전 / `초안`: 근거 못 찾음\n']
+out=['# 콤보 라이브러리 검수표 (2라운드 누적)\n','아래 콤보 중 **수련에서 안 쓰거나 어색하게 느껴지는 것**만 번호로 알려 주세요. 제가 등급을 내리거나 삭제합니다.',
+'- 등급 `검증됨`: 본문 확인된 독립 출처 2곳 이상 / `참고`: 출처 있음, 일부만 본문 확인 (앱에 노출) / `초안`: 근거 못 찾음 (앱 미노출)\n']
 n=0
-for pos in ['CG','SC','MT','BC']:
+for pos in sorted(os.path.basename(f)[:-5] for f in glob.glob('research/*.json')):
     out.append(f'\n## {pn[pos]}\n')
     for c in json.load(open(f'research/{pos}.json')):
         n+=1

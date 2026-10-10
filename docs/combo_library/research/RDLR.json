@@ -1,0 +1,94 @@
+[
+  {
+    "id": "rdlr-kiss-of-the-dragon",
+    "position": "RDLR",
+    "name": "리버스 데라리바 · 키스 오브 더 드래곤 백 테이크",
+    "start": "리버스 데라리바에서 상대 발을 잡고 거리를 유지하며 상대가 앞으로 나올 때",
+    "steps": [
+      { "tech": "RDLR-20", "role": "main", "note": "RDLR 훅과 발 그립으로 거리를 만들고, 엉덩이를 띄워 다리 아래로 깊은 그립 확보. 상대를 당겨 앞으로 한 발 나오게 유도" },
+      { "tech": "RDLR-21", "role": "then", "note": "상대 무릎 뒤를 프레임하고 아래로 스핀해 반대편으로 빠져나온 뒤 두 번째 훅을 넣어 엉덩이를 당겨 등을 공략" }
+    ],
+    "end": "백 포지션",
+    "level": "고급",
+    "evidence": [
+      { "source": "Mason Fowler (Digitsu 'Cold Blooded Half Guard' 코스)", "url": "https://digitsu.com/v/reverse-de-la-riva-kiss-of-the-dragon-mason-fowler", "supports": "RDLR에서 발을 잡고 상대가 앞으로 나오도록 당긴 뒤 무릎 뒤를 프레임하고 스핀해 두 번째 훅을 넣어 백으로 가는 단계를 설명", "basis": "page-read" },
+      { "source": "Grapplearts (Stephan Kesting 계열) - Arm Drag from Reverse de la Riva", "url": "https://www.grapplearts.com/arm-drag-from-reverse-de-la-riva-guard-simple-and-effective/", "supports": "RDLR이 막는 자세만이 아니라 공격 포지션이며 키스 오브 더 드래곤 백 테이크가 대표 공격이라고 소개(직접 단계 설명은 별도 튜토리얼 링크)", "basis": "page-read" },
+      { "source": "Jitsu IQ - Reverse De La Riva", "url": "https://jitsuiq.com/positions/guard/reverse-de-la-riva.html", "supports": "RDLR 훅과 그립으로 상대 힙 아래로 롤해 백 컨트롤 또는 스윕으로 가는 키스 오브 더 드래곤을 대표 기술로 정리(일반 개요)", "basis": "page-read" }
+    ],
+    "grade": "검증됨",
+    "issues": "Grapplearts 페이지는 기술 이름 언급 수준이고 세부 단계는 Fowler가 근거. 상대가 앞으로 나오지 않는 경우의 대안(트리거 갈래)은 소스에 없어 단일 흐름으로 구성. 노기/기 모두 가능(발 그립 중심)하나 기에서는 바지 그립 보조."
+  },
+  {
+    "id": "rdlr-armbar-omoplata",
+    "position": "RDLR",
+    "name": "언더훅 방어를 노린 플랫폼 암바 · 오모플라타",
+    "start": "리버스 데라리바에서 상대가 언더훅을 파고들려 손을 뻗을 때",
+    "steps": [
+      { "tech": "RDLR-20", "role": "main", "note": "거리를 못 좁히면 몸이 끌려가지 않도록 유지하고, 상대 팔꿈치를 C그립으로 잡아 발을 골반과 등에 걸어 플랫폼 암바 시도" },
+      { "tech": "RDLR-11", "role": "if_blocked", "trigger": "상대가 어깨를 아래로 돌려 암바를 피하면", "note": "즉시 오모플라타로 전환: 발을 포개 얼굴 쪽을 밀어 무너뜨리고 팔꿈치를 닫은 채 등을 통제" }
+    ],
+    "end": "오모플라타 서브미션",
+    "level": "고급",
+    "evidence": [
+      { "source": "Seph Smith (Digitsu 'Reverse De La Riva Almanac' 코스)", "url": "https://digitsu.com/v/platform-arm-bar-omoplata-seph-smith", "supports": "RDLR에서 상대가 언더훅을 노릴 때 플랫폼 암바를 걸고, 상대가 어깨를 아래로 돌려 피하면 오모플라타로 바로 전환하는 흐름을 설명", "basis": "page-read" },
+      { "source": "Jitsu IQ - Reverse De La Riva", "url": "https://jitsuiq.com/positions/guard/reverse-de-la-riva.html", "supports": "RDLR 훅과 그립 컨트롤로 팔을 고립해 암바와 오모플라타를 거는 것이 RDLR의 서브미션 옵션이라고 정리(연계 순서는 언급 없음)", "basis": "page-read" }
+    ],
+    "grade": "참고",
+    "issues": "첫 단계인 플랫폼 암바가 도감 RDLR에 없어 RDLR-20(컨트롤)로 대체 표기하고 note에 설명. 누락 기술: 플랫폼 암바(RDLR). 연계 순서는 Seph Smith 1곳. 칼라 그립 사용(기)."
+  },
+  {
+    "id": "rdlr-legdrag",
+    "position": "RDLR",
+    "name": "리버스 X를 거쳐 레그 드래그 탑 올라가기",
+    "start": "리버스 데라리바에서 상대 무릎 뒤와 다리를 잡고 훅을 넣을 수 있을 때",
+    "steps": [
+      { "tech": "RDLR-20", "role": "main", "note": "무릎 뒤와 근접 다리를 잡아 훅을 넣고, 자기 정강이를 잡아 상대가 인버전을 막기 어려운 각도를 만든다" },
+      { "tech": "RDLR-02", "role": "then", "note": "발을 골반에 걸고 엉덩이를 띄워 반대쪽 햄스트링을 당겨 리버스 X로 이동, 상대를 앉힌 뒤 아래 훅을 빼고 머리를 가슴에 박으며 올라와 레그 드래그 포지션 확보" }
+    ],
+    "end": "레그 드래그 탑 포지션",
+    "level": "고급",
+    "evidence": [
+      { "source": "Jason Rau (Digitsu 'Reverse De La Riva' 코스) - Leg Drag", "url": "https://digitsu.com/v/leg-drag-jason-rau", "supports": "RDLR에서 리버스 X를 거쳐 상대를 엉덩이로 앉히고 훅을 빼며 머리로 밀고 올라와 레그 드래그를 잡는 순서를 설명", "basis": "page-read" },
+      { "source": "Bruno Frazatto (Digitsu) - Reverse De la Riva Leg Circle Leg Drag", "url": "https://digitsu.com/v/reverse-de-la-riva-leg-circle-leg-drag-bruno-frazatto", "supports": "RDLR에서 다리 서클로 레그 드래그로 연결하는 영상이 있음(제목 기준, 본문 미열람)", "basis": "snippet" }
+    ],
+    "grade": "참고",
+    "issues": "page-read 1곳. 도감 RDLR-02 '레그드래그 스윕'이 Rau의 리버스 X 경유 방식과 같은지 확인 필요. 리버스 X 자체가 도감에 없음(누락 기술: 리버스 X가드 전환). 트리거(상대 반응) 갈래는 소스에 없음."
+  },
+  {
+    "id": "rdlr-sweep-chain",
+    "position": "RDLR",
+    "name": "RDLR 백롤/백워드 스윕 (들어올려 반응 이용)",
+    "start": "리버스 데라리바에서 칼라/소매 또는 팔 그립이 확보되고 상대가 체중을 되돌리려 할 때",
+    "steps": [
+      { "tech": "RDLR-20", "role": "main", "note": "팔 그립과 훅으로 연결을 유지하며 상대를 한쪽으로 들어올려 반응을 유도" },
+      { "tech": "RDLR-01", "role": "then", "note": "상대가 체중을 되돌리면 다시 들어올리고, 반응에 맞춰 팔/다리를 컨트롤한 채 스윕. 올라온 뒤 팔 컨트롤(기무라 그립)이나 패스로 연결" }
+    ],
+    "end": "탑 포지션",
+    "level": "중급",
+    "evidence": [
+      { "source": "Lucas Lepri (Digitsu 'No-Gi Master Series')", "url": "https://digitsu.com/v/reverse-de-la-riva-backwards-sweep-lucas-lepri", "supports": "RDLR에서 팔을 컨트롤하고 상대가 체중을 되돌릴 때마다 다시 들어올려 쓰러뜨리는 백워드 스윕 설명", "basis": "page-read" },
+      { "source": "Seph Smith (Digitsu 'Reverse De La Riva Almanac' 코스) - Back Roll Sweep", "url": "https://digitsu.com/v/reverse-de-la-riva-back-roll-sweep-kimura-seph-smith", "supports": "RDLR에서 팔을 밀고 상대가 균형을 잡으려는 반응에 맞춰 끌어당겨 스윕한 뒤 즉시 기무라로 이어가는 방법 설명", "basis": "page-read" },
+      { "source": "Jitsu IQ - Reverse De La Riva", "url": "https://jitsuiq.com/positions/guard/reverse-de-la-riva.html", "supports": "RDLR 훅으로 상대 힙을 회전시키고 밀어 균형을 무너뜨리는 푸시/백테이크 스윕 등을 대표 스윕으로 나열(일반 개요)", "basis": "page-read" }
+    ],
+    "grade": "참고",
+    "issues": "두 강사가 설명하는 스윕이 서로 다름(Lepri 백워드 vs Smith 백롤). 도감 RDLR-01 '기본 RDLR 스윕'과 정확히 같은 기술인지 불확실해 '검증됨' 보류. 기무라 후속은 도감 RDLR에 없어 넣지 못함(누락 기술: 기무라(스윕 후 탑에서)). Lepri는 노기, Smith는 기(gi) 칼라/소매 그립."
+  },
+  {
+    "id": "rdlr-berimbolo-roll",
+    "position": "RDLR",
+    "name": "RDLR 베이비볼로/베림볼로 롤",
+    "start": "리버스 데라리바에서 상대가 서서 스윕 반응으로 체중이 앞으로 실릴 때",
+    "steps": [
+      { "tech": "RDLR-20", "role": "main", "note": "훅과 그립으로 상대 힙 방향을 흔들어 스윕 위협" },
+      { "tech": "RDLR-22", "role": "if_blocked", "trigger": "스윕이 막히고 상대가 베이스를 유지하면", "note": "훅과 그립으로 상대 밑을 롤하며 인버트해 베림볼로로 등 쪽 또는 탑 포지션 확보" }
+    ],
+    "end": "백 포지션 또는 스윕 후 탑",
+    "level": "고급",
+    "evidence": [
+      { "source": "Jitsu IQ - Reverse De La Riva", "url": "https://jitsuiq.com/positions/guard/reverse-de-la-riva.html", "supports": "RDLR의 대표 스윕으로 베이비볼로(훅과 그립으로 상대 밑을 롤)와 키스 오브 더 드래곤을 나열(트리거 설명 없음)", "basis": "page-read" },
+      { "source": "DLR 스윕 가이드 (검색 요약)", "url": "https://digitsu.com/t/de-la-riva-sweep", "supports": "스윕이 막히면 베림볼로/키스 오브 더 드래곤으로 연계하라는 요약(DLR 맥락, 본문 미열람)", "basis": "snippet" }
+    ],
+    "grade": "참고",
+    "issues": "RDLR에서의 트리거 기반 베림볼로 연계를 직접 다룬 강사 출처 못 찾음. page-read는 일반 개요 1곳. 트리거 문구는 DLR 맥락 요약에서 추정. 앱 노출 시 강한 주의. 도감 RDLR-22 '베림볼로'와 베이비볼로 구분 불명."
+  }
+]

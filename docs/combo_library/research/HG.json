@@ -1,0 +1,131 @@
+[
+  {
+    "id": "hg-underhook-oldschool-backtake",
+    "position": "HG",
+    "name": "언더훅 · 올드스쿨 스윕 · 백 테이크",
+    "start": "하프 가드 바텀에서 먼 쪽 언더훅을 얻고 상대가 체중을 앞으로 싣고 있을 때",
+    "steps": [
+      { "tech": "HG-20", "role": "main", "note": "머리를 상대 가슴에 붙이고 깊은 언더훅을 확보해 크로스페이스를 막음" },
+      { "tech": "HG-01", "role": "then", "note": "갇힌 다리의 발목을 잡아 당기며 언더훅으로 밀고 들어가 기울여 스윕" },
+      { "tech": "HG-03", "role": "if_blocked", "trigger": "상대가 한 손이나 다리를 넓게 짚어 스윕을 버티면", "note": "스윕을 막는 데 쏠린 틈에 언더훅과 힙 이스케이프로 돌아 백을 잡음" }
+    ],
+    "end": "탑 포지션(하프 가드 탑/사이드) 또는 백 컨트롤",
+    "level": "중급",
+    "evidence": [
+      { "source": "Evolve MMA - 5 best sweeps from half guard", "url": "https://evolve-mma.com/blog/the-5-best-sweeps-from-the-half-guard-in-bjj/", "supports": "올드스쿨 스윕을 언더훅+발목 그립으로 설명하고, 상대가 스윕을 막느라 과하게 쏠리면 같은 언더훅으로 돌아 백을 잡는 선택지로 이어간다고 안내", "basis": "page-read" },
+      { "source": "Digitsu - Dogfight Position (포지션 가이드)", "url": "https://digitsu.com/t/dogfight-position", "supports": "언더훅을 가진 하프가드 바텀에서 언더훅 스윕 또는 뒤로 돌아 백을 잡는 두 선택지가 같은 포지션에서 나온다고 정리", "basis": "page-read" },
+      { "source": "Jitsu IQ - Old School Sweep", "url": "https://jitsuiq.com/sweeps/old-school-sweep.html", "supports": "올드스쿨 스윕의 단계(깊은 언더훅, 발목 그립, 힙 이동)와 상대가 체중을 앞으로 실을 때 타이밍이 좋다는 점(백 테이크 연결은 언급 없음)", "basis": "page-read" }
+    ],
+    "grade": "검증됨",
+    "issues": "Digitsu 페이지는 올드스쿨이 아닌 도그파이트 기준이라 정확히 같은 시작점은 아님. 백 테이크 트리거('스윕을 막을 때')는 Evolve 설명 기반. HG-03은 도그파이트 백 테이크 ID로 스윕 타입이라 올드스쿨 후 백과 완전히 같은 동작인지 확인 필요."
+  },
+  {
+    "id": "hg-kneeshield-dogfight-back",
+    "position": "HG",
+    "name": "니 쉴드 · 언더훅 · 도그파이트 백 테이크",
+    "start": "니 쉴드 하프 가드 바텀에서 상대의 크로스페이스를 풀고 먼 쪽 언더훅을 얻었을 때",
+    "steps": [
+      { "tech": "HG-21", "role": "main", "note": "니 쉴드 프레임으로 상체 압박을 막고 크로스페이스를 처리" },
+      { "tech": "HG-20", "role": "then", "note": "먼 쪽 깊은 언더훅을 잡고 무릎으로 올라 도그파이트 자세를 만듦(갇힌 다리는 유지)" },
+      { "tech": "HG-03", "role": "then", "note": "언더훅과 머리 위치를 유지한 채 상대 옆으로 돌아 백을 잡음" }
+    ],
+    "end": "백 컨트롤 (또는 도그파이트에서 스윕/기무라/일렉트릭 체어로 분기)",
+    "level": "중급",
+    "evidence": [
+      { "source": "Digitsu - Dogfight Position", "url": "https://digitsu.com/t/dogfight-position", "supports": "니 쉴드 바텀에서 크로스페이스를 풀고 언더훅을 얻어 무릎으로 올라 도그파이트에 진입한 뒤 백으로 도는 흐름을 단계별로 제시", "basis": "page-read" },
+      { "source": "Evolve MMA - BJJ 101: Knee Shield Half Guard", "url": "https://evolve-mma.com/blog/bjj-101-knee-shield-half-guard/", "supports": "니 쉴드의 방어 목적과 크로스페이스 대응(검색 요약 기준, 본문 미열람)", "basis": "snippet" }
+    ],
+    "grade": "참고",
+    "issues": "page-read 출처 1곳(Digitsu, 포지션 사전형 페이지). 2차 출처로 강사 본인 도그파이트 영상/글 필요. 각 단계에 if_blocked 트리거를 가진 출처는 못 찾아 선형 시퀀스로 구성."
+  },
+  {
+    "id": "hg-kimura-trap-backtake",
+    "position": "HG",
+    "name": "하프 가드 기무라 트랩 · 스윙 백 테이크",
+    "start": "하프 가드 바텀에서 상대 손목을 잡고 기무라 그립이 만들어졌을 때",
+    "steps": [
+      { "tech": "HG-10", "role": "main", "note": "손목을 잡고 반대 팔을 넘겨 기무라 그립을 고정, 그립을 상대 배 쪽으로 밀어 공간을 만듦" },
+      { "tech": "HG-24", "role": "if_blocked", "trigger": "상대가 팔로 내 힙을 눌러 고정(클램프)해 몸을 빼지 못하면", "note": "버터플라이 훅을 무릎 아래에 넣고 스윕하듯 들어 분리 공간을 만든 뒤 스윙 동작 재시도" }
+    ],
+    "end": "백 컨트롤 (이후 시트벨트 RNC 또는 기무라 유지) / 기무라 서브미션",
+    "level": "고급",
+    "evidence": [
+      { "source": "Grapplearts (Stephan Kesting, 4단 블랙벨트)", "url": "https://www.grapplearts.com/taking-the-back-from-half-guard-using-the-kimura-grip/", "supports": "하프 가드에서 기무라 그립을 잡고 다리를 크게 스윙해 백을 잡는 단계와, 힙을 눌러 막는 상대에게 버터플라이 훅으로 공간을 만드는 해법을 설명", "basis": "page-read" },
+      { "source": "Digitsu - Kimura Trap", "url": "https://digitsu.com/t/kimura-trap", "supports": "기무라 트랩 그립을 유지한 채 상대 방어(벨트 잡기 등)에 따라 백 테이크나 스윕으로 전환한다고 정리, 하프 가드를 허브 포지션으로 포함", "basis": "page-read" }
+    ],
+    "grade": "참고",
+    "issues": "HG-10의 '기무라 -> 백 테이크' 연결은 두 출처로 확인되나, 'HG-24로 힙 클램프를 푸는' 갈래는 Grapplearts 1곳만 뒷받침해 참고로 둠. DB에 '하프가드 기무라 스윙 백 테이크' 기술이 없음 -> 추가 제안: 하프 가드 기무라 백 테이크(Swinging Kimura Back Take). 노기도 가능(그립 비의존) 하나 Digitsu 출처는 AI 코치형 사전 페이지라 신뢰도 중간."
+  },
+  {
+    "id": "hg-lockdown-electricchair",
+    "position": "HG",
+    "name": "록다운 휩다운 · 일렉트릭 체어",
+    "start": "하프 가드 바텀에서 록다운을 걸고 상대가 앞으로 체중을 싣고 있을 때",
+    "steps": [
+      { "tech": "HG-23", "role": "main", "note": "록다운으로 상대 갇힌 다리를 늘이고 휩다운으로 베이스를 무너뜨림" },
+      { "tech": "HG-04", "role": "if_blocked", "trigger": "상대가 자유로운 손으로 바닥을 짚어 록다운 스윕을 버티면", "note": "먼 쪽 다리를 어깨 쪽으로 먹여 일렉트릭 체어 스윕/자세로 전환" }
+    ],
+    "end": "탑 포지션(스윕) 또는 일렉트릭 체어 컨트롤",
+    "level": "고급",
+    "evidence": [
+      { "source": "Digitsu - Lockdown Sweep", "url": "https://digitsu.com/t/lockdown-sweep", "supports": "상대가 자유로운 손으로 짚으면 올드스쿨 또는 먼 쪽 다리를 먹이는 일렉트릭 체어로 전환하라고 안내하고 휩다운과 언더훅 메커니즘을 설명", "basis": "page-read" },
+      { "source": "bjjee.com (록다운 스윕 정리 글)", "url": "https://www.bjjee.com/?p=58217", "supports": "록다운 후 휩업/휩다운에서 일렉트릭 체어 서브미션 또는 스윕으로 이어지는 체인을 설명(검색 요약 기준)", "basis": "snippet" }
+    ],
+    "grade": "참고",
+    "issues": "같은 트리거에서 올드스쿨(HG-01)도 대안으로 제시됨(대안 나열 금지 규칙으로 일렉트릭 체어만 채택). 일렉트릭 체어는 무릎(ACL/MCL)과 사타구니 스트레스가 커 안전 주의 필요(한 출처가 지적). 두 번째 출처는 snippet. DB에 '록다운 스윕'이 따로 없어 HG-23(컨트롤)을 시작점으로 사용."
+  },
+  {
+    "id": "hg-deephalf-entry-waiter",
+    "position": "HG",
+    "name": "딥 하프 진입 · 웨이터 스윕",
+    "start": "하프 가드 바텀에서 상대에게 눌려 있을 때 몸 아래로 파고들 수 있는 상황",
+    "steps": [
+      { "tech": "HG-05", "role": "main", "note": "몸을 옆으로 틀어 상대 힙 아래로 들어가 먼 쪽 허벅지를 깊게 언더훅" },
+      { "tech": "HG-02", "role": "then", "note": "상대 다리를 어깨에 얹고 균형을 뒤로 무너뜨려 위로 올라오는 웨이터 스윕" }
+    ],
+    "end": "탑 포지션 (스윕) 또는 딥 하프에서 백 테이크",
+    "level": "고급",
+    "evidence": [
+      { "source": "Digitsu - Deep Half Entry", "url": "https://digitsu.com/t/deep-half-entry", "supports": "딥 하프 진입 방법과, 진입 후 상대를 흔들어 스윕하거나 뒤로 돌아 백을 잡는다고 설명", "basis": "page-read" },
+      { "source": "Digitsu - Deep Half Guard Back Take", "url": "https://digitsu.com/t/deep-half-guard-back-take", "supports": "딥 하프에서 먼 쪽 허벅지 언더훅을 유지한 채 상대 힙 뒤로 돌아 백으로 나오는 단계를 제시(웨이터 스윕과의 연결은 언급 없음)", "basis": "page-read" },
+      { "source": "검색 요약 (Upstream BJJ 코스 목차 / Atos 딥 하프 시리즈)", "url": "https://live.atosbjjondemand.com/deep-half-guard", "supports": "웨이터 스윕에서 트럭, 롤링 백 테이크로 이어지는 체인 존재(목차 수준)", "basis": "snippet" }
+    ],
+    "grade": "참고",
+    "issues": "웨이터 스윕 자체를 본문으로 확인한 출처가 없음(snippet). 딥 하프 백 테이크는 DB에 해당 ID가 없어 넣지 못함 -> 추가 제안: 딥 하프 백 테이크. HG-22(딥 하프 가드)는 전환 타입이라 마지막 단계에만 가능해 사용하지 않음."
+  },
+  {
+    "id": "hg-dogfight-electricchair",
+    "position": "HG",
+    "name": "도그파이트 · 일렉트릭 체어",
+    "start": "하프 가드 바텀에서 언더훅을 잡고 도그파이트 자세에서 상대 다리가 갇혀 있을 때",
+    "steps": [
+      { "tech": "HG-20", "role": "main", "note": "언더훅과 갇힌 다리를 유지하며 무릎으로 올라 몸을 붙임" },
+      { "tech": "HG-04", "role": "then", "note": "갇힌 다리를 퍼올려 일렉트릭 체어 자세로 전환해 스윕/압박" }
+    ],
+    "end": "스윕 후 탑 포지션 또는 일렉트릭 체어 서브미션 위협",
+    "level": "고급",
+    "evidence": [
+      { "source": "Digitsu - Dogfight Position", "url": "https://digitsu.com/t/dogfight-position", "supports": "도그파이트에서 선택할 공격으로 언더훅 스윕, 백, 갇힌 다리를 퍼올리는 일렉트릭 체어, 기무라를 나열", "basis": "page-read" }
+    ],
+    "grade": "참고",
+    "issues": "page-read 출처 1곳, 단순 선택지 나열이라 트리거(상대 반응) 없음. 2차 확인 필요. 일렉트릭 체어 안전 주의. 일렉트릭 체어 방어 시 토홀드(HG-16)/앵클락(HG-14)으로 가는 연결은 검색 요약에서도 직접 확인 못 함."
+  },
+  {
+    "id": "hg-guillotine-darce",
+    "position": "HG",
+    "name": "길로틴 · 다르스 연계 (하프 가드)",
+    "start": "하프 가드에서 상대가 언더훅을 잡으며 고개가 낮아질 때",
+    "steps": [
+      { "tech": "HG-11", "role": "main", "note": "상대가 언더훅을 하거나 일어나려 할 때 길로틴 그립을 먼저 잡음" },
+      { "tech": "HG-13", "role": "if_blocked", "trigger": "길로틴이 빠지며 상대 팔이 노출되면", "note": "팔을 감싸 다르스 그립으로 전환" }
+    ],
+    "end": "초크 서브미션",
+    "level": "고급",
+    "evidence": [
+      { "source": "Digitsu - Guillotine To Darce (Edwin Najmi)", "url": "https://digitsu.com/v/guillotine-to-darce-edwin-najmi", "supports": "하프 가드에서 길로틴 그립 후 다르스로 전환하는 단계 설명(단, 설명은 하프 가드를 '탈출하며' 다르스를 거는 탑 쪽 시점으로 보임)", "basis": "page-read" },
+      { "source": "Grapplearts - D'Arce vs Half Guard", "url": "https://www.grapplearts.com/step-by-step-darce-choke-vs-the-half-guard/", "supports": "상대 하프 가드 안에서 상대가 언더훅을 하는 상황의 다르스(탑 시점). 길로틴 연계는 언급 없음", "basis": "page-read" }
+    ],
+    "grade": "초안",
+    "issues": "두 출처 모두 탑(상대 하프 가드를 상대하는 쪽) 시점으로 보여 HG(바텀) 포지션 콤보로는 근거가 맞지 않음. 바텀 하프 가드에서의 길로틴은 별도 출처(예: Capizzi 스매시 길로틴)가 있으나 본문 미열람. 앱 노출 금지, 다음 라운드에서 바텀 시점 출처 재조사. DB의 HG-13 '다르스 초크(하프 가드)'가 바텀/탑 어느 쪽인지 확인 필요."
+  }
+]

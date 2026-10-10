@@ -1,0 +1,160 @@
+[
+  {
+    "id": "ls-sweep-omoplata",
+    "position": "LS",
+    "name": "라소 스윕 · 오모플라타 연계 (상대가 버티면)",
+    "start": "라소 가드에서 상대 소매를 잡고 라소 다리가 어깨 뒤까지 깊게 감긴 상태",
+    "steps": [
+      { "tech": "LS-01", "role": "main", "note": "라소 쪽 소매를 당기면서 라소 다리를 위로 뻗어 상대를 라소 반대편으로 기울여 스윕. 반대 손은 상대 먼 쪽 칼라/소매를 잡아 짚기를 막는다" },
+      { "tech": "LS-11", "role": "if_blocked", "trigger": "상대가 상체를 세워 버티거나 먼 쪽 다리를 넓게 벌려 스윕이 막히면", "note": "라소를 풀고 다리를 어깨 위로 넘겨 가둔 팔 쪽 오모플라타로 전환(스윕이 안 돼도 회전 동작 자체가 상대를 넘기는 경우가 있음)" }
+    ],
+    "end": "탑 포지션(사이드 컨트롤/마운트) 또는 오모플라타 서브미션",
+    "level": "중급",
+    "evidence": [
+      {
+        "source": "Digitsu 기술 사전 - Lasso Sweep",
+        "url": "https://digitsu.com/t/lasso-sweep",
+        "supports": "라소 스윕에서 상대가 먼 쪽 다리를 넓게 벌려 버티면 라소를 풀고 노출된 팔/목을 노려 오모플라타 또는 트라이앵글로 전환하라고 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Evolve MMA - Sweeps From The Lasso Guard",
+        "url": "https://evolve-mma.com/blog/sweeps-from-the-lasso-guard-a-complete-beginners-guide/",
+        "supports": "라소 스윕 시도에 상대가 상체를 세워 버티면 다리를 어깨에 걸어 일어나 앉으며 오모플라타로 이어가고, 서브미션이 안 되더라도 그 동작이 스윕이 된다고 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Digitsu - All About the Lasso Guard",
+        "url": "https://app.digitsu.com/a/all-about-the-lasso-guard",
+        "supports": "라소에서 같은 그립으로 트라이앵글/오모플라타가 열리고 라소 스윕이 기본 공격이라고 소개(트리거 상세는 없음)",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "검증됨",
+    "issues": "기(gi) 전용 가드(소매 그립 의존). 도감 LS-01은 '기본 라소 스윕(팬츠 그립)'인데 출처 스윕은 소매+상대 먼 쪽 칼라/소매 그립 기준이라 그립 디테일이 다를 수 있음. Digitsu 기술 사전 페이지는 요약형 레퍼런스 문서이며 강사 개인 영상 설명은 아님(Evolve 글과는 서로 독립)."
+  },
+  {
+    "id": "ls-triangle-omoplata",
+    "position": "LS",
+    "name": "라소 트라이앵글 · 오모플라타 연계",
+    "start": "라소 가드에서 상대를 앞으로 당겨 라소 다리를 목 쪽으로 넘길 수 있을 때",
+    "steps": [
+      { "tech": "LS-10", "role": "main", "note": "라소 다리를 상대 등 위로 뻗어 눌러 넘기고 트라이앵글 자세를 만든다" },
+      { "tech": "LS-11", "role": "if_blocked", "trigger": "상대가 트라이앵글을 막으려고 손을 등 뒤로 숨기면", "note": "한 손으로 상대 목을 밀어내며 다리를 어깨 위로 넘겨 오모플라타로 전환" }
+    ],
+    "end": "오모플라타 서브미션 또는 스윕",
+    "level": "고급",
+    "evidence": [
+      {
+        "source": "Danny Stolfi (Digitsu, Open Guard Fundamentals) - Gu Triangle Omoplata Lasso",
+        "url": "https://digitsu.com/v/gu-triangle-omoplata-lasso-danny-stolfi",
+        "supports": "라소 다리를 앞으로 보내 트라이앵글 자세를 만들고, 상대가 손을 등 뒤에 숨겨 막으면 오모플라타로 바꾸는 방법 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Grapplearts (Stephan Kesting) - Lasso Spider Guard to Omoplata",
+        "url": "https://www.grapplearts.com/lasso-spider-guard-to-omoplata/",
+        "supports": "같은 라소 후크에서 회전 각도에 따라 오모플라타 또는 트라이앵글로 이어지며 두 공격이 서로 짝을 이룬다고 설명(막힘 트리거는 다루지 않음)",
+        "basis": "page-read"
+      },
+      {
+        "source": "Digitsu - All About the Lasso Guard",
+        "url": "https://app.digitsu.com/a/all-about-the-lasso-guard",
+        "supports": "라소의 대표 서브미션으로 트라이앵글과 오모플라타를 같은 그립에서 연결해 소개(트리거 없음)",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "참고",
+    "issues": "'손을 등 뒤에 숨기면 오모플라타'라는 방향성 있는 트리거는 Stolfi 한 곳에서만 확인됨. 나머지 두 곳은 두 기술이 한 짝이라는 일반 설명이라 '검증됨'으로 올리지 않음. 기(gi) 전용. Stolfi 페이지는 영상 설명 요약문이며 영상 자체는 유료라 열람하지 못함."
+  },
+  {
+    "id": "ls-sweep-standing-slx",
+    "position": "LS",
+    "name": "라소 스윕 · 일어서는 상대에게 싱글 레그 X 전환",
+    "start": "라소 가드에서 상대가 일어서서 라소를 풀거나 뒤로 물러나려 할 때",
+    "steps": [
+      { "tech": "LS-01", "role": "main", "note": "상대가 일어서며 체중이 앞으로 실릴 때 소매를 당기며 라소 스윕 시도" },
+      { "tech": "LS-22", "role": "if_blocked", "trigger": "상대가 일어서서 균형을 잡고 스윕이 안 걸리면", "note": "남은 발로 상대 먼 쪽 다리를 컨트롤하고 아래로 들어가 싱글 레그 X(또는 X가드) 컨트롤로 전환 후 다음 스윕/레그락 연결" }
+    ],
+    "end": "싱글 레그 X 가드 (다른 포지션, 이후 SLX 계열 스윕/레그락으로 연결)",
+    "level": "고급",
+    "evidence": [
+      {
+        "source": "Digitsu - All About the Lasso Guard",
+        "url": "https://app.digitsu.com/a/all-about-the-lasso-guard",
+        "supports": "상대가 일어나 라소를 깨려 하면 아래로 미끄러져 들어가 X가드를 만들 수 있고, 라소 스윕 및 라소→싱글 레그 X 스윕을 드릴로 연습하라고 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Jitsu IQ - Lasso Guard",
+        "url": "https://jitsuiq.com/positions/guard/lasso-guard.html",
+        "supports": "라소에서 남은 발로 상대 먼 쪽 다리를 컨트롤해 X가드 또는 싱글 레그 X로 이어갈 수 있다고 정리(트리거 설명은 없음)",
+        "basis": "page-read"
+      },
+      {
+        "source": "Digitsu 기술 사전 - Lasso Guard",
+        "url": "https://digitsu.com/t/lasso-guard",
+        "supports": "상대가 뒤로 물러나거나 그립을 떼려 하면 즉시 힙 각도를 다시 잡고 상대 후퇴에 맞춰 스윕을 위협하라고 설명(SLX 언급은 없음)",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "참고",
+    "issues": "'일어서는 상대 → X가드/SLX' 연결 트리거는 Digitsu 아티클 한 곳에서만 확인(두 번째 출처는 전환 가능성만 언급). 출처는 X가드와 싱글 레그 X를 구분하지 않고 섞어 쓰므로 LS-22(라소→싱글 레그 X)와 정확히 같은지 확인 필요. 기(gi) 의존. 마지막 단계가 포지션을 떠나는 전환이라 마지막에만 배치."
+  },
+  {
+    "id": "ls-sweep-dlr",
+    "position": "LS",
+    "name": "라소 스윕 · 데라히바 전환 (그립을 떼며 물러나는 상대)",
+    "start": "라소 가드에서 상대가 한 걸음 물러나며 소매 그립을 떼려 할 때",
+    "steps": [
+      { "tech": "LS-01", "role": "main", "note": "후퇴하는 상대의 움직임에 맞춰 힙 각도를 다시 잡고 라소 스윕 위협" },
+      { "tech": "LS-23", "role": "if_blocked", "trigger": "상대가 물러나 라소가 풀리거나 스윕이 안 걸리면", "note": "라소를 풀고 발을 상대 먼 쪽 다리 뒤로 넣어 데라히바 후크로 컨트롤 유지" }
+    ],
+    "end": "데라히바 가드 (다른 포지션)",
+    "level": "중급",
+    "evidence": [
+      {
+        "source": "Jitsu IQ - Lasso Guard",
+        "url": "https://jitsuiq.com/positions/guard/lasso-guard.html",
+        "supports": "라소를 풀고 상대 먼 쪽 다리 뒤로 발을 넣어 데라히바 컨트롤을 만드는 전환 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Digitsu 기술 사전 - Lasso Guard",
+        "url": "https://digitsu.com/t/lasso-guard",
+        "supports": "상대가 물러나거나 그립을 떼려 할 때 힙 각도를 다시 잡고 스윕을 위협하라는 일반 원칙 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Digitsu - All About the Lasso Guard",
+        "url": "https://app.digitsu.com/a/all-about-the-lasso-guard",
+        "supports": "라소에서 다리 위치만 바꿔 데라히바 후크로 이어가는 전환을 소개",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "참고",
+    "issues": "라소→데라히바 전환 자체는 두 곳에서 확인되지만 '라소 스윕이 막히면 DLR로' 라는 순서/트리거는 출처가 직접 말하지 않아 위 트리거는 일반 원칙에서 정리한 추론. 원 출처는 모두 요약형 레퍼런스 문서. 기(gi) 의존. 전환은 마지막 단계로만 배치."
+  },
+  {
+    "id": "ls-triangle-armbar",
+    "position": "LS",
+    "name": "라소 트라이앵글 · 암바 연계",
+    "start": "라소 가드에서 트라이앵글을 시도했는데 상대가 자세를 세우거나 고개를 돌릴 때",
+    "steps": [
+      { "tech": "LS-10", "role": "main", "note": "라소 다리를 넘겨 트라이앵글 자세를 만든다" },
+      { "tech": "LS-12", "role": "if_blocked", "trigger": "상대가 상체를 세우거나 고개를 돌려 초크가 막히면", "note": "고립된 팔을 잡고 골반을 돌려 암바로 전환" }
+    ],
+    "end": "암바 서브미션",
+    "level": "중급",
+    "evidence": [
+      {
+        "source": "Jitsu IQ - Lasso Guard",
+        "url": "https://jitsuiq.com/positions/guard/lasso-guard.html",
+        "supports": "라소에서 상대 자세를 라소 다리로 제어하고 먼 쪽 소매를 놓으며 암바로 피벗하는 방법 소개(트라이앵글과의 연결은 없음)",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "초안",
+    "issues": "'라소 트라이앵글이 막히면 암바' 연결은 라소 맥락에서 직접 다룬 출처를 찾지 못함. 위 Jitsu IQ는 라소 암바의 존재만 확인. 트라이앵글→암바는 클로즈드 가드 맥락에서 일반적인 연계(검색 요약에서만 확인, 본문 미열람). 앱 노출 금지, 다음 라운드 재조사."
+  }
+]

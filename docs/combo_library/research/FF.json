@@ -1,0 +1,140 @@
+[
+  {
+    "id": "ff-heelhook-stall-sweep",
+    "position": "FF",
+    "name": "50/50 힐훅 정체 시 엘리베이트 스윕",
+    "start": "50/50에서 힐 컨트롤을 잡았으나 상대가 힐을 숨기거나 버텨 공격이 정체될 때",
+    "steps": [
+      { "tech": "FF-20", "role": "main", "note": "무릎을 모아 상대 다리를 가두고 발 컨트롤과 힙 높이를 확보" },
+      { "tech": "FF-12", "role": "then", "note": "힐훅 그립과 무릎 라인을 유지하며 마무리 시도" },
+      { "tech": "FF-01", "role": "if_blocked", "trigger": "힐훅이 막혀 정체되면", "note": "엔탱글먼트를 이용해 힙으로 상대 다리를 들어 올리며 앉아서 스윕" }
+    ],
+    "end": "탑 포지션",
+    "level": "중급",
+    "evidence": [
+      {
+        "source": "Digitsu - 50-50 Guard (기술 설명)",
+        "url": "https://digitsu.com/t/50-50-guard",
+        "supports": "공격이 정체되면 엔탱글먼트로 상대를 불안정하게 만들어 다리를 들어 올려 스윕하거나 백으로 전환하라고 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Jitsu IQ - Fifty-Fifty Guard",
+        "url": "https://jitsuiq.com/positions/guard/fifty-fifty-guard.html",
+        "supports": "50/50의 공격 옵션으로 레그락, 스윕, 백 테이크를 병렬로 나열하고 스윕은 다리와 힙 제어로 회전/들어 올리는 방식이라고 설명(정체 조건 명시는 없음)",
+        "basis": "page-read"
+      },
+      {
+        "source": "Digitsu - Backside 50/50 Heel Hook (Jon Calestine)",
+        "url": "https://digitsu.com/v/backside-50-50-heel-hook-jon-calestine",
+        "supports": "백사이드 50/50 힐훅 세부(발 제어, 상대 백스텝 시 발을 배에 두는 방법)를 설명하여 FF-12 단계 근거로 사용",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "참고",
+    "issues": "'정체되면 스윕' 연계는 Digitsu 한 곳이 명시하고 Jitsu IQ는 옵션 나열 수준이라 검증됨 보류. FF-12는 백사이드 50/50 힐훅이고 FF-01은 일반 50/50 스윕이라 포지션 변형이 다름(상대 백스텝 시 일반 50/50으로 전환됨). 힐훅은 도복 IBJJF에서 불가, 스윕은 도복 대회에서 점수 기반으로 유효."
+  },
+  {
+    "id": "ff-kneebar-heelhook-dilemma",
+    "position": "FF",
+    "name": "50/50 니바 · 힐훅 딜레마",
+    "start": "50/50에서 상대 다리가 펴져 있고 무릎 라인이 잡힌 상태",
+    "steps": [
+      { "tech": "FF-20", "role": "main", "note": "무릎을 모아 상대 무릎 라인을 확보하고 발 컨트롤" },
+      { "tech": "FF-15", "role": "then", "note": "다리를 힙에 걸치고 힙을 펴 니바 압박" },
+      { "tech": "FF-12", "role": "if_blocked", "trigger": "상대가 니바 방어로 무릎을 굽히거나 발을 빼려 하면", "note": "드러난 힐을 잡아 힐훅으로 전환" }
+    ],
+    "end": "힐훅 서브미션 (상대가 다시 다리를 펴면 니바로 복귀)",
+    "level": "고급",
+    "evidence": [
+      {
+        "source": "Digitsu - Heel Hook Dilemma (기술 설명)",
+        "url": "https://digitsu.com/t/heel-hook-dilemma",
+        "supports": "니바 방어로 발을 빼면 힐이 노출되어 힐훅 진입이 가능하고, 힐훅 방어로 다리를 펴면 니바로 돌아오는 구조를 설명(50/50 한정 서술은 아님)",
+        "basis": "page-read"
+      },
+      {
+        "source": "Digitsu - 50-50 Guard (기술 설명)",
+        "url": "https://digitsu.com/t/50-50-guard",
+        "supports": "50/50의 공격 옵션에 니바와 힐훅 등이 포함됨을 확인(순서 연계는 언급 없음)",
+        "basis": "page-read"
+      },
+      {
+        "source": "Digitsu - Jon Calestine K Guard Kodex 코스 목록",
+        "url": "https://digitsu.com/v/50-50-attacks-finish-backside-5050-off-back-step-jon-calestine",
+        "supports": "같은 코스에 '50/50 Attacks: Kneebar'와 'Knee Bar to Backside' 레슨이 있음을 제목으로만 확인(내용 미열람)",
+        "basis": "snippet"
+      }
+    ],
+    "grade": "참고",
+    "issues": "딜레마 설명이 일반 니바 컨트롤 기준이며 50/50 맥락 직접 서술은 아님. 마지막 출처는 레슨 제목만 확인. 니바/힐훅 모두 IBJJF 도복·하위 벨트 룰 제한 있음(규정 확인 필요)."
+  },
+  {
+    "id": "ff-anklelock-backtake",
+    "position": "FF",
+    "name": "50/50 발목 공격 정체 시 백 테이크",
+    "start": "50/50에서 스트레이트 앵클락을 시도했으나 상대가 발을 빼거나 버틸 때",
+    "steps": [
+      { "tech": "FF-10", "role": "main", "note": "발목을 갈비뼈에 고정하고 힙을 펴 앵클락 시도" },
+      { "tech": "FF-23", "role": "if_blocked", "trigger": "앵클락이 정체되고 상대 힙이 돌아가면", "note": "다리 그립을 유지한 채 상대 밑으로 회전해 백 노출 후 훅 삽입" }
+    ],
+    "end": "백 포지션",
+    "level": "고급",
+    "evidence": [
+      {
+        "source": "Digitsu - 50-50 Guard (기술 설명)",
+        "url": "https://digitsu.com/t/50-50-guard",
+        "supports": "공격이 정체되면 다리를 들어 올려 스윕하거나 백 컨트롤로 전환하라고 설명하고, 옵션에 스트레이트 앵클락이 포함됨",
+        "basis": "page-read"
+      },
+      {
+        "source": "Jitsu IQ - Fifty-Fifty Guard",
+        "url": "https://jitsuiq.com/positions/guard/fifty-fifty-guard.html",
+        "supports": "다리 그립을 유지하고 아래로 회전해 상대의 백을 노출시키는 백 테이크 전환을 소개하며 앵클락을 대표 서브미션으로 나열",
+        "basis": "page-read"
+      },
+      {
+        "source": "BJJ More - Modern 50/50 Fundamentals Guard (Nick Salles / Danny Maira) 리뷰",
+        "url": "https://bjjmore.com/nick-salles-danny-maira-5050-guard/",
+        "supports": "상대 체중 분포를 읽고 백 테이크, 볼로, 발목 공격 중 선택한다는 코스 소개(리뷰 요약, 도복 중심)",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "참고",
+    "issues": "트리거(발목 공격이 정체되면)는 출처의 일반 서술을 정리한 것으로 앵클락->백 테이크 순서를 직접 보여준 출처는 못 찾음. 도복에서는 스트레이트 앵클락만 허용되는 규정이 많고 백 테이크는 룰과 무관. 코스 리뷰는 도복 중심."
+  },
+  {
+    "id": "ff-sweep-backtake-weight",
+    "position": "FF",
+    "name": "50/50 스윕 · 상대 체중에 따른 백 테이크 선택",
+    "start": "50/50 바텀에서 상대 체중이 뒤나 앞으로 치우쳐 반응이 갈릴 때(도복 위주)",
+    "steps": [
+      { "tech": "FF-01", "role": "main", "note": "다리를 걸친 채 앉으며 힙을 돌려 상대 균형을 무너뜨림" },
+      { "tech": "FF-23", "role": "if_blocked", "trigger": "상대가 체중을 실어 스윕을 막고 몸이 돌아가면", "note": "상대 다리 컨트롤을 유지한 채 롤링하여 백 테이크" }
+    ],
+    "end": "백 포지션 또는 탑 포지션",
+    "level": "중급",
+    "evidence": [
+      {
+        "source": "BJJ More - Modern 50/50 Fundamentals Guard 리뷰",
+        "url": "https://bjjmore.com/nick-salles-danny-maira-5050-guard/",
+        "supports": "상대 체중 분포에 따라 스윕, 볼로, 백 테이크를 고르는 체계라고 소개(리뷰 요약)",
+        "basis": "page-read"
+      },
+      {
+        "source": "BJJ More - The Modern 50/50 Guard (Patrick Gaudio) 리뷰",
+        "url": "https://bjjmore.com/patrick-gaudio-modern-50-50-guard/",
+        "supports": "빠른 백 테이크와 스윕을 레그 드래그/토홀드와 섞는 도복 50/50 코스로 소개(리뷰 요약)",
+        "basis": "page-read"
+      },
+      {
+        "source": "Jitsu IQ - Fifty-Fifty Guard",
+        "url": "https://jitsuiq.com/positions/guard/fifty-fifty-guard.html",
+        "supports": "스윕 종류와 백 테이크 전환 방법을 각각 나열",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "참고",
+    "issues": "리뷰 글은 강사 코스 소개이며 동작 세부는 확인하지 못함. 트리거는 '체중을 읽고 선택'이라는 소개를 구체화한 것으로 실제 코스의 판단 기준과 다를 수 있음. 도복 위주 근거."
+  }
+]

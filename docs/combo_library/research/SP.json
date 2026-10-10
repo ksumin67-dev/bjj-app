@@ -1,0 +1,173 @@
+[
+  {
+    "id": "sp-sweep-triangle-armbar",
+    "position": "SP",
+    "name": "스파이더 스윕 · 트라이앵글 · 암바 연계",
+    "start": "스파이더 가드에서 양 소매 그립과 이중 이두 발 컨트롤로 상대 팔을 늘려 놓은 상태",
+    "steps": [
+      { "tech": "SP-04", "role": "main", "note": "발로 이두를 밀어 소매를 당기며 기본 스파이더 스윕 시도" },
+      { "tech": "SP-10", "role": "if_blocked", "trigger": "상대가 한쪽 발을 짚어 스윕을 막으면", "note": "한쪽 소매를 깊게 당기고 반대 발로 이두를 밀어 팔 하나만 안으로 넣은 뒤 다리를 목 위로 넘겨 트라이앵글" },
+      { "tech": "SP-12", "role": "if_blocked", "trigger": "상대가 상체를 세워 트라이앵글을 버티면", "note": "소매 그립을 유지한 채 고립된 팔을 암바로 전환" }
+    ],
+    "end": "트라이앵글 또는 암바 서브미션",
+    "level": "중급",
+    "evidence": [
+      {
+        "source": "Evolve (Evolve Vacation 블로그) - 4 BJJ Submissions From Spider Guard",
+        "url": "https://evolve-vacation.com/blog/4-bjj-submissions-from-spider-guard/",
+        "supports": "기본 스파이더 스윕 후 상대가 발을 짚어 막으면 트라이앵글로 가고, 스파이더 선수들은 트라이앵글을 먼저 시도한 뒤 보통 암바로 이어간다고 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Digitsu 기술 사전 - Triangle From Spider Guard",
+        "url": "https://digitsu.com/t/triangle-from-spider-guard",
+        "supports": "스파이더 트라이앵글에서 상대가 상체를 세워 버티면 소매를 이용해 다시 끌어내리거나 고립된 팔로 암바 전환을 하라고 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Graciemag - Gabriel Arges (Gracie Barra 블랙벨트) spider guard sweep to armbar",
+        "url": "https://www.graciemag.com/irvine-open-standout-gabriel-arges-teaches-a-spider-guard-sweep-that-leads-to-an-armbar/",
+        "supports": "스파이더 스윕 흐름에서 상대를 눕히고 발 공격 위협으로 앉게 만든 뒤 팔을 당겨 암바를 거는 연계(트라이앵글 단계는 없음)",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "검증됨",
+    "issues": "기(gi) 전용(소매 그립 의존). 첫 번째 출처가 전체 3단계를 가장 직접 다루고, 두 번째/세 번째는 각각 트라이앵글→암바, 스윕→암바 일부 구간을 지지. 도감 SP-04는 '서 있는 상대 대상 스파이더 스윕'인데 출처 스윕은 일반 기본 스파이더 스윕이므로 대응 확인 필요. Evolve 글은 체육관 블로그(강사 직접 글 아님)."
+  },
+  {
+    "id": "sp-sweep-armbar",
+    "position": "SP",
+    "name": "스파이더 스윕 페이크 · 암바",
+    "start": "스파이더 가드에서 소매와 이두 발 컨트롤로 상대를 앞으로 당긴 상태",
+    "steps": [
+      { "tech": "SP-04", "role": "main", "note": "소매 그립과 이두 발 컨트롤을 유지하고 바지 그립을 더해 상대를 아래로 끌어내리며 스윕 위협" },
+      { "tech": "SP-12", "role": "if_blocked", "trigger": "상대가 스윕을 막으려 일어나 앉거나 몸을 세우면", "note": "그 순간 소매를 당겨 팔을 고립하고 다리를 머리 위로 넘겨 암바" }
+    ],
+    "end": "암바 서브미션",
+    "level": "중급",
+    "evidence": [
+      {
+        "source": "Graciemag - Gabriel Arges (Gracie Barra 블랙벨트)",
+        "url": "https://www.graciemag.com/irvine-open-standout-gabriel-arges-teaches-a-spider-guard-sweep-that-leads-to-an-armbar/",
+        "supports": "스파이더 스윕 위협으로 상대를 눕힌 뒤 발 공격 페이크로 상대가 앉게 만들고 그때 팔을 당겨 암바를 거는 방법",
+        "basis": "page-read"
+      },
+      {
+        "source": "Evolve (Evolve Vacation 블로그) - 4 BJJ Submissions From Spider Guard",
+        "url": "https://evolve-vacation.com/blog/4-bjj-submissions-from-spider-guard/",
+        "supports": "스파이더 암바가 스윕 시도에서 이어질 수 있고 스윕이 막히면 서브미션 연계로 넘어간다고 설명",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "검증됨",
+    "issues": "기(gi) 전용. Arges 글은 짧은 요약문이고 원 영상은 포르투갈어라 세부 그립 확인은 영상 필요. 앞의 sp-sweep-triangle-armbar와 암바 갈래가 겹치므로 앱에서는 두 콤보를 동시에 같은 상황으로 노출하지 않는 편이 좋음."
+  },
+  {
+    "id": "sp-sleeve-lasso-omoplata",
+    "position": "SP",
+    "name": "스파이더 컨트롤 · 라소 오모플라타",
+    "start": "스파이더 가드에서 한쪽은 스파이더, 다른 한쪽은 라소 훅으로 상대 한쪽 팔을 깊게 제어한 상태",
+    "steps": [
+      { "tech": "SP-20", "role": "main", "note": "양 소매를 당기며 이두 발 압박으로 상대 팔꿈치를 몸에서 떼어 놓고, 목표 팔 쪽은 라소 또는 높은 이두 컨트롤로 깊게 만든다" },
+      { "tech": "SP-11", "role": "then", "note": "힙을 빼 각도를 만들고 라소 다리를 어깨 위로 넘긴 뒤 반대 발은 이두에서 떼어 몸을 회전, 곧바로 일어나 앉아 상대 허리/벨트를 잡아 앞구르기를 막고 마무리" }
+    ],
+    "end": "오모플라타 서브미션",
+    "level": "고급",
+    "evidence": [
+      {
+        "source": "Grapplearts (Stephan Kesting, 4단 블랙벨트) - Lasso Spider Guard to Omoplata",
+        "url": "https://www.grapplearts.com/lasso-spider-guard-to-omoplata/",
+        "supports": "스파이더에서 라소 훅으로 한쪽 팔을 제어한 뒤 회전해 오모플라타로 들어가는 방법과 마무리 요령 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Gracie Barra - Prof. Draculino omoplata from spider guard",
+        "url": "https://graciebarra.com/gb-learning/offensive-game-friday-omaplata-from-the-spider-guard",
+        "supports": "소매 그립과 다리 밀기로 상대를 끌어당겨 표적 팔 위로 다리를 넘기고 트라이앵글식으로 고정하는 순서 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Digitsu 기술 사전 - Spider Guard Omoplata",
+        "url": "https://digitsu.com/t/spider-guard-omoplata",
+        "supports": "라소/높은 이두 그립이 팔을 못 빼게 하고, 반대 발을 이두에서 떼며 회전한 뒤 즉시 앉아 앞구르기를 막는 핵심 요점",
+        "basis": "page-read"
+      },
+      {
+        "source": "Evolve (Evolve Vacation 블로그) - 4 BJJ Submissions From Spider Guard",
+        "url": "https://evolve-vacation.com/blog/4-bjj-submissions-from-spider-guard/",
+        "supports": "한쪽 스파이더/한쪽 라소로 변형한 뒤 팔꿈치를 벌리고 라소 다리를 넘겨 견갑골을 겨냥하는 오모플라타 진입 설명",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "검증됨",
+    "issues": "기(gi) 전용. 이 콤보는 '컨트롤에서 서브미션으로 이어지는 정상 진입 경로'이며 'A가 막히면 B' 형태의 트리거는 없어 다른 콤보와 성격이 다름. 도감 SP-21(스파이더→라소 전환)은 사용하지 않았고 라소 훅 진입은 note에만 포함. 4곳 모두 본문 열람(Digitsu 페이지는 요약형 레퍼런스)."
+  },
+  {
+    "id": "sp-sweep-x-guard",
+    "position": "SP",
+    "name": "스파이더 스윕 · 일어서는 패서에게 X가드 계열 전환",
+    "start": "스파이더 가드에서 상대가 무릎 꿇은 자세로 패스를 노릴 때",
+    "steps": [
+      { "tech": "SP-04", "role": "main", "note": "소매 그립과 이두 발로 균형을 무너뜨려 가장 기본적인 스파이더 스윕 시도" },
+      { "tech": "SP-22", "role": "if_blocked", "trigger": "상대가 스윕을 피하려고 일어서면", "note": "기존 소매 그립을 유지한 채 남은 다리를 상대 다리 사이로 넣어 X계열 가드로 전환하고 스파이더/X 하이브리드로 스윕" }
+    ],
+    "end": "X가드 계열 스윕 (다른 포지션)",
+    "level": "고급",
+    "evidence": [
+      {
+        "source": "Gracie Barra - Spider Guard Sweeps with Prof. Marcio Feitosa",
+        "url": "https://graciebarra.com/gb-news/gb-technique-spider-guard-sweeps-with-prof-marcio-feitosa",
+        "supports": "기본 스파이더 스윕에 패서가 일어서면 소매 그립을 유지한 채 싱글 레그 X로 전환하고 스파이더/X 하이브리드로 스윕하는 시퀀스",
+        "basis": "page-read"
+      },
+      {
+        "source": "Erin Herle (Digitsu 코스) - X-Guard Back Roll",
+        "url": "https://digitsu.com/v/x-guard-back-roll-erin-herle",
+        "supports": "스파이더에서 한쪽 발은 이두에 두고 다른 발을 바닥에 놓은 뒤 상대를 앞으로 오게 하여 무릎 뒤 후크로 X가드를 만드는 전환 과정(스윕이 막히는 트리거는 없음)",
+        "basis": "page-read"
+      },
+      {
+        "source": "Jitsu IQ - Tripod Sweep",
+        "url": "https://jitsuiq.com/sweeps/tripod-sweep.html",
+        "supports": "스윕에 상대가 뒤로 물러나 반응하면 싱글 레그 X로 이어가라고 설명(스파이더 한정은 아님)",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "참고",
+    "issues": "Feitosa 설명은 싱글 레그 X이고 도감 SP-22는 'X가드 전환'이라 정확히 같은 기술인지 불확실. 막히는 트리거는 Feitosa 한 곳에서만 직접 확인됨. 기(gi) 의존(소매 그립). 마지막 단계는 포지션을 떠나는 전환이라 마지막에만 배치."
+  },
+  {
+    "id": "sp-tripod-x",
+    "position": "SP",
+    "name": "트라이포드 스윕 · 물러나는 상대에게 싱글 레그 X 전환",
+    "start": "스파이더 가드에서 한 발은 이두, 다른 발은 상대 발목 뒤에 걸어 서 있는 상대를 흔들 때",
+    "steps": [
+      { "tech": "SP-03", "role": "main", "note": "이두의 발로 밀고 발목 뒤 발로 다리를 걷어 트라이포드 효과로 균형을 무너뜨림" },
+      { "tech": "SP-22", "role": "if_blocked", "trigger": "상대가 한 발 뒤로 물러나 스윕을 피하면", "note": "물러난 다리를 따라 싱글 레그 X/X계열 컨트롤로 전환해 공격 이어가기" }
+    ],
+    "end": "싱글 레그 X 또는 X가드 계열 (다른 포지션)",
+    "level": "중급",
+    "evidence": [
+      {
+        "source": "Jitsu IQ - Tripod Sweep",
+        "url": "https://jitsuiq.com/sweeps/tripod-sweep.html",
+        "supports": "스파이더 변형 트라이포드에서 상대가 스윕에 물러나 반응하면 싱글 레그 X로 전환해 공격을 이어간다고 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Jitsu IQ - Sickle Sweep",
+        "url": "https://jitsuiq.com/sweeps/sickle-sweep.html",
+        "supports": "트라이포드가 막혀 상대가 베이스를 조정하면 시클 스윕으로 이어가고, 시클이 막혀 상대가 짚으면 X가드로 전환하라는 연쇄 설명",
+        "basis": "page-read"
+      },
+      {
+        "source": "Gracie Barra - Spider Guard Sweeps with Prof. Marcio Feitosa",
+        "url": "https://graciebarra.com/gb-news/gb-technique-spider-guard-sweeps-with-prof-marcio-feitosa",
+        "supports": "스파이더 스윕에서 패서가 일어서면 싱글 레그 X로, 체중을 뒤로 빼면 시클 스윕 변형으로 반응에 맞춰 연결한다는 시연",
+        "basis": "page-read"
+      }
+    ],
+    "grade": "참고",
+    "issues": "두 Jitsu IQ 페이지는 같은 사이트의 요약형 문서라 서로 완전 독립 출처로 보기 어렵고, Feitosa 글은 트라이포드가 아닌 기본 스파이더 스윕 기준. 출처들이 공통으로 말하는 '시클 스윕'은 도감에 없어 단계에 넣지 못함(제안: 시클 스윕 추가). SP-22(X가드 전환)와 SLX 대응 불확실. 기(gi) 의존 가능(노기에서는 발목/손목 그립으로 변형)."
+  }
+]
