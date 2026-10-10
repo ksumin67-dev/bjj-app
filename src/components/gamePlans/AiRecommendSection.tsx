@@ -154,8 +154,8 @@ export function AiRecommendSection({ hasPlans = false }: { hasPlans?: boolean })
 }
 
 const GRADE_STYLE = {
-  검증됨: { color: "#34D399", bg: "rgba(52,211,153,0.12)", hint: "여러 출처에서 확인된 연계예요" },
-  참고: { color: "#FFD27A", bg: "rgba(255,210,122,0.12)", hint: "출처가 있는 연계예요. 내 수련 스타일에 맞게 응용해보세요" },
+  검증됨: { label: "실전 검증", color: "#34D399", bg: "rgba(52,211,153,0.12)", hint: "여러 출처에서 확인된 연계예요" },
+  참고: { label: "실전 참고", color: "#FFD27A", bg: "rgba(255,210,122,0.12)", hint: "출처가 있는 연계예요. 내 수련 스타일에 맞게 응용해보세요" },
 } as const;
 
 function PlanCard({ plan }: { plan: RecommendationView }) {
@@ -184,7 +184,7 @@ function PlanCard({ plan }: { plan: RecommendationView }) {
           className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded-md"
           style={{ color: g.color, backgroundColor: g.bg }}
         >
-          {plan.grade}
+          {g.label}
         </span>
       </div>
 
