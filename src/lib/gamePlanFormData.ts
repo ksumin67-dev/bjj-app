@@ -13,7 +13,7 @@ import { getMyComboVotes } from "@/lib/supabase/comboFeedback";
  * 새 게임플랜과 수정 페이지에서 공통 사용.
  */
 export async function getGamePlanFormData(
-  opts: { withRecommendations?: boolean; recLimit?: number } = {},
+  opts: { withRecommendations?: boolean; recLimit?: number; excludeComboIds?: string[] } = {},
 ) {
   const [positions, techniques, sessions, goals, athletes, votes] = await Promise.all([
     getAllPositions(),
@@ -65,7 +65,10 @@ export async function getGamePlanFormData(
         techniqueRecordId: g.techniqueRecordId,
         athleteRecordId: g.athleteRecordId,
       })),
-      dislikedComboIds: new Set([...votes].filter(([, v]) => v === -1).map(([id]) => id)),
+      dislikedComboIds: new Set([
+        ...[...votes].filter(([, v]) => v === -1).map(([id]) => id),
+        ...(opts.excludeComboIds ?? []), // '다른 조합 추천받기'에서 이미 보여준 콤보
+      ]),
       limit: opts.recLimit,
     });
   }

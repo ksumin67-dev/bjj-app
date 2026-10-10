@@ -171,9 +171,13 @@ const SHOW_COUNT = 4;
  * 규칙 엔진이 후보 콤보 8개를 고르고, ANTHROPIC_API_KEY가 있으면 LLM이 그 안에서
  * 4개를 골라 이유를 쓴다. (실패하면 규칙 엔진 상위 4개 그대로)
  */
-export async function recommendGamePlansAction(): Promise<RecommendResult> {
+export async function recommendGamePlansAction(excludeComboIds: string[] = []): Promise<RecommendResult> {
   try {
-    const data = await getGamePlanFormData({ withRecommendations: true, recLimit: CANDIDATE_POOL });
+    const data = await getGamePlanFormData({
+      withRecommendations: true,
+      recLimit: CANDIDATE_POOL,
+      excludeComboIds: excludeComboIds.filter((id) => typeof id === "string").slice(0, 300),
+    });
     const nameByRecordId = new Map(data.stepTechniques.map((t) => [t.recordId, t.nameKo]));
     let plans = data.recommendations.plans;
     let aiAssisted = false;

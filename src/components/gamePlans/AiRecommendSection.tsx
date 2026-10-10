@@ -38,19 +38,33 @@ export function AiRecommendSection({ hasPlans = false }: { hasPlans?: boolean })
   const [step, setStep] = useState(0);
   const [result, setResult] = useState<Ok | null>(null);
   const [error, setError] = useState("");
+  // '다른 조합 추천받기'에서 이미 보여준 콤보 (다 보면 처음부터 다시)
+  const [seen, setSeen] = useState<string[]>([]);
+  const [wrapped, setWrapped] = useState(false);
 
-  async function run() {
+  async function run(more = false) {
     setPhase("analyzing");
     setStep(0);
     const t1 = setTimeout(() => setStep(1), 600);
     const t2 = setTimeout(() => setStep(2), 1200);
-    const [res] = await Promise.all([
-      recommendGamePlansAction(),
+    const exclude = more ? seen : [];
+    const [first] = await Promise.all([
+      recommendGamePlansAction(exclude),
       new Promise((r) => setTimeout(r, 1800)),
     ]);
+    let res = first;
+    let didWrap = false;
+    if (more && res.ok && res.plans.length === 0) {
+      // 보여줄 새 조합이 없으면 처음부터 다시
+      res = await recommendGamePlansAction([]);
+      didWrap = true;
+    }
     clearTimeout(t1);
     clearTimeout(t2);
     if (res.ok) {
+      const shown = res.plans.map((p) => p.comboId);
+      setSeen((prev) => [...(more && !didWrap ? prev : []), ...shown]);
+      setWrapped(didWrap);
       setResult(res);
       setPhase("done");
     } else {
@@ -79,7 +93,7 @@ export function AiRecommendSection({ hasPlans = false }: { hasPlans?: boolean })
           <div className="ai-shine-border">
             <button
               type="button"
-              onClick={run}
+              onClick={() => run(false)}
               className="w-full h-11 rounded-[11px] font-bold text-[14px] active:scale-[0.98] transition-transform duration-fast inline-flex items-center justify-center gap-2"
               style={{ backgroundColor: SURFACE }}
             >
@@ -138,14 +152,19 @@ export function AiRecommendSection({ hasPlans = false }: { hasPlans?: boolean })
             ))}
           </div>
 
+          {wrapped && (
+            <p className="mt-3 text-[11px] font-normal" style={{ color: MUTED }}>
+              준비된 조합을 모두 보셨어요. 처음부터 다시 보여드릴게요.
+            </p>
+          )}
           <button
             type="button"
-            onClick={run}
-            className="mt-3 inline-flex items-center gap-1 text-[12px] font-semibold"
-            style={{ color: MUTED }}
+            onClick={() => run(true)}
+            className="mt-3 w-full h-10 rounded-xl inline-flex items-center justify-center gap-1.5 text-[13px] font-semibold active:scale-[0.98] transition-transform"
+            style={{ color: "#FFD27A", border: "1px solid rgba(255,210,122,0.35)" }}
           >
-            <RefreshCw size={12} />
-            다시 분석하기
+            <RefreshCw size={13} />
+            다른 조합 추천받기
           </button>
         </div>
       )}
