@@ -3,7 +3,8 @@
 import { useFormState, useFormStatus } from "react-dom";
 import { useState, useMemo } from "react";
 import {
-  Search, X, ChevronDown, ArrowUp, ArrowDown, Star, Plus, Heart, History, Sparkles,
+  Search, X, ChevronDown, ArrowUp, ArrowDown, Star, Plus, Heart, History,
+  Sparkles, Pencil, ListOrdered, FileText, SlidersHorizontal, type LucideIcon,
 } from "lucide-react";
 import {
   createGamePlanAction,
@@ -15,14 +16,19 @@ import type { Technique, GamePlan } from "@/types/domain";
 import { cn, normalizeKorean } from "@/lib/utils";
 
 /*
- * 글자 크기 규칙 — 홈 화면 톤앤매너에 맞춤 (2026-09-20)
- *   섹션/필드 제목  12.5px semibold white   (홈 '이번 주 목표' 라벨과 동일)
- *   본문/입력/목록  13~13.5px normal white   (홈 목록 행)
- *   보조 설명       11px #8A8A94             (홈 보조 텍스트)
- *   배지/ID         10.5~11px
+ * 홈 화면 톤앤매너 (2026-09-20)
+ *   섹션 대제목   14.5px bold white + 아이콘 (홈 '오늘의 수련' 등과 동일)
+ *   본문/입력/목록 13~13.5px normal
+ *   보조 설명     11px #8A8A94
+ *   섹션 면       #14171D 라운드 14 (홈 톤온톤 서피스), 면 안의 입력칸은 한 단계 더 어둡게
  */
 
 const MUTED = "#8A8A94";
+const SURFACE = "#14171D";   // 섹션 카드
+const FIELD_BG = "#0A0C10";  // 카드 안 입력칸/목록 행
+const FIELD_BORDER = "#23262E";
+
+const fieldStyle = { backgroundColor: FIELD_BG, border: `1px solid ${FIELD_BORDER}` } as const;
 
 function SubmitButton({ label, pendingLabel }: { label: string; pendingLabel: string }) {
   const { pending } = useFormStatus();
@@ -156,7 +162,7 @@ export function GamePlanForm({
   }
 
   return (
-    <form action={formAction} className="space-y-6">
+    <form action={formAction} className="space-y-3">
       {isEdit && initial && <input type="hidden" name="planId" value={initial.recordId} />}
 
       {state.error && (
@@ -167,11 +173,11 @@ export function GamePlanForm({
 
       {/* 추천 템플릿 — 새로 만들 때만 */}
       {!isEdit && (
-        <section>
-          <div className="flex items-center gap-1.5 mb-2">
-            <Sparkles size={14} color="#D9772E" />
-            <h2 className="text-[12.5px] font-semibold text-white">추천 템플릿으로 시작</h2>
-          </div>
+        <SectionCard
+          icon={Sparkles}
+          title="추천 템플릿으로 시작"
+          hint="고르면 아래 내용이 채워지고, 자유롭게 고칠 수 있어요."
+        >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {GAME_PLAN_TEMPLATES.map((tpl) => {
               const active = appliedTemplate === tpl.id;
@@ -182,8 +188,8 @@ export function GamePlanForm({
                   onClick={() => applyTemplate(tpl)}
                   className="text-left rounded-xl px-3.5 py-3 transition-colors duration-fast active:scale-[0.98]"
                   style={{
-                    backgroundColor: "#14171D",
-                    border: active ? "1px solid rgba(217,119,46,0.6)" : "1px solid transparent",
+                    backgroundColor: FIELD_BG,
+                    border: active ? "1px solid rgba(217,119,46,0.6)" : `1px solid ${FIELD_BORDER}`,
                   }}
                 >
                   <p className="text-[13px] font-semibold text-white">{tpl.name}</p>
@@ -194,14 +200,11 @@ export function GamePlanForm({
               );
             })}
           </div>
-          <p className="text-[11px] font-normal mt-2" style={{ color: MUTED }}>
-            템플릿을 고르면 아래 내용이 채워지고, 자유롭게 고칠 수 있어요.
-          </p>
-        </section>
+        </SectionCard>
       )}
 
       {/* 게임플랜 이름 */}
-      <FormField label="게임플랜 이름" required>
+      <SectionCard icon={Pencil} title="게임플랜 이름" required>
         <input
           type="text"
           name="planName"
@@ -210,13 +213,15 @@ export function GamePlanForm({
           placeholder="예) 클가 → 백테이크 가는 길"
           required
           maxLength={120}
-          className="w-full h-11 rounded-xl bg-bg-base border border-border-subtle px-4 text-[13.5px] text-text-primary placeholder:text-text-tertiary focus:border-border-focus outline-none transition-colors duration-fast"
+          className="w-full h-11 rounded-xl px-4 text-[13.5px] text-text-primary placeholder:text-text-tertiary focus:border-border-focus outline-none transition-colors duration-fast"
+          style={fieldStyle}
         />
-      </FormField>
+      </SectionCard>
 
       {/* 사용 기술 (순서 포함 멀티 선택) */}
-      <FormField
-        label={`사용 기술 · ${selectedTechniques.length}개`}
+      <SectionCard
+        icon={ListOrdered}
+        title={`사용 기술 · ${selectedTechniques.length}개`}
         hint="순서대로 이어서 쓸 기술을 골라주세요. 첫 기술의 포지션이 시작 포지션으로 자동 지정돼요."
       >
         {selectedTechniques.length > 0 && (
@@ -228,7 +233,7 @@ export function GamePlanForm({
                 <div
                   key={recordId}
                   className="flex items-center gap-2 rounded-lg px-2 py-2"
-                  style={{ backgroundColor: "#14171D" }}
+                  style={{ backgroundColor: FIELD_BG }}
                 >
                   <span
                     className="size-5 rounded-full text-[11px] font-bold flex items-center justify-center shrink-0"
@@ -284,7 +289,8 @@ export function GamePlanForm({
         <button
           type="button"
           onClick={() => setTechPickerOpen((v) => !v)}
-          className="w-full h-11 rounded-xl bg-bg-base border border-border-subtle px-4 text-left text-[13px] font-normal text-text-secondary hover:bg-bg-hover transition-colors duration-fast flex items-center justify-between"
+          className="w-full h-11 rounded-xl px-4 text-left text-[13px] font-normal text-text-secondary hover:bg-bg-hover transition-colors duration-fast flex items-center justify-between"
+          style={fieldStyle}
         >
           <span className="inline-flex items-center gap-1.5">
             <Plus size={14} />기술 추가 / 편집
@@ -296,7 +302,7 @@ export function GamePlanForm({
         </button>
 
         {techPickerOpen && (
-          <div className="mt-2 rounded-2xl p-3 max-h-96 overflow-y-auto" style={{ backgroundColor: "#14171D" }}>
+          <div className="mt-2 rounded-2xl p-3 max-h-96 overflow-y-auto" style={{ backgroundColor: FIELD_BG }}>
             <div className="relative mb-3">
               <Search
                 size={14}
@@ -307,7 +313,8 @@ export function GamePlanForm({
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="기술명 / 영문 / ID 검색"
-                className="w-full h-9 rounded-xl bg-bg-base border border-border-subtle pl-9 pr-3 text-[13px] text-text-primary placeholder:text-text-tertiary focus:border-border-focus outline-none transition-colors duration-fast"
+                className="w-full h-9 rounded-xl pl-9 pr-3 text-[13px] text-text-primary placeholder:text-text-tertiary focus:border-border-focus outline-none transition-colors duration-fast"
+                style={{ backgroundColor: SURFACE, border: `1px solid ${FIELD_BORDER}` }}
               />
             </div>
 
@@ -360,11 +367,12 @@ export function GamePlanForm({
             )}
           </div>
         )}
-      </FormField>
+      </SectionCard>
 
       {/* 설명 (선택) */}
-      <FormField
-        label="설명 (선택)"
+      <SectionCard
+        icon={FileText}
+        title="설명 (선택)"
         hint="언제 쓰는지, 막히면 어떻게 하는지 같은 흐름을 자유롭게 적어두세요."
       >
         <textarea
@@ -373,29 +381,23 @@ export function GamePlanForm({
           value={stepsText}
           onChange={(e) => setStepsText(e.target.value)}
           placeholder={"예) 힙범프가 막히면 암바로, 상대가 팔을 빼면 기무라로 이어가기"}
-          className="w-full rounded-xl bg-bg-base border border-border-subtle px-4 py-3 text-[13.5px] text-text-primary placeholder:text-text-tertiary focus:border-border-focus outline-none resize-none transition-colors duration-fast"
+          className="w-full rounded-xl px-4 py-3 text-[13.5px] text-text-primary placeholder:text-text-tertiary focus:border-border-focus outline-none resize-none transition-colors duration-fast"
+          style={fieldStyle}
         />
-      </FormField>
+      </SectionCard>
 
-      {/* 더보기 — 주력 표시 / 분기 조건 (접어둠. 닫혀 있어도 값은 그대로 제출됨) */}
-      <div>
-        <button
-          type="button"
-          onClick={() => setMoreOpen((v) => !v)}
-          className="inline-flex items-center gap-1 text-[12.5px] font-semibold"
-          style={{ color: MUTED }}
-        >
-          <ChevronDown
-            size={14}
-            className={cn("transition-transform duration-base", moreOpen && "rotate-180")}
-          />
-          추가 옵션
-        </button>
-
-        <div className={cn("mt-3 space-y-4", !moreOpen && "hidden")}>
+      {/* 추가 옵션 — 주력 표시 / 분기 조건 (접어둠. 닫혀 있어도 값은 그대로 제출됨) */}
+      <SectionCard
+        icon={SlidersHorizontal}
+        title="추가 옵션"
+        iconColor={MUTED}
+        onHeaderClick={() => setMoreOpen((v) => !v)}
+        open={moreOpen}
+      >
+        <div className={cn("space-y-4", !moreOpen && "hidden")}>
           <label
             className="flex items-center justify-between rounded-xl px-4 py-3 cursor-pointer transition-colors duration-fast"
-            style={{ backgroundColor: "#14171D" }}
+            style={{ backgroundColor: FIELD_BG }}
           >
             <span className="flex items-center gap-2">
               <Star size={14} color="#D9772E" fill={isPrimary ? "#D9772E" : "none"} />
@@ -410,7 +412,7 @@ export function GamePlanForm({
             />
           </label>
 
-          <FormField label="분기 조건 (선택)">
+          <div>
             <label className="inline-flex items-center gap-2 cursor-pointer mb-2">
               <input
                 type="checkbox"
@@ -419,7 +421,7 @@ export function GamePlanForm({
                 onChange={(e) => setHasBranch(e.target.checked)}
                 className="size-4 accent-[#D9772E]"
               />
-              <span className="text-[13px] font-normal text-text-secondary">분기 있음</span>
+              <span className="text-[13px] font-normal text-white">분기 조건 있음</span>
             </label>
             {hasBranch && (
               <input
@@ -428,17 +430,20 @@ export function GamePlanForm({
                 value={branchCondition}
                 onChange={(e) => setBranchCondition(e.target.value)}
                 placeholder="예) 상대가 일어서면 → 암 드래그 → 백 테이크"
-                className="w-full h-11 rounded-xl bg-bg-base border border-border-subtle px-4 text-[13.5px] text-text-primary placeholder:text-text-tertiary focus:border-border-focus outline-none transition-colors duration-fast"
+                className="w-full h-11 rounded-xl px-4 text-[13.5px] text-text-primary placeholder:text-text-tertiary focus:border-border-focus outline-none transition-colors duration-fast"
+                style={fieldStyle}
               />
             )}
-          </FormField>
+          </div>
         </div>
-      </div>
+      </SectionCard>
 
-      <SubmitButton
-        label={isEdit ? "수정 내용 저장" : "게임플랜 저장"}
-        pendingLabel="저장 중..."
-      />
+      <div className="pt-2">
+        <SubmitButton
+          label={isEdit ? "수정 내용 저장" : "게임플랜 저장"}
+          pendingLabel="저장 중..."
+        />
+      </div>
     </form>
   );
 }
@@ -510,29 +515,67 @@ function QuickGroup({
   );
 }
 
-function FormField({
-  label,
+/**
+ * 섹션 카드 — 홈 화면과 같은 톤온톤 서피스 + 아이콘 달린 대제목(14.5px bold).
+ * onHeaderClick이 있으면 헤더를 눌러 접고 펼치는 섹션(추가 옵션)이 된다.
+ */
+function SectionCard({
+  icon: Icon,
+  title,
   hint,
   required,
+  iconColor = "#D9772E",
+  onHeaderClick,
+  open,
   children,
 }: {
-  label: string;
+  icon: LucideIcon;
+  title: string;
   hint?: string;
   required?: boolean;
+  iconColor?: string;
+  onHeaderClick?: () => void;
+  open?: boolean;
   children: React.ReactNode;
 }) {
-  return (
-    <div className="space-y-1.5">
-      <label className="block text-[12.5px] font-semibold text-white mb-1">
-        {label}
+  const header = (
+    <>
+      <Icon size={16} color={iconColor} className="shrink-0" />
+      <h2 className="text-[14.5px] font-bold text-white">
+        {title}
         {required && <span className="text-danger ml-1">*</span>}
-      </label>
-      {children}
-      {hint && (
-        <p className="text-[11px] font-normal" style={{ color: MUTED }}>
+      </h2>
+      {onHeaderClick && (
+        <ChevronDown
+          size={16}
+          className={cn("ml-auto transition-transform duration-base", open && "rotate-180")}
+          style={{ color: MUTED }}
+        />
+      )}
+    </>
+  );
+
+  const collapsed = onHeaderClick && !open;
+
+  return (
+    <section style={{ backgroundColor: SURFACE, borderRadius: 14, padding: 14 }}>
+      {onHeaderClick ? (
+        <button
+          type="button"
+          onClick={onHeaderClick}
+          className={cn("w-full flex items-center gap-1.5 text-left", !collapsed && "mb-3")}
+        >
+          {header}
+        </button>
+      ) : (
+        <div className={cn("flex items-center gap-1.5", hint ? "mb-1" : "mb-3")}>{header}</div>
+      )}
+      {hint && !onHeaderClick && (
+        <p className="text-[11px] font-normal mb-3" style={{ color: MUTED }}>
           {hint}
         </p>
       )}
-    </div>
+      {children}
+    </section>
   );
 }
