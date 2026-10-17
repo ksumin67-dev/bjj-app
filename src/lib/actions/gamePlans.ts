@@ -98,7 +98,7 @@ export async function createGamePlanAction(
     console.error("[createGamePlanAction] failed:", e);
     return {
       ok: false,
-      error: e instanceof Error ? e.message : "생성 실패",
+      error: "게임플랜을 저장하지 못했어요. 잠시 후 다시 시도해주세요.",
     };
   }
 
@@ -126,7 +126,7 @@ export async function updateGamePlanAction(
     console.error("[updateGamePlanAction] failed:", e);
     return {
       ok: false,
-      error: e instanceof Error ? e.message : "수정 실패",
+      error: "게임플랜을 수정하지 못했어요. 잠시 후 다시 시도해주세요.",
     };
   }
 

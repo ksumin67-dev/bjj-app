@@ -1,5 +1,13 @@
 import { NextResponse } from "next/server";
+import { timingSafeEqual } from "crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
+
+/** 시크릿 비교 — 응답 시간 차이로 값을 추측하지 못하게 상수 시간 비교 */
+function safeEqual(a: string, b: string): boolean {
+  const ab = Buffer.from(a);
+  const bb = Buffer.from(b);
+  return ab.length === bb.length && timingSafeEqual(ab, bb);
+}
 
 /**
  * RevenueCat 웹훅 수신 엔드포인트.
@@ -38,7 +46,7 @@ export async function POST(request: Request) {
     console.error("[revenuecat webhook] REVENUECAT_WEBHOOK_SECRET 미설정");
     return NextResponse.json({ error: "not configured" }, { status: 500 });
   }
-  if (authHeader !== `Bearer ${expected}` && authHeader !== expected) {
+  if (!authHeader || !(safeEqual(authHeader, `Bearer ${expected}`) || safeEqual(authHeader, expected))) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 

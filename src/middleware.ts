@@ -1,6 +1,7 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { publicEnv } from "@/lib/publicEnv";
+import { ADMIN_EMAIL } from "@/lib/adminConfig";
 
 // 로그인 없이 접근 가능한 경로
 const PUBLIC_PATHS = [
@@ -16,7 +17,6 @@ const ONBOARDING_PATH = "/onboarding";
 // 관리자 전용 경로 — 기술도감 마스터 데이터(Airtable)를 직접 수정하는 화면이라
 // 회원가입이 열려 있는 이상 소유자 계정만 접근 가능해야 함 (2026-09-19 추가).
 const ADMIN_PATH = "/admin";
-const ADMIN_EMAIL = "ksumin67@gmail.com";
 
 export async function middleware(request: NextRequest) {
   // API 라우트는 페이지 로그인 리다이렉트 대상이 아님 — 각 라우트가 자체

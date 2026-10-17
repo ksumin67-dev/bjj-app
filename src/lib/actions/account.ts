@@ -28,7 +28,7 @@ export async function deleteAccountAction(): Promise<DeleteAccountResult> {
     console.error("[deleteAccountAction] failed:", e);
     return {
       ok: false,
-      error: e instanceof Error ? e.message : "계정 삭제에 실패했습니다.",
+      error: "계정 삭제에 실패했습니다. 잠시 후 다시 시도해주세요.",
     };
   }
 

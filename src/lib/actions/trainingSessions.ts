@@ -158,7 +158,7 @@ export async function createTrainingSessionAction(
     sessionId = await createTrainingSession(input);
   } catch (e) {
     console.error("[createTrainingSessionAction] failed:", e);
-    return { ok: false, error: e instanceof Error ? e.message : "세션 저장 실패" };
+    return { ok: false, error: "수련 기록을 저장하지 못했어요. 잠시 후 다시 시도해주세요." };
   }
 
   // 커스텀 기술 저장 (fire & forget)
@@ -234,7 +234,7 @@ export async function updateTrainingSessionAction(
     await updateTrainingSession(recordId, input);
   } catch (e) {
     console.error("[updateTrainingSessionAction] failed:", e);
-    return { ok: false, error: e instanceof Error ? e.message : "수정 저장 실패" };
+    return { ok: false, error: "수정 내용을 저장하지 못했어요. 잠시 후 다시 시도해주세요." };
   }
 
   // 커스텀 기술 저장 (fire & forget)
