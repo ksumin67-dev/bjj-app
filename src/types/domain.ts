@@ -267,7 +267,7 @@ export function calculateStreak(sessions: TrainingSession[]): number {
   const allDates = new Set(sessions.map((s) => s.date));
   const today = new Date().toISOString().slice(0, 10);
 
-  let cursor = new Date(today);
+  const cursor = new Date(today);
   if (!allDates.has(today)) {
     cursor.setDate(cursor.getDate() - 1);
   }
@@ -292,7 +292,7 @@ export function calculateNewStreak(existingSessions: TrainingSession[]): number 
   // 오늘 포함해서 역산
   allDates.add(today);
 
-  let cursor = new Date(today);
+  const cursor = new Date(today);
   let streak = 0;
   while (true) {
     const key = cursor.toISOString().slice(0, 10);

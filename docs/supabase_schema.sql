@@ -164,3 +164,19 @@ alter table public.recommend_llm_cache enable row level security;
 create policy "own cache select" on public.recommend_llm_cache for select using (auth.uid() = user_id);
 create policy "own cache insert" on public.recommend_llm_cache for insert with check (auth.uid() = user_id);
 create policy "own cache delete" on public.recommend_llm_cache for delete using (auth.uid() = user_id);
+
+-- ============================================================
+-- 보안 점검 (2026-10-17) — 적용 완료
+-- ============================================================
+-- 1) profiles: 클라이언트가 subscription_status를 직접 수정(무료 프리미엄)하지 못하게 컬럼 권한 제한.
+--    subscription_status 는 서비스 롤(RevenueCat 웹훅)만 변경.
+revoke insert, update on public.profiles from anon, authenticated;
+grant update (nickname, belt, stripe, weekly_goal, reminder_hour, preferred_style_tag, onboarding_completed, updated_at)
+  on public.profiles to authenticated;
+
+-- 2) 트리거 전용 함수는 RPC 호출 불가
+revoke execute on function public.handle_new_user() from public, anon, authenticated;
+
+-- 3) RLS 성능: auth.uid() → (select auth.uid()) 로 전 정책 교체 (alter policy), FK 인덱스 추가
+create index if not exists game_plans_user_id_idx on public.game_plans(user_id);
+create index if not exists training_sessions_user_id_idx on public.training_sessions(user_id);

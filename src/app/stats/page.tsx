@@ -17,7 +17,6 @@ const STREAM_META: Record<Stream, { label: string; Icon: LucideIcon }> = {
 };
 
 function pad(n: number) { return String(n).padStart(2, "0"); }
-function ymd(d: Date) { return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; }
 
 /** 최근 N주(이번 주 포함)의 주간 XP 합계. 배열 첫 원소가 가장 오래된 주. */
 function buildWeeklyXp(sessions: TrainingSession[], weeks: number) {

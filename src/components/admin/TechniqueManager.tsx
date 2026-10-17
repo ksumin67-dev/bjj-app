@@ -124,7 +124,7 @@ function Select({ children, ...props }: React.SelectHTMLAttributes<HTMLSelectEle
 // ── TechniqueForm ─────────────────────────────────────────────────────────────
 
 function TechniqueForm({
-  form, setForm, allTechniques, positions, editTarget,
+  form, setForm, positions, editTarget,
   onSubmit, onCancel, isPending,
 }: {
   form: FormData;
@@ -141,18 +141,6 @@ function TechniqueForm({
   const set = (key: keyof FormData) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => setForm((f) => ({ ...f, [key]: e.target.value }));
-
-  const togglePrereq = (recordId: string) => {
-    setForm((f) => ({
-      ...f,
-
-    }));
-  };
-
-  // Prerequisite candidates: exclude self
-  const prereqCandidates = allTechniques.filter(
-    (t) => t.recordId !== editTarget?.recordId,
-  );
 
   return (
     <div className="flex flex-col h-full">
@@ -216,25 +204,6 @@ function TechniqueForm({
           <Select value={form.giNogi} onChange={set("giNogi")}>
             {GI_NOGI_OPTS.map((g) => <option key={g} value={g}>{g}</option>)}
           </Select>
-        </Field>
-
-        {/* Prerequisites */}
-        <Field label="선행 기술">
-          <div className="rounded-md border border-neutral-700 bg-neutral-800 max-h-36 overflow-y-auto p-2 space-y-1">
-            {prereqCandidates.length === 0 && (
-              <p className="text-xs text-neutral-500 py-1">기술 없음</p>
-            )}
-            {prereqCandidates.map((t) => (
-              <label key={t.recordId} className="flex items-center gap-2 cursor-pointer py-0.5 rounded hover:bg-neutral-700/50 px-1">
-                <input
-                  type="checkbox"
-                  onChange={() => togglePrereq(t.recordId)}
-                  className="accent-blue-500"
-                />
-                <span className="text-xs text-neutral-300">{t.id} {t.nameKo}</span>
-              </label>
-            ))}
-          </div>
         </Field>
 
         {/* Toggle Advanced */}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any */
 import "server-only";
 /**
  * @deprecated Status 시스템 제거 (v2). 이 파일의 함수는 모두 no-op stub입니다.

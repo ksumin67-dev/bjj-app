@@ -96,7 +96,6 @@ function padDate(n: number) {
 
 // ── 약점 분석 ──────────────────────────────────────────────────────────────
 
-type StreamStats = { stream: Stream; total: number; pct: number };
 type WeaknessResult = {
   weakestStream: Stream;
   topStream: Stream;
