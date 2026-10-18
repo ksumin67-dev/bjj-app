@@ -184,3 +184,9 @@ create index if not exists training_sessions_user_id_idx on public.training_sess
 -- 2026-10-18: 온보딩 좋아하는 선수 선택
 alter table public.profiles add column if not exists favorite_athlete_ids text[] not null default '{}';
 grant update (favorite_athlete_ids) on public.profiles to authenticated;
+
+-- 2026-10-18: 프로필 아바타 (preset=캐릭터 키, photo=Storage 경로)
+alter table public.profiles
+  add column if not exists avatar_type text check (avatar_type in ('preset','photo')),
+  add column if not exists avatar_value text;
+grant update (avatar_type, avatar_value) on public.profiles to authenticated;
