@@ -29,6 +29,7 @@ export async function completeOnboardingAction(input: {
   weeklyGoal: number | null;
   reminderHour: number | null;
   preferredStyleTag: StyleTag | null;
+  favoriteAthleteIds?: string[];
 }): Promise<{ ok: boolean; error?: string }> {
   try {
     await completeOnboarding(input);

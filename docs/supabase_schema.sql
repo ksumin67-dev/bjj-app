@@ -180,3 +180,7 @@ revoke execute on function public.handle_new_user() from public, anon, authentic
 -- 3) RLS 성능: auth.uid() → (select auth.uid()) 로 전 정책 교체 (alter policy), FK 인덱스 추가
 create index if not exists game_plans_user_id_idx on public.game_plans(user_id);
 create index if not exists training_sessions_user_id_idx on public.training_sessions(user_id);
+
+-- 2026-10-18: 온보딩 좋아하는 선수 선택
+alter table public.profiles add column if not exists favorite_athlete_ids text[] not null default '{}';
+grant update (favorite_athlete_ids) on public.profiles to authenticated;

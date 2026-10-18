@@ -21,7 +21,7 @@ function isActive(pathname: string, href: string) {
 }
 
 // 로그인/약관 등 앱 셸(탭바·사이드바) 없이 보여줘야 하는 공개 페이지
-const HIDDEN_SHELL_PATHS = ["/login", "/auth", "/terms", "/privacy"];
+const HIDDEN_SHELL_PATHS = ["/login", "/auth", "/terms", "/privacy", "/onboarding"];
 
 export function BottomTabBar() {
   const pathname = usePathname();

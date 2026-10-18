@@ -108,6 +108,7 @@ export async function completeOnboarding(input: {
   weeklyGoal: number | null;
   reminderHour: number | null;
   preferredStyleTag: StyleTag | null;
+  favoriteAthleteIds?: string[];
 }): Promise<void> {
   const supabase = createClient();
   const {
@@ -123,6 +124,7 @@ export async function completeOnboarding(input: {
       weekly_goal: input.weeklyGoal,
       reminder_hour: input.reminderHour ?? 20,
       preferred_style_tag: input.preferredStyleTag,
+      favorite_athlete_ids: (input.favoriteAthleteIds ?? []).slice(0, 30),
       onboarding_completed: true,
       updated_at: new Date().toISOString(),
     })
