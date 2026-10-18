@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
+import Link from "next/link";
 import { Lock, AlertCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { authErrorMessage } from "@/lib/authErrors";
 
 export default function ResetPasswordPage() {
   const [password, setPassword] = useState("");
@@ -10,14 +12,24 @@ export default function ResetPasswordPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  // null = 확인 중, true = 재설정 세션 있음, false = 링크 만료/직접 접속
+  const [hasSession, setHasSession] = useState<boolean | null>(null);
+
   const supabase = createClient();
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      setHasSession(Boolean(data.session));
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
 
     if (password !== confirm) {
-      setError("비밀번호가 일치하지 않습니다.");
+      setError("비밀번호가 일치하지 않아요.");
       return;
     }
 
@@ -26,11 +38,32 @@ export default function ResetPasswordPage() {
     setLoading(false);
 
     if (error) {
-      setError(error.message);
+      setError(authErrorMessage(error));
       return;
     }
 
     window.location.href = "/";
+  }
+
+  if (hasSession === false) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 px-6 text-center">
+        <h1 className="text-xl font-black tracking-tight text-text-primary">
+          링크가 만료되었어요
+        </h1>
+        <p className="text-[12px] text-text-tertiary leading-relaxed">
+          재설정 링크가 만료되었거나 이미 사용됐어요.
+          <br />
+          로그인 화면에서 비밀번호 재설정을 다시 요청해 주세요.
+        </p>
+        <Link
+          href="/login"
+          className="rounded-xl bg-brand-primary px-5 py-3 text-sm font-bold text-text-inverse"
+        >
+          로그인 화면으로
+        </Link>
+      </div>
+    );
   }
 
   return (
@@ -79,7 +112,7 @@ export default function ResetPasswordPage() {
 
         <button
           type="submit"
-          disabled={loading}
+          disabled={loading || hasSession === null}
           className="w-full rounded-xl bg-brand-primary py-3 text-sm font-bold text-text-inverse hover:bg-brand-hover active:scale-[0.98] transition-all duration-fast disabled:opacity-50"
         >
           {loading ? "저장 중…" : "비밀번호 변경"}

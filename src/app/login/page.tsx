@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { Mail, Lock, AlertCircle, CheckCircle2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { authErrorMessage, authRedirectErrorMessage } from "@/lib/authErrors";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -14,8 +15,24 @@ export default function LoginPage() {
   const [googleLoading, setGoogleLoading] = useState(false);
   const [signupSent, setSignupSent] = useState(false);
   const [resetSent, setResetSent] = useState(false);
+  const [needsConfirm, setNeedsConfirm] = useState(false);
+  const [resendMsg, setResendMsg] = useState<string | null>(null);
+  const [isNativeApp, setIsNativeApp] = useState(false);
 
   const supabase = createClient();
+
+  useEffect(() => {
+    // 인증 링크 처리 실패 시 /login?error=... 로 돌아옴 — 사유를 보여줌
+    const params = new URLSearchParams(window.location.search);
+    const msg = authRedirectErrorMessage(params.get("error"));
+    if (msg) setError(msg);
+
+    // 앱(Capacitor 웹뷰)에서는 구글이 웹뷰 로그인을 막으므로 구글 버튼 숨김
+    const cap = (window as unknown as {
+      Capacitor?: { isNativePlatform?: () => boolean };
+    }).Capacitor;
+    setIsNativeApp(Boolean(cap?.isNativePlatform?.()));
+  }, []);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -28,7 +45,7 @@ export default function LoginPage() {
       });
       setLoading(false);
       if (error) {
-        setError(error.message);
+        setError(authErrorMessage(error));
         return;
       }
       setResetSent(true);
@@ -38,12 +55,30 @@ export default function LoginPage() {
     const { data, error } =
       mode === "signin"
         ? await supabase.auth.signInWithPassword({ email, password })
-        : await supabase.auth.signUp({ email, password });
+        : await supabase.auth.signUp({
+            email,
+            password,
+            options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+          });
 
     setLoading(false);
 
     if (error) {
-      setError(error.message);
+      setError(authErrorMessage(error));
+      setNeedsConfirm(error.code === "email_not_confirmed");
+      return;
+    }
+    setNeedsConfirm(false);
+
+    // 이미 가입된 이메일로 다시 가입하면 Supabase는 에러 없이 identities가 빈
+    // 사용자를 돌려줌(계정 존재 여부 노출 방지). 메일은 가지 않으므로 안내 필요.
+    if (
+      mode === "signup" &&
+      data.user &&
+      Array.isArray(data.user.identities) &&
+      data.user.identities.length === 0
+    ) {
+      setError("이미 가입된 이메일이에요. 로그인하거나 비밀번호를 재설정해 주세요.");
       return;
     }
 
@@ -67,10 +102,24 @@ export default function LoginPage() {
       },
     });
     if (error) {
-      setError(error.message);
+      setError(authErrorMessage(error));
       setGoogleLoading(false);
     }
     // 성공 시 구글 페이지로 리다이렉트되므로 별도 로딩 해제 불필요
+  }
+
+  async function handleResend() {
+    setResendMsg(null);
+    const { error } = await supabase.auth.resend({
+      type: "signup",
+      email,
+      options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+    });
+    if (error) {
+      setResendMsg(authErrorMessage(error));
+      return;
+    }
+    setResendMsg("인증 메일을 다시 보냈어요. 스팸함도 확인해 주세요.");
   }
 
   function backToSignin() {
@@ -78,6 +127,8 @@ export default function LoginPage() {
     setError(null);
     setSignupSent(false);
     setResetSent(false);
+    setNeedsConfirm(false);
+    setResendMsg(null);
     setPassword("");
   }
 
@@ -104,7 +155,25 @@ export default function LoginPage() {
               {email}로 보낸 메일의 링크를 눌러
               {signupSent ? " 가입을 완료해주세요." : " 새 비밀번호를 설정해주세요."}
             </p>
+            <p className="text-[11px] text-text-disabled leading-relaxed">
+              메일이 안 보이면 스팸함을 확인해 주세요. 링크는 휴대폰 브라우저에서
+              열릴 수 있어요. 완료한 뒤 이 앱으로 돌아와 로그인해 주세요.
+            </p>
           </div>
+          {signupSent && (
+            <div className="space-y-1">
+              <button
+                type="button"
+                onClick={handleResend}
+                className="text-xs text-brand-primary"
+              >
+                인증 메일 다시 받기
+              </button>
+              {resendMsg && (
+                <p className="text-[11px] text-text-tertiary">{resendMsg}</p>
+              )}
+            </div>
+          )}
           <button
             type="button"
             onClick={backToSignin}
@@ -158,6 +227,20 @@ export default function LoginPage() {
                 <p className="text-xs text-danger">{error}</p>
               </div>
             )}
+            {needsConfirm && (
+              <div className="text-center space-y-1">
+                <button
+                  type="button"
+                  onClick={handleResend}
+                  className="text-xs text-brand-primary"
+                >
+                  인증 메일 다시 받기
+                </button>
+                {resendMsg && (
+                  <p className="text-[11px] text-text-tertiary">{resendMsg}</p>
+                )}
+              </div>
+            )}
 
             <button
               type="submit"
@@ -170,7 +253,7 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {mode !== "forgot" && (
+          {mode !== "forgot" && !isNativeApp && (
             <>
               <div className="w-full max-w-sm flex items-center gap-3">
                 <div className="flex-1 h-px bg-border-subtle" />

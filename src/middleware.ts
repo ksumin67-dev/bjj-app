@@ -7,6 +7,7 @@ import { ADMIN_EMAIL } from "@/lib/adminConfig";
 const PUBLIC_PATHS = [
   "/login",
   "/auth/callback",
+  "/auth/confirm",
   "/auth/reset-password",
   "/terms",
   "/privacy",
