@@ -175,6 +175,7 @@ export function HomeDashboard({
   trainingCountMap,
   profile,
   goalTechniqueIds,
+  goalAthleteMap,
 }: {
   sessions: TrainingSession[];
   techniques: Technique[];
@@ -182,6 +183,8 @@ export function HomeDashboard({
   trainingCountMap: Record<string, number>;
   profile: UserProfile;
   goalTechniqueIds: string[];
+  /** 찜할 때 저장된 선수 (기술 → 선수 recordId) */
+  goalAthleteMap: Record<string, string | null>;
 }) {
   const USER_NAME = profile.nickname || "아쿠아";
   const today = new Date();
@@ -232,7 +235,12 @@ export function HomeDashboard({
   const goalTechniques = techniques
     .filter((t) => goalIdSet.has(t.recordId))
     .map((t) => {
-      const athlete = t.athleteRecordIds[0] ? athleteById.get(t.athleteRecordIds[0]) ?? null : null;
+      // 찜할 때 저장된 선수를 우선, 없으면 기술에 연결된 첫 선수
+      const savedId = goalAthleteMap[t.recordId];
+      const athlete =
+        (savedId ? athleteById.get(savedId) : undefined) ??
+        (t.athleteRecordIds[0] ? athleteById.get(t.athleteRecordIds[0]) : undefined) ??
+        null;
       return {
         technique: t,
         athlete,
@@ -529,7 +537,7 @@ export function HomeDashboard({
               {cardItems.map(({ technique: t, athlete, athleteName, trained }) => {
                 const accent = athlete
                   ? (STYLE_TAG_META[athlete.styleTags[0] as keyof typeof STYLE_TAG_META] ?? STYLE_TAG_FALLBACK).color
-                  : STYLE_TAG_FALLBACK.color;
+                  : "#D9772E";
                 return (
                   <Link
                     key={t.recordId}
@@ -546,21 +554,28 @@ export function HomeDashboard({
                         backgroundColor: `${accent}22`,
                       }}
                     >
-                      <AthleteAvatar
-                        color={accent}
-                        size={56}
-                        photoUrl={athlete ? getAthletePhoto(athlete.recordId) : null}
-                        alt={athleteName ?? ""}
-                      />
+                      {athlete ? (
+                        <AthleteAvatar
+                          color={accent}
+                          size={56}
+                          photoUrl={getAthletePhoto(athlete.recordId)}
+                          alt={athleteName ?? ""}
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          {(() => {
+                            const Icon = t.stream && t.stream in CAPSULE ? CAPSULE[t.stream as Stream].IconCmp : Dumbbell;
+                            return <Icon size={24} color={accent} />;
+                          })()}
+                        </div>
+                      )}
                     </div>
                     <span className="mt-2.5 text-[12px] font-bold text-white leading-tight line-clamp-2 w-full">
                       {t.nameKo}
                     </span>
-                    {athleteName && (
-                      <span className="mt-0.5 text-[10px] truncate w-full" style={{ color: "#8A8A94" }}>
-                        {athleteName}
-                      </span>
-                    )}
+                    <span className="mt-0.5 text-[10px] truncate w-full" style={{ color: "#8A8A94" }}>
+                      {athleteName ?? techniques.find((x) => x.id === t.parentId)?.nameKo ?? ""}
+                    </span>
                     <span
                       className="mt-2 text-[9.5px] px-2 py-0.5 rounded-full font-semibold"
                       style={{
