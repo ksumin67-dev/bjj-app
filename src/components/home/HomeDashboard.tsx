@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 import { Swords, Shield, Zap, Users, type LucideIcon } from "lucide-react";
 import { Bell, Dumbbell, Flame, Check, Heart } from "lucide-react";
+import { BalanceRadar } from "./BalanceRadar";
 import { getAthletePhoto } from "@/lib/athletePhotos";
 import { AthleteAvatar } from "@/components/tree/AthleteAvatar";
 import { STYLE_TAG_META, STYLE_TAG_FALLBACK } from "@/types/domain";
@@ -12,6 +13,9 @@ import { STYLE_TAG_META, STYLE_TAG_FALLBACK } from "@/types/domain";
 // ── 상수 ───────────────────────────────────────────────────────────────────
 
 const STREAMS: Stream[] = ["가드포지션", "탑포지션", "이스케이프", "스탠딩"];
+
+// 레이더 축 순서: 위/오른쪽/아래/왼쪽
+const RADAR_ORDER: Stream[] = ["가드포지션", "탑포지션", "스탠딩", "이스케이프"];
 
 const DAY_EN = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -219,6 +223,7 @@ export function HomeDashboard({
   }
   const bjjStyle       = getBjjStyle(streamTotals, sessions.length);
   const weakness       = analyzeWeakness(streamTotals, techniques, trainingCountMap);
+  const radarTotal     = Object.values(streamTotals).reduce((a, b) => a + b, 0);
   const TodayStyleIcon = bjjStyle.dominant ? CAPSULE[bjjStyle.dominant].IconCmp : Dumbbell;
 
   // ── 학습 목표(찜한 기술) — 선수 상세에서 하트로 찜한 시그니처 기술
@@ -572,71 +577,28 @@ export function HomeDashboard({
           </section>
         )}
 
-        {/* ── 약점 스트림 카드 ───────────────────────────────────────── */}
-        {weakness && (() => {
-          const topCap = CAPSULE[weakness.topStream];
-          return (
-            <section style={SECTION_SURFACE}>
-              {/* 헤더 */}
-              <div className="flex items-center gap-1.5 mb-3">
-                <Zap size={15} color="#F87171" />
-                <h2 className="text-[14.5px] font-bold text-white">약점 스트림 감지</h2>
-              </div>
-
-              {/* 진단 콜아웃 — 왼쪽 액센트 바 + 옅은 레드 배경으로 아래
-                  추천 리스트와 시각적으로 분리 (2026-09-19) */}
-              <div
-                className="flex items-center justify-between gap-3 rounded-xl px-3.5 py-3 mb-4"
-                style={{ backgroundColor: "rgba(248,113,113,0.08)", borderLeft: "3px solid #F87171" }}
-              >
-                <div>
-                  <p className="text-[13.5px] font-bold leading-tight text-white">
-                    {CAPSULE[weakness.weakestStream].label} 강화 필요
-                  </p>
-                  <p className="text-[11px] font-normal mt-0.5" style={{ color: "#8A8A94" }}>
-                    {topCap.label} 대비 수련 비율 격차
-                  </p>
-                </div>
-                <p className="text-[17px] font-bold tabular-nums shrink-0" style={{ color: "#F87171" }}>
-                  −{weakness.gapPct}%p
-                </p>
-              </div>
-
-              {/* 추천 기술 — 진단과 구분되는 플랫 리스트 */}
-              {weakness.recommendations.length > 0 && (
-                <div>
-                  <p className="text-[11px] font-semibold mb-1" style={{ color: "#8A8A94" }}>
-                    지금 연습하면 좋은 기술
-                  </p>
-                  <div>
-                    {weakness.recommendations.map((t, i) => (
-                      <Link
-                        key={t.recordId}
-                        href={`/tree/${t.parentId ?? ""}/${t.recordId}`}
-                        className="flex items-center gap-2.5 py-2.5 active:opacity-70 transition-opacity duration-fast"
-                        style={{
-                          borderBottom: i < weakness.recommendations.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
-                        }}
-                      >
-                        <span className="flex-1 text-[13px] font-normal text-white truncate">
-                          {t.nameKo}
-                        </span>
-                        {t.xpValue != null && (
-                          <span
-                            className="text-[9.5px] px-2 py-0.5 rounded-full font-bold shrink-0"
-                            style={{ backgroundColor: "#D9772E26", color: "#D9772E" }}
-                          >
-                            XP {t.xpValue}
-                          </span>
-                        )}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </section>
-          );
-        })()}
+        {/* ── 내 수련 밸런스 (레이더) ─────────────────────────────────── */}
+        {radarTotal >= 3 && (
+          <section style={SECTION_SURFACE}>
+            <div className="flex items-center mb-1">
+              <h2 className="text-[14.5px] font-bold text-white">내 수련 밸런스</h2>
+              <span className="text-[11px] font-normal ml-auto" style={{ color: "#5A5A64" }}>전체 기간</span>
+            </div>
+            <BalanceRadar
+              axes={RADAR_ORDER.map((st) => ({ key: st, label: CAPSULE[st].label, count: streamTotals[st] }))}
+              coach={{
+                weakLabel: weakness ? CAPSULE[weakness.weakestStream].label : null,
+                topLabel: weakness ? CAPSULE[weakness.topStream].label : null,
+                gapPct: weakness?.gapPct ?? 0,
+                recommendations: (weakness?.recommendations ?? []).map((t) => ({
+                  id: t.recordId,
+                  name: t.nameKo,
+                  href: `/tree/${t.parentId ?? ""}/${t.recordId}`,
+                })),
+              }}
+            />
+          </section>
+        )}
       </div>
     </div>
   );
