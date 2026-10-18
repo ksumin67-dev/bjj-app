@@ -423,6 +423,14 @@ export function OnboardingFlow({ athletes }: { athletes: OnboardingAthlete[] }) 
                           >
                             {a.name}
                           </span>
+                          {a.styleTags.length > 0 && (
+                            <span
+                              className="-mt-1.5 text-[9.5px] text-center leading-tight"
+                              style={{ color: on ? `${color}cc` : "#6B7280" }}
+                            >
+                              {a.styleTags.slice(0, 2).join(" · ")}
+                            </span>
+                          )}
                         </motion.button>
                       );
                     })}
