@@ -7,7 +7,7 @@ import { Loader2, ChevronLeft, Check, BookOpen, NotebookPen, Sparkles } from "lu
 import { completeOnboardingAction } from "@/lib/actions/userProfile";
 import { BeltDisplay, BELT_CONFIG } from "@/components/ui/BeltDisplay";
 import { AvatarPicker } from "@/components/ui/AvatarPicker";
-import { DEFAULT_AVATAR_KEY } from "@/lib/avatars";
+import { DEFAULT_AVATAR_KEY, type AvatarSel } from "@/lib/avatars";
 import { AthleteAvatar } from "@/components/tree/AthleteAvatar";
 import { STYLE_TAG_META, STYLE_TAG_FALLBACK } from "@/types/domain";
 import type { BeltLevel, StyleTag } from "@/types/domain";
@@ -68,7 +68,7 @@ export function OnboardingFlow({ athletes }: { athletes: OnboardingAthlete[] }) 
   const [weeklyGoal, setWeeklyGoal] = useState<number | null>(3);
   const [picked, setPicked] = useState<string[]>([]);
   const [nickname, setNickname] = useState("");
-  const [avatarKey, setAvatarKey] = useState<string>(DEFAULT_AVATAR_KEY);
+  const [avatar, setAvatar] = useState<AvatarSel>({ type: "preset", value: DEFAULT_AVATAR_KEY });
   const [nickSuggestions, setNickSuggestions] = useState<string[]>(NICK_POOL.slice(0, 6));
 
   const maxStripe = belt === "Black Belt" ? 6 : 4;
@@ -121,7 +121,7 @@ export function OnboardingFlow({ athletes }: { athletes: OnboardingAthlete[] }) 
       preferredStyleTag: withPicks ? preferredStyleTag : null,
       favoriteAthleteIds: ids,
       nickname: nickname.trim() || undefined,
-      avatarKey,
+      avatar,
     });
     setDone(true);
     window.setTimeout(() => {
@@ -275,7 +275,7 @@ export function OnboardingFlow({ athletes }: { athletes: OnboardingAthlete[] }) 
                     캐릭터와 닉네임을 정해요. 나중에 프로필에서 바꿀 수 있어요.
                   </p>
                   <div className="mb-6">
-                    <AvatarPicker value={avatarKey} nickname={nickname} ringColor={beltCfg.bodyGrad[0]} onChange={setAvatarKey} />
+                    <AvatarPicker value={avatar} nickname={nickname} onChange={setAvatar} />
                   </div>
                   <input
                     type="text"

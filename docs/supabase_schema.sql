@@ -190,3 +190,7 @@ alter table public.profiles
   add column if not exists avatar_type text check (avatar_type in ('preset','photo')),
   add column if not exists avatar_value text;
 grant update (avatar_type, avatar_value) on public.profiles to authenticated;
+
+-- 2026-10-18: 프로필 사진 Storage 버킷 (공개 읽기, 본인 폴더({user_id}/…)만 쓰기/수정/삭제, 512KB·jpeg/png/webp)
+-- insert into storage.buckets (id,name,public,file_size_limit,allowed_mime_types) values ('avatars','avatars',true,524288,array['image/jpeg','image/png','image/webp']);
+-- policies: avatars_insert_own / avatars_update_own / avatars_delete_own (bucket_id='avatars' and (storage.foldername(name))[1] = auth.uid()::text)

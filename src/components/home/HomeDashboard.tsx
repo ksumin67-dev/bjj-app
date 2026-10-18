@@ -7,7 +7,6 @@ import { Swords, Shield, Zap, Users, type LucideIcon } from "lucide-react";
 import { Bell, Dumbbell, Flame, Check, Heart, Activity } from "lucide-react";
 import { BalanceRadar } from "./BalanceRadar";
 import { UserAvatar } from "@/components/ui/UserAvatar";
-import { BELT_CONFIG } from "@/components/ui/BeltDisplay";
 import { getAthletePhoto } from "@/lib/athletePhotos";
 import { AthleteAvatar } from "@/components/tree/AthleteAvatar";
 import { STYLE_TAG_META, STYLE_TAG_FALLBACK } from "@/types/domain";
@@ -306,7 +305,6 @@ export function HomeDashboard({
                 avatarValue={profile.avatarValue}
                 nickname={USER_NAME}
                 size={46}
-                ringColor={(BELT_CONFIG[profile.belt] ?? BELT_CONFIG["White Belt"]).bodyGrad[0]}
               />
             </Link>
 

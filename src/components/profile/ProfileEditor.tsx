@@ -13,6 +13,7 @@ import { calculateStreak, getBjjStyle, getStreakBonus } from "@/types/domain";
 import { BeltDisplay, BELT_CONFIG } from "@/components/ui/BeltDisplay";
 import { UserAvatar } from "@/components/ui/UserAvatar";
 import { AvatarPicker } from "@/components/ui/AvatarPicker";
+import type { AvatarSel } from "@/lib/avatars";
 import { TrainingReminderToggle } from "@/components/profile/TrainingReminderToggle";
 import {
   Loader2, Pencil, Check, Flame, Trophy, CalendarCheck,
@@ -58,7 +59,7 @@ export function ProfileEditor({
   const [belt,     setBelt]     = useState<BeltLevel>(profile.belt);
   const [stripe,   setStripe]   = useState(profile.stripe);
   const [nickname, setNickname] = useState(profile.nickname);
-  const [avatarKey, setAvatarKey] = useState<string | null>(profile.avatarType === "preset" ? profile.avatarValue : null);
+  const [avatar, setAvatar] = useState<AvatarSel>(profile.avatarType && profile.avatarValue ? { type: profile.avatarType, value: profile.avatarValue } : null);
   const [editing,  setEditing]  = useState(false);
   const [isPending, startTransition] = useTransition();
   const [loggingOut, setLoggingOut] = useState(false);
@@ -99,7 +100,7 @@ export function ProfileEditor({
 
   function handleSave() {
     startTransition(async () => {
-      const res = await updateProfileAction(belt, stripe, nickname, avatarKey);
+      const res = await updateProfileAction(belt, stripe, nickname, avatar);
       if (res.ok) {
         toast.show("success", "프로필이 저장됐습니다.");
         setEditing(false);
@@ -114,7 +115,7 @@ export function ProfileEditor({
     setBelt(profile.belt);
     setStripe(profile.stripe);
     setNickname(profile.nickname);
-    setAvatarKey(profile.avatarType === "preset" ? profile.avatarValue : null);
+    setAvatar(profile.avatarType && profile.avatarValue ? { type: profile.avatarType, value: profile.avatarValue } : null);
     setEditing(false);
   }
 
@@ -183,11 +184,10 @@ export function ProfileEditor({
         <div className="flex items-center gap-4">
           {/* 아바타 */}
           <UserAvatar
-            avatarType={avatarKey ? "preset" : null}
-            avatarValue={avatarKey}
+            avatarType={avatar?.type ?? null}
+            avatarValue={avatar?.value ?? null}
             nickname={nickname}
             size={68}
-            ringColor={cfg.bodyGrad[0]}
           />
           <div className="min-w-0 flex-1">
             <p className="text-xl font-bold text-white truncate leading-tight">
@@ -368,7 +368,7 @@ export function ProfileEditor({
           {/* 프로필 캐릭터 */}
           <section style={SECTION_GAP}>
             <h2 className="text-[13px] font-bold text-white mb-3">프로필 캐릭터</h2>
-            <AvatarPicker value={avatarKey} nickname={nickname} ringColor={cfg.bodyGrad[0]} onChange={setAvatarKey} />
+            <AvatarPicker value={avatar} nickname={nickname} onChange={setAvatar} bleed={16} />
           </section>
 
           {/* 닉네임 */}

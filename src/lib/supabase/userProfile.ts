@@ -1,7 +1,7 @@
 import "server-only";
 import { createClient } from "@/lib/supabase/server";
 import type { BeltLevel, StyleTag } from "@/types/domain";
-import { getAvatarPreset } from "@/lib/avatars";
+import { sanitizeAvatar, type AvatarSel } from "@/lib/avatars";
 
 /**
  * RevenueCat 구독 상태. free=미구독, trialing=무료체험중, active=구독중, expired=만료.
@@ -89,7 +89,7 @@ export async function updateUserProfile(
   belt: BeltLevel,
   stripe: number,
   nickname?: string,
-  avatarKey?: string | null,
+  avatar?: AvatarSel,
 ): Promise<void> {
   const supabase = createClient();
   const {
@@ -103,10 +103,10 @@ export async function updateUserProfile(
     updated_at: new Date().toISOString(),
   };
   if (nickname !== undefined) updates.nickname = nickname;
-  if (avatarKey !== undefined) {
-    const valid = getAvatarPreset(avatarKey) ? avatarKey : null; // 알 수 없는 키는 저장하지 않음
-    updates.avatar_type = valid ? "preset" : null;
-    updates.avatar_value = valid;
+  if (avatar !== undefined) {
+    const valid = sanitizeAvatar(avatar, user.id); // 허용되지 않은 값은 저장하지 않음(초기화)
+    updates.avatar_type = valid?.type ?? null;
+    updates.avatar_value = valid?.value ?? null;
   }
 
   const { error } = await supabase
@@ -126,7 +126,7 @@ export async function completeOnboarding(input: {
   preferredStyleTag: StyleTag | null;
   favoriteAthleteIds?: string[];
   nickname?: string;
-  avatarKey?: string | null;
+  avatar?: AvatarSel;
 }): Promise<void> {
   const supabase = createClient();
   const {
@@ -143,7 +143,9 @@ export async function completeOnboarding(input: {
       reminder_hour: input.reminderHour ?? 20,
       preferred_style_tag: input.preferredStyleTag,
       favorite_athlete_ids: (input.favoriteAthleteIds ?? []).slice(0, 30),
-      ...(getAvatarPreset(input.avatarKey) ? { avatar_type: "preset", avatar_value: input.avatarKey } : {}),
+      ...(sanitizeAvatar(input.avatar, user.id)
+        ? { avatar_type: input.avatar!.type, avatar_value: input.avatar!.value }
+        : {}),
       ...(input.nickname?.trim() ? { nickname: input.nickname.trim().slice(0, 12) } : {}),
       onboarding_completed: true,
       updated_at: new Date().toISOString(),

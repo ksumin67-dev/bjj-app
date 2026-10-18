@@ -3,18 +3,19 @@
 import { revalidatePath } from "next/cache";
 import { updateUserProfile, completeOnboarding, updateReminderHour } from "@/lib/supabase/userProfile";
 import type { BeltLevel, StyleTag } from "@/types/domain";
+import type { AvatarSel } from "@/lib/avatars";
 
 export async function updateProfileAction(
   belt: BeltLevel,
   stripe: number,
   nickname: string,
-  avatarKey?: string | null,
+  avatar?: AvatarSel,
 ): Promise<{ ok: boolean; error?: string }> {
   try {
     const clampedStripe = belt === "Black Belt"
       ? Math.min(6, Math.max(0, stripe))
       : Math.min(4, Math.max(0, stripe));
-    await updateUserProfile(belt, clampedStripe, nickname.trim() || "아쿠아", avatarKey);
+    await updateUserProfile(belt, clampedStripe, nickname.trim() || "아쿠아", avatar);
     // 홈은 force-dynamic이라 revalidatePath 불필요 (오히려 SSR 컨텍스트 오류 유발)
     revalidatePath("/profile");
     return { ok: true };
@@ -32,7 +33,7 @@ export async function completeOnboardingAction(input: {
   preferredStyleTag: StyleTag | null;
   favoriteAthleteIds?: string[];
   nickname?: string;
-  avatarKey?: string | null;
+  avatar?: AvatarSel;
 }): Promise<{ ok: boolean; error?: string }> {
   try {
     await completeOnboarding(input);
