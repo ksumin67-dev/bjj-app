@@ -222,15 +222,19 @@ export function HomeDashboard({
   const TodayStyleIcon = bjjStyle.dominant ? CAPSULE[bjjStyle.dominant].IconCmp : Dumbbell;
 
   // ── 학습 목표(찜한 기술) — 선수 상세에서 하트로 찜한 시그니처 기술
-  const athleteNameMap = new Map(athletes.map((a) => [a.recordId, a.nameKo]));
   const goalIdSet = new Set(goalTechniqueIds);
+  const athleteById = new Map(athletes.map((a) => [a.recordId, a]));
   const goalTechniques = techniques
     .filter((t) => goalIdSet.has(t.recordId))
-    .map((t) => ({
-      technique: t,
-      athleteName: t.athleteRecordIds[0] ? athleteNameMap.get(t.athleteRecordIds[0]) ?? null : null,
-      trained: (trainingCountMap[t.recordId] ?? 0) > 0,
-    }));
+    .map((t) => {
+      const athlete = t.athleteRecordIds[0] ? athleteById.get(t.athleteRecordIds[0]) ?? null : null;
+      return {
+        technique: t,
+        athlete,
+        athleteName: athlete?.nameKo ?? null,
+        trained: (trainingCountMap[t.recordId] ?? 0) > 0,
+      };
+    });
 
   // ── 좋아하는 선수(온보딩) — 찜한 기술이 3개 미만이면 선수의 시그니처 기술로 채움
   const favAthletes = profile.favoriteAthleteIds
@@ -253,7 +257,7 @@ export function HomeDashboard({
         const t = list[round];
         if (!t || taken.has(t.recordId)) continue;
         taken.add(t.recordId);
-        fillItems.push({ technique: t, athleteName: athlete.nameKo, trained: (trainingCountMap[t.recordId] ?? 0) > 0 });
+        fillItems.push({ technique: t, athlete, athleteName: athlete.nameKo, trained: (trainingCountMap[t.recordId] ?? 0) > 0 });
       }
     }
   }
@@ -494,17 +498,17 @@ export function HomeDashboard({
 
         {/* (벨트/XP 요약 줄은 2026-09-20 상단 헤더로 이동) */}
 
-        {/* ── 내가 배우고 싶은 기술 / 내 선수가 쓰는 기술 ─────────────────── */}
+        {/* ── 내 선수의 시그니처 / 내가 배우고 싶은 기술 ─────────────────── */}
         {cardItems.length > 0 && (
           <section style={SECTION_SURFACE}>
-            <div className="flex items-center gap-1.5 mb-2">
+            <div className="flex items-center gap-1.5 mb-3">
               <Heart size={14} fill="#F87171" color="#F87171" />
               <h2 className="text-[14.5px] font-bold text-white">
-                {cardIsAthleteOnly ? "내 선수가 쓰는 기술" : "내가 배우고 싶은 기술"}
+                {cardIsAthleteOnly ? "내 선수의 시그니처" : "내가 배우고 싶은 기술"}
               </h2>
-              {cardIsAthleteOnly && firstFav ? (
+              {firstFav ? (
                 <Link
-                  href={`/tree/athlete/${firstFav.recordId}`}
+                  href={cardIsAthleteOnly ? `/tree/athlete/${firstFav.recordId}` : "/tree"}
                   className="text-[11px] font-normal ml-auto active:opacity-70"
                   style={{ color: "#5A5A64" }}
                 >
@@ -512,61 +516,58 @@ export function HomeDashboard({
                 </Link>
               ) : (
                 <span className="text-[11px] font-normal ml-auto" style={{ color: "#5A5A64" }}>
-                  {goalTechniques.length > 0 ? `${goalTechniques.length}개` : ""}
+                  {goalTechniques.length}개
                 </span>
               )}
             </div>
-            {cardIsAthleteOnly && (
-              <div className="flex items-center mb-1.5">
-                {favAthletes.slice(0, 3).map((a, i) => (
-                  <div
-                    key={a.recordId}
-                    className="rounded-full overflow-hidden"
-                    style={{ width: 24, height: 24, marginLeft: i === 0 ? 0 : -8, border: "2px solid #14171D", backgroundColor: "#1A1A24" }}
+            <div className="flex gap-2">
+              {cardItems.map(({ technique: t, athlete, athleteName, trained }) => {
+                const accent = athlete
+                  ? (STYLE_TAG_META[athlete.styleTags[0] as keyof typeof STYLE_TAG_META] ?? STYLE_TAG_FALLBACK).color
+                  : STYLE_TAG_FALLBACK.color;
+                return (
+                  <Link
+                    key={t.recordId}
+                    href={`/tree/${t.parentId ?? ""}/${t.id}`}
+                    className="flex-1 min-w-0 flex flex-col items-center text-center rounded-xl px-1.5 pt-3 pb-2.5 active:scale-[0.96] transition-transform duration-fast"
+                    style={{ backgroundColor: "#1A1A24" }}
                   >
-                    <AthleteAvatar
-                      color={(STYLE_TAG_META[a.styleTags[0] as keyof typeof STYLE_TAG_META] ?? STYLE_TAG_FALLBACK).color}
-                      size={20}
-                      photoUrl={getAthletePhoto(a.recordId)}
-                      alt={a.nameKo}
-                    />
-                  </div>
-                ))}
-                <span className="text-[11px] ml-2" style={{ color: "#8A8A94" }}>
-                  {favAthletes[0].nameKo}
-                  {favAthletes.length > 1 ? ` 외 ${favAthletes.length - 1}명` : ""}
-                </span>
-              </div>
-            )}
-            <div>
-              {cardItems.map(({ technique: t, athleteName, trained }, i) => (
-                <Link
-                  key={t.recordId}
-                  href={`/tree/${t.parentId ?? ""}/${t.id}`}
-                  className="flex items-center gap-2.5 py-2.5 active:opacity-70 transition-opacity duration-fast"
-                  style={{
-                    borderBottom: i < cardItems.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
-                  }}
-                >
-                  <div className="flex-1 min-w-0">
-                    <span className="text-[13.5px] font-normal text-white truncate block">{t.nameKo}</span>
+                    <div
+                      className="rounded-full overflow-hidden shrink-0"
+                      style={{
+                        width: 56,
+                        height: 56,
+                        boxShadow: `0 0 0 2px ${accent}, 0 0 14px ${accent}55`,
+                        backgroundColor: `${accent}22`,
+                      }}
+                    >
+                      <AthleteAvatar
+                        color={accent}
+                        size={56}
+                        photoUrl={athlete ? getAthletePhoto(athlete.recordId) : null}
+                        alt={athleteName ?? ""}
+                      />
+                    </div>
+                    <span className="mt-2.5 text-[12px] font-bold text-white leading-tight line-clamp-2 w-full">
+                      {t.nameKo}
+                    </span>
                     {athleteName && (
-                      <span className="text-[10.5px] font-normal truncate block" style={{ color: "#8A8A94" }}>
-                        {cardIsAthleteOnly ? `${athleteName}의 시그니처` : athleteName}
+                      <span className="mt-0.5 text-[10px] truncate w-full" style={{ color: "#8A8A94" }}>
+                        {athleteName}
                       </span>
                     )}
-                  </div>
-                  <span
-                    className="text-[10px] px-2 py-0.5 rounded-full font-semibold shrink-0"
-                    style={{
-                      backgroundColor: trained ? "rgba(52,211,153,0.15)" : "rgba(255,255,255,0.06)",
-                      color: trained ? "#34D399" : "#8A8A94",
-                    }}
-                  >
-                    {trained ? "수련중" : "미수련"}
-                  </span>
-                </Link>
-              ))}
+                    <span
+                      className="mt-2 text-[9.5px] px-2 py-0.5 rounded-full font-semibold"
+                      style={{
+                        backgroundColor: trained ? "rgba(52,211,153,0.15)" : "rgba(255,255,255,0.06)",
+                        color: trained ? "#34D399" : "#8A8A94",
+                      }}
+                    >
+                      {trained ? "수련중" : "미수련"}
+                    </span>
+                  </Link>
+                );
+              })}
             </div>
           </section>
         )}
