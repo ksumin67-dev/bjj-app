@@ -9,6 +9,8 @@ import { authErrorMessage, authRedirectErrorMessage } from "@/lib/authErrors";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [agreed, setAgreed] = useState(false);
   const [mode, setMode] = useState<"signin" | "signup" | "forgot">("signin");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -37,6 +39,18 @@ export default function LoginPage() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
+
+    if (mode === "signup") {
+      if (password !== passwordConfirm) {
+        setError("비밀번호가 일치하지 않아요.");
+        return;
+      }
+      if (!agreed) {
+        setError("이용약관과 개인정보처리방침에 동의해 주세요.");
+        return;
+      }
+    }
+
     setLoading(true);
 
     if (mode === "forgot") {
@@ -122,15 +136,30 @@ export default function LoginPage() {
     setResendMsg("인증 메일을 다시 보냈어요. 스팸함도 확인해 주세요.");
   }
 
-  function backToSignin() {
-    setMode("signin");
+  function switchMode(next: "signin" | "signup" | "forgot") {
+    setMode(next);
     setError(null);
-    setSignupSent(false);
-    setResetSent(false);
     setNeedsConfirm(false);
     setResendMsg(null);
     setPassword("");
+    setPasswordConfirm("");
+    setAgreed(false);
   }
+
+  function backToSignin() {
+    switchMode("signin");
+    setSignupSent(false);
+    setResetSent(false);
+  }
+
+  const MODE_TITLE = {
+    signin: { title: "로그인", desc: "이메일과 비밀번호로 로그인하세요." },
+    signup: { title: "회원가입", desc: "이메일과 비밀번호를 입력해 계정을 만들어요." },
+    forgot: {
+      title: "비밀번호 찾기",
+      desc: "가입한 이메일을 입력하면 재설정 링크를 보내드려요.",
+    },
+  } as const;
 
   const showSuccessScreen = signupSent || resetSent;
 
@@ -184,6 +213,14 @@ export default function LoginPage() {
         </div>
       ) : (
         <>
+          <div className="w-full max-w-sm text-center">
+            <h2 className="text-lg font-bold text-text-primary">
+              {MODE_TITLE[mode].title}
+            </h2>
+            <p className="mt-1 text-[12px] text-text-tertiary">
+              {MODE_TITLE[mode].desc}
+            </p>
+          </div>
           <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-3">
             <div className="relative">
               <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-tertiary pointer-events-none" />
@@ -211,10 +248,40 @@ export default function LoginPage() {
               </div>
             )}
 
+            {mode === "signup" && (
+              <>
+                <div className="relative">
+                  <Lock size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-tertiary pointer-events-none" />
+                  <input
+                    type="password"
+                    required
+                    minLength={6}
+                    placeholder="비밀번호 확인"
+                    value={passwordConfirm}
+                    onChange={(e) => setPasswordConfirm(e.target.value)}
+                    className="w-full rounded-xl bg-bg-elevated border border-border-subtle pl-10 pr-3 py-3 text-sm text-text-primary placeholder:text-text-disabled outline-none focus:border-border-focus transition-colors duration-fast"
+                  />
+                </div>
+                <label className="flex items-start gap-2 text-[11px] text-text-tertiary leading-relaxed cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={agreed}
+                    onChange={(e) => setAgreed(e.target.checked)}
+                    className="mt-0.5 accent-[var(--brand-primary,#F59E0B)]"
+                  />
+                  <span>
+                    <Link href="/terms" className="underline">이용약관</Link>과{" "}
+                    <Link href="/privacy" className="underline">개인정보처리방침</Link>에
+                    동의합니다.
+                  </span>
+                </label>
+              </>
+            )}
+
             {mode === "signin" && (
               <button
                 type="button"
-                onClick={() => { setMode("forgot"); setError(null); }}
+                onClick={() => switchMode("forgot")}
                 className="block ml-auto text-[11px] text-text-tertiary"
               >
                 비밀번호를 잊으셨나요?
@@ -271,21 +338,29 @@ export default function LoginPage() {
             </>
           )}
 
-          <button
-            type="button"
-            onClick={() => {
-              if (mode === "forgot") { backToSignin(); return; }
-              setMode(mode === "signin" ? "signup" : "signin");
-              setError(null);
-            }}
-            className="text-xs text-text-tertiary"
-          >
-            {mode === "signin"
-              ? "계정이 없나요? 회원가입"
-              : mode === "signup"
-                ? "이미 계정이 있나요? 로그인"
-                : "로그인으로 돌아가기"}
-          </button>
+          <div className="w-full max-w-sm text-center space-y-2">
+            <p className="text-[11px] text-text-tertiary">
+              {mode === "signin"
+                ? "아직 계정이 없나요?"
+                : mode === "signup"
+                  ? "이미 계정이 있나요?"
+                  : ""}
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                if (mode === "forgot") { backToSignin(); return; }
+                switchMode(mode === "signin" ? "signup" : "signin");
+              }}
+              className="w-full rounded-xl border border-border-subtle py-3 text-sm font-bold text-brand-primary hover:bg-bg-hover active:scale-[0.98] transition-all duration-fast"
+            >
+              {mode === "signin"
+                ? "회원가입 하기"
+                : mode === "signup"
+                  ? "로그인 하기"
+                  : "로그인으로 돌아가기"}
+            </button>
+          </div>
         </>
       )}
 
