@@ -110,17 +110,21 @@ export function recommendGamePlans(args: {
   positionNameById: Record<string, string>;
   trainingCountMap: Record<string, number>;
   goals: GoalSignal[];
+  /** 온보딩에서 고른 좋아하는 선수 recordId */
+  favoriteAthleteIds?: string[];
   /** 👎 한 콤보 id (제외) */
   dislikedComboIds?: Set<string>;
   limit?: number;
 }): Recommendations {
-  const { techniques, positionNameById, trainingCountMap, goals, dislikedComboIds, limit = 4 } = args;
+  const { techniques, athletes, positionNameById, trainingCountMap, goals, dislikedComboIds, limit = 4 } = args;
+  const favIds = new Set(args.favoriteAthleteIds ?? []);
+  const athleteNameById = new Map(athletes.map((a) => [a.recordId, a.nameKo]));
 
   const byShortId = new Map(techniques.map((t) => [t.id, t]));
   const goalIdSet = new Set(goals.map((g) => g.techniqueRecordId));
   const likedAthletes = new Set(goals.map((g) => g.athleteRecordId).filter((x): x is string => Boolean(x)));
 
-  type Scored = { combo: Combo; score: number; trained: number; goalHits: Technique[]; styleHit: boolean; order: number };
+  type Scored = { combo: Combo; score: number; trained: number; goalHits: Technique[]; styleHit: boolean; favAthlete: string | null; order: number };
   const scored: Scored[] = [];
 
   COMBO_LIBRARY.forEach((combo, order) => {
@@ -132,8 +136,11 @@ export function recommendGamePlans(args: {
     const trained = list.reduce((sum, t) => sum + (trainingCountMap[t.recordId] ?? 0), 0);
     const goalHits = list.filter((t) => goalIdSet.has(t.recordId));
     const styleHit = list.some((t) => t.athleteRecordIds.some((a) => likedAthletes.has(a)));
-    const score = trained + goalHits.length * 5 + (styleHit ? 3 : 0);
-    scored.push({ combo, score, trained, goalHits, styleHit, order });
+    const favTech = list.find((t) => t.athleteRecordIds.some((a) => favIds.has(a)));
+    const favId = favTech?.athleteRecordIds.find((a) => favIds.has(a)) ?? null;
+    const favAthlete = favId ? athleteNameById.get(favId) ?? null : null;
+    const score = trained + goalHits.length * 5 + (styleHit ? 3 : 0) + (favTech ? 4 : 0);
+    scored.push({ combo, score, trained, goalHits, styleHit, favAthlete, order });
   });
 
   const personalizedPool = scored.filter((s) => s.score > 0);
@@ -170,6 +177,7 @@ export function recommendGamePlans(args: {
     const reasons: string[] = [];
     if (s.trained > 0) reasons.push(`이 콤보의 기술을 ${s.trained}번 수련했어요`);
     if (s.goalHits.length > 0) reasons.push(`배우고 싶은 '${s.goalHits[0].nameKo}' 포함`);
+    if (s.favAthlete) reasons.push(`좋아하는 ${s.favAthlete} 선수의 기술 포함`);
     if (s.styleHit) reasons.push("좋아요한 선수 스타일과 맞아요");
     if (reasons.length === 0) reasons.push(posName ? `${posName}에서 많이 쓰는 기본 연계예요` : "많이 쓰는 기본 연계예요");
     const plan = buildPlan(s.combo, byShortId, reasons.join(" · "));

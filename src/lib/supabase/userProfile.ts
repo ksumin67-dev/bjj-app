@@ -18,6 +18,7 @@ export interface UserProfile {
   weeklyGoal: number | null;
   reminderHour: number;
   preferredStyleTag: StyleTag | null;
+  favoriteAthleteIds: string[];
   onboardingCompleted: boolean;
 }
 
@@ -31,6 +32,7 @@ const DEFAULT_PROFILE: UserProfile = {
   weeklyGoal: null,
   reminderHour: 20,
   preferredStyleTag: null,
+  favoriteAthleteIds: [],
   onboardingCompleted: false,
 };
 
@@ -49,7 +51,7 @@ export async function getUserProfile(): Promise<UserProfile> {
   try {
     const { data, error } = await supabase
       .from("profiles")
-      .select("id, nickname, belt, stripe, subscription_status, weekly_goal, reminder_hour, preferred_style_tag, onboarding_completed")
+      .select("id, nickname, belt, stripe, subscription_status, weekly_goal, reminder_hour, preferred_style_tag, favorite_athlete_ids, onboarding_completed")
       .eq("id", user.id)
       .single();
 
@@ -68,6 +70,7 @@ export async function getUserProfile(): Promise<UserProfile> {
       weeklyGoal: data.weekly_goal ?? null,
       reminderHour: data.reminder_hour ?? 20,
       preferredStyleTag: (data.preferred_style_tag as StyleTag) ?? null,
+      favoriteAthleteIds: (data.favorite_athlete_ids as string[] | null) ?? [],
       onboardingCompleted: data.onboarding_completed ?? false,
     };
   } catch {

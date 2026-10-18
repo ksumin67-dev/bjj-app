@@ -7,6 +7,7 @@ import { getAllAthletes } from "@/lib/airtable/athletes";
 import { buildTrainingCountMap, type Technique } from "@/types/domain";
 import { recommendGamePlans, type Recommendations } from "@/lib/gamePlanRecommend";
 import { getMyComboVotes } from "@/lib/supabase/comboFeedback";
+import { getUserProfile } from "@/lib/supabase/userProfile";
 
 /**
  * 게임플랜 작성/수정 폼에 필요한 데이터 한 번에 준비 (2026-09-20).
@@ -15,7 +16,7 @@ import { getMyComboVotes } from "@/lib/supabase/comboFeedback";
 export async function getGamePlanFormData(
   opts: { withRecommendations?: boolean; recLimit?: number; excludeComboIds?: string[] } = {},
 ) {
-  const [positions, techniques, sessions, goals, athletes, votes] = await Promise.all([
+  const [positions, techniques, sessions, goals, athletes, votes, profile] = await Promise.all([
     getAllPositions(),
     getAllTechniques(),
     getAllTrainingSessions(),
@@ -23,6 +24,7 @@ export async function getGamePlanFormData(
     // 추천은 새 게임플랜 화면에서만 필요 — 수정 화면에서는 Airtable 호출 생략
     opts.withRecommendations ? getAllAthletes().catch(() => []) : Promise.resolve([]),
     opts.withRecommendations ? getMyComboVotes() : Promise.resolve(new Map<string, 1 | -1>()),
+    opts.withRecommendations ? getUserProfile() : Promise.resolve(null),
   ]);
 
   // 포지션(부모) 레코드는 게임플랜 단계로 직접 선택하지 않음 — 구체적 자식 기술만 선택 대상
@@ -65,6 +67,7 @@ export async function getGamePlanFormData(
         techniqueRecordId: g.techniqueRecordId,
         athleteRecordId: g.athleteRecordId,
       })),
+      favoriteAthleteIds: profile?.favoriteAthleteIds ?? [],
       dislikedComboIds: new Set([
         ...[...votes].filter(([, v]) => v === -1).map(([id]) => id),
         ...(opts.excludeComboIds ?? []), // '다른 조합 추천받기'에서 이미 보여준 콤보

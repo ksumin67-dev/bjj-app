@@ -5,6 +5,9 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 import { Swords, Shield, Zap, Users, type LucideIcon } from "lucide-react";
 import { Bell, Dumbbell, Flame, Check, Heart } from "lucide-react";
+import { getAthletePhoto } from "@/lib/athletePhotos";
+import { AthleteAvatar } from "@/components/tree/AthleteAvatar";
+import { STYLE_TAG_META, STYLE_TAG_FALLBACK } from "@/types/domain";
 
 // ── 상수 ───────────────────────────────────────────────────────────────────
 
@@ -228,6 +231,35 @@ export function HomeDashboard({
       athleteName: t.athleteRecordIds[0] ? athleteNameMap.get(t.athleteRecordIds[0]) ?? null : null,
       trained: (trainingCountMap[t.recordId] ?? 0) > 0,
     }));
+
+  // ── 좋아하는 선수(온보딩) — 찜한 기술이 3개 미만이면 선수의 시그니처 기술로 채움
+  const favAthletes = profile.favoriteAthleteIds
+    .map((id) => athletes.find((a) => a.recordId === id))
+    .filter((a): a is Athlete => Boolean(a));
+  const MAX_CARD = 3;
+  const fillItems: typeof goalTechniques = [];
+  if (favAthletes.length > 0 && goalTechniques.length < MAX_CARD) {
+    const taken = new Set(goalTechniques.map((g) => g.technique.recordId));
+    const perAthlete = favAthletes.map((a) => ({
+      athlete: a,
+      list: techniques
+        .filter((t) => t.parentId && t.athleteRecordIds.includes(a.recordId) && !taken.has(t.recordId))
+        .sort((x, y) => Number((trainingCountMap[x.recordId] ?? 0) > 0) - Number((trainingCountMap[y.recordId] ?? 0) > 0)),
+    }));
+    // 선수별로 한 개씩 번갈아 담아 한 선수에 쏠리지 않게
+    for (let round = 0; fillItems.length + goalTechniques.length < MAX_CARD && round < 3; round++) {
+      for (const { athlete, list } of perAthlete) {
+        if (fillItems.length + goalTechniques.length >= MAX_CARD) break;
+        const t = list[round];
+        if (!t || taken.has(t.recordId)) continue;
+        taken.add(t.recordId);
+        fillItems.push({ technique: t, athleteName: athlete.nameKo, trained: (trainingCountMap[t.recordId] ?? 0) > 0 });
+      }
+    }
+  }
+  const cardItems = [...goalTechniques, ...fillItems].slice(0, MAX_CARD);
+  const cardIsAthleteOnly = goalTechniques.length === 0 && fillItems.length > 0;
+  const firstFav = favAthletes[0] ?? null;
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   //  렌더
@@ -462,30 +494,66 @@ export function HomeDashboard({
 
         {/* (벨트/XP 요약 줄은 2026-09-20 상단 헤더로 이동) */}
 
-        {/* ── 내가 배우고 싶은 기술(학습 목표) ─────────────────────────── */}
-        {goalTechniques.length > 0 && (
+        {/* ── 내가 배우고 싶은 기술 / 내 선수가 쓰는 기술 ─────────────────── */}
+        {cardItems.length > 0 && (
           <section style={SECTION_SURFACE}>
             <div className="flex items-center gap-1.5 mb-2">
               <Heart size={14} fill="#F87171" color="#F87171" />
-              <h2 className="text-[14.5px] font-bold text-white">내가 배우고 싶은 기술</h2>
-              <span className="text-[11px] font-normal ml-auto" style={{ color: "#5A5A64" }}>
-                {goalTechniques.length}개
-              </span>
+              <h2 className="text-[14.5px] font-bold text-white">
+                {cardIsAthleteOnly ? "내 선수가 쓰는 기술" : "내가 배우고 싶은 기술"}
+              </h2>
+              {cardIsAthleteOnly && firstFav ? (
+                <Link
+                  href={`/tree/athlete/${firstFav.recordId}`}
+                  className="text-[11px] font-normal ml-auto active:opacity-70"
+                  style={{ color: "#5A5A64" }}
+                >
+                  전체 보기
+                </Link>
+              ) : (
+                <span className="text-[11px] font-normal ml-auto" style={{ color: "#5A5A64" }}>
+                  {goalTechniques.length > 0 ? `${goalTechniques.length}개` : ""}
+                </span>
+              )}
             </div>
+            {cardIsAthleteOnly && (
+              <div className="flex items-center mb-1.5">
+                {favAthletes.slice(0, 3).map((a, i) => (
+                  <div
+                    key={a.recordId}
+                    className="rounded-full overflow-hidden"
+                    style={{ width: 24, height: 24, marginLeft: i === 0 ? 0 : -8, border: "2px solid #14171D", backgroundColor: "#1A1A24" }}
+                  >
+                    <AthleteAvatar
+                      color={(STYLE_TAG_META[a.styleTags[0] as keyof typeof STYLE_TAG_META] ?? STYLE_TAG_FALLBACK).color}
+                      size={20}
+                      photoUrl={getAthletePhoto(a.recordId)}
+                      alt={a.nameKo}
+                    />
+                  </div>
+                ))}
+                <span className="text-[11px] ml-2" style={{ color: "#8A8A94" }}>
+                  {favAthletes[0].nameKo}
+                  {favAthletes.length > 1 ? ` 외 ${favAthletes.length - 1}명` : ""}
+                </span>
+              </div>
+            )}
             <div>
-              {goalTechniques.map(({ technique: t, athleteName, trained }, i) => (
+              {cardItems.map(({ technique: t, athleteName, trained }, i) => (
                 <Link
                   key={t.recordId}
                   href={`/tree/${t.parentId ?? ""}/${t.id}`}
                   className="flex items-center gap-2.5 py-2.5 active:opacity-70 transition-opacity duration-fast"
                   style={{
-                    borderBottom: i < goalTechniques.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
+                    borderBottom: i < cardItems.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
                   }}
                 >
                   <div className="flex-1 min-w-0">
                     <span className="text-[13.5px] font-normal text-white truncate block">{t.nameKo}</span>
                     {athleteName && (
-                      <span className="text-[10.5px] font-normal truncate block" style={{ color: "#8A8A94" }}>{athleteName}</span>
+                      <span className="text-[10.5px] font-normal truncate block" style={{ color: "#8A8A94" }}>
+                        {cardIsAthleteOnly ? `${athleteName}의 시그니처` : athleteName}
+                      </span>
                     )}
                   </div>
                   <span
