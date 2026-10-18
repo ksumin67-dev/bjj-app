@@ -368,7 +368,7 @@ export function ProfileEditor({
           {/* 프로필 캐릭터 */}
           <section style={SECTION_GAP}>
             <h2 className="text-[13px] font-bold text-white mb-3">프로필 캐릭터</h2>
-            <AvatarPicker value={avatar} nickname={nickname} onChange={setAvatar} bleed={16} />
+            <AvatarPicker value={avatar} nickname={nickname} onChange={setAvatar} />
           </section>
 
           {/* 닉네임 */}

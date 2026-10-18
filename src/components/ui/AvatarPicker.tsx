@@ -36,13 +36,10 @@ export function AvatarPicker({
   value,
   nickname,
   onChange,
-  bleed = 24,
 }: {
   value: AvatarSel;
   nickname: string;
   onChange: (sel: AvatarSel) => void;
-  /** 목록을 화면 가장자리까지 늘리는 여백(px) — 부모 좌우 패딩과 맞춘다 */
-  bleed?: number;
 }) {
   const reduce = useReducedMotion();
   const fileRef = useRef<HTMLInputElement>(null);
@@ -108,14 +105,14 @@ export function AvatarPicker({
         <p className="mt-0.5 text-[11px]" style={{ color: "#8A8A94" }}>{captionDesc}</p>
       </div>
 
-      <div className="mt-4 flex gap-3 overflow-x-auto pb-2" style={{ scrollbarWidth: "none", marginInline: -bleed, paddingInline: bleed }}>
+      <div className="mt-5 grid grid-cols-5 gap-x-2 gap-y-3.5">
         <motion.button
           type="button"
           whileTap={reduce ? undefined : { scale: 0.88 }}
           onClick={() => fileRef.current?.click()}
           disabled={uploading}
           aria-label="내 사진 올리기"
-          className="shrink-0 flex flex-col items-center gap-1 disabled:opacity-60"
+          className="flex flex-col items-center gap-1 disabled:opacity-60"
         >
           <div
             className="rounded-full flex items-center justify-center"
@@ -140,7 +137,7 @@ export function AvatarPicker({
               onClick={() => onChange({ type: "preset", value: p.key })}
               aria-pressed={on}
               aria-label={`${p.name} ${p.tag}`}
-              className="shrink-0 flex flex-col items-center gap-1"
+              className="flex flex-col items-center gap-1"
             >
               <div
                 className="rounded-full flex items-center justify-center"
