@@ -6,6 +6,8 @@ import type { CSSProperties } from "react";
 import { Swords, Shield, Zap, Users, type LucideIcon } from "lucide-react";
 import { Bell, Dumbbell, Flame, Check, Heart, Activity } from "lucide-react";
 import { BalanceRadar } from "./BalanceRadar";
+import { UserAvatar } from "@/components/ui/UserAvatar";
+import { BELT_CONFIG } from "@/components/ui/BeltDisplay";
 import { getAthletePhoto } from "@/lib/athletePhotos";
 import { AthleteAvatar } from "@/components/tree/AthleteAvatar";
 import { STYLE_TAG_META, STYLE_TAG_FALLBACK } from "@/types/domain";
@@ -298,15 +300,14 @@ export function HomeDashboard({
           <div className="flex items-center gap-3 min-w-0">
             {/* 아바타 원형 — /profile 링크. 퍼플-마젠타 그라디언트 → 브랜드
                 앰버 단일 색으로 통일 (2026-09-19 리뉴얼) */}
-            <Link href="/profile">
-              <div
-                className="w-11 h-11 rounded-full flex items-center justify-center shrink-0 active:scale-95 transition-transform duration-fast"
-                style={{ backgroundColor: "#D9772E" }}
-              >
-                <span className="font-bold text-lg leading-none" style={{ color: "#0A0A0F" }}>
-                  {USER_NAME.charAt(0)}
-                </span>
-              </div>
+            <Link href="/profile" className="active:scale-95 transition-transform duration-fast">
+              <UserAvatar
+                avatarType={profile.avatarType}
+                avatarValue={profile.avatarValue}
+                nickname={USER_NAME}
+                size={46}
+                ringColor={(BELT_CONFIG[profile.belt] ?? BELT_CONFIG["White Belt"]).bodyGrad[0]}
+              />
             </Link>
 
             {/* 텍스트 */}

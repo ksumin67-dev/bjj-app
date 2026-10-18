@@ -1,6 +1,7 @@
 import "server-only";
 import { createClient } from "@/lib/supabase/server";
 import type { BeltLevel, StyleTag } from "@/types/domain";
+import { getAvatarPreset } from "@/lib/avatars";
 
 /**
  * RevenueCat 구독 상태. free=미구독, trialing=무료체험중, active=구독중, expired=만료.
@@ -19,6 +20,8 @@ export interface UserProfile {
   reminderHour: number;
   preferredStyleTag: StyleTag | null;
   favoriteAthleteIds: string[];
+  avatarType: "preset" | "photo" | null;
+  avatarValue: string | null;
   onboardingCompleted: boolean;
 }
 
@@ -33,6 +36,8 @@ const DEFAULT_PROFILE: UserProfile = {
   reminderHour: 20,
   preferredStyleTag: null,
   favoriteAthleteIds: [],
+  avatarType: null,
+  avatarValue: null,
   onboardingCompleted: false,
 };
 
@@ -51,7 +56,7 @@ export async function getUserProfile(): Promise<UserProfile> {
   try {
     const { data, error } = await supabase
       .from("profiles")
-      .select("id, nickname, belt, stripe, subscription_status, weekly_goal, reminder_hour, preferred_style_tag, favorite_athlete_ids, onboarding_completed")
+      .select("id, nickname, belt, stripe, subscription_status, weekly_goal, reminder_hour, preferred_style_tag, favorite_athlete_ids, avatar_type, avatar_value, onboarding_completed")
       .eq("id", user.id)
       .single();
 
@@ -71,6 +76,8 @@ export async function getUserProfile(): Promise<UserProfile> {
       reminderHour: data.reminder_hour ?? 20,
       preferredStyleTag: (data.preferred_style_tag as StyleTag) ?? null,
       favoriteAthleteIds: (data.favorite_athlete_ids as string[] | null) ?? [],
+      avatarType: (data.avatar_type as "preset" | "photo" | null) ?? null,
+      avatarValue: data.avatar_value ?? null,
       onboardingCompleted: data.onboarding_completed ?? false,
     };
   } catch {
@@ -82,6 +89,7 @@ export async function updateUserProfile(
   belt: BeltLevel,
   stripe: number,
   nickname?: string,
+  avatarKey?: string | null,
 ): Promise<void> {
   const supabase = createClient();
   const {
@@ -95,6 +103,11 @@ export async function updateUserProfile(
     updated_at: new Date().toISOString(),
   };
   if (nickname !== undefined) updates.nickname = nickname;
+  if (avatarKey !== undefined) {
+    const valid = getAvatarPreset(avatarKey) ? avatarKey : null; // 알 수 없는 키는 저장하지 않음
+    updates.avatar_type = valid ? "preset" : null;
+    updates.avatar_value = valid;
+  }
 
   const { error } = await supabase
     .from("profiles")
@@ -113,6 +126,7 @@ export async function completeOnboarding(input: {
   preferredStyleTag: StyleTag | null;
   favoriteAthleteIds?: string[];
   nickname?: string;
+  avatarKey?: string | null;
 }): Promise<void> {
   const supabase = createClient();
   const {
@@ -129,6 +143,7 @@ export async function completeOnboarding(input: {
       reminder_hour: input.reminderHour ?? 20,
       preferred_style_tag: input.preferredStyleTag,
       favorite_athlete_ids: (input.favoriteAthleteIds ?? []).slice(0, 30),
+      ...(getAvatarPreset(input.avatarKey) ? { avatar_type: "preset", avatar_value: input.avatarKey } : {}),
       ...(input.nickname?.trim() ? { nickname: input.nickname.trim().slice(0, 12) } : {}),
       onboarding_completed: true,
       updated_at: new Date().toISOString(),

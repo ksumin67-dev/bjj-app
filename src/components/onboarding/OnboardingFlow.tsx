@@ -6,6 +6,8 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Loader2, ChevronLeft, Check, BookOpen, NotebookPen, Sparkles } from "lucide-react";
 import { completeOnboardingAction } from "@/lib/actions/userProfile";
 import { BeltDisplay, BELT_CONFIG } from "@/components/ui/BeltDisplay";
+import { AvatarPicker } from "@/components/ui/AvatarPicker";
+import { DEFAULT_AVATAR_KEY } from "@/lib/avatars";
 import { AthleteAvatar } from "@/components/tree/AthleteAvatar";
 import { STYLE_TAG_META, STYLE_TAG_FALLBACK } from "@/types/domain";
 import type { BeltLevel, StyleTag } from "@/types/domain";
@@ -66,6 +68,7 @@ export function OnboardingFlow({ athletes }: { athletes: OnboardingAthlete[] }) 
   const [weeklyGoal, setWeeklyGoal] = useState<number | null>(3);
   const [picked, setPicked] = useState<string[]>([]);
   const [nickname, setNickname] = useState("");
+  const [avatarKey, setAvatarKey] = useState<string>(DEFAULT_AVATAR_KEY);
   const [nickSuggestions, setNickSuggestions] = useState<string[]>(NICK_POOL.slice(0, 6));
 
   const maxStripe = belt === "Black Belt" ? 6 : 4;
@@ -118,6 +121,7 @@ export function OnboardingFlow({ athletes }: { athletes: OnboardingAthlete[] }) 
       preferredStyleTag: withPicks ? preferredStyleTag : null,
       favoriteAthleteIds: ids,
       nickname: nickname.trim() || undefined,
+      avatarKey,
     });
     setDone(true);
     window.setTimeout(() => {
@@ -266,10 +270,13 @@ export function OnboardingFlow({ athletes }: { athletes: OnboardingAthlete[] }) 
 
               {step === 1 && (
                 <div className="pt-4">
-                  <h1 className="text-xl font-bold text-text-primary">뭐라고 불러드릴까요?</h1>
-                  <p className="text-[12px] text-text-tertiary mt-1.5 mb-6">
-                    앱에서 보여질 이름이에요. 나중에 프로필에서 바꿀 수 있어요.
+                  <h1 className="text-xl font-bold text-text-primary">나를 소개해 주세요</h1>
+                  <p className="text-[12px] text-text-tertiary mt-1.5 mb-5">
+                    캐릭터와 닉네임을 정해요. 나중에 프로필에서 바꿀 수 있어요.
                   </p>
+                  <div className="mb-6">
+                    <AvatarPicker value={avatarKey} nickname={nickname} ringColor={beltCfg.bodyGrad[0]} onChange={setAvatarKey} />
+                  </div>
                   <input
                     type="text"
                     value={nickname}
