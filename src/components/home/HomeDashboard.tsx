@@ -8,8 +8,6 @@ import { Bell, Dumbbell, Flame, Check, Heart } from "lucide-react";
 
 // ── 상수 ───────────────────────────────────────────────────────────────────
 
-const USER_NAME = "아쿠아";
-
 const STREAMS: Stream[] = ["가드포지션", "탑포지션", "이스케이프", "스탠딩"];
 
 const DAY_EN = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -178,6 +176,7 @@ export function HomeDashboard({
   profile: UserProfile;
   goalTechniqueIds: string[];
 }) {
+  const USER_NAME = profile.nickname || "아쿠아";
   const today = new Date();
   const todayKey = ymd(today);
 
