@@ -62,6 +62,7 @@ export function BalanceRadar({
       <svg
         viewBox="0 0 320 256"
         width="100%"
+        style={{ maxWidth: 230, display: "block", margin: "0 auto" }}
         role="img"
         aria-label={axes.map((a, i) => `${a.label} ${pct[i]}퍼센트`).join(", ")}
       >

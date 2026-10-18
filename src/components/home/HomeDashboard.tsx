@@ -4,7 +4,7 @@ import type { UserProfile } from "@/lib/supabase/userProfile";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { Swords, Shield, Zap, Users, type LucideIcon } from "lucide-react";
-import { Bell, Dumbbell, Flame, Check, Heart } from "lucide-react";
+import { Bell, Dumbbell, Flame, Check, Heart, Activity } from "lucide-react";
 import { BalanceRadar } from "./BalanceRadar";
 import { getAthletePhoto } from "@/lib/athletePhotos";
 import { AthleteAvatar } from "@/components/tree/AthleteAvatar";
@@ -580,7 +580,8 @@ export function HomeDashboard({
         {/* ── 내 수련 밸런스 (레이더) ─────────────────────────────────── */}
         {radarTotal >= 3 && (
           <section style={SECTION_SURFACE}>
-            <div className="flex items-center mb-1">
+            <div className="flex items-center gap-1.5 mb-1">
+              <Activity size={15} color="#D9772E" />
               <h2 className="text-[14.5px] font-bold text-white">내 수련 밸런스</h2>
               <span className="text-[11px] font-normal ml-auto" style={{ color: "#5A5A64" }}>전체 기간</span>
             </div>
