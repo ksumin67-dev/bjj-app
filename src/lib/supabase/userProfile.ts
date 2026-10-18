@@ -109,6 +109,7 @@ export async function completeOnboarding(input: {
   reminderHour: number | null;
   preferredStyleTag: StyleTag | null;
   favoriteAthleteIds?: string[];
+  nickname?: string;
 }): Promise<void> {
   const supabase = createClient();
   const {
@@ -125,6 +126,7 @@ export async function completeOnboarding(input: {
       reminder_hour: input.reminderHour ?? 20,
       preferred_style_tag: input.preferredStyleTag,
       favorite_athlete_ids: (input.favoriteAthleteIds ?? []).slice(0, 30),
+      ...(input.nickname?.trim() ? { nickname: input.nickname.trim().slice(0, 12) } : {}),
       onboarding_completed: true,
       updated_at: new Date().toISOString(),
     })

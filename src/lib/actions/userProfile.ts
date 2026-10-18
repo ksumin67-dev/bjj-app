@@ -30,6 +30,7 @@ export async function completeOnboardingAction(input: {
   reminderHour: number | null;
   preferredStyleTag: StyleTag | null;
   favoriteAthleteIds?: string[];
+  nickname?: string;
 }): Promise<{ ok: boolean; error?: string }> {
   try {
     await completeOnboarding(input);

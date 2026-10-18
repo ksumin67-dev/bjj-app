@@ -27,10 +27,20 @@ const BELTS: { value: BeltLevel }[] = [
   { value: "Black Belt" },
 ];
 
+const NICK_POOL = [
+  "탭왕", "그래플러", "가드마스터", "백테이커", "암바장인", "스파링머신",
+  "하프가드", "트라이앵글", "길로틴", "파란띠의꿈", "매트위의곰", "오늘도탭",
+  "스윕요정", "패스의달인", "도장지박령", "주짓수덕후", "무릎조심", "훅업러버",
+];
+
+function pickNicks(): string[] {
+  return [...NICK_POOL].sort(() => Math.random() - 0.5).slice(0, 6);
+}
+
 const GOAL_OPTIONS = [1, 2, 3, 4, 5, 6, 7];
 
-// 0: 환영, 1: 벨트, 2: 주간 목표, 3: 좋아하는 선수
-const LAST_STEP = 3;
+// 0: 환영, 1: 닉네임, 2: 벨트, 3: 주간 목표, 4: 좋아하는 선수
+const LAST_STEP = 4;
 
 function accentOf(a: OnboardingAthlete): string {
   const t = a.styleTags[0];
@@ -55,6 +65,8 @@ export function OnboardingFlow({ athletes }: { athletes: OnboardingAthlete[] }) 
   const [stripe, setStripe] = useState(0);
   const [weeklyGoal, setWeeklyGoal] = useState<number | null>(3);
   const [picked, setPicked] = useState<string[]>([]);
+  const [nickname, setNickname] = useState("");
+  const [nickSuggestions, setNickSuggestions] = useState<string[]>(NICK_POOL.slice(0, 6));
 
   const maxStripe = belt === "Black Belt" ? 6 : 4;
   const beltCfg = BELT_CONFIG[belt] ?? BELT_CONFIG["White Belt"];
@@ -105,6 +117,7 @@ export function OnboardingFlow({ athletes }: { athletes: OnboardingAthlete[] }) 
       reminderHour: 20,
       preferredStyleTag: withPicks ? preferredStyleTag : null,
       favoriteAthleteIds: ids,
+      nickname: nickname.trim() || undefined,
     });
     setDone(true);
     window.setTimeout(() => {
@@ -253,6 +266,58 @@ export function OnboardingFlow({ athletes }: { athletes: OnboardingAthlete[] }) 
 
               {step === 1 && (
                 <div className="pt-4">
+                  <h1 className="text-xl font-bold text-text-primary">뭐라고 불러드릴까요?</h1>
+                  <p className="text-[12px] text-text-tertiary mt-1.5 mb-6">
+                    앱에서 보여질 이름이에요. 나중에 프로필에서 바꿀 수 있어요.
+                  </p>
+                  <input
+                    type="text"
+                    value={nickname}
+                    onChange={(e) => setNickname(e.target.value.slice(0, 12))}
+                    placeholder="닉네임 (최대 12자)"
+                    maxLength={12}
+                    className="w-full rounded-xl bg-[#0A0A0F] px-4 py-3.5 text-[15px] font-semibold text-text-primary placeholder:text-text-tertiary outline-none border border-white/10 focus:border-[#D9772E] transition-colors"
+                  />
+                  <div className="mt-6 flex items-center justify-between">
+                    <span className="text-[11px] font-semibold text-text-tertiary">이런 닉네임은 어때요?</span>
+                    <button
+                      type="button"
+                      onClick={() => setNickSuggestions(pickNicks())}
+                      className="text-[11px] font-semibold active:opacity-60"
+                      style={{ color: BRAND }}
+                    >
+                      다른 추천 보기
+                    </button>
+                  </div>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {nickSuggestions.map((n, i) => {
+                      const active = nickname === n;
+                      return (
+                        <motion.button
+                          key={n}
+                          type="button"
+                          initial={reduce ? false : { opacity: 0, scale: 0.85 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: i * 0.04, type: "spring", stiffness: 400, damping: 22 }}
+                          whileTap={reduce ? undefined : { scale: 0.92 }}
+                          onClick={() => setNickname(n)}
+                          className="px-3.5 py-2 rounded-full text-[12.5px] font-semibold"
+                          style={{
+                            backgroundColor: active ? `${BRAND}22` : "transparent",
+                            color: active ? BRAND : "#9CA3AF",
+                            border: active ? `1.5px solid ${BRAND}` : "1.5px solid rgba(255,255,255,0.1)",
+                          }}
+                        >
+                          {n}
+                        </motion.button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {step === 2 && (
+                <div className="pt-4">
                   <h1 className="text-xl font-bold text-text-primary">지금 벨트가 뭐예요?</h1>
                   <p className="text-[12px] text-text-tertiary mt-1.5 mb-5">
                     나중에 프로필에서 언제든 바꿀 수 있어요.
@@ -328,7 +393,7 @@ export function OnboardingFlow({ athletes }: { athletes: OnboardingAthlete[] }) 
                 </div>
               )}
 
-              {step === 2 && (
+              {step === 3 && (
                 <div className="pt-4">
                   <h1 className="text-xl font-bold text-text-primary">주에 몇 번 정도 수련해요?</h1>
                   <p className="text-[12px] text-text-tertiary mt-1.5 mb-7">
@@ -363,7 +428,7 @@ export function OnboardingFlow({ athletes }: { athletes: OnboardingAthlete[] }) 
                 </div>
               )}
 
-              {step === 3 && (
+              {step === 4 && (
                 <div className="pt-4">
                   <h1 className="text-xl font-bold text-text-primary">좋아하는 선수를 골라보세요</h1>
                   <p className="text-[12px] text-text-tertiary mt-1.5 mb-5">
