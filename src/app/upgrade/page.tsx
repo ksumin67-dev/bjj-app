@@ -1,7 +1,11 @@
+import { redirect } from "next/navigation";
 import { Lock, Check } from "lucide-react";
 import { PageWrapper } from "@/components/layout/PageWrapper";
+import { PAYMENTS_ENABLED } from "@/lib/payments";
 
-export const metadata = { title: "프리미엄" };
+export const metadata = {
+  title: PAYMENTS_ENABLED ? "프리미엄" : "홈",
+};
 
 const PREMIUM_FEATURES = [
   "기술별 심화 코칭 정보 (그립·핵심포인트·실전팁·흔한실수·카운터)",
@@ -9,6 +13,9 @@ const PREMIUM_FEATURES = [
 ];
 
 export default function UpgradePage() {
+  // 미들웨어와 같은 플래그. 라우트가 직접 렌더되는 경우에도 가격·구독 문구가 나가지 않게 한다.
+  if (!PAYMENTS_ENABLED) redirect("/");
+
   return (
     <PageWrapper>
       <div className="space-y-6 pb-20">
