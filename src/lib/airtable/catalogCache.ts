@@ -7,13 +7,14 @@ import { readWithLastGood } from "./lastGood";
  * 기술/선수 카탈로그(전역 Airtable 마스터) 캐시.
  *
  * - TTL 10분. 요청한 5–15분 범위.
- * - `unstable_cache` + `revalidateTag(tag)`는 Next 14.2와 15.5 모두에 있다.
- *   `"use cache"`, `updateTag`, `revalidateTag`의 cacheLife 인자는 쓰지 않는다.
- *   (Next 16에서 시그니처가 바뀐다.)
+ * - Next 15.5.29의 `unstable_cache` + `revalidateTag(tag)` (한 인자).
+ *   `"use cache"`, `updateTag`, Next 16의 `revalidateTag(tag, profile)` 는 쓰지 않는다.
+ *   15.5에서 `unstable_expireTag`는 `revalidateTag`와 같은 태그 표시라 호출하지 않는다.
+ * - 태그가 무효화되면 fetch 캐시는 이전 값을 돌려주지 않고 다음 읽기에서 다시 가져온다.
+ * - TTL이 지난 항목의 포그라운드 재검증이 실패하면 Next 15.5가 캐시된 본문을 반환한다.
  * - React `cache()`로 같은 요청 안의 중복 호출을 한 번의 읽기로 합친다.
- * - 로더가 throw 하면 Data Cache에 실패를 넣지 않는다. 백그라운드 재검증
- *   실패 시 Next가 마지막 성공 값을 그대로 돌려주고, 그게 throw로 올라오면
- *   이 프로세스의 마지막 성공 값을 쓴다. 둘 다 없으면 에러를 전파한다.
+ * - 로더가 throw 하면 Data Cache에 실패를 넣지 않는다. 무효화 직후 재조회가
+ *   실패해 예외가 올라오면 이 프로세스의 마지막 성공 값을 쓴다. 그것도 없으면 전파한다.
  * - 유저별 Supabase 데이터는 이 캐시에 넣지 않는다.
  */
 
@@ -59,7 +60,7 @@ export function cachedCatalogRead<T extends unknown[]>(options: {
  * 태그 무효화가 카탈로그 신선도를 결정한다.
  */
 export function invalidateTechniqueCatalog(): void {
-  // Next 14.2 / 15.5 한 인자 형태. Next 16의 profile 인자는 여기 넣지 않는다.
+  // Next 15.5.29는 revalidateTag(tag) 한 인자. 다음 읽기는 스테일을 건너뛴다.
   revalidateTag(AIRTABLE_TECHNIQUES_TAG);
   for (const path of TECHNIQUE_CATALOG_PATHS) {
     revalidatePath(path);
