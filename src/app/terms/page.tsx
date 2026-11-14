@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
-import { PAYMENTS_ENABLED } from "@/lib/payments";
 
 export const metadata = { title: "이용약관" };
 
@@ -34,10 +33,9 @@ export default function TermsPage() {
           <h2 className="font-semibold text-text-primary">제2조 (서비스의 내용)</h2>
           <p>
             서비스는 기술도감(기술/포지션 정보), 수련 기록 캘린더, 게임플랜(기술 조합)
-            관리, XP·벨트 등 학습 진행도 표시 기능을 제공합니다.
-            {PAYMENTS_ENABLED
-              ? " 일부 기능은 유료 구독(프리미엄) 전환 시에만 제공될 수 있으며, 구체적인 유료 기능 범위와 가격은 서비스 내 안내 화면에 따릅니다."
-              : ""}
+            관리, XP·벨트 등 학습 진행도 표시 기능을 제공합니다. 일부 기능은 유료
+            구독(프리미엄) 전환 시에만 제공될 수 있으며, 구체적인 유료 기능 범위와
+            가격은 서비스 내 안내 화면에 따릅니다.
           </p>
         </section>
 
