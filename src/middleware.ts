@@ -2,6 +2,7 @@ import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { publicEnv } from "@/lib/publicEnv";
 import { ADMIN_EMAIL } from "@/lib/adminConfig";
+import { PAYMENTS_ENABLED } from "@/lib/payments";
 
 // 로그인 없이 접근 가능한 경로
 const PUBLIC_PATHS = [
@@ -26,6 +27,19 @@ export async function middleware(request: NextRequest) {
   // 302 리다이렉트되어 웹훅이 항상 실패하는 문제가 생김.
   if (request.nextUrl.pathname.startsWith("/api/")) {
     return NextResponse.next({ request });
+  }
+
+  // 무료 출시: /upgrade 는 결제 UI가 켜지기 전까지 홈으로 보낸다.
+  // (직접 URL, 예전 북마크 포함). 웹훅 경로는 위의 /api 통과에 그대로 둔다.
+  const { pathname } = request.nextUrl;
+  if (
+    !PAYMENTS_ENABLED &&
+    (pathname === "/upgrade" || pathname.startsWith("/upgrade/"))
+  ) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/";
+    url.search = "";
+    return NextResponse.redirect(url);
   }
 
   let supabaseResponse = NextResponse.next({ request });
