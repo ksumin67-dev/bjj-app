@@ -11,7 +11,7 @@ export type DeleteAccountResult = { ok: boolean; error?: string };
  * training_sessions/game_plans/technique_goals까지 함께 정리됨.
  */
 export async function deleteAccountAction(): Promise<DeleteAccountResult> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();

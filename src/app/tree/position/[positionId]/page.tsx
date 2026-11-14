@@ -21,7 +21,7 @@ import { POSITION_ICON, POSITION_ICON_FALLBACK } from "@/lib/positionIcons";
 // technique_goals는 로그인 유저별 데이터(쿠키 기반)라 force-dynamic.
 export const dynamic = "force-dynamic";
 
-type Params = { positionId: string };
+type Params = Promise<{ positionId: string }>;
 
 // 기술도감 포지션 탭(SkillTreeBrowser.tsx)과 동일한 스트림 아이콘 체계 재사용.
 const STREAM_META: Record<string, { label: string; Icon: LucideIcon }> = {
@@ -32,12 +32,14 @@ const STREAM_META: Record<string, { label: string; Icon: LucideIcon }> = {
 };
 
 export async function generateMetadata({ params }: { params: Params }) {
-  const position = await getTechniqueByTechId(params.positionId.toUpperCase());
+  const { positionId } = await params;
+  const position = await getTechniqueByTechId(positionId.toUpperCase());
   return { title: position ? `${position.nameKo} · 포지션` : "포지션 상세" };
 }
 
 export default async function PositionDetailPage({ params }: { params: Params }) {
-  const positionId = params.positionId.toUpperCase();
+  const { positionId: rawPositionId } = await params;
+  const positionId = rawPositionId.toUpperCase();
   const position = await getTechniqueByTechId(positionId);
   if (!position || position.parentId !== null) notFound();
 

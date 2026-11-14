@@ -6,7 +6,7 @@ export type ComboVote = 1 | -1;
 /** 로그인 유저의 콤보 피드백 전체 (combo id → 1 | -1). 실패/비로그인이면 빈 Map. */
 export async function getMyComboVotes(): Promise<Map<string, ComboVote>> {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data, error } = await supabase.from("combo_feedback").select("combo_id, vote");
     if (error) throw error;
     return new Map((data ?? []).map((r) => [r.combo_id as string, (r.vote as number) === 1 ? 1 : -1]));
@@ -18,7 +18,7 @@ export async function getMyComboVotes(): Promise<Map<string, ComboVote>> {
 
 /** vote: 1(도움됨) | -1(별로) | 0(취소) */
 export async function setMyComboVote(comboId: string, vote: ComboVote | 0): Promise<void> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();

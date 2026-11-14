@@ -11,9 +11,9 @@ export const dynamic = "force-dynamic";
 export default async function NewGamePlanPage({
   searchParams,
 }: {
-  searchParams: { rec?: string };
+  searchParams: Promise<{ rec?: string }>;
 }) {
-  const rec = searchParams.rec;
+  const { rec } = await searchParams;
   const { stepTechniques, positionNameById, goalTechniqueIds, recentTechniqueIds } =
     await getGamePlanFormData();
   const prefill = rec ? planForComboId(rec, stepTechniques) ?? undefined : undefined;

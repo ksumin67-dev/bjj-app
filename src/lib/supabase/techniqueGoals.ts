@@ -8,7 +8,7 @@ export type TechniqueGoal = {
 };
 
 async function requireUserId(): Promise<string | null> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -21,7 +21,7 @@ export async function getMyTechniqueGoals(): Promise<TechniqueGoal[]> {
   if (!userId) return [];
 
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data, error } = await supabase
       .from("technique_goals")
       .select("technique_record_id, athlete_record_id, created_at")
@@ -51,7 +51,7 @@ export async function addTechniqueGoal(
   const userId = await requireUserId();
   if (!userId) throw new Error("로그인이 필요합니다.");
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase
     .from("technique_goals")
     .upsert(
@@ -65,7 +65,7 @@ export async function removeTechniqueGoal(techniqueRecordId: string): Promise<vo
   const userId = await requireUserId();
   if (!userId) throw new Error("로그인이 필요합니다.");
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase
     .from("technique_goals")
     .delete()

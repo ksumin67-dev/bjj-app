@@ -46,7 +46,7 @@ function isPremiumStatus(status: SubscriptionStatus): boolean {
 }
 
 export async function getUserProfile(): Promise<UserProfile> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -91,7 +91,7 @@ export async function updateUserProfile(
   nickname?: string,
   avatar?: AvatarSel,
 ): Promise<void> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -128,7 +128,7 @@ export async function completeOnboarding(input: {
   nickname?: string;
   avatar?: AvatarSel;
 }): Promise<void> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -157,7 +157,7 @@ export async function completeOnboarding(input: {
 
 /** 프로필 화면 알림 설정에서 리마인더 시간만 바꿀 때 사용 */
 export async function updateReminderHour(hour: number): Promise<void> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();

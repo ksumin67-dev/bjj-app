@@ -23,6 +23,9 @@ const ALLOWED_TYPES: EmailOtpType[] = [
   "email_change",
 ];
 
+// 이메일 확인/비밀번호 재설정은 요청마다 OTP를 검증하므로 라우트 캐시에 남기면 안 된다.
+export const dynamic = "force-dynamic";
+
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const tokenHash = searchParams.get("token_hash");
@@ -33,7 +36,7 @@ export async function GET(request: Request) {
   const next = safeNextPath(searchParams.get("next"), defaultNext);
 
   if (tokenHash && type && ALLOWED_TYPES.includes(type)) {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { error } = await supabase.auth.verifyOtp({
       type,
       token_hash: tokenHash,
