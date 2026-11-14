@@ -1,7 +1,34 @@
 # 스킬트리 선수 사진 리서치 (2026-09-15)
 
-11명 선수 실사 후보를 리서치했다. **다운로드/코드 반영은 하지 않았고**, 소스와 라이선스 상태만 정리했다.
-아래 "즉시 사용 가능" 그룹만 라이선스 문제없이 바로 넣을 수 있고, 나머지는 반드시 사용 전 별도 라이선스(구매/서면 허가/보도자료 사용 범위 확인)가 필요하다.
+## 현재 상태 (2026-11-14) — 실사 미표시
+
+레포에 라이선스·서면 허가·저작자 표시 증빙이 없다. 아래 표의 "즉시 사용 가능" 4명도 파일 페이지 재확인과 저작자 표시가 끝나기 전에는 상업 앱에 넣지 않는다. 그래서 `public/athletes/`에 있던 실사 12장을 삭제했고, 앱은 `AthleteAvatar` 실루엣만 보여 준다.
+
+스위치는 `src/lib/athletePhotos.ts`의 `ATHLETE_PHOTOS_ENABLED`(현재 `false`)와 빈 `ATHLETE_PHOTOS`다. `getAthletePhoto`는 null을 반환하고, 아바타는 기존과 같은 `size`의 실루엣을 그린다. 이 12명은 `ATHLETE_PHOTO_RIGHTS_PENDING`에 recordId와 함께 적혀 있다. 파일명 문자열은 코드에 남겨 두지 않았다.
+
+| recordId | 선수 | 다시 넣기 전에 필요한 것 |
+|---|---|---|
+| recULMLJ1l6t7ljTI | 고든 라이언 Gordon Ryan | Commons 파일 페이지에서 CC 조건·저작자 표시 확정 |
+| recF6GerAPtr1HIjj | 로저 그레이시 Roger Gracie | CC BY-SA 3.0 재확인, 앱에 저작자 표시 |
+| recBJHkMV2xJ2O2Hh | 마이키 무수메시 Mikey Musumeci | CC0 / PDM 파일 페이지 재확인 |
+| recjRbC4XwwiMKWNh | 마르셀로 가르시아 Marcelo Garcia | 개별 파일 라이선스 확정 |
+| rec2TVw75b4AONjQ5 | 크레이그 존스 Craig Jones | 본인·CJI 허가 또는 유료 라이선스 |
+| recKkQ0so0zhNMVN4 | 부셰샤 Marcus Almeida | Getty/ADCC 등 상업 라이선스 또는 서면 허가 |
+| recLKjAG2ER82V8C2 | 라파엘 멘데스 Rafael Mendes | AOJ 등 권리자 서면 허가 |
+| recNlBU8ydgmIaNO6 | 라클란 자일스 Lachlan Giles | 본인·강좌 쪽 사용 허가 |
+| reccxwyAH6feJeCfT | 아담 와르진스키 Adam Wardzinski | IBJJF 등 권리자 허가 |
+| receWCXuLUVyoOM4n | 라이언 홀 Ryan Hall | UFC/Getty 상업 라이선스 (현 후보는 상업 사용 불가) |
+| recllgUJ1rcdNWTzU | 안드레 갈바오 Andre Galvao | Atos 등 권리자 서면 허가 |
+| recQaHA3TEEKGHGhJ | 미카 갈바오 Mica Galvao | 2026-09-15 리서치에 없음. 권리 근거를 새로 확보 |
+
+다시 켜는 순서:
+
+1. 해당 선수의 권리(라이선스 문구, 허가 메일, 필요한 저작자 표시)를 이 문서에 남긴다.
+2. 그 파일만 `public/athletes/`에 넣는다.
+3. `ATHLETE_PHOTOS`에 그 recordId와 경로만 추가한다.
+4. 한 명이라도 맵에 있으면 `ATHLETE_PHOTOS_ENABLED`를 `true`로 바꾼다. 맵에 없는 선수는 실루엣으로 남는다.
+
+아래는 2026-09-15 소스 조사다. "즉시 사용 가능"은 파일 페이지를 다시 보기 전의 후보이고, 지금 앱에 넣으라는 뜻이 아니다. Commons에서 확인되지 않은 선수는 사용 전 별도 라이선스(구매, 서면 허가, 보도자료 사용 범위 확인)가 필요하다.
 
 ## ✅ 즉시 사용 가능 (Wikimedia Commons — CC/PD 라이선스 확인됨)
 
@@ -30,7 +57,9 @@
 
 ## 제안
 
-1. 우선 4명(고든 라이언, 마이키 무수메시, 로저 그레이시, 마르셀로 가르시아)은 Commons 라이선스로 바로 진행 가능 — 파일 페이지에서 저작자 표시 문구만 확정하면 이번 주 내 적용 가능.
+2026-11-14에 이 절의 "바로 적용"은 철회됐다. 12명 모두 위 "현재 상태" 절차를 거친 뒤에만 다시 넣는다. 미카 갈바오는 이 조사에 없다.
+
+1. 고든 라이언, 마이키 무수메시, 로저 그레이시, 마르셀로 가르시아는 Commons 후보였다. 파일 페이지의 라이선스와 저작자 표시를 이 문서에 남기기 전에는 앱에 넣지 않는다.
 2. 나머지 7명은 유료 앱 출시 전까지 시간이 걸릴 수 있으니, 우선순위를 정해서 (a) 본인/소속 팀에 직접 DM/이메일로 사용 허가 요청 (무료로 얻을 확률 높음 — 홍보 효과 때문에 대부분 응해줌), (b) 안 되면 Getty 등 유료 라이선스 구매 중 선택.
 3. 라이선스 확보 전까지는 기존 실루엣 아바타(`AthleteAvatar.tsx`) 유지 — 즉시 사용 가능 4명만 먼저 교체하고 나머지는 아바타 유지하는 점진적 적용도 가능.
 
