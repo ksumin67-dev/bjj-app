@@ -252,10 +252,13 @@ export default function PrivacyPage() {
               이루어집니다.]
             </li>
             <li>
-              계정 삭제 시: 프로필 행이 지워지면 사진 경로 참조는 함께 없어지도록
-              선언되어 있습니다. 파일 자체에 대한 Storage 삭제 호출은 계정 삭제 코드에
-              없습니다. [검토 필요: 계정 삭제 시 Storage 사진 파일의 삭제. 대시보드에
-              사용자 삭제 트리거가 있는지는 이 저장소로 확인되지 않습니다.]
+              계정 삭제 시: 앱 프로필과 웹 계정 삭제 페이지는 같은 삭제 처리를 호출합니다.
+              이 처리는 Supabase Storage 버킷 avatars에서 그 이용자 폴더
+              {" "}
+              <span className="break-all">avatars/{"{이용자 ID}"}/</span>
+              {" "}
+              의 사진 파일을 삭제한 뒤 계정을 삭제합니다. 프로필 행의 사진 경로도 함께
+              없어집니다.
             </li>
           </ul>
 
@@ -276,25 +279,24 @@ export default function PrivacyPage() {
           </p>
           <p>계정 삭제(회원 탈퇴)는 다음에서 요청할 수 있습니다.</p>
           <ul className="list-disc pl-5 space-y-1">
-            <li>서비스 프로필 화면의 &quot;계정 삭제&quot;. 확인 후 계정 삭제 처리를 호출합니다.</li>
+            <li>서비스 프로필 화면의 &quot;계정 삭제&quot;. 확인 후 웹과 같은 계정 삭제 처리를 호출합니다.</li>
             <li>
-              웹:{" "}
+              웹 공개 페이지{" "}
               <a
                 href="https://bjj-app-brown.vercel.app/account/delete"
                 className="underline break-all"
               >
                 https://bjj-app-brown.vercel.app/account/delete
               </a>
-              . [검토 필요: 이 웹 페이지의 동작. 이 저장소에는 /account/delete 라우트가
-              없고, 주소만 적었습니다. 프로필의 계정 삭제와 같은 처리인지는 확인되지
-              않았습니다.]
+              . 로그인한 이용자는 이 페이지에서 계정을 삭제할 수 있습니다. 로그인하지
+              않은 방문자는 삭제되는 항목, 로그인 링크, 제8항의 문의 이메일을 봅니다.
             </li>
           </ul>
           <p>
-            삭제가 성공하면 로그인 세션을 끝내고 로그인 화면으로 보냅니다. 이때 이용자
-            ID가 있는 Airtable 기술명 레코드는 삭제하고, 소유자가 없는 익명 집계는
-            유지합니다. Storage 사진 파일은 이 처리에서 지워지지 않습니다.
-            그 외 열람·정정·삭제 문의는 제8항의 연락처로 요청할 수 있습니다.
+            삭제가 성공하면 로그인 세션을 끝내고 로그인 화면으로 보냅니다. 앱과 웹의
+            계정 삭제는 Supabase Storage의 avatars/{"{이용자 ID}"}/ 사진 파일을 삭제합니다.
+            이용자 ID가 있는 Airtable 기술명 레코드는 삭제하고, 소유자가 없는 익명 집계는
+            유지합니다. 그 외 열람·정정·삭제 문의는 제8항의 연락처로 요청할 수 있습니다.
           </p>
         </section>
 
