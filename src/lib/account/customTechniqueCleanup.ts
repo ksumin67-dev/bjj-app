@@ -1,5 +1,3 @@
-import { FIELDS } from "@/lib/airtable/tables";
-import { extractCustomTechniqueNames } from "./sessionNotes";
 import {
   assertUserId,
   CleanupPartialError,
@@ -11,11 +9,10 @@ import {
 /**
  * CUSTOM_TECHNIQUES 소유자 칸의 필드명.
  * FIELDS 객체에 넣지 않는다. 베이스에 칸이 없을 때 select fields에 포함되면
- * 기술 목록 조회 전체가 실패한다.
+ * 기술 목록 조회 전체가 실패한다. 프로덕션 베이스에는 이 칸을 만들지 않는다.
  */
 export const CUSTOM_TECHNIQUE_USER_FIELD = "User ID";
 
-const NAME_FIELD = FIELDS.CUSTOM_TECHNIQUE.NAME;
 const DESTROY_BATCH = 10;
 
 export type CustomTechniqueRow = {
@@ -44,28 +41,28 @@ export function fieldsWithTechniqueOwner(
   return { ...fields, [CUSTOM_TECHNIQUE_USER_FIELD]: userId.trim() };
 }
 
-function escapeFormula(value: string): string {
-  return value.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
-}
-
-export function namesFormula(names: string[]): string {
-  const safe = names
-    .map((name) => name.trim().replace(/\s+/g, " "))
-    .filter((name) => name.length > 0 && name.length <= 80 && !/[\u0000-\u001f]/.test(name));
-  const unique: string[] = [];
-  const seen = new Set<string>();
-  for (const name of safe) {
-    const key = name.toLowerCase();
-    if (seen.has(key)) continue;
-    seen.add(key);
-    unique.push(name);
-    if (unique.length >= 100) break;
+/**
+ * User ID 칸이 없는 베이스에서도 생성이 성공하게 한다.
+ * 칸이 없으면 첫 쓰기가 UNKNOWN_FIELD_NAME(422)로 실패하고, 소유자 없이 한 번 더 만든다.
+ */
+export async function createRecordWithOptionalOwner(
+  create: (fields: Record<string, unknown>) => Promise<unknown>,
+  fields: Record<string, unknown>,
+  userId?: string,
+): Promise<void> {
+  const withOwner = fieldsWithTechniqueOwner(fields, userId);
+  const stamped =
+    CUSTOM_TECHNIQUE_USER_FIELD in withOwner && !(CUSTOM_TECHNIQUE_USER_FIELD in fields);
+  try {
+    await create(withOwner);
+  } catch (e) {
+    if (stamped && isUnknownAirtableField(e)) {
+      console.warn("[customTechniques] User ID 필드가 없어 소유자 없이 저장합니다.");
+      await create(fields);
+      return;
+    }
+    throw e;
   }
-  if (unique.length === 0) {
-    throw new Error("no custom technique names");
-  }
-  const parts = unique.map((name) => `{${NAME_FIELD}}='${escapeFormula(name)}'`);
-  return parts.length === 1 ? parts[0] : `OR(${parts.join(",")})`;
 }
 
 function ownerOf(fields: Record<string, unknown> | undefined): string | null {
@@ -87,91 +84,44 @@ function chunks(ids: string[]): string[][] {
   return out;
 }
 
-async function selectAll(
-  table: CustomTechniqueTable,
-  filterByFormula: string,
-  fields: string[],
-): Promise<CustomTechniqueRow[]> {
-  return table.select({ filterByFormula, fields }).all();
-}
-
 /**
- * 이 사용자의 커스텀 기술명만 삭제한다.
- * 1) User ID가 이 사용자인 행
- * 2) 본인 수련 메모의 `[미등록: 이름]`과 같고, 소유자가 비어 있거나 본인인 행
- * 다른 사용자 ID가 적힌 행은 이름이 같아도 지우지 않는다.
+ * `{User ID}`가 이 사용자와 같은 행만 삭제한다.
+ * 소유자가 비어 있는 행은 익명 집계로 남긴다. 수련 메모의 기술명과는 맞추지 않는다.
+ * 칸이 아직 없으면 한 번만 로그하고 빈 결과로 끝낸다. 계정 삭제 자체는 계속된다.
  */
 export async function deleteUserCustomTechniques(
   table: CustomTechniqueTable,
   userId: string,
-  legacyNames: string[],
 ): Promise<string[]> {
   const id = assertUserId(userId);
-  const failures: unknown[] = [];
-  const deleted = new Set<string>();
-
+  let rows: CustomTechniqueRow[];
   try {
-    const owned = await selectAll(table, userScopedTechniqueFormula(id), [
-      NAME_FIELD,
-      CUSTOM_TECHNIQUE_USER_FIELD,
-    ]);
-    for (const row of owned) {
-      const owner = ownerOf(row.fields);
-      if (owner && !sameUser(owner, id)) continue;
-      if (row.id) deleted.add(row.id);
-    }
+    rows = await table
+      .select({
+        filterByFormula: userScopedTechniqueFormula(id),
+        fields: [CUSTOM_TECHNIQUE_USER_FIELD],
+      })
+      .all();
   } catch (e) {
     if (isUnknownAirtableField(e)) {
-      console.error(
-        "[deleteAccount] Airtable User ID field missing; owner filter skipped",
-      );
-    } else {
-      failures.push(e);
+      console.error("[deleteAccount] Airtable User ID field missing; owner filter skipped");
+      return [];
     }
+    throw new CleanupPartialError("custom techniques", e);
   }
 
-  const names = legacyNames
-    .map((name) => name.trim())
-    .filter((name) => name.length > 0);
-  if (names.length > 0) {
-    let formula = "";
-    try {
-      formula = namesFormula(names);
-    } catch {
-      formula = "";
-    }
-    if (formula) {
-      try {
-        const matched = await selectAll(table, formula, [
-          NAME_FIELD,
-          CUSTOM_TECHNIQUE_USER_FIELD,
-        ]);
-        for (const row of matched) {
+  const ids = [
+    ...new Set(
+      rows
+        .filter((row) => {
           const owner = ownerOf(row.fields);
-          if (owner && !sameUser(owner, id)) continue;
-          if (row.id) deleted.add(row.id);
-        }
-      } catch (e) {
-        if (!isUnknownAirtableField(e)) {
-          failures.push(e);
-        } else {
-          console.error(
-            "[deleteAccount] Airtable User ID field missing; deleting this user's session names only",
-          );
-          try {
-            const matched = await selectAll(table, formula, [NAME_FIELD]);
-            for (const row of matched) {
-              if (row.id) deleted.add(row.id);
-            }
-          } catch (retryError) {
-            failures.push(retryError);
-          }
-        }
-      }
-    }
-  }
+          return Boolean(row.id) && owner !== null && sameUser(owner, id);
+        })
+        .map((row) => row.id),
+    ),
+  ].sort();
 
-  const ids = [...deleted].sort();
+  const failures: unknown[] = [];
   for (const batch of chunks(ids)) {
     try {
       await table.destroy(batch);
@@ -179,32 +129,8 @@ export async function deleteUserCustomTechniques(
       if (!isNotFoundError(e)) failures.push(e);
     }
   }
-
   if (failures.length > 0) {
     throw new CleanupPartialError("custom techniques", failures[0]);
   }
   return ids;
-}
-
-/**
- * 메모 조회가 실패해도 소유자 필터 삭제는 계속한다.
- * 메모는 auth 유저 삭제(CASCADE) 전에 읽어야 한다.
- */
-export async function cleanupCustomTechniquesForUser(args: {
-  userId: string;
-  table: CustomTechniqueTable;
-  loadNotes: (userId: string) => Promise<Array<string | null>>;
-}): Promise<string[]> {
-  const id = assertUserId(args.userId);
-  let names: string[] = [];
-  try {
-    const notes = await args.loadNotes(id);
-    names = extractCustomTechniqueNames(notes);
-  } catch (e) {
-    console.error(
-      "[deleteAccount] training session lookup failed:",
-      e instanceof Error ? e.message : "unknown error",
-    );
-  }
-  return deleteUserCustomTechniques(args.table, id, names);
 }

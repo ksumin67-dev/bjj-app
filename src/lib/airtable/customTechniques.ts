@@ -1,10 +1,6 @@
 import "server-only";
 import type { FieldSet } from "airtable";
-import {
-  CUSTOM_TECHNIQUE_USER_FIELD,
-  fieldsWithTechniqueOwner,
-} from "@/lib/account/customTechniqueCleanup";
-import { isUnknownAirtableField } from "@/lib/account/userScope";
+import { createRecordWithOptionalOwner } from "@/lib/account/customTechniqueCleanup";
 import { airtable } from "./client";
 import { TABLES, FIELDS } from "./tables";
 import type { Stream } from "@/types/domain";
@@ -53,30 +49,6 @@ export async function getAllCustomTechniques(): Promise<CustomTechnique[]> {
  * - 이미 있으면 사용횟수 +1, 최근사용일 갱신, 스트림도 업데이트
  * - 없으면 신규 생성
  */
-async function createCustomTechniqueRecord(
-  fields: Record<string, unknown>,
-  userId?: string,
-): Promise<void> {
-  const withOwner = fieldsWithTechniqueOwner(fields, userId);
-  const stamped =
-    CUSTOM_TECHNIQUE_USER_FIELD in withOwner && !(CUSTOM_TECHNIQUE_USER_FIELD in fields);
-  try {
-    await airtable(TABLES.CUSTOM_TECHNIQUES).create([
-      { fields: withOwner as unknown as FieldSet },
-    ]);
-  } catch (e) {
-    // 베이스에 "User ID" 칸이 없으면 소유자 없이 한 번 더 만든다.
-    if (stamped && isUnknownAirtableField(e)) {
-      console.warn("[customTechniques] User ID 필드가 없어 소유자 없이 저장합니다.");
-      await airtable(TABLES.CUSTOM_TECHNIQUES).create([
-        { fields: fields as unknown as FieldSet },
-      ]);
-      return;
-    }
-    throw e;
-  }
-}
-
 export async function recordCustomTechniqueUsage(
   name: string,
   stream?: Stream,
@@ -118,7 +90,15 @@ export async function recordCustomTechniqueUsage(
     };
     if (stream && F.STREAM) createFields[F.STREAM] = stream;
 
-    await createCustomTechniqueRecord(createFields, userId);
+    await createRecordWithOptionalOwner(
+      async (fields) => {
+        await airtable(TABLES.CUSTOM_TECHNIQUES).create([
+          { fields: fields as unknown as FieldSet },
+        ]);
+      },
+      createFields,
+      userId,
+    );
   }
 }
 

@@ -2,11 +2,10 @@
 
 import { deleteUserAvatarFiles, type AvatarStorage } from "@/lib/account/avatarCleanup";
 import {
-  cleanupCustomTechniquesForUser,
+  deleteUserCustomTechniques,
   type CustomTechniqueTable,
 } from "@/lib/account/customTechniqueCleanup";
 import { deleteAccountForUser } from "@/lib/account/deleteAccount";
-import { listOwnSessionNotes, type SessionNotesClient } from "@/lib/account/sessionNotes";
 import { airtable } from "@/lib/airtable/client";
 import { TABLES } from "@/lib/airtable/tables";
 import { AVATAR_BUCKET } from "@/lib/avatars";
@@ -80,12 +79,7 @@ export async function deleteAccountAction(): Promise<DeleteAccountResult> {
     const result = await deleteAccountForUser(user.id, {
       deleteAvatars: (userId) => deleteUserAvatarFiles(avatarStorage(admin), userId),
       deleteCustomTechniques: (userId) =>
-        cleanupCustomTechniquesForUser({
-          userId,
-          table: customTechniqueTable(),
-          loadNotes: (id) =>
-            listOwnSessionNotes(admin as unknown as SessionNotesClient, id),
-        }),
+        deleteUserCustomTechniques(customTechniqueTable(), userId),
       deleteAuthUser: async (userId) => {
         const { error } = await admin.auth.admin.deleteUser(userId);
         if (error) throw error;

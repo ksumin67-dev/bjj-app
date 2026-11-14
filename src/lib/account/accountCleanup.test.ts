@@ -2,21 +2,22 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { AVATAR_LIST_PAGE, deleteUserAvatarFiles, type AvatarStorage } from "./avatarCleanup";
 import {
   CUSTOM_TECHNIQUE_USER_FIELD,
-  cleanupCustomTechniquesForUser,
+  createRecordWithOptionalOwner,
   deleteUserCustomTechniques,
   fieldsWithTechniqueOwner,
-  namesFormula,
   userScopedTechniqueFormula,
   type CustomTechniqueRow,
   type CustomTechniqueTable,
 } from "./customTechniqueCleanup";
 import { deleteAccountForUser } from "./deleteAccount";
-import { extractCustomTechniqueNames, listOwnSessionNotes } from "./sessionNotes";
-import { FIELDS } from "@/lib/airtable/tables";
 
 const USER_A = "11111111-1111-4111-8111-111111111111";
 const USER_B = "22222222-2222-4222-8222-222222222222";
-const NAME_FIELD = FIELDS.CUSTOM_TECHNIQUE.NAME;
+const UNKNOWN_FIELD = {
+  statusCode: 422,
+  error: "UNKNOWN_FIELD_NAME",
+  message: 'Unknown field name: "User ID"',
+};
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -36,14 +37,6 @@ describe("user scoping formulas", () => {
   it("rejects ids that could break out of the formula string", () => {
     expect(() => userScopedTechniqueFormula(`${USER_A}' OR '1'='1`)).toThrow(/invalid user id/);
     expect(() => userScopedTechniqueFormula("")).toThrow(/invalid user id/);
-  });
-
-  it("escapes quotes in technique names", () => {
-    const formula = namesFormula(["O'Brien", "O'Brien", "토네이도"]);
-    expect(formula).toContain(`{${NAME_FIELD}}='O\\'Brien'`);
-    expect(formula).toContain(`{${NAME_FIELD}}='토네이도'`);
-    expect(formula.startsWith("OR(")).toBe(true);
-    expect(formula).not.toContain(USER_B);
   });
 
   it("stamps an owner only for a real user id", () => {
@@ -127,30 +120,22 @@ describe("avatar cleanup", () => {
 describe("airtable custom technique cleanup", () => {
   function tableFor(opts: {
     byUser?: CustomTechniqueRow[];
-    byName?: CustomTechniqueRow[];
-    legacy?: CustomTechniqueRow[];
     userError?: unknown;
-    nameError?: unknown;
     destroyError?: unknown;
   }) {
     const formulas: string[] = [];
-    const fieldSets: string[][] = [];
     const destroyed: string[][] = [];
     let destroyCalls = 0;
     const table: CustomTechniqueTable = {
       select(args) {
         formulas.push(args.filterByFormula);
-        fieldSets.push(args.fields ?? []);
         return {
           all: async () => {
-            const ownerQuery = args.filterByFormula.includes(`{${CUSTOM_TECHNIQUE_USER_FIELD}}=`);
-            if (ownerQuery) {
-              if (opts.userError) throw opts.userError;
-              return opts.byUser ?? [];
+            if (!args.filterByFormula.includes(`{${CUSTOM_TECHNIQUE_USER_FIELD}}=`)) {
+              throw new Error(`unexpected formula: ${args.filterByFormula}`);
             }
-            const asksOwner = (args.fields ?? []).includes(CUSTOM_TECHNIQUE_USER_FIELD);
-            if (asksOwner && opts.nameError) throw opts.nameError;
-            return asksOwner ? (opts.byName ?? []) : (opts.legacy ?? []);
+            if (opts.userError) throw opts.userError;
+            return opts.byUser ?? [];
           },
         };
       },
@@ -160,38 +145,44 @@ describe("airtable custom technique cleanup", () => {
         if (opts.destroyError && destroyCalls === 1) throw opts.destroyError;
       },
     };
-    return { table, formulas, fieldSets, destroyed };
+    return { table, formulas, destroyed };
   }
 
-  it("deletes rows owned by this user and legacy names from their notes, not another user", async () => {
+  it("deletes only rows whose User ID is this user", async () => {
     const fake = tableFor({
       byUser: [
-        { id: "rec-a", fields: { [CUSTOM_TECHNIQUE_USER_FIELD]: USER_A } },
-        { id: "rec-b", fields: { [CUSTOM_TECHNIQUE_USER_FIELD]: USER_B } },
-      ],
-      byName: [
-        { id: "rec-a", fields: { [CUSTOM_TECHNIQUE_USER_FIELD]: USER_A, [NAME_FIELD]: "키락" } },
-        { id: "rec-b", fields: { [CUSTOM_TECHNIQUE_USER_FIELD]: USER_B, [NAME_FIELD]: "키락" } },
-        { id: "rec-legacy", fields: { [NAME_FIELD]: "토네이도" } },
+        { id: "rec-a", fields: { [CUSTOM_TECHNIQUE_USER_FIELD]: USER_A, Name: "키락" } },
+        { id: "rec-b", fields: { [CUSTOM_TECHNIQUE_USER_FIELD]: USER_B, Name: "키락" } },
+        // 수련 메모의 [미등록: 토네이도]와 이름이 같아도 소유자가 없으면 집계 데이터로 남긴다.
+        { id: "rec-ownerless", fields: { Name: "토네이도" } },
       ],
     });
 
-    const deleted = await deleteUserCustomTechniques(fake.table, USER_A, ["키락", "토네이도", "다른사람기술"]);
-    expect(fake.formulas[0]).toBe(`{${CUSTOM_TECHNIQUE_USER_FIELD}}='${USER_A}'`);
+    const deleted = await deleteUserCustomTechniques(fake.table, USER_A);
+    expect(fake.formulas).toEqual([`{${CUSTOM_TECHNIQUE_USER_FIELD}}='${USER_A}'`]);
     expect(fake.formulas[0]).not.toContain(USER_B);
-    expect(fake.formulas[1]).toContain("키락");
-    expect(fake.formulas[1]).toContain("토네이도");
-    expect(deleted).toEqual(["rec-a", "rec-legacy"]);
-    expect(fake.destroyed).toEqual([["rec-a", "rec-legacy"]]);
+    expect(fake.formulas[0]).not.toContain("토네이도");
+    expect(deleted).toEqual(["rec-a"]);
+    expect(fake.destroyed).toEqual([["rec-a"]]);
     expect(JSON.stringify(fake.destroyed)).not.toContain("rec-b");
+    expect(JSON.stringify(fake.destroyed)).not.toContain("rec-ownerless");
+  });
+
+  it("does not delete an ownerless row whose name matches the user's notes", async () => {
+    const fake = tableFor({
+      byUser: [{ id: "rec-ownerless", fields: { Name: "토네이도" } }],
+    });
+    const deleted = await deleteUserCustomTechniques(fake.table, USER_A);
+    expect(deleted).toEqual([]);
+    expect(fake.destroyed).toEqual([]);
+    expect(fake.formulas).toHaveLength(1);
   });
 
   it("does not call destroy when nothing belongs to the user", async () => {
     const fake = tableFor({
-      byUser: [],
-      byName: [{ id: "rec-b", fields: { [CUSTOM_TECHNIQUE_USER_FIELD]: USER_B } }],
+      byUser: [{ id: "rec-b", fields: { [CUSTOM_TECHNIQUE_USER_FIELD]: USER_B } }],
     });
-    await expect(deleteUserCustomTechniques(fake.table, USER_A, ["키락"])).resolves.toEqual([]);
+    await expect(deleteUserCustomTechniques(fake.table, USER_A)).resolves.toEqual([]);
     expect(fake.destroyed).toEqual([]);
   });
 
@@ -204,7 +195,7 @@ describe("airtable custom technique cleanup", () => {
       byUser: rows,
       destroyError: { statusCode: 500, message: "airtable down" },
     });
-    await expect(deleteUserCustomTechniques(fake.table, USER_A, [])).rejects.toThrow(
+    await expect(deleteUserCustomTechniques(fake.table, USER_A)).rejects.toThrow(
       /custom techniques cleanup failed/,
     );
     expect(fake.destroyed).toHaveLength(2);
@@ -215,112 +206,60 @@ describe("airtable custom technique cleanup", () => {
       byUser: [{ id: "rec-a", fields: { [CUSTOM_TECHNIQUE_USER_FIELD]: USER_A } }],
       destroyError: { statusCode: 404, message: "Record not found" },
     });
-    await expect(deleteUserCustomTechniques(fake.table, USER_A, [])).resolves.toEqual(["rec-a"]);
+    await expect(deleteUserCustomTechniques(fake.table, USER_A)).resolves.toEqual(["rec-a"]);
   });
 
-  it("falls back to this user's names when the owner field does not exist", async () => {
+  it("logs once and deletes nothing when the User ID field is missing", async () => {
     const spy = silenceError();
-    const fake = tableFor({
-      userError: { error: "UNKNOWN_FIELD_NAME", message: 'Unknown field name: "User ID"' },
-      nameError: { error: "UNKNOWN_FIELD_NAME", message: 'Unknown field name: "User ID"' },
-      legacy: [{ id: "rec-old" }],
+    const fake = tableFor({ userError: UNKNOWN_FIELD });
+    const auth = vi.fn(async () => undefined);
+    const result = await deleteAccountForUser(USER_A, {
+      deleteAvatars: async () => [],
+      deleteCustomTechniques: (id) => deleteUserCustomTechniques(fake.table, id),
+      deleteAuthUser: auth,
     });
-    const deleted = await deleteUserCustomTechniques(fake.table, USER_A, ["토네이도"]);
-    expect(deleted).toEqual(["rec-old"]);
-    expect(spy.mock.calls.length).toBeGreaterThan(0);
-    expect(fake.formulas.some((formula) => formula.includes(USER_B))).toBe(false);
-  });
 
-  it("loads notes for this user only and still deletes owned rows if notes fail", async () => {
-    const notes = vi.fn(async (userId: string) => {
-      expect(userId).toBe(USER_A);
-      return ["[미등록: 토네이도]\n메모", null, "[미등록: 키락]"];
-    });
-    const fake = tableFor({
-      byUser: [{ id: "rec-a", fields: { [CUSTOM_TECHNIQUE_USER_FIELD]: USER_A } }],
-      byName: [{ id: "rec-legacy", fields: { [NAME_FIELD]: "토네이도" } }],
-    });
-    const deleted = await cleanupCustomTechniquesForUser({
-      userId: USER_A,
-      table: fake.table,
-      loadNotes: notes,
-    });
-    expect(notes).toHaveBeenCalledWith(USER_A);
-    expect(fake.formulas[1]).toContain("토네이도");
-    expect(fake.formulas[1]).toContain("키락");
-    expect(fake.formulas[1]).not.toContain("다른사람");
-    expect(deleted).toEqual(["rec-a", "rec-legacy"]);
-
-    const spy = silenceError();
-    const owned = tableFor({
-      byUser: [{ id: "rec-a", fields: { [CUSTOM_TECHNIQUE_USER_FIELD]: USER_A } }],
-    });
-    await expect(
-      cleanupCustomTechniquesForUser({
-        userId: USER_A,
-        table: owned.table,
-        loadNotes: async () => {
-          throw new Error("session read failed");
-        },
-      }),
-    ).resolves.toEqual(["rec-a"]);
-    expect(spy).toHaveBeenCalled();
-    expect(owned.formulas).toHaveLength(1);
+    expect(result).toEqual({ ok: true });
+    expect(auth).toHaveBeenCalledWith(USER_A);
+    expect(fake.formulas).toEqual([`{${CUSTOM_TECHNIQUE_USER_FIELD}}='${USER_A}'`]);
+    expect(fake.destroyed).toEqual([]);
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(String(spy.mock.calls[0]?.[0])).toContain("User ID field missing");
   });
 });
 
-describe("session notes", () => {
-  it("reads only the custom names embedded in notes", () => {
-    expect(
-      extractCustomTechniqueNames([
-        "[미등록: 토네이도]\n메모",
-        null,
-        "일반 메모",
-        "[미등록:  키락 ]\n[미등록: 토네이도]",
-      ]),
-    ).toEqual(["토네이도", "키락"]);
-  });
-
-  it("queries training_sessions with this user id", async () => {
-    const calls: Array<{ table: string; column: string; value: string; from: number; to: number }> = [];
-    const supabase = {
-      from(table: string) {
-        return {
-          select() {
-            return {
-              eq(column: string, value: string) {
-                return {
-                  async range(from: number, to: number) {
-                    calls.push({ table, column, value, from, to });
-                    if (from === 0) {
-                      return {
-                        data: [{ notes: "[미등록: 키락]" }, { notes: "[미등록: 스위프]" }],
-                        error: null,
-                      };
-                    }
-                    return { data: [{ notes: null }], error: null };
-                  },
-                };
-              },
-            };
-          },
-        };
+describe("custom technique create without a User ID field", () => {
+  it("retries without the field when Airtable returns UNKNOWN_FIELD_NAME 422", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const calls: Record<string, unknown>[] = [];
+    await createRecordWithOptionalOwner(
+      async (fields) => {
+        calls.push(fields);
+        if (CUSTOM_TECHNIQUE_USER_FIELD in fields) throw UNKNOWN_FIELD;
       },
-    };
-
-    const notes = await listOwnSessionNotes(supabase, USER_A, 2);
-    expect(notes).toEqual(["[미등록: 키락]", "[미등록: 스위프]", null]);
+      { Name: "키락" },
+      USER_A,
+    );
     expect(calls).toEqual([
-      { table: "training_sessions", column: "user_id", value: USER_A, from: 0, to: 1 },
-      { table: "training_sessions", column: "user_id", value: USER_A, from: 2, to: 3 },
+      { Name: "키락", [CUSTOM_TECHNIQUE_USER_FIELD]: USER_A },
+      { Name: "키락" },
     ]);
-    expect(calls.every((call) => call.value === USER_A)).toBe(true);
+    expect(warn).toHaveBeenCalledTimes(1);
   });
 
-  it("does not query when the user id is invalid", async () => {
-    const from = vi.fn();
-    await expect(listOwnSessionNotes({ from }, "everyone")).rejects.toThrow(/invalid user id/);
-    expect(from).not.toHaveBeenCalled();
+  it("does not retry a different create error", async () => {
+    const calls: Record<string, unknown>[] = [];
+    await expect(
+      createRecordWithOptionalOwner(
+        async (fields) => {
+          calls.push(fields);
+          throw { statusCode: 422, error: "INVALID_VALUE_FOR_COLUMN", message: "invalid value" };
+        },
+        { Name: "키락" },
+        USER_A,
+      ),
+    ).rejects.toMatchObject({ error: "INVALID_VALUE_FOR_COLUMN" });
+    expect(calls).toHaveLength(1);
   });
 });
 
