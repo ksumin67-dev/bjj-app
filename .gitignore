@@ -35,3 +35,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Android upload keys, Play signing material, Firebase config.
+# Never commit keystores or passwords. Template: android/keystore.properties.example
+*.jks
+*.keystore
+*.p12
+*.pk8
+*.pepk
+keystore.properties
+google-services.json
+local.properties
