@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
+import { SUPPORT_EMAIL } from "@/lib/supportContact";
 
 export const metadata = { title: "개인정보처리방침" };
 
@@ -68,8 +69,10 @@ export default function PrivacyPage() {
           <h2 className="font-semibold text-text-primary">5. 이용자의 권리</h2>
           <p>
             이용자는 언제든지 프로필 화면에서 본인의 정보를 열람·수정할 수 있으며,
-            계정 삭제(회원 탈퇴)를 통해 개인정보 삭제를 요청할 수 있습니다. 그 외
-            문의는 아래 연락처로 요청해주세요.
+            계정 삭제(회원 탈퇴)를 통해 개인정보 삭제를 요청할 수 있습니다. 앱을
+            열지 못하는 경우에는{" "}
+            <Link href="/account/delete" className="underline">계정 삭제 페이지</Link>
+            에서 같은 삭제를 진행할 수 있습니다. 그 외 문의는 아래 연락처로 요청해주세요.
           </p>
         </section>
 
@@ -86,7 +89,7 @@ export default function PrivacyPage() {
           <p>
             개인정보 관련 문의는 아래 이메일로 연락해주세요.
             <br />
-            <span className="text-text-primary">ksumin67@gmail.com</span>
+            <span className="text-text-primary">{SUPPORT_EMAIL}</span>
           </p>
         </section>
 

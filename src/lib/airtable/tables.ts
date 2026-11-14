@@ -106,6 +106,8 @@ export const FIELDS = {
     REGISTERED: "fldWmhfDeXOeYr3Py",
     // TODO: Airtable CUSTOM_TECHNIQUES 테이블에 "Stream" 단일텍스트 필드 추가 후 아래 ID 입력
     STREAM:     "",
+    // 소유자(User ID)는 이 객체에 넣지 않는다. 칸이 없으면 select fields가 목록 조회를 깨뜨린다.
+    // 계정 삭제·신규 생성만 필드명 "User ID"를 쓴다 (customTechniqueCleanup.ts).
   },
 } as const;
 

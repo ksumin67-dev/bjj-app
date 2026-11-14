@@ -1,5 +1,10 @@
 import "server-only";
 import type { FieldSet } from "airtable";
+import {
+  CUSTOM_TECHNIQUE_USER_FIELD,
+  fieldsWithTechniqueOwner,
+} from "@/lib/account/customTechniqueCleanup";
+import { isUnknownAirtableField } from "@/lib/account/userScope";
 import { airtable } from "./client";
 import { TABLES, FIELDS } from "./tables";
 import type { Stream } from "@/types/domain";
@@ -48,9 +53,34 @@ export async function getAllCustomTechniques(): Promise<CustomTechnique[]> {
  * - 이미 있으면 사용횟수 +1, 최근사용일 갱신, 스트림도 업데이트
  * - 없으면 신규 생성
  */
+async function createCustomTechniqueRecord(
+  fields: Record<string, unknown>,
+  userId?: string,
+): Promise<void> {
+  const withOwner = fieldsWithTechniqueOwner(fields, userId);
+  const stamped =
+    CUSTOM_TECHNIQUE_USER_FIELD in withOwner && !(CUSTOM_TECHNIQUE_USER_FIELD in fields);
+  try {
+    await airtable(TABLES.CUSTOM_TECHNIQUES).create([
+      { fields: withOwner as unknown as FieldSet },
+    ]);
+  } catch (e) {
+    // 베이스에 "User ID" 칸이 없으면 소유자 없이 한 번 더 만든다.
+    if (stamped && isUnknownAirtableField(e)) {
+      console.warn("[customTechniques] User ID 필드가 없어 소유자 없이 저장합니다.");
+      await airtable(TABLES.CUSTOM_TECHNIQUES).create([
+        { fields: fields as unknown as FieldSet },
+      ]);
+      return;
+    }
+    throw e;
+  }
+}
+
 export async function recordCustomTechniqueUsage(
   name: string,
   stream?: Stream,
+  userId?: string,
 ): Promise<void> {
   const today = new Date().toISOString().slice(0, 10);
   const trimmed = name.trim();
@@ -71,7 +101,8 @@ export async function recordCustomTechniqueUsage(
       [F.USE_COUNT]: current.useCount + 1,
       [F.LAST_USED]: today,
     };
-    // 스트림이 있고 필드 ID가 설정된 경우만 업데이트
+    // 스트림이 있고 필드 ID가 설정된 경우만 업데이트.
+    // 소유자(User ID)는 처음 만든 사람 것만 유지한다. 여기서 덮어쓰지 않는다.
     if (stream && F.STREAM) updateFields[F.STREAM] = stream;
 
     await airtable(TABLES.CUSTOM_TECHNIQUES).update([
@@ -87,9 +118,7 @@ export async function recordCustomTechniqueUsage(
     };
     if (stream && F.STREAM) createFields[F.STREAM] = stream;
 
-    await airtable(TABLES.CUSTOM_TECHNIQUES).create([
-      { fields: createFields as unknown as FieldSet },
-    ]);
+    await createCustomTechniqueRecord(createFields, userId);
   }
 }
 

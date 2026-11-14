@@ -10,6 +10,7 @@ import {
 } from "@/lib/supabase/trainingSessions";
 import { createGamePlan } from "@/lib/supabase/gamePlans";
 import { recordCustomTechniqueUsage } from "@/lib/airtable/customTechniques";
+import { createClient } from "@/lib/supabase/server";
 import { getAllTechniques } from "@/lib/airtable/techniques";
 import { calculateNewStreak, getStreakBonus, getLevelRank } from "@/types/domain";
 import type { Stream } from "@/types/domain";
@@ -33,6 +34,19 @@ async function parseTechMap() {
     return new Map(allTechs.map((t) => [t.recordId, t]));
   } catch {
     return new Map<string, Awaited<ReturnType<typeof getAllTechniques>>[number]>();
+  }
+}
+
+async function currentUserId(): Promise<string | undefined> {
+  try {
+    const supabase = createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    return user?.id;
+  } catch (e) {
+    console.warn("[trainingSessions] user id lookup failed:", e instanceof Error ? e.message : "unknown error");
+    return undefined;
   }
 }
 
@@ -161,11 +175,12 @@ export async function createTrainingSessionAction(
     return { ok: false, error: "수련 기록을 저장하지 못했어요. 잠시 후 다시 시도해주세요." };
   }
 
-  // 커스텀 기술 저장 (fire & forget)
+  // 커스텀 기술 저장 (fire & forget). 신규 행에만 현재 사용자 id를 붙인다.
   if (customTechniqueNames.length > 0) {
+    const ownerId = await currentUserId();
     Promise.allSettled(
       customTechniqueNames.map((name) =>
-        recordCustomTechniqueUsage(name, customTechStreams[name]),
+        recordCustomTechniqueUsage(name, customTechStreams[name], ownerId),
       ),
     ).catch((e) => console.warn("[customTechniques] 저장 실패:", e));
   }
@@ -237,11 +252,12 @@ export async function updateTrainingSessionAction(
     return { ok: false, error: "수정 내용을 저장하지 못했어요. 잠시 후 다시 시도해주세요." };
   }
 
-  // 커스텀 기술 저장 (fire & forget)
+  // 커스텀 기술 저장 (fire & forget). 신규 행에만 현재 사용자 id를 붙인다.
   if (customTechniqueNames.length > 0) {
+    const ownerId = await currentUserId();
     Promise.allSettled(
       customTechniqueNames.map((name) =>
-        recordCustomTechniqueUsage(name, customTechStreams[name]),
+        recordCustomTechniqueUsage(name, customTechStreams[name], ownerId),
       ),
     ).catch((e) => console.warn("[customTechniques] 저장 실패:", e));
   }
