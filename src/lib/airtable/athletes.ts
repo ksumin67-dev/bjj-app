@@ -1,5 +1,7 @@
 import "server-only";
+import { serverEnv } from "@/lib/env";
 import { airtable } from "./client";
+import { AIRTABLE_ATHLETES_TAG, cachedCatalogRead } from "./catalogCache";
 import { TABLES, FIELDS } from "./tables";
 import type { Athlete, StyleTag } from "@/types/domain";
 
@@ -27,11 +29,7 @@ function toAthlete(record: {
   };
 }
 
-/**
- * 1차 배치 포함(includeInLaunch=true) 선수만 반환.
- * 스킬트리 진입 화면(선수 목록)에서 사용.
- */
-export async function getAllAthletes(): Promise<Athlete[]> {
+async function fetchAllAthletes(): Promise<Athlete[]> {
   const records = await airtable(TABLES.ATHLETES)
     .select({
       fields: Object.values(F).filter(Boolean),
@@ -39,32 +37,33 @@ export async function getAllAthletes(): Promise<Athlete[]> {
       returnFieldsByFieldId: true,
     })
     .all();
-  return records
-    .map((r) =>
-      toAthlete({
-        id: r.id,
-        fields: r.fields,
-        createdTime: (r as unknown as { _rawJson?: { createdTime?: string } })._rawJson
-          ?.createdTime,
-      }),
-    )
-    .filter((a) => a.includeInLaunch);
+  return records.map((r) =>
+    toAthlete({
+      id: r.id,
+      fields: r.fields,
+      createdTime: (r as unknown as { _rawJson?: { createdTime?: string } })._rawJson
+        ?.createdTime,
+    }),
+  );
+}
+
+// includeInLaunch 필터 전의 전체 테이블. ID 조회는 런치 제외 선수도 찾는다.
+const readAthleteCatalog = cachedCatalogRead({
+  key: `airtable-athletes-v1-${serverEnv.AIRTABLE_BASE_ID}`,
+  tag: AIRTABLE_ATHLETES_TAG,
+  load: fetchAllAthletes,
+});
+
+/**
+ * 1차 배치 포함(includeInLaunch=true) 선수만 반환.
+ * 스킬트리 진입 화면(선수 목록)에서 사용.
+ */
+export async function getAllAthletes(): Promise<Athlete[]> {
+  const all = await readAthleteCatalog();
+  return all.filter((a) => a.includeInLaunch);
 }
 
 export async function getAthleteByRecordId(recordId: string): Promise<Athlete | null> {
-  const records = await airtable(TABLES.ATHLETES)
-    .select({
-      fields: Object.values(F).filter(Boolean),
-      filterByFormula: `RECORD_ID() = '${recordId.replace(/'/g, "\\'")}'`,
-      maxRecords: 1,
-      returnFieldsByFieldId: true,
-    })
-    .firstPage();
-  if (!records[0]) return null;
-  return toAthlete({
-    id: records[0].id,
-    fields: records[0].fields,
-    createdTime: (records[0] as unknown as { _rawJson?: { createdTime?: string } })._rawJson
-      ?.createdTime,
-  });
+  const all = await readAthleteCatalog();
+  return all.find((a) => a.recordId === recordId) ?? null;
 }

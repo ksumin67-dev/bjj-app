@@ -1,6 +1,8 @@
 import "server-only";
 import type { FieldSet } from "airtable";
+import { serverEnv } from "@/lib/env";
 import { airtable } from "./client";
+import { AIRTABLE_TECHNIQUES_TAG, cachedCatalogRead } from "./catalogCache";
 import { TABLES, FIELDS } from "./tables";
 import type {
   Technique,
@@ -66,7 +68,7 @@ function toTechnique(record: {
   };
 }
 
-export async function getAllTechniques(): Promise<Technique[]> {
+async function fetchAllTechniques(): Promise<Technique[]> {
   const records = await airtable(TABLES.TECHNIQUES)
     .select({
       fields: Object.values(F).filter(Boolean),
@@ -77,34 +79,31 @@ export async function getAllTechniques(): Promise<Technique[]> {
   return records.map((r) => toTechnique({ id: r.id, fields: r.fields }));
 }
 
+const readTechniqueCatalog = cachedCatalogRead({
+  key: `airtable-techniques-v1-${serverEnv.AIRTABLE_BASE_ID}`,
+  tag: AIRTABLE_TECHNIQUES_TAG,
+  load: fetchAllTechniques,
+});
+
+export async function getAllTechniques(): Promise<Technique[]> {
+  return readTechniqueCatalog();
+}
+
+// ID 조회는 캐시된 전체 목록에서 찾는다. 예전 filterByFormula의 `"\'"`는
+// 따옴표를 이스케이프하지 않아 `AB'C`가 `{fld} = 'AB'C'`가 됐다.
+// 올바른 이스케이프는 formula.ts.
 export async function getTechniqueByTechId(
   techId: string,
 ): Promise<Technique | null> {
-  const records = await airtable(TABLES.TECHNIQUES)
-    .select({
-      fields: Object.values(F).filter(Boolean),
-      filterByFormula: `{${F.ID}} = '${techId.replace(/'/g, "\'")}\'`,
-      maxRecords: 1,
-      returnFieldsByFieldId: true,
-    })
-    .firstPage();
-  if (!records[0]) return null;
-  return toTechnique({ id: records[0].id, fields: records[0].fields });
+  const all = await getAllTechniques();
+  return all.find((t) => t.id === techId) ?? null;
 }
 
 export async function getTechniqueByRecordId(
   recordId: string,
 ): Promise<Technique | null> {
-  const records = await airtable(TABLES.TECHNIQUES)
-    .select({
-      fields: Object.values(F).filter(Boolean),
-      filterByFormula: `RECORD_ID() = '${recordId.replace(/'/g, "\'")}\'`,
-      maxRecords: 1,
-      returnFieldsByFieldId: true,
-    })
-    .firstPage();
-  if (!records[0]) return null;
-  return toTechnique({ id: records[0].id, fields: records[0].fields });
+  const all = await getAllTechniques();
+  return all.find((t) => t.recordId === recordId) ?? null;
 }
 
 export async function getTechniquesByParentId(

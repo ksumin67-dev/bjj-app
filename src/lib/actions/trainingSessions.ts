@@ -31,7 +31,9 @@ async function parseTechMap() {
   try {
     const allTechs = await getAllTechniques();
     return new Map(allTechs.map((t) => [t.recordId, t]));
-  } catch {
+  } catch (error) {
+    // 캐시된 카탈로그도 없을 때만 도달. 수련 저장 자체는 계속하되 XP가 0이 될 수 있다.
+    console.error("[airtable] 기술 카탈로그를 읽지 못해 XP 계산용 맵이 비었습니다", error);
     return new Map<string, Awaited<ReturnType<typeof getAllTechniques>>[number]>();
   }
 }

@@ -21,8 +21,18 @@ export async function getGamePlanFormData(
     getAllTechniques(),
     getAllTrainingSessions(),
     getMyTechniqueGoals(),
-    // 추천은 새 게임플랜 화면에서만 필요 — 수정 화면에서는 Airtable 호출 생략
-    opts.withRecommendations ? getAllAthletes().catch(() => []) : Promise.resolve([]),
+    // 추천은 새 게임플랜 화면에서만 필요 — 수정 화면에서는 Airtable 호출 생략.
+    // 카탈로그 레이어가 마지막 성공 값을 이미 시도한 뒤에만 여기로 온다.
+    // 추천은 없어도 폼은 열리게 두되, 실패를 빈 배열로 삼키지는 않는다.
+    opts.withRecommendations
+      ? getAllAthletes().catch((error: unknown) => {
+          console.error(
+            "[airtable] 선수 카탈로그를 읽지 못했습니다. 게임플랜 추천만 비웁니다.",
+            error,
+          );
+          return [];
+        })
+      : Promise.resolve([]),
     opts.withRecommendations ? getMyComboVotes() : Promise.resolve(new Map<string, 1 | -1>()),
     opts.withRecommendations ? getUserProfile() : Promise.resolve(null),
   ]);
