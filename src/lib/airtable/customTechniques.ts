@@ -1,5 +1,6 @@
 import "server-only";
 import type { FieldSet } from "airtable";
+import { createRecordWithOptionalOwner } from "@/lib/account/customTechniqueCleanup";
 import { airtable } from "./client";
 import { TABLES, FIELDS } from "./tables";
 import type { Stream } from "@/types/domain";
@@ -51,6 +52,7 @@ export async function getAllCustomTechniques(): Promise<CustomTechnique[]> {
 export async function recordCustomTechniqueUsage(
   name: string,
   stream?: Stream,
+  userId?: string,
 ): Promise<void> {
   const today = new Date().toISOString().slice(0, 10);
   const trimmed = name.trim();
@@ -71,7 +73,8 @@ export async function recordCustomTechniqueUsage(
       [F.USE_COUNT]: current.useCount + 1,
       [F.LAST_USED]: today,
     };
-    // 스트림이 있고 필드 ID가 설정된 경우만 업데이트
+    // 스트림이 있고 필드 ID가 설정된 경우만 업데이트.
+    // 소유자(User ID)는 처음 만든 사람 것만 유지한다. 여기서 덮어쓰지 않는다.
     if (stream && F.STREAM) updateFields[F.STREAM] = stream;
 
     await airtable(TABLES.CUSTOM_TECHNIQUES).update([
@@ -87,9 +90,15 @@ export async function recordCustomTechniqueUsage(
     };
     if (stream && F.STREAM) createFields[F.STREAM] = stream;
 
-    await airtable(TABLES.CUSTOM_TECHNIQUES).create([
-      { fields: createFields as unknown as FieldSet },
-    ]);
+    await createRecordWithOptionalOwner(
+      async (fields) => {
+        await airtable(TABLES.CUSTOM_TECHNIQUES).create([
+          { fields: fields as unknown as FieldSet },
+        ]);
+      },
+      createFields,
+      userId,
+    );
   }
 }
 

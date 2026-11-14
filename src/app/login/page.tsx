@@ -4,7 +4,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { Mail, Lock, AlertCircle, CheckCircle2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { authErrorMessage, authRedirectErrorMessage } from "@/lib/authErrors";
+import { authErrorMessage, authRedirectErrorMessage, safeNextPath } from "@/lib/authErrors";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -20,6 +20,8 @@ export default function LoginPage() {
   const [needsConfirm, setNeedsConfirm] = useState(false);
   const [resendMsg, setResendMsg] = useState<string | null>(null);
   const [isNativeApp, setIsNativeApp] = useState(false);
+  const [nextPath, setNextPath] = useState("/");
+  const [notice, setNotice] = useState<string | null>(null);
 
   const supabase = createClient();
 
@@ -28,6 +30,8 @@ export default function LoginPage() {
     const params = new URLSearchParams(window.location.search);
     const msg = authRedirectErrorMessage(params.get("error"));
     if (msg) setError(msg);
+    setNextPath(safeNextPath(params.get("next"), "/"));
+    if (params.get("deleted") === "1") setNotice("계정이 삭제되었습니다.");
 
     // 앱(Capacitor 웹뷰)에서는 구글이 웹뷰 로그인을 막으므로 구글 버튼 숨김
     const cap = (window as unknown as {
@@ -72,7 +76,9 @@ export default function LoginPage() {
         : await supabase.auth.signUp({
             email,
             password,
-            options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+            options: {
+              emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`,
+            },
           });
 
     setLoading(false);
@@ -103,7 +109,7 @@ export default function LoginPage() {
       return;
     }
 
-    window.location.href = "/";
+    window.location.href = nextPath;
   }
 
   async function handleGoogleLogin() {
@@ -112,7 +118,7 @@ export default function LoginPage() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`,
       },
     });
     if (error) {
@@ -172,6 +178,12 @@ export default function LoginPage() {
         </h1>
         <p className="text-[12px] text-text-tertiary mt-2">주짓수 스킬 로그</p>
       </div>
+
+      {notice && (
+        <div className="w-full max-w-sm rounded-xl bg-brand-subtle border border-border-subtle px-3 py-2.5 text-center">
+          <p className="text-xs text-text-primary">{notice}</p>
+        </div>
+      )}
 
       {showSuccessScreen ? (
         <div className="w-full max-w-sm space-y-4 text-center">
@@ -368,6 +380,8 @@ export default function LoginPage() {
         <Link href="/terms" className="hover:text-text-tertiary">이용약관</Link>
         {" · "}
         <Link href="/privacy" className="hover:text-text-tertiary">개인정보처리방침</Link>
+        {" · "}
+        <Link href="/account/delete" className="hover:text-text-tertiary">계정 삭제</Link>
       </p>
     </div>
   );

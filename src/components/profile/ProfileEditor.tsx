@@ -129,7 +129,7 @@ export function ProfileEditor({
   async function handleDeleteAccount() {
     if (
       !confirm(
-        "정말 계정을 삭제할까요?\n수련 기록·게임플랜 등 모든 데이터가 영구히 삭제되며 복구할 수 없습니다.",
+        "정말 계정을 삭제할까요?\n수련 기록, 게임플랜, 프로필 사진, 직접 입력한 기술 이름이 영구히 삭제되며 복구할 수 없습니다.",
       )
     ) {
       return;
@@ -541,6 +541,9 @@ export function ProfileEditor({
           {deletingAccount ? "삭제 중…" : "계정 삭제"}
         </p>
       </button>
+      <Link href="/account/delete" className="text-[11px] mt-2 inline-block" style={{ color: "#6B7280" }}>
+        브라우저에서 계정 삭제
+      </Link>
 
       <p className="text-[11px] mt-3" style={{ color: "#4A4A5A" }}>
         <Link href="/terms" className="hover:opacity-80">이용약관</Link>

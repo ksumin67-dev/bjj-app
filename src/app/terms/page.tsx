@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
+import { SUPPORT_EMAIL } from "@/lib/supportContact";
 
 export const metadata = { title: "이용약관" };
 
@@ -71,8 +72,10 @@ export default function TermsPage() {
         <section className="space-y-2">
           <h2 className="font-semibold text-text-primary">제6조 (계정 해지)</h2>
           <p>
-            이용자는 언제든지 프로필 화면에서 계정 삭제(회원 탈퇴)를 요청할 수 있으며,
-            탈퇴 시 개인정보처리방침에 따라 이용자의 데이터가 처리됩니다.
+            이용자는 언제든지 프로필 화면 또는{" "}
+            <Link href="/account/delete" className="underline">계정 삭제 페이지</Link>
+            에서 계정 삭제(회원 탈퇴)를 요청할 수 있으며, 탈퇴 시 개인정보처리방침에
+            따라 이용자의 데이터가 처리됩니다.
           </p>
         </section>
 
@@ -81,7 +84,7 @@ export default function TermsPage() {
           <p>
             서비스 이용과 관련한 문의는 아래 이메일로 연락해주세요.
             <br />
-            <span className="text-text-primary">ksumin67@gmail.com</span>
+            <span className="text-text-primary">{SUPPORT_EMAIL}</span>
           </p>
         </section>
       </div>
