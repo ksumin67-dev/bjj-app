@@ -26,11 +26,12 @@ import { PageWrapper } from "@/components/layout/PageWrapper";
 
 export const dynamic = "force-dynamic";
 
-type Params = { positionId: string; techId: string };
-type SearchParams = { backHref?: string; backLabel?: string };
+type Params = Promise<{ positionId: string; techId: string }>;
+type SearchParams = Promise<{ backHref?: string; backLabel?: string }>;
 
 export async function generateMetadata({ params }: { params: Params }) {
-  const tech = await getTechniqueByTechId(params.techId.toUpperCase());
+  const { techId } = await params;
+  const tech = await getTechniqueByTechId(techId.toUpperCase());
   return {
     title: tech ? tech.nameKo : "기술 상세",
   };
@@ -79,7 +80,8 @@ export default async function TechniqueDetailPage({
   params: Params;
   searchParams: SearchParams;
 }) {
-  const techId = params.techId.toUpperCase();
+  const [{ techId: rawTechId }, resolvedSearchParams] = await Promise.all([params, searchParams]);
+  const techId = rawTechId.toUpperCase();
 
   const [technique, sessions] = await Promise.all([
     getTechniqueByTechId(techId),
@@ -93,8 +95,8 @@ export default async function TechniqueDetailPage({
   // 들어왔는데 뒤로가기가 엉뚱한 대표선수 페이지로 튀던 버그 수정).
   // 쿼리가 없는 경우(북마크/직접 링크 등)에만 대표선수 기준으로 추정하는
   // 구버전 폴백을 사용.
-  let backHref = searchParams.backHref;
-  let backLabel = searchParams.backLabel;
+  let backHref = resolvedSearchParams.backHref;
+  let backLabel = resolvedSearchParams.backLabel;
   if (!backHref) {
     const primaryAthleteId = technique.athleteRecordIds[0] ?? null;
     const primaryAthlete = primaryAthleteId ? await getAthleteByRecordId(primaryAthleteId) : null;

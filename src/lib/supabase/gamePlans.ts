@@ -27,7 +27,7 @@ function toGamePlan(row: GamePlanRow): GamePlan {
 }
 
 async function requireUserId(): Promise<string> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -36,7 +36,7 @@ async function requireUserId(): Promise<string> {
 }
 
 export async function getAllGamePlans(): Promise<GamePlan[]> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("game_plans")
     .select("*")
@@ -49,7 +49,7 @@ export async function getAllGamePlans(): Promise<GamePlan[]> {
 export async function getGamePlanById(
   recordId: string,
 ): Promise<GamePlan | null> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("game_plans")
     .select("*")
@@ -77,7 +77,7 @@ export async function createGamePlan(
   input: CreateGamePlanInput,
 ): Promise<string> {
   const userId = await requireUserId();
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("game_plans")
     .insert({
@@ -104,7 +104,7 @@ export async function updateGamePlan(
   recordId: string,
   input: CreateGamePlanInput,
 ): Promise<void> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase
     .from("game_plans")
     .update({
@@ -127,7 +127,7 @@ export async function setGamePlanPrimary(
   recordId: string,
   isPrimary: boolean,
 ): Promise<void> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase
     .from("game_plans")
     .update({ is_primary: isPrimary })
@@ -136,7 +136,7 @@ export async function setGamePlanPrimary(
 }
 
 export async function deleteGamePlan(recordId: string): Promise<void> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase.from("game_plans").delete().eq("id", recordId);
   if (error) throw error;
 }

@@ -9,7 +9,7 @@ import { ADMIN_EMAIL } from "@/lib/adminConfig";
  * 이메일이 인증된 계정만 관리자로 인정한다.
  */
 export async function requireAdmin(): Promise<void> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();

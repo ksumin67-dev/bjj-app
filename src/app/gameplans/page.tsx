@@ -11,7 +11,9 @@ import { AiRecommendSection } from "@/components/gamePlans/AiRecommendSection";
 import { GamePlanListClient, type GamePlanListItem } from "@/components/gamePlans/GamePlanListClient";
 
 export const metadata = { title: "나의 게임플랜" };
-export const revalidate = 30;
+// 로그인 유저의 게임플랜/수련 기록(쿠키)을 읽는다. revalidate와 함께 두면
+// Next.js 15가 정적 생성을 시도했다가 cookies()에서 실패하므로 force-dynamic.
+export const dynamic = "force-dynamic";
 
 export default async function GamePlansPage() {
   const [gamePlans, positions, techniques, sessions] = await Promise.all([

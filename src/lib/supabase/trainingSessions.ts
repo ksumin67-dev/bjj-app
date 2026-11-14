@@ -33,7 +33,7 @@ function toSession(row: SessionRow): TrainingSession {
 }
 
 async function requireUserId(): Promise<string> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -43,7 +43,7 @@ async function requireUserId(): Promise<string> {
 
 export async function getAllTrainingSessions(): Promise<TrainingSession[]> {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data, error } = await supabase
       .from("training_sessions")
       .select("*")
@@ -73,7 +73,7 @@ export async function getSessionsByMonth(
       : `${year}-${String(month + 1).padStart(2, "0")}-01`;
 
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data, error } = await supabase
       .from("training_sessions")
       .select("*")
@@ -99,7 +99,7 @@ export async function getSessionsByDate(
 export async function getSessionById(
   recordId: string,
 ): Promise<TrainingSession | null> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("training_sessions")
     .select("*")
@@ -123,7 +123,7 @@ export async function createTrainingSession(
   const userId = await requireUserId();
   const xp = input.xpEarned ?? input.gamePlanRecordIds.length * 200;
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("training_sessions")
     .insert({
@@ -142,7 +142,7 @@ export async function createTrainingSession(
 }
 
 export async function deleteTrainingSession(recordId: string): Promise<void> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase
     .from("training_sessions")
     .delete()
@@ -154,7 +154,7 @@ export async function updateTrainingSession(
   recordId: string,
   input: CreateTrainingSessionInput,
 ): Promise<void> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase
     .from("training_sessions")
     .update({

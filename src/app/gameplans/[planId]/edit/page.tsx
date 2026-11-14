@@ -9,9 +9,14 @@ import { PageWrapper } from "@/components/layout/PageWrapper";
 export const metadata = { title: "게임플랜 수정" };
 export const dynamic = "force-dynamic";
 
-export default async function EditGamePlanPage({ params }: { params: { planId: string } }) {
+export default async function EditGamePlanPage({
+  params,
+}: {
+  params: Promise<{ planId: string }>;
+}) {
+  const { planId } = await params;
   const [gamePlan, formData] = await Promise.all([
-    getGamePlanById(params.planId),
+    getGamePlanById(planId),
     getGamePlanFormData(),
   ]);
 

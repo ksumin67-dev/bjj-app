@@ -64,7 +64,7 @@ export async function pickWithLlm(
   const key = cacheKeyOf(candidates, ctx);
   let userId: string | null = null;
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -115,7 +115,7 @@ export async function pickWithLlm(
 
     if (userId) {
       try {
-        await createClient()
+        await (await createClient())
           .from("recommend_llm_cache")
           .upsert({ user_id: userId, cache_key: key, payload: { picks } }, { onConflict: "user_id,cache_key" });
       } catch (e) {

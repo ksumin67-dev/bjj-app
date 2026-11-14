@@ -15,15 +15,17 @@ import { PageWrapper } from "@/components/layout/PageWrapper";
 // force-dynamic으로 전환 (2026-09-15, calendar/profile 페이지와 동일 패턴).
 export const dynamic = "force-dynamic";
 
-type Params = { athleteId: string };
+type Params = Promise<{ athleteId: string }>;
 
 export async function generateMetadata({ params }: { params: Params }) {
-  const athlete = await getAthleteByRecordId(params.athleteId);
+  const { athleteId } = await params;
+  const athlete = await getAthleteByRecordId(athleteId);
   return { title: athlete ? `${athlete.nameKo} · 선수` : "선수 상세" };
 }
 
 export default async function AthleteDetailPage({ params }: { params: Params }) {
-  const athlete = await getAthleteByRecordId(params.athleteId);
+  const { athleteId } = await params;
+  const athlete = await getAthleteByRecordId(athleteId);
   if (!athlete) notFound();
 
   const [allTechniques, goalIdSet] = await Promise.all([

@@ -15,7 +15,7 @@ import type { Technique, Stream } from "@/types/domain";
 
 export const dynamic = "force-dynamic";
 
-type Params = { planId: string };
+type Params = Promise<{ planId: string }>;
 
 const STREAM_ICON: Record<Stream, LucideIcon> = {
   가드포지션: Shield,
@@ -72,13 +72,15 @@ function TechFlowRow({ tech, index, trained }: { tech: Technique; index: number;
 }
 
 export async function generateMetadata({ params }: { params: Params }) {
-  const plan = await getGamePlanById(params.planId);
+  const { planId } = await params;
+  const plan = await getGamePlanById(planId);
   return { title: plan?.planName ?? "게임플랜" };
 }
 
 export default async function GamePlanDetailPage({ params }: { params: Params }) {
+  const { planId } = await params;
   const [gamePlan, positions, techniques, sessions] = await Promise.all([
-    getGamePlanById(params.planId),
+    getGamePlanById(planId),
     getAllPositions(),
     getAllTechniques(),
     getAllTrainingSessions(),

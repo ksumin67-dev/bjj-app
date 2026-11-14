@@ -5,10 +5,10 @@ import { publicEnv } from "@/lib/publicEnv";
 
 /**
  * 서버(Server Component / Server Action / Route Handler)에서 사용하는 Supabase 클라이언트.
- * Next.js 14 기준 cookies()는 동기 API.
+ * Next.js 15부터 cookies()는 비동기 API.
  */
-export function createClient() {
-  const cookieStore = cookies();
+export async function createClient() {
+  const cookieStore = await cookies();
 
   return createServerClient(
     publicEnv.NEXT_PUBLIC_SUPABASE_URL,
