@@ -13,6 +13,7 @@ import { GamePlanListClient, type GamePlanListItem } from "@/components/gamePlan
 export const metadata = { title: "나의 게임플랜" };
 // 로그인 유저의 게임플랜/수련 기록(쿠키)을 읽는다. revalidate와 함께 두면
 // Next.js 15가 정적 생성을 시도했다가 cookies()에서 실패하므로 force-dynamic.
+// 기술 카탈로그는 getAllTechniques의 Data Cache를 사용한다.
 export const dynamic = "force-dynamic";
 
 export default async function GamePlansPage() {

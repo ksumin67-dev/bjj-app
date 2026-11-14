@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { invalidateTechniqueCatalog } from "@/lib/airtable/catalogCache";
 import {
   deleteCustomTechnique,
   setCustomTechniqueRegistered,
@@ -26,8 +27,7 @@ export async function actionCreateTechnique(
   try {
     await requireAdmin();
     const recordId = await createTechnique(input);
-    revalidatePath("/admin/techniques");
-    revalidatePath("/tree");
+    invalidateTechniqueCatalog();
     return { ok: true, recordId };
   } catch (e) {
     return failure(e);
@@ -41,8 +41,7 @@ export async function actionUpdateTechnique(
   try {
     await requireAdmin();
     await updateTechnique(recordId, input);
-    revalidatePath("/admin/techniques");
-    revalidatePath("/tree");
+    invalidateTechniqueCatalog();
     return { ok: true };
   } catch (e) {
     return failure(e);
@@ -55,8 +54,7 @@ export async function actionDeleteTechnique(
   try {
     await requireAdmin();
     await deleteTechnique(recordId);
-    revalidatePath("/admin/techniques");
-    revalidatePath("/tree");
+    invalidateTechniqueCatalog();
     return { ok: true };
   } catch (e) {
     return failure(e);
